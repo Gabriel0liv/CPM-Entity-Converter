@@ -31,22 +31,4 @@ public record SemanticRigMap(
   private static <K, V> Map<K, V> orderedCopy(Map<K, V> values) {
     return Collections.unmodifiableMap(new LinkedHashMap<>(values == null ? Map.of() : values));
   }
-
-  /** Legacy constructor retained for tests that only exercise bone/clip resolution. */
-  public SemanticRigMap(
-      Map<String, BoneId> bones, Map<String, ClipId> clips, List<String> ignored) {
-    this(
-        bones,
-        clips,
-        new CompiledRootRoles(Map.of()),
-        null,
-        Map.of(),
-        null,
-        ignored.stream().map(value -> new CompiledIgnoreRule(value, "")).toList(),
-        null,
-        null,
-        null,
-        null,
-        null);
-  }
 }

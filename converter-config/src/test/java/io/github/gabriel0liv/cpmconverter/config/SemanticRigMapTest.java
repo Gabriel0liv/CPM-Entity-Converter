@@ -13,7 +13,20 @@ class SemanticRigMapTest {
   void compiledMapIsImmutableAndContainsNoSourceLookups() {
     var bones = new LinkedHashMap<String, BoneId>();
     bones.put("head", new BoneId("head-id"));
-    var map = new SemanticRigMap(bones, Map.of(), List.of());
+    var map =
+        new SemanticRigMap(
+            bones,
+            Map.of(),
+            new CompiledRootRoles(Map.of()),
+            null,
+            Map.of(),
+            null,
+            List.of(),
+            null,
+            null,
+            null,
+            null,
+            null);
     bones.put("neck", new BoneId("neck-id"));
     assertFalse(map.bones().containsKey("neck"));
     assertThrows(UnsupportedOperationException.class, () -> map.bones().put("x", new BoneId("x")));
