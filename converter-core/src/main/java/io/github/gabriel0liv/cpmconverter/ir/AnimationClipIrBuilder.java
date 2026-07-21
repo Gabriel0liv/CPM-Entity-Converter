@@ -26,13 +26,8 @@ public final class AnimationClipIrBuilder {
     if (playback == PlaybackMode.CUSTOM && (customLoop == null || customLoop.isBlank())) {
       return failure("custom playback requires source id", location, id);
     }
-    try {
-      return Result.success(
-          new AnimationClipIR(
-              new ClipId(id), duration, playback, customLoop, List.of(), List.of()));
-    } catch (RuntimeException exception) {
-      return failure(exception.getMessage(), location, id);
-    }
+    return Result.success(
+        new AnimationClipIR(new ClipId(id), duration, playback, customLoop, List.of(), List.of()));
   }
 
   private Result<AnimationClipIR> failure(String message, SourceLocation location, String id) {

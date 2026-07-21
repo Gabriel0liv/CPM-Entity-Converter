@@ -247,16 +247,28 @@ public final class ModelIrValidator {
   private DiagnosticBag validateChannel(
       ChannelIR<?> channel, double duration, DiagnosticBag diagnostics, String clip, String bone) {
     if (channel == null) return diagnostics;
-    double previous = -1;
+    double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (KeyframeIR<?> keyframe : channel.keyframes()) {
       double time = keyframe.time();
+      if (!Double.isFinite(time) || time < 0) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    DiagnosticCodes.IR_TIMESTAMP_INVALID,
+                    "timestamp must be finite and non-negative",
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    bone,
+                    clip));
+        continue;
+      }
       if (!seen.add(time))
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_DUPLICATE,
-                    "duplicate timestamp",
+                    "duplicate timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip));
@@ -265,7 +277,7 @@ public final class ModelIrValidator {
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_ORDER,
-                    "timestamps are not ordered",
+                    "timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip));
@@ -291,16 +303,28 @@ public final class ModelIrValidator {
       String clip,
       String bone) {
     if (channel == null) return diagnostics;
-    double previous = -1;
+    double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (SourceRotationKeyframeIR keyframe : channel.keyframes()) {
       double time = keyframe.timeSeconds();
+      if (!Double.isFinite(time) || time < 0) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    DiagnosticCodes.IR_TIMESTAMP_INVALID,
+                    "rotation timestamp must be finite and non-negative",
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    bone,
+                    clip));
+        continue;
+      }
       if (!seen.add(time))
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_DUPLICATE,
-                    "duplicate rotation timestamp",
+                    "duplicate rotation timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip));
@@ -309,7 +333,7 @@ public final class ModelIrValidator {
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_ORDER,
-                    "rotation timestamps are not ordered",
+                    "rotation timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip));
@@ -353,14 +377,31 @@ public final class ModelIrValidator {
 
   private Diagnostic error(
       String code, String message, Map<String, String> context, String bone, String clip) {
+    String suggestion = suggestionFor(code);
     return new Diagnostic(
         Severity.ERROR,
         new DiagnosticCode(code),
         null,
         message,
-        "Correct the ModelIR input",
+        suggestion,
         bone,
         clip,
         new TreeMap<>(context));
+  }
+
+  private String suggestionFor(String code) {
+    return switch (code) {
+      case DiagnosticCodes.IR_KEYFRAME_DUPLICATE -> "remove the duplicate timestamp";
+      case DiagnosticCodes.IR_KEYFRAME_ORDER -> "sort keyframes by time";
+      case DiagnosticCodes.IR_KEYFRAME_AFTER_DURATION ->
+          "increase clip duration or move the keyframe";
+      case DiagnosticCodes.IR_TIMESTAMP_INVALID -> "use a finite non-negative timestamp";
+      case DiagnosticCodes.IR_DURATION_INVALID -> "use a finite positive duration";
+      case DiagnosticCodes.IR_PARENT_MISSING -> "declare the missing parent";
+      case DiagnosticCodes.IR_CHILD_MISSING -> "declare the missing child";
+      case DiagnosticCodes.IR_CYCLE -> "remove the parent cycle";
+      case DiagnosticCodes.IR_CUSTOM_PLAYBACK_ID -> "provide a custom playback identifier";
+      default -> "correct the ModelIR input";
+    };
   }
 }

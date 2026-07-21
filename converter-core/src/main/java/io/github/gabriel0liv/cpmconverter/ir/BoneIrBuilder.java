@@ -25,28 +25,15 @@ public final class BoneIrBuilder {
     }
     var created = IrValueFactory.boneId(id, location);
     if (!created.success()) return Result.failure(created.diagnostics());
-    try {
-      return Result.success(
-          new BoneIR(
-              created.value(),
-              name,
-              null,
-              List.of(),
-              io.github.gabriel0liv.cpmconverter.math.Transform.identity(),
-              List.of(),
-              location == null ? "unknown" : location.source().value()),
-          created.diagnostics());
-    } catch (RuntimeException exception) {
-      return Result.failure(
-          new Diagnostic(
-              Severity.ERROR,
-              new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
-              location,
-              exception.getMessage(),
-              null,
-              name,
-              null,
-              new java.util.TreeMap<>()));
-    }
+    return Result.success(
+        new BoneIR(
+            created.value(),
+            name,
+            null,
+            List.of(),
+            io.github.gabriel0liv.cpmconverter.math.Transform.identity(),
+            List.of(),
+            location == null ? "unknown" : location.source().value()),
+        created.diagnostics());
   }
 }

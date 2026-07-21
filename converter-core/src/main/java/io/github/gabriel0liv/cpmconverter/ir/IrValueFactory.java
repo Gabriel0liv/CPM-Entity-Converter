@@ -27,7 +27,7 @@ public final class IrValueFactory {
       String label) {
     try {
       return Result.success(constructor.apply(value));
-    } catch (RuntimeException exception) {
+    } catch (IllegalArgumentException exception) {
       Diagnostic diagnostic =
           new Diagnostic(
               Severity.ERROR,

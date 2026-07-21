@@ -23,13 +23,8 @@ public final class ModelIrBuilder {
       return failure("geometry id is required", location);
     if (bones == null || roots == null || clips == null)
       return failure("model collections are required", location);
-    try {
-      return Result.success(
-          new ModelIR(
-              source, new GeometryId(geometryId), bones, roots, clips, textures, List.of()));
-    } catch (RuntimeException exception) {
-      return failure(exception.getMessage(), location);
-    }
+    return Result.success(
+        new ModelIR(source, new GeometryId(geometryId), bones, roots, clips, textures, List.of()));
   }
 
   private Result<ModelIR> failure(String message, SourceLocation location) {
