@@ -26,6 +26,8 @@ independente foi executada em `review/phase1-final` sobre `9bacfa9`.
 - A execução CI do branch integrado (run `29865108648`) falhou no job Windows
   durante `spotlessCheck clean check`, embora a mesma sequência passe localmente;
   a causa remota permanece não diagnosticável sem logs autenticados.
+- A repetição `29865291036` confirmou Ubuntu verde e Windows novamente falho no
+  mesmo passo; NFR-014 permanece não aceito.
 
 ## Bloqueios restantes
 
