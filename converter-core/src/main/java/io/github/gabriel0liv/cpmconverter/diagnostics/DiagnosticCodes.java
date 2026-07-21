@@ -39,4 +39,47 @@ public final class DiagnosticCodes {
   public static final String IR_INVALID_ID = "IR_INVALID_ID";
   public static final String IR_INVALID_VALUE = "IR_INVALID_VALUE";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
+
+  public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
+  public static final String INPUT_LIMIT_EXCEEDED = "INPUT_LIMIT_EXCEEDED";
+  public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";
+  public static final String GEO_PARENT_NOT_FOUND = "GEO_PARENT_NOT_FOUND";
+  public static final String GEO_HIERARCHY_CYCLE = "GEO_HIERARCHY_CYCLE";
+  public static final String GEO_DUPLICATE_BONE_NAME = "GEO_DUPLICATE_BONE_NAME";
+  public static final String GEO_MESH_UNSUPPORTED = "GEO_MESH_UNSUPPORTED";
+  public static final String GEO_CUBE_HELPER_SYNTHESIZED = "GEO_CUBE_HELPER_SYNTHESIZED";
+  public static final String UV_OUT_OF_BOUNDS = "UV_OUT_OF_BOUNDS";
+  public static final String PNG_INVALID = "PNG_INVALID";
+  public static final String ANIM_CLIP_NOT_FOUND = "ANIM_CLIP_NOT_FOUND";
+  public static final String ANIM_BONE_NOT_FOUND = "ANIM_BONE_NOT_FOUND";
+  public static final String ANIM_DYNAMIC_MOLANG_UNSUPPORTED = "ANIM_DYNAMIC_MOLANG_UNSUPPORTED";
+  public static final String ANIM_CUSTOM_EASING_UNSUPPORTED = "ANIM_CUSTOM_EASING_UNSUPPORTED";
+  public static final String ANIM_LERP_MODE_IGNORED_449 = "ANIM_LERP_MODE_IGNORED_449";
+  public static final String ANIM_PRE_POST_COLLAPSED_449 = "ANIM_PRE_POST_COLLAPSED_449";
+  public static final String ANIM_IMPLICIT_LENGTH_UNBOUNDED = "ANIM_IMPLICIT_LENGTH_UNBOUNDED";
+  public static final String ANIM_ZERO_DURATION_INVALID = "ANIM_ZERO_DURATION_INVALID";
+  public static final String ANIM_DUPLICATE_TIMESTAMP = "ANIM_DUPLICATE_TIMESTAMP";
+  public static final String ANIM_CUSTOM_LOOP_TYPE_UNSUPPORTED =
+      "ANIM_CUSTOM_LOOP_TYPE_UNSUPPORTED";
+  public static final String ANIM_EULER_DECOMPOSITION_AMBIGUOUS =
+      "ANIM_EULER_DECOMPOSITION_AMBIGUOUS";
+  public static final String ANIM_EVENT_IGNORED_BY_SCOPE = "ANIM_EVENT_IGNORED_BY_SCOPE";
+  public static final String ANIM_HOLD_REQUIRES_MAPPING = "ANIM_HOLD_REQUIRES_MAPPING";
+  public static final String ANIM_LOOP_DISCONTINUITY = "ANIM_LOOP_DISCONTINUITY";
+  public static final String ANIM_RESAMPLED = "ANIM_RESAMPLED";
+  public static final String ANIM_FRAME_GRID_DENSITY_DIFFERENCE =
+      "ANIM_FRAME_GRID_DENSITY_DIFFERENCE";
+  public static final String ANIM_APPROXIMATION = "ANIM_APPROXIMATION";
+  public static final String ANIM_ZERO_SCALE_UNREPRESENTABLE = "ANIM_ZERO_SCALE_UNREPRESENTABLE";
+  public static final String MAP_SCHEMA_INVALID = "MAP_SCHEMA_INVALID";
+  public static final String MAP_BONE_NOT_FOUND = "MAP_BONE_NOT_FOUND";
+  public static final String MAP_CLIP_NOT_FOUND = "MAP_CLIP_NOT_FOUND";
+  public static final String MAP_LOOK_OVERROTATION = "MAP_LOOK_OVERROTATION";
+  public static final String CPM_DUPLICATE_STORE_ID = "CPM_DUPLICATE_STORE_ID";
+  public static final String CPM_DANGLING_ANIMATION_REF = "CPM_DANGLING_ANIMATION_REF";
+  public static final String CPM_INVALID_ROOT = "CPM_INVALID_ROOT";
+  public static final String CPM_VALIDATION_FAILED = "CPM_VALIDATION_FAILED";
+  public static final String FEATURE_EXPLICITLY_IGNORED = "FEATURE_EXPLICITLY_IGNORED";
+  public static final String QUADRUPED_LIMITATION = "QUADRUPED_LIMITATION";
+  public static final String IO_OUTPUT_EXISTS = "IO_OUTPUT_EXISTS";
 }

@@ -22,6 +22,8 @@ public final class DiagnosticBag {
   }
 
   public DiagnosticBag(Collection<Diagnostic> input) {
+    Objects.requireNonNull(input, "input");
+    input.forEach(value -> Objects.requireNonNull(value, "diagnostic"));
     ArrayList<Diagnostic> sorted = new ArrayList<>(input);
     sorted.sort(
         Comparator.comparingInt((Diagnostic d) -> severityRank(d.severity()))

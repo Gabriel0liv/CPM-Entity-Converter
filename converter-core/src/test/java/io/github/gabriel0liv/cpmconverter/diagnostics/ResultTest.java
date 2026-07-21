@@ -47,4 +47,24 @@ class ResultTest {
         IllegalArgumentException.class, () -> Result.failure(new DiagnosticBag().add(info)));
     assertThrows(IllegalArgumentException.class, () -> Result.success(null));
   }
+
+  @Test
+  void mapAndFlatMapPreserveAndMergeDiagnostics() {
+    Diagnostic info = Diagnostic.of(Severity.INFO, new DiagnosticCode("I"), "info");
+    Diagnostic warning = Diagnostic.of(Severity.WARNING, new DiagnosticCode("W"), "warning");
+    Result<Integer> mapped =
+        Result.success("value", new DiagnosticBag().add(info)).map(String::length);
+    assertEquals(1, mapped.diagnostics().all().size());
+    Result<Integer> combined =
+        mapped.flatMap(value -> Result.success(value + 1, new DiagnosticBag().add(warning)));
+    assertEquals(2, combined.diagnostics().all().size());
+    assertEquals(6, combined.value());
+  }
+
+  @Test
+  void nullMapperResultIsRejected() {
+    Result<String> result = Result.success("value");
+    assertThrows(NullPointerException.class, () -> result.flatMap(value -> null));
+    assertThrows(IllegalArgumentException.class, () -> result.map(value -> null));
+  }
 }
