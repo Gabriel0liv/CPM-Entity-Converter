@@ -44,11 +44,11 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 ## Fase 1
 
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
-- [~] T101 revisão da API de diagnostics e Result (Onda 1: `82d7a1b`; correção de boundary: `3948e7b`; construtor/código arbitrário ainda requer fechamento).
-- [~] T102 completar matemática e golden tests (Onda 1: `f2e4130`; matriz extrema e continuidade ainda incompletas).
-- [~] T103 alinhar ModelIR e validator ao contrato (Onda 2: `f69f8f3`; matriz completa e provenance/diagnostics ainda incompletas).
-- [~] T104 completar schema, loader e compilação semântica (Onda 2: `94709d5`; engine 2020-12 executável, mas SemanticRigMap/coverage ainda parciais).
-- [~] T105 reconstruir fixtures A–D (Onda 1: `3d96858`; contratos semânticos executáveis permanecem pendentes, explicitados em `test-fixtures/CONTRACT-STATUS.md`).
+- [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
+- [~] T102 completar matemática e golden tests (`3f2bff1`; ainda sem cobertura integral do contrato de continuidade/decomposição).
+- [~] T103 alinhar ModelIR e validator ao contrato (`46b5a3f`; source locations/provenance e matriz integral ainda pendentes).
+- [~] T104 completar schema, loader e compilação semântica (`286ba03`; SemanticRigMap endurecido, mas matriz normativa ainda parcial).
+- [~] T105 reconstruir fixtures A–D (`5541973`; MappingCompiler executado para A–D, oracle GeckoLib específico permanece BLOCKED).
 
 ## Fase 2
 

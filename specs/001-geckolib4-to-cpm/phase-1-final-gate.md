@@ -2,8 +2,8 @@
 
 Data: 2026-07-21
 
-HEAD integrado: `34d594b`, descendente direto do commit-base. A revisão
-independente foi executada em `review/phase1-final` sobre `9bacfa9`.
+HEAD integrado: `f389477`, descendente direto do commit-base. A revisão
+independente R2 foi executada em `review/r2-phase1`.
 
 ## Decisão
 
@@ -28,11 +28,15 @@ independente foi executada em `review/phase1-final` sobre `9bacfa9`.
   a causa remota permanece não diagnosticável sem logs autenticados.
 - A repetição `29865291036` confirmou Ubuntu verde e Windows novamente falho no
   mesmo passo; NFR-014 permanece não aceito.
+- `specs/001-geckolib4-to-cpm/geckolib-input.md` foi criado pelo agente CI/docs
+  com fatos observados e estados BLOCKED explícitos.
 
 ## Bloqueios restantes
 
-1. T101 permanece PARTIAL: APIs públicas ainda permitem códigos arbitrários e
-   existem usos legados do overload textual.
+1. T101 foi classificada PASS pela revisão independente: o overload textual foi removido, o construtor de código tornado
+   inacessível fora do pacote de diagnostics e os usos de produção migrados para
+   `fromCatalog`; a verificação arquitetural agora localiza corretamente a raiz
+   do projeto.
 2. T102 permanece PARTIAL: a matriz golden extrema e a continuidade ainda não
    cobrem todos os casos normativos independentemente.
 3. T103 permanece PARTIAL: validator/builders existem, mas a matriz integral,
@@ -43,8 +47,9 @@ independente foi executada em `review/phase1-final` sobre `9bacfa9`.
 5. T105 permanece PARTIAL/FAIL: `test-fixtures/CONTRACT-STATUS.md` registra
    que MappingCompiler/ModelIR e o oracle GeckoLib A–D ainda não são executados
    pelos contratos das fixtures.
-6. `specs/001-geckolib4-to-cpm/geckolib-input.md`, exigido no checklist, não
-   existe no commit integrado e deve ser criado antes do próximo gate.
+6. A CI Windows do branch integrado continua falhando no passo Gradle; sem
+   execução verde nos dois sistemas, NFR-014 e o gate de T200 permanecem
+   bloqueados.
 
 Enquanto qualquer item permanecer pendente, T200 continua `[!]`. Nenhum parser
 GeckoLib de produção, writer, CLI ou projeção CPM foi iniciado.
