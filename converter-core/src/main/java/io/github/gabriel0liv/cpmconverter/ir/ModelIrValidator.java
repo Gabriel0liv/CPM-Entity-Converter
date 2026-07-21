@@ -380,7 +380,7 @@ public final class ModelIrValidator {
     String suggestion = suggestionFor(code);
     return new Diagnostic(
         Severity.ERROR,
-        new DiagnosticCode(code),
+        DiagnosticCode.fromCatalog(code),
         null,
         message,
         suggestion,

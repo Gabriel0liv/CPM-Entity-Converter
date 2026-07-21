@@ -12,7 +12,7 @@ public final class MappingCompiler {
       return Result.failure(
           Diagnostic.of(
               Severity.ERROR,
-              DiagnosticCodes.CONFIG_SCHEMA_INVALID,
+              DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_SCHEMA_INVALID),
               "mapping document and model index are required"));
     }
     DiagnosticBag diagnostics = new DiagnosticBag();
@@ -68,7 +68,9 @@ public final class MappingCompiler {
         diagnostics =
             diagnostics.add(
                 Diagnostic.of(
-                    Severity.INFO, DiagnosticCodes.ANIM_OPTIONAL_CLIP_MISSING, state.clip()));
+                    Severity.INFO,
+                    DiagnosticCode.fromCatalog(DiagnosticCodes.ANIM_OPTIONAL_CLIP_MISSING),
+                    state.clip()));
         continue;
       }
       diagnostics = diagnostics.addAll(result.diagnostics());

@@ -70,7 +70,7 @@ public final class MappingValidator {
   private Diagnostic error(String code, String message) {
     return Diagnostic.of(
         Severity.ERROR,
-        new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(code),
+        io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(code),
         message);
   }
 }

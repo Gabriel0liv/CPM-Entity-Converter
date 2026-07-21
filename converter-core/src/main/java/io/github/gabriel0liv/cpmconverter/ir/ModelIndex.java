@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
 import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
@@ -29,19 +30,24 @@ public final class ModelIndex {
   public Result<BoneId> bone(String name) {
     if (name == null || name.isBlank())
       return Result.failure(
-          Diagnostic.of(Severity.ERROR, DiagnosticCodes.CONFIG_BONE_MISSING, "blank bone name"));
+          Diagnostic.of(
+              Severity.ERROR,
+              DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_BONE_MISSING),
+              "blank bone name"));
     var x = bones.getOrDefault(name, List.of());
     if (x.isEmpty())
       return Result.failure(
           Diagnostic.of(
-              Severity.ERROR, DiagnosticCodes.CONFIG_BONE_MISSING, "bone not found: " + name));
+              Severity.ERROR,
+              DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_BONE_MISSING),
+              "bone not found: " + name));
     if (x.size() > 1) {
       var context = new TreeMap<String, String>();
       for (int i = 0; i < x.size(); i++) context.put("candidate." + i, x.get(i).value());
       return Result.failure(
           new Diagnostic(
               Severity.ERROR,
-              new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(
+              io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(
                   DiagnosticCodes.CONFIG_BONE_AMBIGUOUS),
               null,
               "ambiguous bone: " + name,
@@ -56,10 +62,17 @@ public final class ModelIndex {
   public Result<ClipId> clip(String name) {
     if (name == null || name.isBlank())
       return Result.failure(
-          Diagnostic.of(Severity.ERROR, DiagnosticCodes.CONFIG_CLIP_MISSING, "blank clip name"));
+          Diagnostic.of(
+              Severity.ERROR,
+              DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_CLIP_MISSING),
+              "blank clip name"));
     var x = clips.get(name);
     return x == null
-        ? Result.failure(Diagnostic.of(Severity.ERROR, DiagnosticCodes.CONFIG_CLIP_MISSING, name))
+        ? Result.failure(
+            Diagnostic.of(
+                Severity.ERROR,
+                DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_CLIP_MISSING),
+                name))
         : Result.success(x);
   }
 }

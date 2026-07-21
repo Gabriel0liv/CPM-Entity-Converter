@@ -23,8 +23,16 @@ class CoreTest {
   void diagnosticsDeterministic() {
     var b =
         new DiagnosticBag()
-            .add(Diagnostic.of(Severity.WARNING, "W", "w"))
-            .add(Diagnostic.of(Severity.ERROR, "E", "e"));
+            .add(
+                Diagnostic.of(
+                    Severity.WARNING,
+                    DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_PARSE_ERROR),
+                    "w"))
+            .add(
+                Diagnostic.of(
+                    Severity.ERROR,
+                    DiagnosticCode.fromCatalog(DiagnosticCodes.CONFIG_SCHEMA_INVALID),
+                    "e"));
     assertTrue(b.hasErrors());
     assertEquals(
         List.of(Severity.ERROR, Severity.WARNING),

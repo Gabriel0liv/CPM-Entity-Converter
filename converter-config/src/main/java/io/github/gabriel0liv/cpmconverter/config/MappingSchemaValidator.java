@@ -47,7 +47,11 @@ final class MappingSchemaValidator {
   }
 
   private Diagnostic error(String message) {
-    return Diagnostic.of(Severity.ERROR, DiagnosticCodes.CONFIG_SCHEMA_VERSION, message);
+    return Diagnostic.of(
+        Severity.ERROR,
+        io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(
+            DiagnosticCodes.CONFIG_SCHEMA_VERSION),
+        message);
   }
 
   static final class UnknownPropertyException extends RuntimeException {

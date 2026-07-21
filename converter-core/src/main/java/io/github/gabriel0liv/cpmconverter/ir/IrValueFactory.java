@@ -31,7 +31,7 @@ public final class IrValueFactory {
       Diagnostic diagnostic =
           new Diagnostic(
               Severity.ERROR,
-              new DiagnosticCode(code),
+              DiagnosticCode.fromCatalog(code),
               location,
               "invalid " + label,
               "Provide a non-empty identifier",

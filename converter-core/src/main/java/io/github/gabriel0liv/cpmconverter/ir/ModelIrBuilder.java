@@ -31,7 +31,7 @@ public final class ModelIrBuilder {
     return Result.failure(
         new Diagnostic(
             Severity.ERROR,
-            new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
+            DiagnosticCode.fromCatalog(DiagnosticCodes.IR_INVALID_VALUE),
             location,
             message == null ? "invalid model" : message,
             "Fix the decoded model fields",

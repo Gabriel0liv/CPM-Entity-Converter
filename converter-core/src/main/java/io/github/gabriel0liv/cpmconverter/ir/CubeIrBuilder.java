@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
 import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
@@ -11,7 +12,7 @@ public final class CubeIrBuilder {
     return Result.failure(
         Diagnostic.of(
             Severity.ERROR,
-            DiagnosticCodes.IR_INVALID_VALUE,
+            DiagnosticCode.fromCatalog(DiagnosticCodes.IR_INVALID_VALUE),
             "cube construction requires decoded geometry fields"));
   }
 }

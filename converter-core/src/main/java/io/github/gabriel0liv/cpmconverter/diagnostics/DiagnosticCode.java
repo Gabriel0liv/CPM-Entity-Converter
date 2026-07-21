@@ -1,11 +1,18 @@
 package io.github.gabriel0liv.cpmconverter.diagnostics;
 
 /** Stable diagnostic identifier. Production callers should use {@link DiagnosticCodes}. */
-public record DiagnosticCode(String value) {
-  public DiagnosticCode {
+public final class DiagnosticCode {
+  private final String value;
+
+  DiagnosticCode(String value) {
     if (value == null || value.isBlank()) {
       throw new IllegalArgumentException("diagnostic code is empty");
     }
+    this.value = value;
+  }
+
+  public String value() {
+    return value;
   }
 
   /**
@@ -19,6 +26,16 @@ public record DiagnosticCode(String value) {
       throw new IllegalArgumentException("unknown diagnostic code: " + value);
     }
     return new DiagnosticCode(value);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof DiagnosticCode that && value.equals(that.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return value.hashCode();
   }
 
   @Override

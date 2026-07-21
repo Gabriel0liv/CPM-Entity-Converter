@@ -15,7 +15,7 @@ public final class BoneIrBuilder {
       return Result.failure(
           new Diagnostic(
               Severity.ERROR,
-              new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
+              DiagnosticCode.fromCatalog(DiagnosticCodes.IR_INVALID_VALUE),
               location,
               "bone name must not be blank",
               "Provide a source bone name",

@@ -50,7 +50,7 @@ public final class MappingLoader {
               errors.add(
                   new Diagnostic(
                       Severity.ERROR,
-                      new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(
+                      io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(
                           DiagnosticCodes.CONFIG_SCHEMA_INVALID),
                       sourceLocation(path, null),
                       schemaError.getMessage(),
@@ -68,7 +68,7 @@ public final class MappingLoader {
         return Result.failure(
             new Diagnostic(
                 Severity.ERROR,
-                new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(
+                io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(
                     DiagnosticCodes.CONFIG_UNKNOWN_PROPERTY),
                 sourceLocation(path, null),
                 exception.getMessage(),
@@ -84,7 +84,8 @@ public final class MappingLoader {
       return Result.failure(
           Diagnostic.of(
               Severity.ERROR,
-              DiagnosticCodes.CONFIG_PARSE_ERROR,
+              io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(
+                  DiagnosticCodes.CONFIG_PARSE_ERROR),
               exception.getMessage() == null ? "parse error" : exception.getMessage()));
     }
   }

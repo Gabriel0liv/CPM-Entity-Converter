@@ -34,7 +34,7 @@ public final class AnimationClipIrBuilder {
     return Result.failure(
         new Diagnostic(
             Severity.ERROR,
-            new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
+            DiagnosticCode.fromCatalog(DiagnosticCodes.IR_INVALID_VALUE),
             location,
             message,
             "Provide a valid clip id, duration and playback mode",
