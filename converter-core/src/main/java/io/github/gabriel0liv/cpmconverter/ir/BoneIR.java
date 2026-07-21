@@ -18,7 +18,8 @@ public record BoneIR(
     if (id == null || name == null || bind == null) throw new IllegalArgumentException("bone");
     children = List.copyOf(children == null ? List.of() : children);
     cubes = List.copyOf(cubes == null ? List.of() : cubes);
-    if (provenance == null || sourceLocation == null) throw new IllegalArgumentException("provenance");
+    if (provenance == null || sourceLocation == null)
+      throw new IllegalArgumentException("provenance");
   }
 
   public BoneIR(
@@ -43,7 +44,15 @@ public record BoneIR(
       Transform bind,
       List<CubeIR> cubes,
       String provenance) {
-    this(id, name, parent, children, bind, cubes, provenance == null ? "legacy/model" : provenance, locationFor(provenance));
+    this(
+        id,
+        name,
+        parent,
+        children,
+        bind,
+        cubes,
+        provenance == null ? "legacy/model" : provenance,
+        locationFor(provenance));
   }
 
   private static SourceLocation locationFor(String value) {
