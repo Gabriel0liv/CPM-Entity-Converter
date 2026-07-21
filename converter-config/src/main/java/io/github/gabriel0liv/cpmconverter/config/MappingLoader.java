@@ -12,6 +12,8 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticBag;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -46,10 +48,16 @@ public final class MappingLoader {
         for (var schemaError : schemaErrors) {
           errors =
               errors.add(
-                  Diagnostic.of(
+                  new Diagnostic(
                       Severity.ERROR,
-                      DiagnosticCodes.CONFIG_SCHEMA_INVALID,
-                      schemaError.getMessage()));
+                      new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(
+                          DiagnosticCodes.CONFIG_SCHEMA_INVALID),
+                      sourceLocation(path, null),
+                      schemaError.getMessage(),
+                      "correct the mapping field",
+                      null,
+                      null,
+                      new java.util.TreeMap<>()));
         }
         return Result.failure(errors);
       }
@@ -58,8 +66,16 @@ public final class MappingLoader {
         schemaDiagnostics = new MappingSchemaValidator().validate(tree);
       } catch (MappingSchemaValidator.UnknownPropertyException exception) {
         return Result.failure(
-            Diagnostic.of(
-                Severity.ERROR, DiagnosticCodes.CONFIG_UNKNOWN_PROPERTY, exception.getMessage()));
+            new Diagnostic(
+                Severity.ERROR,
+                new io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode(
+                    DiagnosticCodes.CONFIG_UNKNOWN_PROPERTY),
+                sourceLocation(path, null),
+                exception.getMessage(),
+                "remove the unknown property",
+                null,
+                null,
+                new java.util.TreeMap<>()));
       }
       if (schemaDiagnostics.hasErrors()) return Result.failure(schemaDiagnostics);
       MappingDocumentV1 document = mapper.treeToValue(tree, MappingDocumentV1.class);
@@ -71,5 +87,10 @@ public final class MappingLoader {
               DiagnosticCodes.CONFIG_PARSE_ERROR,
               exception.getMessage() == null ? "parse error" : exception.getMessage()));
     }
+  }
+
+  private static SourceLocation sourceLocation(Path path, String pointer) {
+    String source = path.getFileName() == null ? "mapping" : path.getFileName().toString();
+    return new SourceLocation(new SourcePath(source), null, null, pointer, null);
   }
 }

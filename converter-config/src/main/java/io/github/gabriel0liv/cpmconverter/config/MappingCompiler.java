@@ -8,6 +8,13 @@ import java.util.Optional;
 /** Resolves every name-bearing mapping field to stable IR IDs. */
 public final class MappingCompiler {
   public Result<SemanticRigMap> compile(MappingDocumentV1 document, ModelIndex index) {
+    if (document == null || index == null) {
+      return Result.failure(
+          Diagnostic.of(
+              Severity.ERROR,
+              DiagnosticCodes.CONFIG_SCHEMA_INVALID,
+              "mapping document and model index are required"));
+    }
     DiagnosticBag diagnostics = new DiagnosticBag();
     var bones = new LinkedHashMap<String, BoneId>();
     for (var entry : document.bones().entrySet()) {
