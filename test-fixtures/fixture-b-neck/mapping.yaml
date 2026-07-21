@@ -1,4 +1,6 @@
 schemaVersion: 1
 bones: {body: body, neck: neck, head: head, horn: horn}
 clips: {idle: idle, walk: walk}
+rootRoles: {body: body}
+stateMappings: {standing: {clip: idle, mode: LOOP, optional: false}}
 look: {composition: inherited_split, neckInfluence: 0.35, headInfluence: 0.65}

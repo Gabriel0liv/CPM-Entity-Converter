@@ -1,0 +1,44 @@
+{
+  "checkout": "GeckoLibOracle",
+  "fixtures": [
+    {
+      "fixture": "fixture-a-humanoid",
+      "inputHashes": {
+        "animations": "1f8e2d30890c0f2452b2c7e1cb24ae15d8c4a48f68829c8eb0846f4eec224ab1",
+        "geometry": "35f35819ca1cb27e2398a1d506136e3b894ebd10fd20de463e9f2c87213befbe"
+      },
+      "parseResult": "BLOCKED",
+      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+    },
+    {
+      "fixture": "fixture-b-neck",
+      "inputHashes": {
+        "animations": "07e0967b9a16e600bb03bf7363c683a53f9a605d38a4a643b1064f7492d82c48",
+        "geometry": "ee2ce81a5604e580e52b9f5c1f26187f9cdf11ac638f54ca596f29c9cf8f3181"
+      },
+      "parseResult": "BLOCKED",
+      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+    },
+    {
+      "fixture": "fixture-c-deep-hierarchy",
+      "inputHashes": {
+        "animations": "d3c5dafbaab5439ac628da93c5aacc53296b0c4b4b4cf881d91c8b1d2f463388",
+        "geometry": "18e6b57d2ce7e10857e4902324b28c86c64796c4f02e8e0737f36e5f2bfc1b4c"
+      },
+      "parseResult": "BLOCKED",
+      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+    },
+    {
+      "fixture": "fixture-d-quadruped",
+      "inputHashes": {
+        "animations": "0d254ab36ec0257fcd2ded7d7a608f5740b5b4b52b9c542e118a2983e2e7c26c",
+        "geometry": "0ff2dd906d01cfddb98c39ca367070aa7498fb491895d817b8315074982a532a"
+      },
+      "parseResult": "BLOCKED",
+      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+    }
+  ],
+  "nonProduction": true,
+  "oracleCommit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
+  "oracleTree": "c7109828f07f88f7279b3c2d60790e8c70390c33"
+}

@@ -12,8 +12,8 @@ passed by this fixture package:
 
 | Gate | Status | Reason |
 | --- | --- | --- |
-| `MappingCompiler` against a fixture-backed `ModelIR` | PENDING | This worktree is restricted to `test-fixtures`; no fixture parser or ModelIR construction is implemented here. |
-| GeckoLib animation oracle for A–D | PENDING | The GeckoLib oracle is a separate spike and is invoked by its dedicated runner, not by this test-fixtures module. |
+| `MappingCompiler` against a fixture-backed `ModelIR` | PASS | `FixtureSemanticContractTest` builds a deterministic FIXTURE_ONLY ModelIR, loads each mapping through the schema-backed MappingLoader, compiles it and compares the complete canonical snapshot. |
+| GeckoLib animation oracle for A–D | BLOCKED | `scripts/fixture_oracle_report.py` validates the pinned checkout and records input hashes. The S004 runner cannot consume these geometry/animation files without introducing the prohibited production parser; no parse result is claimed. |
 | Converted output comparison | NOT APPLICABLE | No production parser, sampler, projection, or writer exists in Phase 1. |
 
 Consequently, a passing fixture audit means that the authorial inputs and

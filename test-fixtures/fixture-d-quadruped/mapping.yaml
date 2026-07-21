@@ -1,4 +1,6 @@
 schemaVersion: 1
 bones: {body: body, head: head, leg_fl: leg_fl, leg_fr: leg_fr, leg_bl: leg_bl, leg_br: leg_br, tail: tail}
 clips: {walk: walk}
+rootRoles: {body: body}
+stateMappings: {walking: {clip: walk, mode: LOOP, optional: false}}
 look: {composition: independent, headInfluence: 1.0}

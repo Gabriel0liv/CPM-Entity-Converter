@@ -1,25 +1,32 @@
 {
   "boneIds": {
     "body": "fixture-b-neck:body",
+    "neck": "fixture-b-neck:neck",
     "head": "fixture-b-neck:head",
-    "horn": "fixture-b-neck:horn",
-    "neck": "fixture-b-neck:neck"
+    "horn": "fixture-b-neck:horn"
   },
-  "diagnosticPolicy": {
-    "warningsAsErrors": false
+  "clipIds": {
+    "idle": "fixture-b-neck:idle",
+    "walk": "fixture-b-neck:walk"
   },
-  "ignoreRules": [],
-  "mappingPath": "mapping.yaml",
   "rootRoles": {
     "body": "fixture-b-neck:body"
-  },
-  "sampling": {
-    "requestedFps": 20
   },
   "stateMappings": {
     "standing": {
       "clipId": "fixture-b-neck:idle",
-      "mode": "LOOP"
+      "mode": "LOOP",
+      "optional": false
     }
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "ignoreRules": [],
+  "look": {
+    "composition": "inherited_split",
+    "neckInfluence": 0.35,
+    "headInfluence": 0.65,
+    "allowOverrotation": false
   }
 }

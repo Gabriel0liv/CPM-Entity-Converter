@@ -3,25 +3,32 @@
     "body": "fixture-a-humanoid:body",
     "head": "fixture-a-humanoid:head",
     "left_arm": "fixture-a-humanoid:left_arm",
-    "left_leg": "fixture-a-humanoid:left_leg",
     "right_arm": "fixture-a-humanoid:right_arm",
+    "left_leg": "fixture-a-humanoid:left_leg",
     "right_leg": "fixture-a-humanoid:right_leg"
   },
-  "diagnosticPolicy": {
-    "warningsAsErrors": false
+  "clipIds": {
+    "idle": "fixture-a-humanoid:idle",
+    "walk": "fixture-a-humanoid:walk"
   },
-  "ignoreRules": [],
-  "mappingPath": "mapping.yaml",
   "rootRoles": {
     "body": "fixture-a-humanoid:body"
-  },
-  "sampling": {
-    "requestedFps": 20
   },
   "stateMappings": {
     "standing": {
       "clipId": "fixture-a-humanoid:idle",
-      "mode": "LOOP"
+      "mode": "LOOP",
+      "optional": false
     }
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "ignoreRules": [],
+  "look": {
+    "composition": "inherited_split",
+    "neckInfluence": 0.0,
+    "headInfluence": 1.0,
+    "allowOverrotation": false
   }
 }

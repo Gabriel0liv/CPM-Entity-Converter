@@ -25,8 +25,8 @@ class FixtureManifestTest {
   void manifestAuditExecutesAllContracts() throws Exception {
     Path root = fixtureRoot();
     String status = Files.readString(root.resolve("CONTRACT-STATUS.md"));
-    assertTrue(status.contains("MappingCompiler") && status.contains("PENDING"));
-    assertTrue(status.contains("GeckoLib animation oracle") && status.contains("PENDING"));
+    assertTrue(status.contains("MappingCompiler") && status.contains("PASS"));
+    assertTrue(status.contains("GeckoLib animation oracle") && status.contains("BLOCKED"));
     Process process =
         new ProcessBuilder("python", "scripts/manifest.py", "--check")
             .directory(root.toFile())

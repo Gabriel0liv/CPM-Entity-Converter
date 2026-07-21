@@ -8,9 +8,9 @@
       "expected/diagnostics.json": "b3b98539f30125184b7ecc388034f5edc2bc3b0e38608de8ea3cc276b29b9671",
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "43e52a7fb4d539656efb70534436b1f12cbd5de270e96ffe7afacd4eb602bf8a",
-      "expected/mapping-compiled.json": "fe8a35059dc57053d8d6bd6887e52f948f7ffc88b8caa82066b90038bea3363b",
+      "expected/mapping-compiled.json": "792786b2eef7f19cabfdd177bb174a4b81675c48244bc0d3ee83afe9c096b584",
       "geometry.geo.json": "35f35819ca1cb27e2398a1d506136e3b894ebd10fd20de463e9f2c87213befbe",
-      "mapping.yaml": "b7b25ce0fc0a363b30407103b9830a313bee688bd68ae3c29e0066414b457fb2",
+      "mapping.yaml": "5b3642a87683f71a5968d2b354a19bb870b3f6e35c07db68a24c7e20f815d456",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-b-neck": {
@@ -21,9 +21,9 @@
       "expected/diagnostics.json": "b3b98539f30125184b7ecc388034f5edc2bc3b0e38608de8ea3cc276b29b9671",
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "0f823e7f1aa509c039ec3ec1c32fe838c781b0db2515856fd8d30905058e8279",
-      "expected/mapping-compiled.json": "3820e18c6fd6915cb9c5408af2dc96d8a7ba4c2d24f1c967e8d781c1adffc0a2",
+      "expected/mapping-compiled.json": "0e9cb6c489623ab1b9744e5da517c040f7dd64b3c611967537d51a35cda72e41",
       "geometry.geo.json": "ee2ce81a5604e580e52b9f5c1f26187f9cdf11ac638f54ca596f29c9cf8f3181",
-      "mapping.yaml": "2d56c899312e3b172f98a3976fbc59ef65a05b840e6099b88779bb178fa261b1",
+      "mapping.yaml": "7dd9cb7f44cb6a0ea0f195b501deca20d20425c57d0a3527ff2a236c594367ba",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-c-deep-hierarchy": {
@@ -34,9 +34,9 @@
       "expected/diagnostics.json": "b3b98539f30125184b7ecc388034f5edc2bc3b0e38608de8ea3cc276b29b9671",
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "24985aaf9784f069416c79678c7328858a0ae06cad55005925d54a69117df28a",
-      "expected/mapping-compiled.json": "e7a937926bb43a619e9e508d7ed7ef147e5389906bf372e00a7ca5f402053f42",
+      "expected/mapping-compiled.json": "5b82eaf79dce1d378c2856267e6a80b2938b7087aa1772344c8ea040a2c25e74",
       "geometry.geo.json": "18e6b57d2ce7e10857e4902324b28c86c64796c4f02e8e0737f36e5f2bfc1b4c",
-      "mapping.yaml": "dedeb658ca2e343b3e316a292c86b7dabcde8bc2c7ce160a394f9df78f99db04",
+      "mapping.yaml": "78a343fd5e8934d9b3d0b0d0ca0cdedd487c6d46e68531ffce563415479dd872",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-d-quadruped": {
@@ -47,9 +47,9 @@
       "expected/diagnostics.json": "1567b8373747b8e983c0b1e45bf99631f0d0792927f0b8d4ce5c042148a83ae3",
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "86e1f019eca56c95283ca3bd0feaf810fe79b3c43a569a6f1d92170078c7689b",
-      "expected/mapping-compiled.json": "f2fcd1b873a482e8e011fbf62e755e4e1b9b62a8d7657aa57699d46932ce2ad8",
+      "expected/mapping-compiled.json": "2ccaf2f17793d17fe7147383e32f9da721712aa4c60407038a904c5aacb55a73",
       "geometry.geo.json": "0ff2dd906d01cfddb98c39ca367070aa7498fb491895d817b8315074982a532a",
-      "mapping.yaml": "ca42929401c9538f784f4b69e0c4a21b8a0e4224617465d4e8560dfedece5097",
+      "mapping.yaml": "ef045bbd7e13b0165b77f31eae55fe3321af62c504792d8ce76128ddc3a20928",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     }
   },

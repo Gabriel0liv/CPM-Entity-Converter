@@ -2,27 +2,33 @@
   "boneIds": {
     "body": "fixture-d-quadruped:body",
     "head": "fixture-d-quadruped:head",
-    "leg_bl": "fixture-d-quadruped:leg_bl",
-    "leg_br": "fixture-d-quadruped:leg_br",
     "leg_fl": "fixture-d-quadruped:leg_fl",
     "leg_fr": "fixture-d-quadruped:leg_fr",
+    "leg_bl": "fixture-d-quadruped:leg_bl",
+    "leg_br": "fixture-d-quadruped:leg_br",
     "tail": "fixture-d-quadruped:tail"
   },
-  "diagnosticPolicy": {
-    "warningsAsErrors": false
+  "clipIds": {
+    "walk": "fixture-d-quadruped:walk"
   },
-  "ignoreRules": [],
-  "mappingPath": "mapping.yaml",
   "rootRoles": {
     "body": "fixture-d-quadruped:body"
+  },
+  "stateMappings": {
+    "walking": {
+      "clipId": "fixture-d-quadruped:walk",
+      "mode": "LOOP",
+      "optional": false
+    }
   },
   "sampling": {
     "requestedFps": 20
   },
-  "stateMappings": {
-    "standing": {
-      "clipId": "fixture-d-quadruped:idle",
-      "mode": "LOOP"
-    }
+  "ignoreRules": [],
+  "look": {
+    "composition": "independent",
+    "neckInfluence": 0.0,
+    "headInfluence": 1.0,
+    "allowOverrotation": false
   }
 }
