@@ -1,6 +1,6 @@
 package io.github.gabriel0liv.cpmconverter.diagnostics;
 
-/** Stable diagnostic identifiers used by the production contracts. */
+/** Stable diagnostic identifiers used by production contracts. */
 public final class DiagnosticCodes {
   private DiagnosticCodes() {}
 
@@ -39,7 +39,6 @@ public final class DiagnosticCodes {
   public static final String IR_INVALID_ID = "IR_INVALID_ID";
   public static final String IR_INVALID_VALUE = "IR_INVALID_VALUE";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
-
   public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
   public static final String INPUT_LIMIT_EXCEEDED = "INPUT_LIMIT_EXCEEDED";
   public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";

@@ -23,8 +23,10 @@ public record Diagnostic(
         Collections.unmodifiableNavigableMap(new TreeMap<>(context == null ? Map.of() : context));
   }
 
-  public static Diagnostic of(Severity s, String c, String m) {
-    return new Diagnostic(s, new DiagnosticCode(c), null, m, null, null, null, new TreeMap<>());
+  /** Compatibility boundary for adapters; production code should use catalog symbols. */
+  @Deprecated(forRemoval = false)
+  public static Diagnostic of(Severity severity, String code, String message) {
+    return of(severity, new DiagnosticCode(code), message);
   }
 
   public static Diagnostic of(Severity s, DiagnosticCode c, String m) {
