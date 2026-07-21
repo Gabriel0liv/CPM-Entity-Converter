@@ -1,6 +1,11 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-import io.github.gabriel0liv.cpmconverter.diagnostics.*;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode;
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
 import java.util.List;
 
 /** Result-based construction boundary for a structurally decoded model. */
@@ -13,21 +18,30 @@ public final class ModelIrBuilder {
       List<AnimationClipIR> clips,
       List<TextureIR> textures,
       SourceLocation location) {
+    if (source == null) return failure("source descriptor is required", location);
+    if (geometryId == null || geometryId.isBlank())
+      return failure("geometry id is required", location);
+    if (bones == null || roots == null || clips == null)
+      return failure("model collections are required", location);
     try {
       return Result.success(
           new ModelIR(
               source, new GeometryId(geometryId), bones, roots, clips, textures, List.of()));
     } catch (RuntimeException exception) {
-      return Result.failure(
-          new Diagnostic(
-              Severity.ERROR,
-              new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
-              location,
-              exception.getMessage(),
-              "Fix the decoded model fields",
-              null,
-              null,
-              new java.util.TreeMap<>()));
+      return failure(exception.getMessage(), location);
     }
+  }
+
+  private Result<ModelIR> failure(String message, SourceLocation location) {
+    return Result.failure(
+        new Diagnostic(
+            Severity.ERROR,
+            new DiagnosticCode(DiagnosticCodes.IR_INVALID_VALUE),
+            location,
+            message == null ? "invalid model" : message,
+            "Fix the decoded model fields",
+            null,
+            null,
+            new java.util.TreeMap<>()));
   }
 }
