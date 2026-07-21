@@ -4,6 +4,11 @@ import sys
 import hashlib,json
 import struct
 root=Path(__file__).parents[1]; out={}
+def digest(path):
+ data=path.read_bytes()
+ if path.suffix.lower() in {'.json','.yaml','.yml','.md','.py','.java','.gradle','.properties'}:
+  data=data.replace(b'\r\n',b'\n')
+ return hashlib.sha256(data).hexdigest()
 for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('fixture-')):
  required=['README.md','PROVENANCE.md','geometry.geo.json','animations.animation.json','mapping.yaml','texture.png']
  required += ['expected/inventory.json','expected/mapping-compiled.json','expected/diagnostics.json','expected/invariants.json']
@@ -45,7 +50,7 @@ for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('f
    if isinstance(uv,dict):
     for face, data_face in uv.items():
      if not isinstance(data_face,dict) or 'uv' not in data_face or 'uv_size' not in data_face: raise SystemExit(f'{d.name}: invalid face UV {face}')
- out[d.name]={str(p.relative_to(d)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(d.rglob('*')) if p.is_file()}
+ out[d.name]={str(p.relative_to(d)).replace('\\','/'):digest(p) for p in sorted(d.rglob('*')) if p.is_file()}
 manifest=root/'manifest.json'; data={'marker':'NON_PRODUCTION','fixtures':out}
 if '--check' in sys.argv:
     if not manifest.exists() or json.loads(manifest.read_text()) != data:
