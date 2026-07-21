@@ -34,6 +34,42 @@ class QuatdTest {
     assertNotEquals(0, Math.toRadians(720));
   }
 
+  @Test
+  void axisQuarterTurnsHaveIndependentGoldenValues() {
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, 0.7071067811865475, 0, 0),
+        Quatd.fromEulerZYX(Math.PI / 2, 0, 0));
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, -0.7071067811865475, 0, 0),
+        Quatd.fromEulerZYX(-Math.PI / 2, 0, 0));
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, 0, 0.7071067811865475, 0),
+        Quatd.fromEulerZYX(0, Math.PI / 2, 0));
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, 0, -0.7071067811865475, 0),
+        Quatd.fromEulerZYX(0, -Math.PI / 2, 0));
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, 0, 0, 0.7071067811865475),
+        Quatd.fromEulerZYX(0, 0, Math.PI / 2));
+    assertQuaternionEquals(
+        new Quatd(0.7071067811865476, 0, 0, -0.7071067811865475),
+        Quatd.fromEulerZYX(0, 0, -Math.PI / 2));
+  }
+
+  @Test
+  void combinedEulerHasIndependentGoldenQuaternion() {
+    assertQuaternionEquals(
+        new Quatd(0.9515485246437885, 0.2392983377447303, 0.18930785741199999, 0.03813457647485015),
+        Quatd.fromEulerZYX(Math.toRadians(30), Math.toRadians(20), Math.toRadians(10)));
+  }
+
+  private static void assertQuaternionEquals(Quatd expected, Quatd actual) {
+    assertEquals(expected.w(), actual.w(), TestTolerance.EPSILON);
+    assertEquals(expected.x(), actual.x(), TestTolerance.EPSILON);
+    assertEquals(expected.y(), actual.y(), TestTolerance.EPSILON);
+    assertEquals(expected.z(), actual.z(), TestTolerance.EPSILON);
+  }
+
   private static void assertVectorEquals(Vec3d expected, Vec3d actual) {
     assertEquals(expected.x(), actual.x(), TestTolerance.EPSILON);
     assertEquals(expected.y(), actual.y(), TestTolerance.EPSILON);
