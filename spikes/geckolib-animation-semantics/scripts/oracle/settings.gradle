@@ -1,0 +1,2 @@
+// NON_PRODUCTION: S004 oracle only.
+rootProject.name = 's004-geckolib-oracle'

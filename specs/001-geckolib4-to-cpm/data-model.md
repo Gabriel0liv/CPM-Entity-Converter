@@ -146,6 +146,18 @@ são decisões separadas: o IR conserva autoria; projection/report canonizam.
 - ignore rules com motivo opcional;
 - sampling/diagnostic policy.
 
+### Sampling metadata (normative)
+
+Every sampled clip records `requestedFps`, `frameCount`, `frameDensity`,
+`effectiveIntervalRate`, `frameInterval` and `maxTemporalGridError`.
+For duration `D` and `N=max(1,round(D×requestedFps))`, loop times are
+`t_i=i×D/N` (`frameInterval=D/N`, `effectiveIntervalRate=frameDensity=N/D`).
+Single times are `t_i=i×D/(N-1)` for `N≥2` (`effectiveIntervalRate=(N-1)/D`,
+`frameDensity=N/D`); for `N=1`, interval and interval rate are zero.
+`maxTemporalGridError=max_i |t_i-i/requestedFps|`. The former label
+`effectiveFps` is deliberately not part of the contract because it conflates
+frame density with temporal interval rate.
+
 Não permitir que fases posteriores voltem a procurar bone por nome.
 
 ## Projection CPM

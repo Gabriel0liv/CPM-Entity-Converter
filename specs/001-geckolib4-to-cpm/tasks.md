@@ -31,18 +31,22 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
   - [x] S003-A M0–M5 determinísticos e verificações estruturais.
   - [x] S003-B M0–M5 executados pelo `ProjectIO` oficial.
   - [!] S003-C abrir/salvar/reabrir M2–M5 no editor gráfico.
-- [ ] S004 confirmar `pre/post`, catmullrom e hold Gecko 4.4.9 com oracle.
+- [x] S004 executar oracle real GeckoLib 4.4.9 no commit `25a41d7375bb7eeda37dadc04b1e03fe486b33e5` (34 fixtures; parser/easing/playback observados).
+  - [x] S004-A executar fixtures PREPOST/LERP/EASE/PLAYBACK/LENGTH/KEYFRAME/ROTATION/POSITION/SCALE.
+  - [x] S004-B registrar parser structures, amostras e hashes em `artifacts/results.json`.
+  - [!] S004-C observar tick/controller terminal de `play_once` e `hold_on_last_frame` no runtime completo.
+  - [!] S004-D fechar política de Molang dinâmico com contexto real.
 
-Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. A Fase 0 não está concluída enquanto S004 e os checks visuais acima permanecerem abertos.
+Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. S004 automático está executado, mas a Fase 0 permanece aberta pelos gates S004-C/D e pelos checks visuais.
 
 ## Fase 1
 
-- [ ] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002).
-- [ ] T101 implementar diagnostics e source locations (FR-023, NFR-006/007).
-- [ ] T102 implementar math value objects e golden axes (FR-009/010).
-- [ ] T103 implementar ModelIR/invariants (ADR-002).
-- [ ] T104 implementar mapping schema JSON/YAML (FR-005).
-- [ ] T105 criar fixtures autorais A–D e licença (NFR-016).
+- [!] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002), aguardando Gate C.
+- [!] T101 implementar diagnostics e source locations (FR-023, NFR-006/007), aguardando Gate C.
+- [!] T102 implementar math value objects e golden axes (FR-009/010), aguardando Gate C.
+- [!] T103 implementar ModelIR/invariants (ADR-002), aguardando Gate C.
+- [!] T104 implementar mapping schema JSON/YAML (FR-005), aguardando Gate C.
+- [!] T105 criar fixtures autorais A–D e licença (NFR-016), aguardando Gate C.
 
 ## Fase 2
 

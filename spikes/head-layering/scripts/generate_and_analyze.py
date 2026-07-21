@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import struct
 import zipfile
 from io import BytesIO
 from pathlib import Path
@@ -245,20 +246,97 @@ def case_measurements() -> list[dict]:
 
 
 def sampling_measurements() -> list[dict]:
+    """NON_PRODUCTION sampling oracle using the normative CPM timeline terms."""
     result = []
-    for duration, requested in ((1.0, 20.0), (1.03, 20.0)):
-        frames = max(1, round(duration * requested))
+    # Integer and non-integer products, plus explicit 1/2/3-frame edge cases.
+    cases = [(1.0, 20.0), (1.03, 20.0), (1.0, 1.0),
+             (1.0, 2.0), (1.0, 3.0)]
+    for duration, requested in cases:
+        frame_count = max(1, round(duration * requested))
         for mode in ("loop", "single"):
-            denominator = frames if mode == "loop" else max(1, frames - 1)
-            step = duration / denominator if frames > 1 or mode == "loop" else 0.0
+            denominator = frame_count if mode == "loop" else max(1, frame_count - 1)
+            # Loop has one interval even for a one-frame clip (D/N = D); single
+            # explicitly defines zero interval/rate for N=1.
+            frame_interval = duration / denominator if mode == "loop" or frame_count > 1 else 0.0
+            effective_interval_rate = (denominator / duration) if duration > 0 and (mode == "loop" or frame_count > 1) else 0.0
+            frame_density = frame_count / duration if duration > 0 else 0.0
+            times = [i * frame_interval for i in range(frame_count)]
+            nominal = [i / requested for i in range(frame_count)]
+            max_grid_error = max((abs(a - b) for a, b in zip(times, nominal)), default=0.0)
             result.append({
-                "durationSeconds": duration, "requestedFps": requested, "mode": mode,
-                "frames": frames, "effectiveFps": frames / duration,
-                "frameIntervalSeconds": step,
-                "maxNominalGridErrorSeconds": (denominator - 1) * abs(step - 1 / requested)
-                if denominator > 1 else 0.0,
+                "durationSeconds": duration,
+                "requestedFps": requested,
+                "mode": mode,
+                "frameCount": frame_count,
+                "frameDensity": frame_density,
+                "effectiveIntervalRate": effective_interval_rate,
+                "frameIntervalSeconds": frame_interval,
+                "sampleTimesSeconds": times,
+                "maxTemporalGridErrorSeconds": max_grid_error,
             })
+    # Keep this spike self-checking: loop and single deliberately differ in rate
+    # semantics, while one-frame clips have no temporal interval.
+    for row in result:
+        if row["frameCount"] == 1 and row["mode"] == "single":
+            assert row["frameIntervalSeconds"] == 0.0
+            assert row["effectiveIntervalRate"] == 0.0
+        if row["mode"] == "loop" and row["frameCount"] > 1:
+            assert abs(row["effectiveIntervalRate"] - row["frameDensity"]) < 1e-12
+        if row["mode"] == "single" and row["frameCount"] >= 2:
+            assert abs(row["effectiveIntervalRate"] - (row["frameCount"] - 1) / row["durationSeconds"]) < 1e-12
     return result
+
+
+def _f32(value: float) -> float:
+    return struct.unpack("!f", struct.pack("!f", value))[0]
+
+
+def dynamic_endpoint_calibration() -> list[dict]:
+    """NON_PRODUCTION: calibrate CPM's 0..1000 look domain workaround."""
+    duration = 1001.0
+    out = []
+    for limit in (60.0, 90.0):
+        for label, split in (("head-only", (0.0, 1.0)), ("split-035-065", (0.35, 0.65))):
+            for strategy in ("A_raw_two_frame", "B_endpoint_compensated", "C_three_frame"):
+                if strategy == "A_raw_two_frame":
+                    frames = [-limit, limit]
+                elif strategy == "B_endpoint_compensated":
+                    # q=500/1001, p=1000/1001; solve -L+(b+L)q=0 and
+                    # -L+(b+L)p=L, yielding b=L*(1-q)/(p-q)=L*501/500.
+                    frames = [-limit, limit * 501.0 / 500.0]
+                else:
+                    frames = [-limit, 0.0, limit]
+
+                def sample(time_ms: float, values: list[float]) -> float:
+                    if len(values) == 1:
+                        return values[0]
+                    # LINEAR_SINGLE runtime uses duration modulo and N-1 intervals.
+                    t = time_ms % duration
+                    if len(values) == 2:
+                        return values[0] + (values[1] - values[0]) * t / duration
+                    interval = duration / (len(values) - 1)
+                    index = min(len(values) - 2, int(t / interval))
+                    frac = (t - index * interval) / interval
+                    return values[index] + (values[index + 1] - values[index]) * frac
+
+                raw = {str(t): sample(t, frames) for t in (0.0, 500.0, 1000.0)}
+                weighted = {str(t): raw[str(t)] * sum(split) for t in (0.0, 500.0, 1000.0)}
+                target = {"0.0": -limit * sum(split), "500.0": 0.0, "1000.0": limit * sum(split)}
+                errors = {k: abs(weighted[k] - target[k]) for k in target}
+                f32_weighted = {k: _f32(weighted[k]) for k in weighted}
+                f32_errors = {k: abs(f32_weighted[k] - target[k]) for k in target}
+                out.append({
+                    "limitDegrees": limit, "influence": label, "neckWeight": split[0],
+                    "headWeight": split[1], "strategy": strategy,
+                    "durationMs": duration, "rawFrames": frames,
+                    "samples": weighted, "targetSamples": target,
+                    "errorsDegrees": errors, "float32Samples": f32_weighted,
+                    "float32ErrorsDegrees": f32_errors,
+                    "signCoherent": weighted["0.0"] < 0 < weighted["1000.0"],
+                    "futureDiagnostic": "LOOK_DYNAMIC_ENDPOINT_COMPENSATED" if strategy == "B_endpoint_compensated" else None,
+                    "alternativeMechanism": "NOT_AVAILABLE_IN_OBSERVED_CPM_RUNTIME" if strategy == "C_three_frame" else None,
+                })
+    return out
 
 
 def main() -> None:
@@ -282,6 +360,7 @@ def main() -> None:
     (ARTIFACTS / "measurements.json").write_bytes(canonical({
         "marker": "NON_PRODUCTION", "cases": case_measurements(),
         "samplingPolicyCases": sampling_measurements(),
+        "dynamicEndpointCalibration": dynamic_endpoint_calibration(),
         "method": "stateless scalar transform oracle; editor visual confirmation remains pending",
     }))
     print(json.dumps({"status": "PASS", "projects": len(manifest["projects"]), "cases": 22}))

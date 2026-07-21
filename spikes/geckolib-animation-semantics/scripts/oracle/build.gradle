@@ -1,0 +1,28 @@
+// NON_PRODUCTION: compiles directly against the pinned external GeckoLib checkout.
+plugins { id 'java'; id 'application' }
+repositories { mavenCentral(); maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' } }
+def gecko = providers.gradleProperty('geckoDir').get()
+def coreJar = file("${gecko}/core/build/libs/geckolib-core-2.0.4.6.jar")
+def datafixerJar = file(System.getProperty('user.home') + '/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar')
+sourceSets.main.java.srcDirs = [
+    'src/main/java',
+    "${gecko}/core/src/main/java",
+    "${gecko}/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter",
+    "${gecko}/Forge/src/main/java/software/bernie/geckolib/loading/object"
+]
+sourceSets.main.java.setIncludes([
+    'spike/**', 'net/**', 'javax/**', 'software/bernie/geckolib/core/**',
+    'BakedAnimationsAdapter.java', 'KeyFramesAdapter.java', 'BakedAnimations.java',
+    'software/bernie/geckolib/GeckoLib.java', 'software/bernie/geckolib/util/JsonUtil.java'
+])
+dependencies {
+    implementation files(coreJar)
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'it.unimi.dsi:fastutil:8.5.9'
+    implementation 'com.eliotlash.mclib:mclib:20'
+    implementation files(datafixerJar)
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+}
+application { mainClass = 'spike.S004Oracle' }
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }

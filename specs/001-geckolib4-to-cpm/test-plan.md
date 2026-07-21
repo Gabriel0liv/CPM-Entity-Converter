@@ -64,6 +64,13 @@ body rotation e 100 loops. Artefatos ficam em `spikes/head-layering/`, marcados
 Incluir testes de timeline CPM: duração×FPS inteira/não inteira; loop/single;
 1/2 frames; `D-ε`, `D` e `D+ε`. Resultado de código não substitui inspeção visual.
 
+Os testes de sampling devem verificar explicitamente `requestedFps`,
+`frameCount`, `frameDensity`, `effectiveIntervalRate`, `frameInterval` e
+`maxTemporalGridError`: produtos `D×requestedFps` inteiro e não inteiro;
+loop com 1, 2 e 3 frames; single com 1, 2 e 3 frames; e que densidade (`N/D`)
+difere da taxa de intervalos single (`(N-1)/D`). O antigo termo
+`effectiveFps` não é aceito no relatório normativo.
+
 ## Visual checklist
 
 Registrar versão CPM, sistema, fixture, hash output e pass/fail por AC-020–028. Capturar front/side neutral, extremos yaw/pitch, walk frames e pós-100 loops.

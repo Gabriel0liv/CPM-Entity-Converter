@@ -122,14 +122,20 @@ Se duração é `D` e há `N` frames, o runtime calcula
   representa `t_i=i×D/(N-1)` para `N≥2`.
 - `N=1`: valor constante nos limites testados.
 
-Para FPS solicitado `F`, escolher `N=max(1, round(D_seconds×F))`. Reportar:
+Para FPS solicitado `F=requestedFps`, escolher `frameCount=N=max(1,
+round(D_seconds×F))`. Reportar:
 
 - `requestedFps=F`;
 - `frameCount=N`;
-- `effectiveFps=N/D_seconds` para loop;
-- spacing single `D/(N-1)` quando `N≥2`;
-- erro temporal máximo contra o grid solicitado, calculado sobre os instantes
-  efetivamente representados.
+- loop: `frameInterval=D/N`, `effectiveIntervalRate=N/D`,
+  `frameDensity=N/D`;
+- single (`N≥2`): `frameInterval=D/(N-1)`,
+  `effectiveIntervalRate=(N-1)/D`, `frameDensity=N/D`; para `N=1`,
+  `frameInterval=0` e `effectiveIntervalRate=0`;
+- `maxTemporalGridError`, o máximo de `|t_i-i/F|` nos tempos representados.
+
+`effectiveFps` não é campo normativo: é ambíguo entre densidade de frames e
+quantidade de intervalos temporais.
 
 Não usar sempre `i/F`, pois diverge quando `D×F` não é inteiro. O oracle
 executável confirmou que o módulo é aplicado também a `LINEAR_SINGLE`: em

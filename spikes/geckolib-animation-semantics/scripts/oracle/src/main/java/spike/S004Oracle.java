@@ -1,0 +1,19 @@
+// NON_PRODUCTION: executes the pinned GeckoLib adapters and core easing/loop classes.
+package spike;
+import com.google.gson.*;
+import java.io.*; import java.nio.file.*; import java.util.*;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.keyframe.*;
+import software.bernie.geckolib.loading.json.typeadapter.BakedAnimationsAdapter;
+import software.bernie.geckolib.loading.object.BakedAnimations;
+import com.eliotlash.mclib.math.IValue;
+
+public final class S004Oracle {
+  private static Gson gson() { return new GsonBuilder().registerTypeAdapter(BakedAnimations.class,new BakedAnimationsAdapter()).registerTypeAdapter(Animation.Keyframes.class,new software.bernie.geckolib.loading.json.typeadapter.KeyFramesAdapter()).create(); }
+  private static Map<String,Object> keyframes(KeyframeStack<Keyframe<IValue>> s) { Map<String,Object> out=new LinkedHashMap<>(); out.put("x",axis(s.xKeyframes())); out.put("y",axis(s.yKeyframes())); out.put("z",axis(s.zKeyframes())); return out; }
+  private static String easingName(EasingType type) { for (Map.Entry<String,EasingType> e:EasingType.EASING_TYPES.entrySet()) if(e.getValue()==type) return e.getKey(); return "unknown"; }
+  private static String loopName(Animation.LoopType type) { if(type==Animation.LoopType.LOOP)return "loop"; if(type==Animation.LoopType.PLAY_ONCE)return "play_once"; if(type==Animation.LoopType.HOLD_ON_LAST_FRAME)return "hold_on_last_frame"; return "custom"; }
+  private static List<Map<String,Object>> axis(List<Keyframe<IValue>> frames) { List<Map<String,Object>> out=new ArrayList<>(); for(Keyframe<IValue> f:frames){ Map<String,Object> m=new LinkedHashMap<>(); m.put("lengthTicks",f.length()); m.put("start",f.startValue()==null?null:f.startValue().get()); m.put("end",f.endValue()==null?null:f.endValue().get()); m.put("easing",easingName(f.easingType())); List<Double> samples=new ArrayList<>(); for(double t:new double[]{0,.25,.5,.75,1}) samples.add(EasingType.lerpWithOverride(new AnimationPoint(f,t*f.length(),f.length(),f.startValue().get(),f.endValue().get()),f.easingType())); m.put("samples",samples); out.add(m);} return out; }
+  private static Map<String,Object> parse(Path p) throws Exception { JsonObject root=JsonParser.parseString(Files.readString(p)).getAsJsonObject(); JsonObject animObj=root.getAsJsonObject("animations"); BakedAnimations baked=gson().fromJson(animObj,BakedAnimations.class); Animation a=baked.animations().values().iterator().next(); Map<String,Object> out=new LinkedHashMap<>(); out.put("lengthTicks",a.length()); out.put("loopType",loopName(a.loopType())); List<Object> bones=new ArrayList<>(); for(BoneAnimation b:a.boneAnimations()) { Map<String,Object> bm=new LinkedHashMap<>(); bm.put("bone",b.boneName()); bm.put("rotation",keyframes(b.rotationKeyFrames())); bm.put("position",keyframes(b.positionKeyFrames())); bm.put("scale",keyframes(b.scaleKeyFrames())); bones.add(bm); } out.put("bones",bones); return out; }
+  public static void main(String[] args) throws Exception { Path dir=Paths.get(args[0]); List<Map<String,Object>> all=new ArrayList<>(); for(Path p:Files.list(dir).filter(x->x.toString().endsWith(".json")).sorted().toList()){ Map<String,Object> r=new LinkedHashMap<>(); r.put("fixture",p.getFileName().toString().replace(".json","")); r.put("sourceJson",JsonParser.parseString(Files.readString(p))); try {r.put("parserResult",parse(p)); r.put("status","PASS");} catch(Throwable t){r.put("status","FAIL"); r.put("errorType",t.getClass().getName()); r.put("message",String.valueOf(t.getMessage()));} all.add(r);} Map<String,Object> result=new LinkedHashMap<>(); result.put("marker","NON_PRODUCTION"); result.put("oracleCommit",args.length>1?args[1]:"unknown"); result.put("fixtures",all); System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(result)); }
+}

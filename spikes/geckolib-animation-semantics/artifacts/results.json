@@ -1,0 +1,4306 @@
+{
+  "checkout": "D:\\documentos\\Projetos\\CPMConverterWorkspace\\GeckoLibOracle",
+  "checkoutCommit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
+  "commit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
+  "fixtures": [
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "EASE-001",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "EASE-002",
+      "inputSha256": "3a30799185588cdba27f1e32d0784fb27031a6e65cb4b4cbd0541e9e384bf988",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "step",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.008726646259971648,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "step",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.008726646259971648,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "step",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.008726646259971648,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": {
+                    "easing": "step",
+                    "vector": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "EASE-003",
+      "inputSha256": "cca3e31e9984aa546f007fe2c7cacc4f7591604b8fa94d2e4ed4ae03a51b7186",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "easeinsine",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.001328552785835346,
+                    -0.0051119510250589445,
+                    -0.010774206632339446,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "easeinsine",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.001328552785835346,
+                    -0.0051119510250589445,
+                    -0.010774206632339446,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "easeinsine",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.001328552785835346,
+                    0.0051119510250589445,
+                    0.010774206632339446,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": {
+                    "easing": "easeinsine",
+                    "vector": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "EASE-004",
+      "inputSha256": "cdfc41c3de32ee194edd02739e443446681172bdb7dc29fb8a651d71b17f1ad7",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": {
+                    "easing": "custom_unknown",
+                    "vector": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "KEYFRAME-001",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "KEYFRAME-002",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "KEYFRAME-003",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "KEYFRAME-004",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "LENGTH-001",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "LENGTH-002",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "LENGTH-003",
+      "inputSha256": "7cec0e6f867fe200cd785c58423e2c27fb039cf352f9e9a58781c0583205828c",
+      "parserResult": {
+        "bones": [],
+        "lengthTicks": 1.7976931348623157e+308,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "bones": {}
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "LENGTH-004",
+      "inputSha256": "ed81d0225d1ecd551d1522d35be0d54e8704299aef554b14637a7515e1dcba1f",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 10.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 0.5,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "diagnostic": "ANIM_LERP_MODE_IGNORED_449",
+        "parser": "lerp_mode ignored"
+      },
+      "fixture": "LERP-001",
+      "inputSha256": "0b8f9c1ad0fde9e32063ab46d29d5e829c3a5931eb6b37b30733cce6e8448006",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "lerp_mode": "catmullrom"
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "LERP-002",
+      "inputSha256": "6a598cac9ac11128477b57d86757cc7cf9a14f241c37101d6550eab5bb286607",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "catmullrom",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.017453292519943295,
+                    -0.02181661564992912,
+                    0.008726646259971648,
+                    0.004363323129985824,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "catmullrom",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.017453292519943295,
+                    -0.02181661564992912,
+                    0.008726646259971648,
+                    0.004363323129985824,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "catmullrom",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.017453292519943295,
+                    0.02181661564992912,
+                    -0.008726646259971648,
+                    -0.004363323129985824,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": {
+                    "easing": "catmullrom",
+                    "vector": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "MOLANG-001",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "MOLANG-002",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "diagnostic": "ANIM_DYNAMIC_MOLANG_UNSUPPORTED",
+        "parser": "variable context required"
+      },
+      "fixture": "MOLANG-003",
+      "inputSha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PLAYBACK-001",
+      "inputSha256": "2170d40eade235a61c510ee46ba499a8a4d7472a9d2c4e050e7cdd76f3761398",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "loop"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": true
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PLAYBACK-002",
+      "inputSha256": "94f8e41978866de05a1a3e60612260f90ddc104ad2cf9fcea8d13bad1b7e3794",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": false
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PLAYBACK-003",
+      "inputSha256": "ec3291f9db03ac6d26f3aaf17cc14d17416c451dd215def07093dcdb48bdf3d5",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "loop"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": "loop"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PLAYBACK-004",
+      "inputSha256": "0a6ab7c5c369d738ed1ff956e644eed341236911680a1630d460c3d0e9869b25",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": "play_once"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "hold_on_last_frame loop type; runtime pause behavior must be observed"
+      },
+      "fixture": "PLAYBACK-005",
+      "inputSha256": "60065da76d53762f1977d3ad39b29062e8dd818b93f2ae70ee37990d6d74e086",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "hold_on_last_frame"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": "hold_on_last_frame"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PLAYBACK-006",
+      "inputSha256": "0ac2117b55a966cac8e792131209e4a729b04ceb13d6c37785828e326397574f",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.004363323129985824,
+                    -0.008726646259971648,
+                    -0.013089969389957472,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.017453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.004363323129985824,
+                    0.008726646259971648,
+                    0.013089969389957472,
+                    0.01745329238474369
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              }
+            },
+            "loop": "custom"
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "POSITION-001",
+      "inputSha256": "b2b9622403477df912500a0e98a59959e7d0ca47417f647c093cfdb3df11220a",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": 1.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "start": 1.0
+                },
+                {
+                  "easing": "none",
+                  "end": 2.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    1.0,
+                    1.25,
+                    1.5,
+                    1.75,
+                    2.0
+                  ],
+                  "start": 1.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": 2.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "start": 2.0
+                },
+                {
+                  "easing": "none",
+                  "end": 3.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    2.0,
+                    2.25,
+                    2.5,
+                    2.75,
+                    3.0
+                  ],
+                  "start": 2.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 3.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    3.0,
+                    3.0,
+                    3.0,
+                    3.0,
+                    3.0
+                  ],
+                  "start": 3.0
+                },
+                {
+                  "easing": "none",
+                  "end": 4.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    3.0,
+                    3.25,
+                    3.5,
+                    3.75,
+                    4.0
+                  ],
+                  "start": 3.0
+                }
+              ]
+            },
+            "rotation": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "position": {
+                  "0.0": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "1.0": [
+                    2,
+                    3,
+                    4
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PREPOST-001",
+      "inputSha256": "a644d9331d157c2aaca29107d67c3afa8dee7919a35547735d57c232bf5f06df",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.17453292519943295,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.1745329201221466
+                  ],
+                  "start": -0.17453292519943295
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.3490658503988659,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658402442932
+                  ],
+                  "start": -0.3490658503988659
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.5235987755982988,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987901687622
+                  ],
+                  "start": 0.5235987755982988
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.5": {
+                    "pre": [
+                      10,
+                      20,
+                      30
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PREPOST-002",
+      "inputSha256": "3d384cb32bf107c22679849d8d5b0fc13b0a79603f98797954b13ba0d3ace2ac",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.17453292519943295,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.17453292519943295,
+                    -0.1745329201221466
+                  ],
+                  "start": -0.17453292519943295
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.3490658503988659,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658503988659,
+                    -0.3490658402442932
+                  ],
+                  "start": -0.3490658503988659
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.5235987755982988,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987755982988,
+                    0.5235987901687622
+                  ],
+                  "start": 0.5235987755982988
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.5": {
+                    "post": [
+                      10,
+                      20,
+                      30
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "PREPOST-003",
+      "inputSha256": "d4fb82b15cba7aee6c30e5af5ac6dc560ebdeff380a192e15812bac481a7d851",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.017453292519943295
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.03490658503988659,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658476948738
+                  ],
+                  "start": -0.03490658503988659
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.05235987755982989,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987901687622
+                  ],
+                  "start": 0.05235987755982989
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.5": {
+                    "post": [
+                      1,
+                      2,
+                      3
+                    ],
+                    "pre": [
+                      1,
+                      2,
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "diagnostic": "ANIM_PRE_POST_COLLAPSED_449",
+        "parser": "pre wins; post discarded"
+      },
+      "fixture": "PREPOST-004",
+      "inputSha256": "01aa8ec1a934bedbf1b25833dfefcee47018d6756e98b259355c477992df765f",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.017453292519943295,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.017453292519943295,
+                    -0.01745329238474369
+                  ],
+                  "start": -0.017453292519943295
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.03490658503988659,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658503988659,
+                    -0.03490658476948738
+                  ],
+                  "start": -0.03490658503988659
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.05235987755982989,
+                  "lengthTicks": 10.0,
+                  "samples": [
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987755982989,
+                    0.05235987901687622
+                  ],
+                  "start": 0.05235987755982989
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.5": {
+                    "post": [
+                      4,
+                      5,
+                      6
+                    ],
+                    "pre": [
+                      1,
+                      2,
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "errorType": "com.google.gson.JsonParseException",
+      "expected": {
+        "diagnostic": "ANIM_INVALID_KEYFRAME",
+        "parser": "error or rejected keyframe"
+      },
+      "fixture": "PREPOST-005",
+      "inputSha256": "d012ac32028ca2c96acfbbef2c2d484fd633c26a7994a734ed83297e89ab5fa3",
+      "message": "Invalid keyframe data - expected array, found {}",
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.5": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "FAIL"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "ROTATION-001",
+      "inputSha256": "dc19065df565c53d97f58414d9d9a0092d0dccf6b7d8a71942327a2caab860a8",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -3.3161255787892263,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -0.8290313946973066,
+                    -1.6580627893946132,
+                    -2.48709418409192,
+                    -3.3161256313323975
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    190,
+                    0,
+                    0
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "ROTATION-002",
+      "inputSha256": "48641242de4277f1966f9dcadc31027c02295204839029b53744664f61d33281",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -12.566370614359172,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -0.0,
+                    -3.141592653589793,
+                    -6.283185307179586,
+                    -9.42477796076938,
+                    -12.566370964050293
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    720,
+                    0,
+                    0
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "ROTATION-003",
+      "inputSha256": "d66a9d7266ef456336735d706d2f23fac422277808e5091e3afa4ee007e4d71b",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": -6.1086523819801535,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -6.108652591705322,
+                    -6.108652591705322,
+                    -6.108652591705322,
+                    -6.108652591705322,
+                    -6.108652591705322
+                  ],
+                  "start": -6.1086523819801535
+                },
+                {
+                  "easing": "none",
+                  "end": -0.17453292519943295,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    -6.1086523819801535,
+                    -4.625122517784973,
+                    -3.141592653589793,
+                    -1.658062789394613,
+                    -0.1745329201221466
+                  ],
+                  "start": -6.1086523819801535
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                },
+                {
+                  "easing": "none",
+                  "end": -0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    -0.0
+                  ],
+                  "start": -0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ]
+            },
+            "scale": {
+              "x": [],
+              "y": [],
+              "z": []
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    350,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    10,
+                    0,
+                    0
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "SCALE-001",
+      "inputSha256": "4aaa5b881384c7e87dcf9adb85928f771483839ccf887388a67d8ea8c54563ec",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "scale": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": 1.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "start": 1.0
+                },
+                {
+                  "easing": "none",
+                  "end": 2.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    1.0,
+                    1.25,
+                    1.5,
+                    1.75,
+                    2.0
+                  ],
+                  "start": 1.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": 1.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "start": 1.0
+                },
+                {
+                  "easing": "none",
+                  "end": 2.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    1.0,
+                    1.25,
+                    1.5,
+                    1.75,
+                    2.0
+                  ],
+                  "start": 1.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 1.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "start": 1.0
+                },
+                {
+                  "easing": "none",
+                  "end": 2.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    1.0,
+                    1.25,
+                    1.5,
+                    1.75,
+                    2.0
+                  ],
+                  "start": 1.0
+                }
+              ]
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "scale": {
+                  "0.0": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "1.0": [
+                    2,
+                    2,
+                    2
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "expected": {
+        "parser": "observe actual GeckoLib 4.4.9 output"
+      },
+      "fixture": "SCALE-002",
+      "inputSha256": "6aac0975e716e5361d7f336928a6beb4740c32c56ac31baab554b51c2c3c89f6",
+      "parserResult": {
+        "bones": [
+          {
+            "bone": "head",
+            "position": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "rotation": {
+              "x": [],
+              "y": [],
+              "z": []
+            },
+            "scale": {
+              "x": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ],
+              "y": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ],
+              "z": [
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 0.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                },
+                {
+                  "easing": "none",
+                  "end": 0.0,
+                  "lengthTicks": 20.0,
+                  "samples": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "start": 0.0
+                }
+              ]
+            }
+          }
+        ],
+        "lengthTicks": 20.0,
+        "loopType": "play_once"
+      },
+      "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime",
+      "sourceJson": {
+        "animations": {
+          "a": {
+            "animation_length": 1.0,
+            "bones": {
+              "head": {
+                "scale": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "status": "PASS"
+    }
+  ],
+  "gradleOutputTail": "        0.0,\n                    0.0,\n                    0.0\n                  ]\n                }\n              ],\n              \"z\": [\n                {\n                  \"lengthTicks\": 0.0,\n                  \"start\": 0.0,\n                  \"end\": 0.0,\n                  \"easing\": \"none\",\n                  \"samples\": [\n                    0.0,\n                    0.0,\n                    0.0,\n                    0.0,\n                    0.0\n                  ]\n                },\n                {\n                  \"lengthTicks\": 20.0,\n                  \"start\": 0.0,\n                  \"end\": 0.0,\n                  \"easing\": \"none\",\n                  \"samples\": [\n                    0.0,\n                    0.0,\n                    0.0,\n                    0.0,\n                    0.0\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      },\n      \"status\": \"PASS\"\n    }\n  ]\n}\n\nBUILD SUCCESSFUL in 20s\n2 actionable tasks: 1 executed, 1 up-to-date\n",
+  "nonProduction": true,
+  "oracle": "EXECUTED",
+  "sourceClassMethod": "BakedAnimationsAdapter.deserialize/bakeAnimation/buildKeyframeStack; Animation/EasingType runtime"
+}

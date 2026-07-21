@@ -36,13 +36,18 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `ANIM_BONE_NOT_FOUND` | ERROR | track refere bone inexistente |
 | `ANIM_DYNAMIC_MOLANG_UNSUPPORTED` | ERROR | expressão depende de runtime |
 | `ANIM_CUSTOM_EASING_UNSUPPORTED` | ERROR | easing não registrado/conhecido |
+| `ANIM_LERP_MODE_IGNORED_449` | WARNING | `lerp_mode` de canal ignorado pelo adapter 4.4.9 |
 | `ANIM_PRE_POST_COLLAPSED_449` | WARNING | pre/post diferentes colapsados como GeckoLib 4.4.9 |
+| `ANIM_IMPLICIT_LENGTH_UNBOUNDED` | WARNING | duração ausente e nenhum keyframe produzem sentinel não limitado |
+| `ANIM_ZERO_DURATION_INVALID` | ERROR | duração zero ou negativa |
+| `ANIM_DUPLICATE_TIMESTAMP` | WARNING/ERROR | timestamps duplicados exigem política explícita |
+| `ANIM_CUSTOM_LOOP_TYPE_UNSUPPORTED` | ERROR | loop custom não registrado no modo compatibilidade |
 | `ANIM_EULER_DECOMPOSITION_AMBIGUOUS` | WARNING/ERROR | branch Euler/winding não demonstrável |
 | `ANIM_EVENT_IGNORED_BY_SCOPE` | WARNING | som/partícula/timeline explicitamente ignorado |
 | `ANIM_HOLD_REQUIRES_MAPPING` | ERROR | hold sem semântica CPM |
 | `ANIM_LOOP_DISCONTINUITY` | WARNING | seam excede tolerância |
 | `ANIM_RESAMPLED` | INFO | clip bakeado, com fps/frames |
-| `ANIM_EFFECTIVE_FPS_DIFFERENT` | INFO | duration×requested FPS não inteiro |
+| `ANIM_FRAME_GRID_DENSITY_DIFFERENCE` | INFO | densidade de frames difere da taxa efetiva de intervalos |
 | `ANIM_APPROXIMATION` | WARNING | perda mensurável |
 | `ANIM_ZERO_SCALE_UNREPRESENTABLE` | ERROR | CPM trata scale 0 como “não alterar” |
 | `MAP_SCHEMA_INVALID` | ERROR | mapping inválido/unknown property |

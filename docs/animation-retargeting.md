@@ -65,16 +65,27 @@ O schema exige `look.composition: inherited_split|independent` para remover ambi
 
 ## Reamostragem e easing
 
-- default solicitado 20 fps; `N=max(1,round(duration×requestedFps))`;
-- loop usa `t_i=i×duration/N` e `effectiveFps=N/duration`;
-- single com `N≥2` usa `t_i=i×duration/(N-1)`; o runtime volta ao início em `millis=duration` por causa do módulo, conforme oracle executável;
+- default solicitado `requestedFps=20`; `frameCount=N=max(1,round(D×requestedFps))`;
+- loop usa `t_i=i×D/N`, `frameInterval=D/N`, `effectiveIntervalRate=N/D` e `frameDensity=N/D`;
+- single com `N≥2` usa `t_i=i×D/(N-1)`, `frameInterval=D/(N-1)`, `effectiveIntervalRate=(N-1)/D` e `frameDensity=N/D`; para `N=1`, ambos são zero;
 - Euler autoral não é normalizado nem convertido a quaternion antes do sample; o unwrap de saída escolhe a branch CPM contínua após composição;
 - step usa hold anterior; easings Gecko são avaliados antes de converter para frames lineares CPM;
 - `pre/post`, catmullrom e custom easing têm testes próprios ou diagnóstico de aproximação/erro;
 - redução de frames fica desativada no MVP por default. Quando ativada futuramente, limites por canal devem ser explícitos.
 
-O relatório registra requested FPS, frame count, effective FPS/spacing e erro
-temporal máximo. Duração×FPS não inteira é um caso obrigatório, não edge case.
+O relatório registra `requestedFps`, `frameCount`, `frameDensity`,
+`effectiveIntervalRate`, `frameInterval` e `maxTemporalGridError` (máximo de
+`|t_i - i/requestedFps|` na grade emitida). “effectiveFps” é evitado por ser
+ambíguo entre densidade de frames e quantidade de intervalos temporais.
+Duração×FPS não inteira é um caso obrigatório, não edge case.
+
+## Calibração do domínio yaw/pitch
+
+Para look no domínio CPM 0..1000, duração 1001 ms evita o módulo no instante
+1000. Valores crus `[-L,+L]` atingem `L×1999/1001`; a alternativa compensada
+usa segundo frame `L×501/500` para atingir exatamente neutro em 500 e o limite
+em 1000. A grade de três frames e os erros float32 permanecem comparados no
+spike NON_PRODUCTION; isso requer validação visual antes de fixar o writer.
 
 ## Continuidade
 

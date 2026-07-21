@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "a": {
+      "animation_length": 1.0,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0.5": {
+              "post": [
+                1,
+                2,
+                3
+              ],
+              "pre": [
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

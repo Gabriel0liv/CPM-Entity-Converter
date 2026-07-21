@@ -21,8 +21,8 @@ implementado. IDs `TST-*` são testes planejados em `test-plan.md`.
 | FR-012 | ADR-002/005 | T300 | fixture B/C | AC-015, AC-024 | specified |
 | FR-013 | CPM naming | T402 | TST-POSE-NAMES | AC-014 | specified |
 | FR-014 | ADR-002/004 | T202, T400 | S004, TST-CHANNELS | AC-010, AC-013 | specified |
-| FR-015 | ADR-004 | T203, T400 | S004, TST-EASING | AC-011 | provisional |
-| FR-016 | ADR-004 | T202, T401 | S004 | AC-012 | blocked by S004 |
+| FR-015 | ADR-004 | T203, T400 | S004 EASE/LERP, TST-EASING | AC-011 | provisional: controller/política dinâmica pendentes |
+| FR-016 | ADR-004 | T202, T401 | S004 PLAYBACK/LENGTH, TST-LOOP-SINGLE | AC-012 | provisional: terminal controller pendente |
 | FR-017 | ADR-002 | T103, T402 | TST-MODES | AC-010 | specified |
 | FR-018 | ADR-005 | T500 | S001/S002 | AC-015, AC-026 | provisional |
 | FR-019 | ADR-005 | T500 | S001/S002 | AC-015, AC-025 | provisional |

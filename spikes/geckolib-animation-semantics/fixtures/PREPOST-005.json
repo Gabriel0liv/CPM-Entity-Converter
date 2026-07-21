@@ -1,0 +1,14 @@
+{
+  "animations": {
+    "a": {
+      "animation_length": 1.0,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0.5": {}
+          }
+        }
+      }
+    }
+  }
+}

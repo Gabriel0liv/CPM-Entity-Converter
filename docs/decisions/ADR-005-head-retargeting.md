@@ -38,6 +38,11 @@ Ordem por priority pode não produzir composição desejada; adição Euler pode
 
 ## Evidências
 
+- A calibração NON_PRODUCTION do domínio 0..1000 compara endpoints crus,
+  compensados e grade de três frames; resultados em
+  `spikes/head-layering/artifacts/measurements.json`. Isso não substitui a
+  inspeção visual do editor CPM.
+
 - [`../../spikes/head-layering/results.md`](../../spikes/head-layering/results.md): 14 projetos passam no `ProjectIO`; `Animation`/`RenderedCube` reais confirmam ordem, adição, escala-zero e reset sem drift em 100 ciclos.
 - [`../../spikes/head-layering/artifacts/measurements.json`](../../spikes/head-layering/artifacts/measurements.json): 22 casos comparativos.
 - Single-anchor herda body/neck e horn; root partition exige rebake/proxy após o neutral.

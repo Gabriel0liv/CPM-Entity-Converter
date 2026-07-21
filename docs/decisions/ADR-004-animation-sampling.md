@@ -1,6 +1,6 @@
 # ADR-004 — Reamostragem de animações
 
-Status: provisório até os testes executáveis de timeline e S004.
+Status: **provisional** após S004; gates restantes estão registrados abaixo.
 
 Data da decisão: 2026-07-21.
 
@@ -18,8 +18,13 @@ Gecko possui timestamps/canais/easings independentes; CPM V1 usa frames uniforme
 ## Decisão
 
 No MVP, solicitar 20 fps por default, configurável entre 1 e 240. Para duração
-`D`, escolher `N=max(1,round(D×requestedFps))`. Loop usa `i×D/N`; single usa
-`i×D/(N-1)` quando `N≥2`. Escrever interpolação linear coerente com `loop`.
+`D`, escolher `frameCount=N=max(1,round(D×requestedFps))`. No loop,
+`frameInterval=D/N`, `effectiveIntervalRate=N/D` e `frameDensity=N/D`, com
+`t_i=i×D/N`. No single, para `N≥2`, `frameInterval=D/(N-1)`,
+`effectiveIntervalRate=(N-1)/D` e `frameDensity=N/D`, com
+`t_i=i×D/(N-1)`; para `N=1`, intervalo e taxa de intervalos são zero.
+`maxTemporalGridError` é o máximo de `|t_i-i/requestedFps|`. Não usar o termo
+ambíguo `effectiveFps`. Escrever interpolação linear coerente com `loop`.
 Redução/adaptação ficam desabilitadas por default.
 
 ## Justificativa
@@ -28,8 +33,9 @@ Redução/adaptação ficam desabilitadas por default.
 
 ## Consequências
 
-Arquivos podem crescer; todos os easings são bakeados. Relatório distingue FPS
-solicitado, N, FPS efetivo/spacing e erro temporal máximo. Loops têm verificação
+Arquivos podem crescer; todos os easings são bakeados. Relatório distingue
+`requestedFps`, `frameCount`, `frameDensity`, `effectiveIntervalRate`,
+`frameInterval` e erro temporal máximo. Loops têm verificação
 de seam. O oracle confirmou que single não é clamped: em `millis=D` o módulo
 volta ao primeiro frame e em `D+1` inicia novo progresso. Look dinâmico usa
 1001 ms para um domínio de pose 0–1000.
@@ -47,12 +53,16 @@ Copiar keyframes não funciona com grid uniforme/canais diferentes; mapeamento d
 - `Animation.animate`: fórmula de step;
 - `LinearLoopInterpolator` e `LinearInterpolator` no oracle CPM fixado;
 - testes de timeline em `spikes/head-layering/results.md`.
+- S004 GeckoLib real: [`../../spikes/geckolib-animation-semantics/results.md`](../../spikes/geckolib-animation-semantics/results.md) e [`../../spikes/geckolib-animation-semantics/artifacts/results.json`](../../spikes/geckolib-animation-semantics/artifacts/results.json).
 
 ## Riscos residuais
 
-Arredondamento de duração em milissegundos, pre/post/easing Gecko e calibração
-visual permanecem gates. A timeline CPM está confirmada, mas o ADR fica
-provisório até S004.
+Arredondamento de duração em milissegundos, controller
+hold/play-once, duração ausente sem keyframes, Molang dinâmico e calibração
+visual permanecem gates. A timeline CPM e os semânticos observados de pre/post,
+linear, step, easing sine e catmullrom por keyframe estão confirmados; o
+`lerp_mode` no canal é ignorado pelo parser 4.4.9. O comportamento terminal de
+playback e a política Molang dinâmica ainda não estão confirmados.
 
 ## Condição de reavaliação
 

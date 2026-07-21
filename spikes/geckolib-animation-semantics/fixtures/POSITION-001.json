@@ -1,0 +1,23 @@
+{
+  "animations": {
+    "a": {
+      "animation_length": 1.0,
+      "bones": {
+        "head": {
+          "position": {
+            "0.0": [
+              1,
+              2,
+              3
+            ],
+            "1.0": [
+              2,
+              3,
+              4
+            ]
+          }
+        }
+      }
+    }
+  }
+}

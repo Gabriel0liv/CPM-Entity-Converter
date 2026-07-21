@@ -30,7 +30,7 @@ Root contém `format_version` e `animations`. Cada clip pode conter:
 - forma Bedrock `pre`/`post` e `lerp_mode` (suporte deve ser testado explicitamente);
 - `sound_effects`, `particle_effects`, `timeline` (fora do MVP, sempre diagnosticados).
 
-No adapter 4.4.9, `lerp_mode` no objeto do canal é ignorado durante a construção das stacks. Para keyframe Bedrock com `pre` e `post`, o adapter escolhe `pre`; só usa `post` quando `pre` não existe. Portanto, o conversor deve oferecer um modo de compatibilidade 4.4.9 que reproduza essa semântica e diagnostique a perda, em vez de presumir o comportamento de versões Gecko posteriores.
+No adapter 4.4.9, `lerp_mode` no objeto do canal é ignorado durante a construção das stacks (`ANIM_LERP_MODE_IGNORED_449`). A forma por keyframe `easing: "catmullrom"` é reconhecida e foi observada no S004. Para keyframe Bedrock com `pre` e `post`, o adapter escolhe `pre`; só usa `post` quando `pre` não existe. Portanto, o conversor deve oferecer um modo de compatibilidade 4.4.9 que reproduza essa semântica e diagnostique a perda, em vez de presumir o comportamento de versões Gecko posteriores.
 
 O adapter 4.4.9 converte segundos em ticks multiplicando por 20. Em rotações constantes, converte graus para radianos e aplica sinais `(-x,-y,+z)`. Rotações são aplicadas como delta sobre o snapshot inicial do bone. Posição animada é aplicada como offset; escala é valor animado. Canais ausentes deixam o estado inicial/reset controlar o bone. O converter preserva Euler autoral por eixo até o sample; detalhes em `coordinate-systems.md` e `data-model.md`.
 
@@ -44,10 +44,21 @@ Política MVP:
 - aceitar apenas números e expressões Molang comprovadamente constantes;
 - expressão dependente de runtime, easing custom e forma não interpretável produzem erro por default;
 - `ignore` explícito na configuração pode rebaixar um recurso fora de escopo para warning, nunca silêncio.
+- duração ausente sem keyframes produz `Double.MAX_VALUE` no parser observado;
+  o converter deve limitar/reportar isso como `ANIM_IMPLICIT_LENGTH_UNBOUNDED`, não
+  propagar um sentinel infinito para o CPM.
 
 ## Reamostragem
 
-Todos os canais são avaliados na timeline CPM comum com 20 fps solicitado por default. Para duração `D`, escolher `N=max(1, round(D×requestedFps))` e samplear nos instantes definidos pelo interpolador CPM; `effectiveFps=N/D`. Antes de amostrar:
+Todos os canais são avaliados na timeline CPM comum com `requestedFps=20` por
+default. Para duração `D`, escolher `frameCount=N=max(1,
+round(D×requestedFps))` e samplear nos instantes definidos pelo interpolador
+CPM. Loop usa `frameInterval=D/N`, `effectiveIntervalRate=N/D` e
+`frameDensity=N/D`; single (`N≥2`) usa `frameInterval=D/(N-1)`,
+`effectiveIntervalRate=(N-1)/D` e `frameDensity=N/D` (para `N=1`, intervalo e
+taxa de intervalos são zero). Registrar ainda `maxTemporalGridError` como o
+máximo de `|t_i-i/requestedFps|`; `effectiveFps` é evitado por ambiguidade.
+Antes de amostrar:
 
 1. ordenar timestamps numericamente;
 2. expandir valores escalares/triplets;
@@ -64,4 +75,4 @@ Parser com streaming/árvore limitada: tamanho de arquivo configurável, profund
 
 ## Evidências
 
-[BakedAnimationsAdapter 4.4.9](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/BakedAnimationsAdapter.java), [KeyFramesAdapter](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/KeyFramesAdapter.java), [BakedModelFactory](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/object/BakedModelFactory.java), [GeckoLib 4 changes](https://github.com/bernie-g/geckolib/wiki/Geckolib-4-Changes).
+[BakedAnimationsAdapter 4.4.9](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/BakedAnimationsAdapter.java), [KeyFramesAdapter](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/KeyFramesAdapter.java), [BakedModelFactory](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/object/BakedModelFactory.java), [S004 results](../spikes/geckolib-animation-semantics/results.md), [GeckoLib 4 changes](https://github.com/bernie-g/geckolib/wiki/Geckolib-4-Changes).
