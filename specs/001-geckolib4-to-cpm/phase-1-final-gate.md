@@ -2,6 +2,9 @@
 
 Data: 2026-07-21
 
+Última verificação local: `spotlessCheck` executado após normalização LF; a
+execução remota ainda é necessária para confirmar ambos os runners.
+
 ## Decisão
 
 **Gate permanece bloqueado. T200 não está liberada.**
