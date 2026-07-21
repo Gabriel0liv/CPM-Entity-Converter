@@ -5,6 +5,7 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticBag;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -14,6 +15,9 @@ import java.util.TreeMap;
 
 /** Validates relational ModelIR invariants and reports deterministic diagnostics. */
 public final class ModelIrValidator {
+  private Map<BoneId, SourceLocation> boneLocations = Map.of();
+  private SourceLocation keyframeLocation;
+
   public DiagnosticBag validate(ModelIR model) {
     DiagnosticBag diagnostics = new DiagnosticBag();
     if (model == null) {
@@ -33,6 +37,11 @@ public final class ModelIrValidator {
                     null));
       }
     }
+    Map<BoneId, SourceLocation> locations = new LinkedHashMap<>();
+    for (BoneIR bone : model.bones()) {
+      locations.putIfAbsent(bone.id(), bone.provenance());
+    }
+    boneLocations = locations;
     Set<BoneId> roots = new LinkedHashSet<>();
     for (BoneId root : model.roots()) {
       if (!roots.add(root)) {
@@ -306,6 +315,7 @@ public final class ModelIrValidator {
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (SourceRotationKeyframeIR keyframe : channel.keyframes()) {
+      keyframeLocation = keyframe.source();
       double time = keyframe.timeSeconds();
       if (!Double.isFinite(time) || time < 0) {
         diagnostics =
@@ -349,6 +359,7 @@ public final class ModelIrValidator {
                     clip));
       previous = time;
     }
+    keyframeLocation = null;
     return diagnostics;
   }
 
@@ -378,15 +389,23 @@ public final class ModelIrValidator {
   private Diagnostic error(
       String code, String message, Map<String, String> context, String bone, String clip) {
     String suggestion = suggestionFor(code);
+    SourceLocation location =
+        keyframeLocation != null
+            ? keyframeLocation
+            : (bone == null ? null : boneLocations.get(boneId(bone)));
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
-        null,
+        location,
         message,
         suggestion,
         bone,
         clip,
         new TreeMap<>(context));
+  }
+
+  private BoneId boneId(String value) {
+    return value == null ? null : new BoneId(value);
   }
 
   private String suggestionFor(String code) {

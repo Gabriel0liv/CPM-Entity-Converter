@@ -25,9 +25,7 @@ public final class IrValueFactory {
       java.util.function.Function<String, T> constructor,
       String code,
       String label) {
-    try {
-      return Result.success(constructor.apply(value));
-    } catch (IllegalArgumentException exception) {
+    if (value == null || value.isBlank()) {
       Diagnostic diagnostic =
           new Diagnostic(
               Severity.ERROR,
@@ -40,5 +38,6 @@ public final class IrValueFactory {
               new TreeMap<>());
       return Result.failure(diagnostic);
     }
+    return Result.success(constructor.apply(value));
   }
 }
