@@ -22,4 +22,16 @@ class ArchitectureTest {
       }
     }
   }
+
+  @Test
+  void productionDiagnosticsUseCatalogSymbols() throws Exception {
+    try (var stream = Files.walk(Paths.get("src/main/java"))) {
+      for (var path : stream.filter(Files::isRegularFile).toList()) {
+        String source = Files.readString(path);
+        assertFalse(
+            source.matches("(?s).*Diagnostic\\.of\\([^;]*\\\"[A-Z][A-Z0-9_]+\\\".*"),
+            path.toString());
+      }
+    }
+  }
 }

@@ -1,1 +1,44 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schemaVersion"],"properties":{"schemaVersion":{"const":1},"modelScale":{"type":"number","exclusiveMinimum":0},"verticalOffset":{"type":"number"},"skin":{"type":"string","minLength":1},"rootStrategy":{"enum":["single_anchor","root_partition"]},"rootRoles":{"type":"object","additionalProperties":{"type":"string","minLength":1}},"bones":{"type":"object","additionalProperties":{"type":"string","minLength":1}},"clips":{"type":"object","additionalProperties":{"type":"string","minLength":1}},"look":{"type":"object","properties":{"composition":{"enum":["independent","inherited_split"]},"neckInfluence":{"type":"number"},"headInfluence":{"type":"number"},"allowOverrotation":{"type":"boolean"},"limits":{"type":"object","additionalProperties":{"type":"number","minimum":0}}},"additionalProperties":false},"stateMappings":{"type":"object","additionalProperties":{"type":"object","required":["clip"],"properties":{"clip":{"type":"string","minLength":1},"mode":{"type":"string"},"optional":{"type":"boolean"},"requestedFps":{"type":"integer","minimum":1,"maximum":240}},"additionalProperties":false}},"sampling":{"type":"object","properties":{"requestedFps":{"type":"integer","minimum":1,"maximum":240}},"additionalProperties":false},"ignore":{"type":"array","items":{"type":"string","minLength":1}},"diagnosticPolicy":{"type":"object","properties":{"warningsAsErrors":{"type":"boolean"},"ignoreUnsupported":{"type":"boolean"}},"additionalProperties":false}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "modelScale": {"type": "number", "exclusiveMinimum": 0},
+    "verticalOffset": {"type": "number"},
+    "skin": {"type": "string", "minLength": 1},
+    "rootStrategy": {"enum": ["single_anchor", "root_partition"]},
+    "rootRoles": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+    "bones": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+    "clips": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+    "look": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "head": {"type": "string", "minLength": 1},
+        "neck": {"type": "string", "minLength": 1},
+        "composition": {"enum": ["independent", "inherited_split"]},
+        "neckInfluence": {"type": "number"},
+        "headInfluence": {"type": "number"},
+        "allowOverrotation": {"type": "boolean"},
+        "limits": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0}}
+      }
+    },
+    "stateMappings": {
+      "type": "object", "additionalProperties": {
+        "type": "object", "required": ["clip"], "additionalProperties": false,
+        "properties": {
+          "clip": {"type": "string", "minLength": 1},
+          "mode": {"type": "string", "minLength": 1},
+          "optional": {"type": "boolean"},
+          "requestedFps": {"type": "integer", "minimum": 1, "maximum": 240}
+        }
+      }
+    },
+    "sampling": {"type": "object", "additionalProperties": false,
+      "properties": {"requestedFps": {"type": "integer", "minimum": 1, "maximum": 240}}},
+    "ignore": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "diagnosticPolicy": {"type": "object", "additionalProperties": false,
+      "properties": {"warningsAsErrors": {"type": "boolean"}, "ignoreUnsupported": {"type": "boolean"}}}
+  }
+}

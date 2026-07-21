@@ -2,6 +2,9 @@ package io.github.gabriel0liv.cpmconverter.math;
 
 public record Vec3d(double x, double y, double z) {
   public static final Vec3d ZERO = new Vec3d(0, 0, 0);
+  public static final Vec3d X = new Vec3d(1, 0, 0);
+  public static final Vec3d Y = new Vec3d(0, 1, 0);
+  public static final Vec3d Z = new Vec3d(0, 0, 1);
 
   public Vec3d {
     if (!finite(x) || !finite(y) || !finite(z))

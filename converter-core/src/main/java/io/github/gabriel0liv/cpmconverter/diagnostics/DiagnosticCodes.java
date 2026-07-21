@@ -15,6 +15,7 @@ public final class DiagnosticCodes {
   public static final String CONFIG_BONE_MISSING = "CONFIG_BONE_MISSING";
   public static final String CONFIG_BONE_AMBIGUOUS = "CONFIG_BONE_AMBIGUOUS";
   public static final String CONFIG_CLIP_MISSING = "CONFIG_CLIP_MISSING";
+  public static final String ANIM_OPTIONAL_CLIP_MISSING = "ANIM_OPTIONAL_CLIP_MISSING";
   public static final String IR_DUPLICATE_BONE_ID = "IR_DUPLICATE_BONE_ID";
   public static final String IR_DUPLICATE_CUBE_ID = "IR_DUPLICATE_CUBE_ID";
   public static final String IR_DUPLICATE_CLIP_ID = "IR_DUPLICATE_CLIP_ID";
@@ -35,5 +36,7 @@ public final class DiagnosticCodes {
   public static final String IR_KEYFRAME_DUPLICATE = "IR_KEYFRAME_DUPLICATE";
   public static final String IR_KEYFRAME_AFTER_DURATION = "IR_KEYFRAME_AFTER_DURATION";
   public static final String IR_CUSTOM_PLAYBACK_ID = "IR_CUSTOM_PLAYBACK_ID";
+  public static final String IR_INVALID_ID = "IR_INVALID_ID";
+  public static final String IR_INVALID_VALUE = "IR_INVALID_VALUE";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }

@@ -21,7 +21,8 @@ public final class Result<T> {
   }
 
   public static <T> Result<T> success(T value, DiagnosticBag diagnostics) {
-    return new Result<>(Objects.requireNonNull(value), diagnostics);
+    if (value == null) throw new IllegalArgumentException("success requires non-null value");
+    return new Result<>(value, diagnostics);
   }
 
   public static <T> Result<T> failure(Diagnostic diagnostic) {

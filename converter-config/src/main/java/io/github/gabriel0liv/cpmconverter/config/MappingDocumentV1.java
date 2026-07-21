@@ -53,6 +53,8 @@ public record MappingDocumentV1(
   }
 
   public record Look(
+      String head,
+      String neck,
       String composition,
       Double neckInfluence,
       Double headInfluence,
@@ -60,7 +62,7 @@ public record MappingDocumentV1(
       Map<String, Double> limits) {
     public Look(
         String composition, Double neckInfluence, Double headInfluence, Boolean allowOverrotation) {
-      this(composition, neckInfluence, headInfluence, allowOverrotation, Map.of());
+      this(null, null, composition, neckInfluence, headInfluence, allowOverrotation, Map.of());
     }
   }
 

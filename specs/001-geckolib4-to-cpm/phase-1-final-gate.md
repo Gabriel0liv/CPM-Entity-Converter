@@ -19,8 +19,9 @@ Data: 2026-07-21
 
 1. Não houve execução verde observada do GitHub Actions em Ubuntu e Windows;
    portanto T100 permanece `[~]` e NFR-014 não está aceito.
-2. O mapping schema ainda usa um executor estrutural próprio, não uma engine
-   completa JSON Schema 2020-12; T104 permanece `[~]`.
+2. A engine JSON Schema 2020-12 está concluída: `MappingLoader` carrega o
+   recurso do classpath e valida antes do binding. Permanecem pendentes os
+   testes completos de nested constraints e a compilação integral de referências.
 3. A matriz completa de golden tests e a cobertura integral de invariantes IR
    ainda requerem expansão antes de marcar T102/T103/T105 como concluídas.
 

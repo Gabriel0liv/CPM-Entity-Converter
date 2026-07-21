@@ -75,6 +75,7 @@ Mensagens podem variar, mas o identificador não.
 `CONFIG_OVERROTATION`, `CONFIG_INFLUENCE_RANGE`, `CONFIG_UNKNOWN_PROPERTY`,
 `CONFIG_PARSE_ERROR`, `CONFIG_BONE_MISSING`, `CONFIG_BONE_AMBIGUOUS`,
 `CONFIG_CLIP_MISSING`, `CONFIG_SCHEMA_INVALID`.
+Optional state clips use `ANIM_OPTIONAL_CLIP_MISSING` at INFO severity.
 
 ## ModelIR
 
@@ -85,6 +86,7 @@ Mensagens podem variar, mas o identificador não.
 `IR_TRACK_BONE_MISSING`, `IR_DURATION_INVALID`, `IR_KEYFRAME_ORDER`,
 `IR_KEYFRAME_DUPLICATE`, `IR_KEYFRAME_AFTER_DURATION`,
 `IR_CUSTOM_PLAYBACK_ID`, `IR_TIMESTAMP_INVALID`.
+Boundary construction uses `IR_INVALID_ID` and `IR_INVALID_VALUE`.
 
 ## Spike e integração futura
 

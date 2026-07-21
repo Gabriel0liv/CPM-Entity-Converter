@@ -1,9 +1,9 @@
 {
   "fixtures": {
     "fixture-a-humanoid": {
-      "PROVENANCE.md": "3f910122421b055c4f4af107c83c008e8129826fc0a7ef86b9e6cafd85c7772f",
+      "PROVENANCE.md": "efb6fe99f78c590464b095e338bbac818684b183633b4182bb62c672e463b34b",
       "README.md": "1c56c00dd14dbc62706a49e33f4beeda973b93e70eb8e55014ffc232b2ec5376",
-      "animations.animation.json": "d1384a0a19d4b8b46c7d9513a36295b863970716292d363342a89042f6ece1a1",
+      "animations.animation.json": "5aafe09756c5a47063574fbd99f2ec2fd7e90a9485eca914136ddacc0e94f3a9",
       "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
       "expected/diagnostics.json": "3a0b7007e050270eecf5a15a2d26a32115993a63c9bcdf70ff5e98025de5fbc7",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
@@ -14,7 +14,7 @@
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-b-neck": {
-      "PROVENANCE.md": "707df6ee397fc44a45cf2e66b33e9d09f0b0185ffcef29a9e11cebf375a88b0c",
+      "PROVENANCE.md": "efb6fe99f78c590464b095e338bbac818684b183633b4182bb62c672e463b34b",
       "README.md": "7b3e38b170277df403fe579b1c3532f59e629a583a9cb4ce0f8040a4d1d8e572",
       "animations.animation.json": "a510da17a917de10343cbd0ecf6083645127f46f1ed3721301e37366cc8aca30",
       "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
@@ -27,20 +27,20 @@
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-c-deep-hierarchy": {
-      "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
+      "PROVENANCE.md": "b6a1beca07e948a432e2666bf988b33bb5e0e04d05ab2e73cf24b0d67a5c2a67",
       "README.md": "b8c0e81179f1ba37dbc08ebbcbf88e964b5257f7b346c9471221591f09d43353",
-      "animations.animation.json": "8d31a12cc8a2789e0face78f66f6a8d6e10a5782db7c0b5d5922b03f478555a2",
+      "animations.animation.json": "30b9b464b53df9ab349b8cd72ae1fcf332af4b592fbcc7be966a21dbf4ea9970",
       "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
       "expected/diagnostics.json": "3a0b7007e050270eecf5a15a2d26a32115993a63c9bcdf70ff5e98025de5fbc7",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
       "expected/inventory.json": "ee66a556787f98f084e851331a77ca7aba626181c60377c3b7e8ff6b13ef4e6e",
       "expected/mapping-compiled.json": "72ba4ca0886e52a636a43fb389f84565963a77ede32625e6f8f75d19414169ff",
-      "geometry.geo.json": "76f778b5e2db18143d42441e4b76134f3922f92ca23bf69cb69861e0217eed17",
+      "geometry.geo.json": "7c4df0a3a90a2e6f65ae9bd8b0c5996e1421961e9293498146370f8cee9d6ea6",
       "mapping.yaml": "dedeb658ca2e343b3e316a292c86b7dabcde8bc2c7ce160a394f9df78f99db04",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-d-quadruped": {
-      "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
+      "PROVENANCE.md": "f00f6d052c60c0a241348bfe61632e86b39002d2ae1967693cc952184e7fb2ed",
       "README.md": "0c94f1ab398a66c36f1c89d9882e2f9dde0a378e9137af15e0dc64df6108c612",
       "animations.animation.json": "615b34cbdb820a23daa36dcc6bce14a0b2cb78808fd57aba88f83deec18d1203",
       "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
