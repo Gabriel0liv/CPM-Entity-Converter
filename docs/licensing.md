@@ -14,6 +14,7 @@ Fonte: [GeckoLib LICENSE no baseline](https://github.com/bernie-g/geckolib/blob/
 
 ## Decisão para o projeto
 
+- Licenciar o CPM Entity Converter sob MIT; ver `../LICENSE`.
 - Reimplementar o formato observado, sem copiar código CPM, na primeira implementação.
 - Referenciar commits e arquivos como evidência documental.
 - Manter registro de proveniência de qualquer trecho futuro derivado.
@@ -30,3 +31,7 @@ Fonte: [GeckoLib LICENSE no baseline](https://github.com/bernie-g/geckolib/blob/
 6. impedir entrada acidental de assets com licença incompatível.
 
 Esta análise é técnica, não aconselhamento jurídico.
+
+O inventário normativo está em `../THIRD_PARTY_NOTICES.md`. Nesta execução os
+spikes apenas importam/compilam o oracle a partir do checkout separado ou
+reproduzem dados de teste autorais; nenhum source upstream é copiado.

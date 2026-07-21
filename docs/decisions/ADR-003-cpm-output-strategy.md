@@ -1,6 +1,8 @@
 # ADR-003 — Estratégia de saída CPM
 
-Status: proposto, condicionado a conformidade.
+Status: **accepted** para a estratégia; aceite visual permanece gate.
+
+Data da decisão: 2026-07-21.
 
 ## Contexto
 
@@ -28,6 +30,21 @@ O schema V1 passa a ser mantido pelo projeto, com referências exatas ao upstrea
 ## Riscos
 
 Semânticas implícitas de defaults/roots podem ser perdidas. Gate: um projeto mínimo e fixtures A–C devem abrir no editor CPM e no oracle antes de animações completas.
+
+## Evidências
+
+- [`../../spikes/minimal-cpmproject/results.md`](../../spikes/minimal-cpmproject/results.md): M2–M5 independentes carregam no `ProjectIO`; M0/M1 delimitam `elements` obrigatório.
+- [`../../spikes/head-layering/results.md`](../../spikes/head-layering/results.md): 14 projetos adicionais com quatro animações carregam no oracle.
+- ZIPs repetidos são byte a byte iguais, com entries/timestamps fixos e referências verificadas.
+
+## Riscos residuais
+
+O editor e o round-trip save/reopen não foram executados.
+
+## Condição de reavaliação
+
+Mudança do formato V1, falha visual/round-trip, novo commit CPM normativo ou
+recurso não representável pelo writer independente reabre a comparação A–D.
 
 ## Alternativas rejeitadas
 

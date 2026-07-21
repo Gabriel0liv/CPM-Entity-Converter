@@ -30,6 +30,7 @@
 - **FR-026** Ajustar `model.scale` e `vertical_offset` em boundary bem definido, sem afundar o rig.
 - **FR-027** Não publicar arquivo final se a validação falhar.
 - **FR-028** Suportar `validate` de `.cpmproject` existente sem converter.
+- **FR-029** Suportar `inspect` de inputs, produzindo inventário e diagnostics sem criar `.cpmproject`.
 
 ## Não funcionais
 
@@ -50,10 +51,14 @@
 - **NFR-015** Logs não incluem conteúdo binário nem dados fora dos paths informados.
 - **NFR-016** Fixtures e expected outputs são autorais e redistribuíveis.
 - **NFR-017** API pública e schema têm versionamento semântico/documentado.
+- **NFR-018** Coleções observáveis usam ordem normativa explícita; nenhuma saída depende de `HashMap`.
+- **NFR-019** Report separa input content, logical model, artifact byte e report hashes; paths absolutos não afetam o modelo lógico.
+- **NFR-020** Temporários são removidos em sucesso e falha; output anterior nunca é corrompido.
 
 ## Restrições
 
-- **CON-001** Somente `.geo.json`, `.animation.json`, PNG e mapping JSON/YAML no MVP.
+- **CON-001** Somente GeckoLib 4.4.9, Minecraft 1.20.1, Forge, geometry 1.12.0, `.geo.json`, `.animation.json`, PNG e mapping JSON/YAML no MVP.
 - **CON-002** `poly_mesh`, eventos/sons/partículas e Molang dinâmico não são convertidos.
 - **CON-003** Head retargeting de produção depende de HEAD-001 aprovado.
 - **CON-004** Não copiar código CPM/Gecko sem revisão de licença/proveniência.
+- **CON-005** Fase 1 só inicia após T007, S003, S001/S002, S004 e ADRs essenciais aceitos na ordem normativa.

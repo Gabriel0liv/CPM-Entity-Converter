@@ -1,6 +1,6 @@
 # Formato `.cpmproject` V1
 
-Status: **primeira versão baseada no código**, não é um schema oficial publicado.
+Status: revisado por código e S003; não é um schema oficial publicado.
 
 ## Container
 
@@ -84,7 +84,7 @@ Exemplo estrutural:
   "name": "idle",
   "duration": 1000,
   "priority": 0,
-  "loop": false,
+  "loop": true,
   "interpolator": "linear_loop",
   "frames": [
     {
@@ -105,7 +105,40 @@ Exemplo estrutural:
 
 `duration` é inteiro em milissegundos. Frames são uniformemente espaçados; não há timestamp por frame. `InterpolatorType` é único por clip. O runtime reseta a pose antes de aplicar animações, ordena por prioridade crescente e aplica cada componente como absoluto ou aditivo.
 
-Para `HEAD_ROTATION_YAW/PITCH`, `VanillaPose.getTime` produz um tempo dinâmico de 0–1000 a partir do estado, em vez do relógio. A criação desses clips deve aguardar o spike de layering especificado em ADR-005.
+O campo `loop` e o interpolador devem ser coerentes:
+
+- `loop: true` → `linear_loop` (ou outro interpolador `_loop` aprovado);
+- `loop: false` → `linear_single` (ou outro interpolador `_single`).
+
+O loader aceita combinações estranhas, mas o converter/validator as rejeita.
+
+### Timeline CPM
+
+Se duração é `D` e há `N` frames, o runtime calcula
+`step=(millis % D)/D×N`.
+
+- `LINEAR_LOOP`: frame `i` representa `t_i=i×D/N`, `i=0..N-1`.
+- `LINEAR_SINGLE`: o interpolador remapeia step por `(N-1)/N`; frame `i`
+  representa `t_i=i×D/(N-1)` para `N≥2`.
+- `N=1`: valor constante nos limites testados.
+
+Para FPS solicitado `F`, escolher `N=max(1, round(D_seconds×F))`. Reportar:
+
+- `requestedFps=F`;
+- `frameCount=N`;
+- `effectiveFps=N/D_seconds` para loop;
+- spacing single `D/(N-1)` quando `N≥2`;
+- erro temporal máximo contra o grid solicitado, calculado sobre os instantes
+  efetivamente representados.
+
+Não usar sempre `i/F`, pois diverge quando `D×F` não é inteiro. O oracle
+executável confirmou que o módulo é aplicado também a `LINEAR_SINGLE`: em
+`millis=D` o valor volta ao início e, em `D+1`, progride no novo ciclo. Portanto,
+“single” descreve a interpolação entre primeiro e último frame, não um clamp
+terminal fornecido por `Animation.animate`. Poses dinâmicas de look usam duração
+1001 ms para que o tempo de pose 0–1000 não atinja o módulo zero no extremo.
+
+Para `HEAD_ROTATION_YAW/PITCH`, `VanillaPose.getTime` produz um tempo dinâmico de 0–1000 a partir do estado, em vez do relógio. S001/S002 confirmaram a execução de look aditivo depois da base; sinais visuais finais ainda dependem do checklist manual de ADR-005.
 
 ## Validação em camadas
 
@@ -113,9 +146,11 @@ Para `HEAD_ROTATION_YAW/PITCH`, `VanillaPose.getTime` produz um tempo dinâmico 
 2. **Sintaxe:** UTF-8 JSON, PNG válido.
 3. **Schema:** version, tipos, ranges, roots e campos MVP.
 4. **Semântica:** árvore acíclica, IDs/referências, duração/frames, UV, números finitos.
-5. **Conformidade:** carregar em um harness baseado no `ProjectIO` oficial, se habilitado em testes.
+5. **Conformidade:** carregar no harness `ProjectIO` oficial fixado pelo S003.
 6. **Aceite lógico:** descompactar, normalizar JSON/PNG e comparar hash lógico entre execuções.
 
 ## Evidências
 
 [ProjectIO](https://github.com/tom5454/CustomPlayerModels/blob/9272f4f9c36a2bbd6986e6da65bf7091369cb12b/CustomPlayerModels/src/shared/java/com/tom/cpm/shared/editor/project/ProjectIO.java), [ElementsLoaderV1](https://github.com/tom5454/CustomPlayerModels/blob/9272f4f9c36a2bbd6986e6da65bf7091369cb12b/CustomPlayerModels/src/shared/java/com/tom/cpm/shared/editor/project/loaders/ElementsLoaderV1.java), [AnimationsLoaderV1](https://github.com/tom5454/CustomPlayerModels/blob/9272f4f9c36a2bbd6986e6da65bf7091369cb12b/CustomPlayerModels/src/shared/java/com/tom/cpm/shared/editor/project/loaders/AnimationsLoaderV1.java), [BlockbenchExport](https://github.com/tom5454/CustomPlayerModels/blob/9272f4f9c36a2bbd6986e6da65bf7091369cb12b/Web/src/blockbench/java/com/tom/cpm/blockbench/convert/BlockbenchExport.java).
+
+Resultados mínimos: [`../spikes/minimal-cpmproject/results.md`](../spikes/minimal-cpmproject/results.md). No oracle fixado, M0/M1 falham pela lista `elements` ausente e M2–M5 passam. Logo `elements: []` é obrigatório pelo loader observado; textura/animação são condicionais. A abertura visual continua separada desse resultado.

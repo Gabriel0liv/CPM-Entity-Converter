@@ -1,10 +1,10 @@
 # Spec 001 — GeckoLib 4 para CPM
 
-Status: **draft / requer revisão**.
+Status: **draft revisado / condicionado aos spikes pré-produção**.
 
 ## Visão
 
-Uma CLI offline converte uma geometria GeckoLib 4.4.9 `.geo.json`, um ou mais `.animation.json`, uma textura PNG e um mapping JSON/YAML explícito em um `.cpmproject` V1 editável, acompanhado de relatório determinístico.
+Uma CLI offline converte uma geometria GeckoLib 4.4.9 `.geo.json`, um ou mais `.animation.json`, uma textura PNG e um mapping JSON/YAML explícito em um `.cpmproject` V1 editável, acompanhado de relatório determinístico. A promessa normativa é somente GeckoLib 4.4.9, Minecraft 1.20.1, Forge e geometry 1.12.0.
 
 ## Escopo MVP
 

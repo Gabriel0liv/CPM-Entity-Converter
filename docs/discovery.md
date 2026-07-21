@@ -72,7 +72,10 @@ Foram lidos os arquivos obrigatórios indicados no briefing e, adicionalmente:
 ## Dúvidas abertas e spikes necessários
 
 - **Q-001 / R-HEAD-01:** ordem observável e combinação precisa de `STANDING/WALKING` com `HEAD_ROTATION_*`, especialmente quando dois clips da mesma prioridade afetam o mesmo elemento.
-- **Q-002:** topologia ideal para preservar uma cadeia body→neck→head e, simultaneamente, utilizar roots CPM independentes. Comparar rig único sob BODY com particionamento em seis roots.
+- **S002 concluído automaticamente (aceite visual pendente):** topologia ideal
+  para preservar body→neck→head e, simultaneamente, utilizar roots CPM
+  independentes. O experimento compara rig único sob BODY com root partition;
+  a evidência favorece single-anchor, enquanto partition exige proxy/rebake.
 - **Q-003:** conjunto mínimo aceito por todas as versões CPM alvo; o código atual não define versão mínima do editor alvo.
 - **Q-004:** semântica de `lerp_mode: catmullrom`/keyframes Bedrock `pre` e `post` em casos exportados por versões específicas do plugin GeckoLib.
 - **Q-005:** expressão Molang depende de variáveis de runtime. O MVP offline só poderá avaliar constantes; expressões dinâmicas devem falhar ou ser explicitamente ignoradas por configuração.

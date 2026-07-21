@@ -1,6 +1,6 @@
 # Arquitetura recomendada
 
-Status: proposta para aprovação após Fase 0.
+Status: direção aprovada; detalhes condicionados aos spikes pré-produção.
 
 ## Decisão
 
@@ -58,7 +58,7 @@ Cada estágio retorna `Result<T, diagnostics>` e não escreve saída final se ho
 ## Componentes centrais
 
 - `ModelIR`: árvore, bind local, cubes, texture, clips e provenance.
-- math layer: `Vec3d`, `Quatd`, `Mat4d`, `Transform`; composição/decomposição testada.
+- math layer: Euler autoral contínuo, `Vec3d`, `Quatd`, `Mat4d`, `Transform` e continuity hints; quaternion somente após sampling.
 - `SemanticRigMap`: roots/roles, look, clips, mode, sampling e ignores.
 - sampler: evaluator Gecko independente, timelines comuns, loop continuity.
 - CPM projection: roots/anchors, helper nodes, IDs, animation files.
@@ -73,6 +73,16 @@ Cada estágio retorna `Result<T, diagnostics>` e não escreve saída final se ho
 - UTF-8, newline LF, chaves JSON ordenadas, locale neutro;
 - timestamp ZIP fixo e compressão configurada;
 - PNG copiado byte a byte após validação (sem reencode no MVP).
+- report usa paths relativos quando possível e `/`; diretório absoluto e
+  timestamps ficam fora do conteúdo/hash normativo;
+- diagnostics são ordenados por severity, source path normalizado, location,
+  code e contexto;
+- `inputContentHash`, `logicalModelHash`, `artifactByteHash` e `reportHash` são
+  calculados em domínios separados.
+
+Mesmos bytes de input e mesma configuração devem produzir `.cpmproject`
+byte a byte idêntico. Ordem de entrada é preservada no IR quando representa
+autoria; projection, components, JSON, ZIP e report usam ordem canônica explícita.
 
 ## Dependências propostas
 
@@ -89,7 +99,7 @@ A primeira minimiza drift; a segunda integra melhor com animação vanilla. ADR-
 
 ## Fases e gates
 
-0. Documentação aprovada + spikes descartáveis.
+0. T007 → S003 → S001/S002 coordenados → S004 → aceitação dos ADRs.
 1. IR/math/diagnostics com testes golden.
 2. parser Gecko e fixtures.
 3. writer estático + validator + conformidade.

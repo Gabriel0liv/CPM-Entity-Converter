@@ -1,8 +1,17 @@
 # Plano de implementação
 
-## Fase 0 — descoberta
+## Fase 0 — descoberta e spikes pré-produção
 
-Documentação, schema proposto, ADRs, fixtures especificadas, riscos e spikes. Gate: revisão humana desta spec.
+Sequência normativa, sem antecipar decisões:
+
+1. concluir T007 e revisar consistência documental;
+2. executar S003 para fechar o mínimo CPM e a viabilidade do writer independente;
+3. executar S001 e S002 coordenadamente sobre os mesmos assets/animações;
+4. executar S004 posteriormente para pre/post, catmullrom e hold Gecko 4.4.9;
+5. atualizar e aceitar, ou bloquear com plano concreto, ADR-003/004/005;
+6. somente então autorizar Fase 1.
+
+HEAD-001/S001 e S002 são gates arquiteturais pré-produção, não trabalho tardio da Fase 5.
 
 ## Fase 1 — IR e matemática
 
@@ -22,7 +31,7 @@ Sampler, absolute/additive projection, state filenames, loops/hold, reports. Req
 
 ## Fase 5 — retarget semântico
 
-HEAD-001; escolher topologia; roots/look/neck; vertical/scale; atualizar ADR-005. Requisitos: FR-011/018/019/026.
+Implementar em produção a estratégia já decidida pelos spikes S001/S002: roots/look/neck; vertical/scale. Requisitos: FR-011/018/019/026.
 
 ## Fase 6 — CLI
 

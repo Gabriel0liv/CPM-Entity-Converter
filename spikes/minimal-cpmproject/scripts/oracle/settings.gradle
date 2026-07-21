@@ -1,0 +1,2 @@
+// NON_PRODUCTION: disposable S003 oracle build.
+rootProject.name = 'minimal-cpmproject-oracle'

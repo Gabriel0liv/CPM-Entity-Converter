@@ -10,15 +10,30 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
 - [x] T003 verificar licenças CPM/GeckoLib.
 - [x] T004 criar documentação e spec 001.
 - [x] T005 comparar estratégias A–D e propor arquitetura.
-- [!] T006 revisar/aprovar documentação com responsável do projeto.
-- [ ] T007 corrigir decisões solicitadas na revisão.
+- [~] T006 revisão técnica continua aberta apenas para os gates manuais/ADR-004/005.
+- [x] T007 corrigir documentação conforme revisão técnica.
+  - [x] T007-A separar Euler autoral contínuo de quaternion amostrado.
+  - [x] T007-B corrigir timeline loop/single e política N/FPS efetivo.
+  - [x] T007-C criar rastreabilidade FR/NFR/CON.
+  - [x] T007-D fixar matriz de compatibilidade GeckoLib/CPM.
+  - [x] T007-E definir MIT, notices e política de terceiros.
+  - [x] T007-F fechar determinismo, console e ordem de coleções.
 
 ## Spikes (não produção)
 
-- [ ] S001 HEAD-001: layering CPM de walk + yaw + pitch + child.
-- [ ] S002 comparar single-anchor vs root partition em fixture B.
-- [ ] S003 confirmar mínimo `.cpmproject` em versões CPM alvo.
+- [~] S001 HEAD-001: geração/oracle/layering concluídos; checklist visual pendente.
+  - [x] S001-A gerar projetos, executar runtime CPM e medir 22 casos.
+  - [!] S001-B executar câmera/editor e registrar sinais/pivôs/seam (ambiente gráfico não executado).
+- [~] S002 comparar single-anchor vs root partition; comparação automática concluída, aceite visual pendente.
+  - [x] S002-A comparar herança, rebake, horn, body e 100 resets.
+  - [!] S002-B decidir aceite final de ADR-005 após checklist visual.
+- [x] S003 confirmar mínimo `.cpmproject` no oracle CPM 0.6.27 fixado.
+  - [x] S003-A M0–M5 determinísticos e verificações estruturais.
+  - [x] S003-B M0–M5 executados pelo `ProjectIO` oficial.
+  - [!] S003-C abrir/salvar/reabrir M2–M5 no editor gráfico.
 - [ ] S004 confirmar `pre/post`, catmullrom e hold Gecko 4.4.9 com oracle.
+
+Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. A Fase 0 não está concluída enquanto S004 e os checks visuais acima permanecerem abertos.
 
 ## Fase 1
 

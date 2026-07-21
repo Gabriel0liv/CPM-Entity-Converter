@@ -1,6 +1,8 @@
 # ADR-001 — Linguagem e build
 
-Status: proposto.
+Status: **accepted**.
+
+Data da decisão: 2026-07-21.
 
 ## Contexto
 
@@ -32,3 +34,18 @@ Verbosity e bibliotecas JSON/YAML adicionam superfície. Mitigar com records, AP
 ## Alternativas rejeitadas
 
 Kotlin adiciona runtime/idioma sem benefício essencial; TypeScript favorece Blockbench, mas enfraquece o objetivo CLI independente; Python dificulta artefato/runtime reproduzível para este contexto.
+
+## Evidências
+
+Direção arquitetural aprovada na revisão da Fase 0; baseline Minecraft/GeckoLib
+e oracle CPM são Java. Os scripts Python dos spikes são descartáveis e não
+alteram a linguagem de produção.
+
+## Riscos residuais
+
+Toolchain e dependency locking ainda serão validados em T100.
+
+## Condição de reavaliação
+
+Reavaliar apenas se Java 17 impedir uma dependência normativa, distribuição
+cross-platform ou harness de conformidade necessário.

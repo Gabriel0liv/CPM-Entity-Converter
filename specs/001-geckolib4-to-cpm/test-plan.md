@@ -12,7 +12,9 @@
 
 ### A — humanoide básico
 
-Body/head/arms/legs; box UV; idle/walk; track head sutil; yaw/pitch mapping. Testa FR-001–021 e AC-020–027.
+Body/head/arms/legs; box UV; idle/walk; track head sutil; yaw/pitch mapping.
+Cobre geometry/cubes/box UV, bind básico, standing/walking, sampling linear e
+aceite visual humanoide; não cobre sozinho todos os FR.
 
 ### B — humanoide com pescoço
 
@@ -47,9 +49,20 @@ Cada fixture contém source JSON/PNG mínimo, mapping YAML, expected normalized 
 - CPM `ProjectIO` load/save para aceitar output; normalizar antes de comparar porque upstream gera IDs/order não determinísticos.
 - Conversor Blockbench oficial somente como evidência de coordinate golden, não como truth absoluta para retarget.
 
-## HEAD-001 (spike descartável)
+## Ordem dos spikes pré-produção
 
-Gerar projeto mínimo com um bone head e child horn; clips STANDING, WALKING, HEAD_YAW, HEAD_PITCH em priorities controladas. Medir neutral, ±90°, walk combinado, 100 loops e ordem. Repetir com neck chain. Artefatos do spike ficam em `spikes/head-layering/`, marcados `NON_PRODUCTION`, e podem ser apagados após resultados virarem ADR/test.
+T007 → S003 → S001/S002 coordenados → S004 → ADRs → Fase 1.
+
+## S001/S002 — HEAD-001 e topologia (spike descartável)
+
+Gerar projetos equivalentes single-anchor e root-partition com
+body→neck→head→horn; clips STANDING, WALKING, HEAD_YAW e HEAD_PITCH em
+priorities 0/1 e iguais. Medir neutral, extremos, walk combinado, state switch,
+body rotation e 100 loops. Artefatos ficam em `spikes/head-layering/`, marcados
+`NON_PRODUCTION`.
+
+Incluir testes de timeline CPM: duração×FPS inteira/não inteira; loop/single;
+1/2 frames; `D-ε`, `D` e `D+ε`. Resultado de código não substitui inspeção visual.
 
 ## Visual checklist
 
@@ -57,4 +70,5 @@ Registrar versão CPM, sistema, fixture, hash output e pass/fail por AC-020–02
 
 ## Gate
 
-Não iniciar writer animado antes de math/parser tests; não aprovar head retarget antes de HEAD-001; não publicar MVP sem fixtures A–C automatizadas e visuais.
+Não iniciar Fase 1 antes de T007, S003, S001/S002, S004 e ADRs essenciais. Não
+publicar MVP sem fixtures A–C automatizadas e visuais.

@@ -1,0 +1,21 @@
+# Build and editor output
+.gradle/
+build/
+out/
+.idea/
+.vscode/
+*.class
+
+# Disposable spike dependencies and caches
+spikes/**/.deps/
+spikes/**/.gradle/
+spikes/**/build/
+spikes/**/__pycache__/
+
+# Local-only reports
+*.local.json
+*.local.log
+
+# OS metadata
+.DS_Store
+Thumbs.db

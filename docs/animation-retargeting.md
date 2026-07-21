@@ -43,7 +43,12 @@ Proposta para spike:
 
 O runtime CPM confirma que rotação aditiva é soma por eixo em radianos após o reset da pose. Isso torna a prioridade decisiva quando uma camada absoluta e uma aditiva atingem o mesmo bone; não transforma soma de Euler em composição quaternion geral.
 
-**SPIKE HEAD-001** deve observar no CPM: ordem por priority; combinação simultânea WALKING + YAW + PITCH; sinal; neutral em 0.5; filhos da cabeça; reset e 100 loops. Até esse spike, ADR-005 é provisório.
+S001/S002 observaram no runtime CPM que base absoluta seguida de look aditivo
+preserva a base e soma look; inverter a ordem apaga look. O contrato usa base
+priority 0 e look priority 1 e não depende do desempate em prioridade igual.
+Reset + aplicação por 100 ciclos não acumulou drift. Combinação visual com câmera,
+sinais finais e pivôs ainda depende do checklist manual; por isso ADR-005 continua
+provisório.
 
 ## Distribuição neck/head
 
@@ -52,16 +57,24 @@ Se neck recebe `n` e head recebe `h`, a interpretação depende da topologia:
 - cadeia neck→head: rotação total visual da head é aproximadamente `n+h`; para total 1.0, sugerir `h=1-n`;
 - branches independentes/roots CPM: head não herda neck; `h` pode ser 1.0.
 
+O experimento comparativo favorece single-anchor: ele preserva body→neck→head→horn
+e transformações posteriores do body. Root partition iguala o neutral por rebake,
+mas exige proxy ou rebake por sample para reproduzir herança do body/neck.
+
 O schema exige `look.composition: inherited_split|independent` para remover ambiguidade. `inherited_split` valida `0≤n,h≤1` e, por default, `n+h=1` (tolerância 1e-6). Configuração fora disso requer `allow_overrotation: true` e warning.
 
 ## Reamostragem e easing
 
-- default 20 fps; timeline comum inclui `t_i=i/fps` para loop, `i=0..N-1`;
-- não-loop inclui pose terminal de forma compatível com `LINEAR_SINGLE`, a ser confirmada por teste do runtime CPM;
-- unwrap de ângulos por track antes da interpolação;
+- default solicitado 20 fps; `N=max(1,round(duration×requestedFps))`;
+- loop usa `t_i=i×duration/N` e `effectiveFps=N/duration`;
+- single com `N≥2` usa `t_i=i×duration/(N-1)`; o runtime volta ao início em `millis=duration` por causa do módulo, conforme oracle executável;
+- Euler autoral não é normalizado nem convertido a quaternion antes do sample; o unwrap de saída escolhe a branch CPM contínua após composição;
 - step usa hold anterior; easings Gecko são avaliados antes de converter para frames lineares CPM;
 - `pre/post`, catmullrom e custom easing têm testes próprios ou diagnóstico de aproximação/erro;
 - redução de frames fica desativada no MVP por default. Quando ativada futuramente, limites por canal devem ser explícitos.
+
+O relatório registra requested FPS, frame count, effective FPS/spacing e erro
+temporal máximo. Duração×FPS não inteira é um caso obrigatório, não edge case.
 
 ## Continuidade
 

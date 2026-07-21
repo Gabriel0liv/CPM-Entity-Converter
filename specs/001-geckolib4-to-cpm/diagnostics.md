@@ -36,10 +36,13 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `ANIM_BONE_NOT_FOUND` | ERROR | track refere bone inexistente |
 | `ANIM_DYNAMIC_MOLANG_UNSUPPORTED` | ERROR | expressão depende de runtime |
 | `ANIM_CUSTOM_EASING_UNSUPPORTED` | ERROR | easing não registrado/conhecido |
+| `ANIM_PRE_POST_COLLAPSED_449` | WARNING | pre/post diferentes colapsados como GeckoLib 4.4.9 |
+| `ANIM_EULER_DECOMPOSITION_AMBIGUOUS` | WARNING/ERROR | branch Euler/winding não demonstrável |
 | `ANIM_EVENT_IGNORED_BY_SCOPE` | WARNING | som/partícula/timeline explicitamente ignorado |
 | `ANIM_HOLD_REQUIRES_MAPPING` | ERROR | hold sem semântica CPM |
 | `ANIM_LOOP_DISCONTINUITY` | WARNING | seam excede tolerância |
 | `ANIM_RESAMPLED` | INFO | clip bakeado, com fps/frames |
+| `ANIM_EFFECTIVE_FPS_DIFFERENT` | INFO | duration×requested FPS não inteiro |
 | `ANIM_APPROXIMATION` | WARNING | perda mensurável |
 | `ANIM_ZERO_SCALE_UNREPRESENTABLE` | ERROR | CPM trata scale 0 como “não alterar” |
 | `MAP_SCHEMA_INVALID` | ERROR | mapping inválido/unknown property |

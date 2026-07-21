@@ -1,0 +1,15 @@
+// NON_PRODUCTION: compiles against, but does not copy, the separate CPM checkout.
+plugins { id 'application' }
+repositories { mavenCentral(); maven { url 'https://libraries.minecraft.net' } }
+def reference = providers.gradleProperty('cpmReferenceDir').get()
+sourceSets.main.java.srcDirs = ['src/main/java', "${reference}/CustomPlayerModels/src/shared/java"]
+sourceSets.main.resources.srcDir "${reference}/CustomPlayerModels/src/shared/resources"
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.guava:guava:21.0'
+    compileOnly 'com.mojang:brigadier:1.0.18'
+    compileOnly 'io.netty:netty-all:4.1.25.Final'
+}
+application { mainClass = 'spike.AnimationRuntimeOracle' }
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+

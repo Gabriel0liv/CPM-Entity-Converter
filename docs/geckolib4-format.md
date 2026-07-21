@@ -1,6 +1,10 @@
 # GeckoLib 4 — formato de entrada do MVP
 
-Baseline normativo inicial: GeckoLib **4.4.9**, Forge, Minecraft 1.20.1, commit `25a41d7375bb7eeda37dadc04b1e03fe486b33e5`. Inputs de outra versão 4.x devem registrar a versão detectada e podem ser recusados.
+Baseline normativo: GeckoLib **4.4.9**, Forge, Minecraft 1.20.1, geometry
+`format_version: "1.12.0"`, commit
+`25a41d7375bb7eeda37dadc04b1e03fe486b33e5`. Outras versões GeckoLib 4.x são
+**não suportadas**, não apenas “possivelmente recusadas”, até receberem fixtures
+e testes próprios. Ver `compatibility.md`.
 
 ## Geometria `.geo.json`
 
@@ -28,7 +32,7 @@ Root contém `format_version` e `animations`. Cada clip pode conter:
 
 No adapter 4.4.9, `lerp_mode` no objeto do canal é ignorado durante a construção das stacks. Para keyframe Bedrock com `pre` e `post`, o adapter escolhe `pre`; só usa `post` quando `pre` não existe. Portanto, o conversor deve oferecer um modo de compatibilidade 4.4.9 que reproduza essa semântica e diagnostique a perda, em vez de presumir o comportamento de versões Gecko posteriores.
 
-O adapter 4.4.9 converte segundos em ticks multiplicando por 20. Em rotações constantes, converte graus para radianos e aplica sinais `(-x,-y,+z)`. Rotações são aplicadas como delta sobre o snapshot inicial do bone. Posição animada é aplicada como offset; escala é valor animado. Canais ausentes deixam o estado inicial/reset controlar o bone.
+O adapter 4.4.9 converte segundos em ticks multiplicando por 20. Em rotações constantes, converte graus para radianos e aplica sinais `(-x,-y,+z)`. Rotações são aplicadas como delta sobre o snapshot inicial do bone. Posição animada é aplicada como offset; escala é valor animado. Canais ausentes deixam o estado inicial/reset controlar o bone. O converter preserva Euler autoral por eixo até o sample; detalhes em `coordinate-systems.md` e `data-model.md`.
 
 ## Easing e Molang
 
@@ -43,7 +47,7 @@ Política MVP:
 
 ## Reamostragem
 
-Todos os canais são avaliados na timeline comum em 20 fps por default. Antes de amostrar:
+Todos os canais são avaliados na timeline CPM comum com 20 fps solicitado por default. Para duração `D`, escolher `N=max(1, round(D×requestedFps))` e samplear nos instantes definidos pelo interpolador CPM; `effectiveFps=N/D`. Antes de amostrar:
 
 1. ordenar timestamps numericamente;
 2. expandir valores escalares/triplets;

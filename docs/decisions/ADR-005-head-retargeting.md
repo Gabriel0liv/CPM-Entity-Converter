@@ -1,6 +1,8 @@
 # ADR-005 — Retargeting de cabeça e pescoço
 
-Status: **provisório; bloqueado por SPIKE HEAD-001**.
+Status: **provisional; evidência automática favorece single-anchor, visual pendente**.
+
+Data da decisão provisória: 2026-07-21.
 
 ## Contexto
 
@@ -15,7 +17,10 @@ Head deve combinar bind, idle/walk sutil, yaw/pitch e herança, sem dupla rotaç
 
 ## Decisão
 
-Prototipar 3 como preferência inicial; comparar com 4. Look será camada dinâmica aditiva, separada dos clips base, e nunca coexistirá com look vanilla herdado sobre o mesmo caminho.
+Recomendar 3 (single-anchor) para a futura implementação: look dinâmico aditivo
+em priority 1, base em priority 0, sem look vanilla duplicado no mesmo caminho.
+Não promover a `accepted` até concluir o checklist visual. A opção 4 permanece
+fallback se a integração vanilla do anchor único falhar.
 
 ## Justificativa
 
@@ -23,11 +28,31 @@ A opção 3 preserva hierarquia e filhos naturalmente e permite distribuição n
 
 ## Consequências
 
-O mapping explicita influences, composition, limits e overrotation. O writer só ativa esta estratégia após HEAD-001 passar walk+yaw+pitch, filhos, neutral e loops.
+O mapping explicita influences, composition, limits e overrotation. O writer só
+ativa esta estratégia após o gate manual HEAD-001 passar walk+yaw+pitch, filhos,
+neutral, state switch e loops.
 
 ## Riscos
 
 Ordem por priority pode não produzir composição desejada; adição Euler pode diferir da composição quaternion; rig sob BODY pode perder comportamentos vanilla. Se qualquer risco se materializar, escolher partição com rebake ou proxies.
+
+## Evidências
+
+- [`../../spikes/head-layering/results.md`](../../spikes/head-layering/results.md): 14 projetos passam no `ProjectIO`; `Animation`/`RenderedCube` reais confirmam ordem, adição, escala-zero e reset sem drift em 100 ciclos.
+- [`../../spikes/head-layering/artifacts/measurements.json`](../../spikes/head-layering/artifacts/measurements.json): 22 casos comparativos.
+- Single-anchor herda body/neck e horn; root partition exige rebake/proxy após o neutral.
+
+## Consequências e riscos residuais
+
+Prioridade igual não é contrato. Influência total acima de 1 gera overrotation e
+deve produzir diagnostic. Sinais visuais, câmera/vanilla e edição permanecem não
+observados.
+
+## Condição de reavaliação
+
+Executar `manual-checklist.md` no CPM 0.6.27. Se single-anchor perder look vanilla,
+mover body indevidamente ou exibir pivô/seam incorreto, testar proxy/rebake da
+root partition antes de aceitar.
 
 ## Alternativas rejeitadas
 
