@@ -23,6 +23,9 @@ independente foi executada em `review/phase1-final` sobre `9bacfa9`.
   Wrapper 8.8. Referência: `actions/runs/29861585146`.
 - O oracle S004 foi rerodado após a correção de checkout limpo: 90/90
   assertions, 33 PASS, 1 rejeição esperada e 3 BLOCKED.
+- A execução CI do branch integrado (run `29865108648`) falhou no job Windows
+  durante `spotlessCheck clean check`, embora a mesma sequência passe localmente;
+  a causa remota permanece não diagnosticável sem logs autenticados.
 
 ## Bloqueios restantes
 
