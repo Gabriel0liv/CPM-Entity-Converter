@@ -67,7 +67,7 @@ class ArchitectureTest {
   }
 
   private static List<Path> productionModules() {
-    Path project = Paths.get("..").toAbsolutePath().normalize();
+    Path project = projectRoot();
     return List.of(
         project.resolve("converter-core"),
         project.resolve("converter-config"),
@@ -75,5 +75,13 @@ class ArchitectureTest {
         project.resolve("writer-cpm"),
         project.resolve("validator-cpm"),
         project.resolve("converter-cli"));
+  }
+
+  private static Path projectRoot() {
+    Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
+    while (current != null && !Files.exists(current.resolve("settings.gradle"))) {
+      current = current.getParent();
+    }
+    return current == null ? Paths.get(System.getProperty("user.dir")).toAbsolutePath() : current;
   }
 }

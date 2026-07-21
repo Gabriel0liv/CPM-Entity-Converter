@@ -17,7 +17,7 @@ class DiagnosticCatalogTest {
       assertTrue(values.add((String) field.get(null)), "duplicate " + field.getName());
     }
     String documentation =
-        Files.readString(Path.of("..", "specs", "001-geckolib4-to-cpm", "diagnostics.md"));
+        Files.readString(projectRoot().resolve("specs/001-geckolib4-to-cpm/diagnostics.md"));
     assertEquals(values.size(), DiagnosticCodes.all().size());
     String block =
         documentation.substring(
@@ -32,5 +32,13 @@ class DiagnosticCatalogTest {
 
   private static int matcherResults(String block) {
     return (int) Pattern.compile("`([A-Z][A-Z0-9_]+)`").matcher(block).results().count();
+  }
+
+  private static Path projectRoot() {
+    Path current = Path.of(System.getProperty("user.dir")).toAbsolutePath().normalize();
+    while (current != null && !Files.exists(current.resolve("settings.gradle"))) {
+      current = current.getParent();
+    }
+    return current == null ? Path.of(System.getProperty("user.dir")).toAbsolutePath() : current;
   }
 }
