@@ -136,4 +136,40 @@ class MappingCompilerTest {
     assertTrue(
         result.diagnostics().all().stream().anyMatch(d -> d.context().containsKey("candidate.0")));
   }
+
+  @Test
+  void compilesEveryNameBearingFieldAndPreservesDocument() {
+    var source =
+        new MappingDocumentV1(
+            1,
+            1.5,
+            2.0,
+            "skins/é.png",
+            "root_partition",
+            Map.of("body", "head"),
+            Map.of("headRole", "head"),
+            Map.of("idleClip", "walk-id"),
+            new MappingDocumentV1.Look(
+                "head", "neck", "inherited_split", 0.35, 0.65, false, Map.of("yaw", 60.0)),
+            Map.of("idle", new MappingDocumentV1.StateMapping("walk-id", "absolute", false, 30)),
+            new MappingDocumentV1.Sampling(24),
+            List.of("feature.x"),
+            new MappingDocumentV1.DiagnosticPolicy(false, true));
+    var result = new MappingCompiler().compile(source, index());
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    var compiled = result.value();
+    assertEquals(new BoneId("head-id"), compiled.bones().get("headRole"));
+    assertEquals(new BoneId("head-id"), compiled.rootRoles().roles().get("body"));
+    assertEquals(new BoneId("head-id"), compiled.look().head().orElseThrow());
+    assertEquals(new BoneId("neck-id"), compiled.look().neck().orElseThrow());
+    assertEquals(new ClipId("walk-id"), compiled.clips().get("idleClip"));
+    assertEquals(new ClipId("walk-id"), compiled.stateMappings().get("idle").clip());
+    assertEquals(24, compiled.sampling().requestedFps());
+    assertEquals("skins/é.png", compiled.skin());
+    assertEquals("root_partition", compiled.rootStrategy());
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> compiled.stateMappings().put("x", compiled.stateMappings().get("idle")));
+    assertEquals("head", source.bones().get("headRole"));
+  }
 }

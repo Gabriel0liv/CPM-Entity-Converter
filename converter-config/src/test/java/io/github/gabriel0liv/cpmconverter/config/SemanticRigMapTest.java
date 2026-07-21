@@ -14,7 +14,7 @@ class SemanticRigMapTest {
     var bones = new LinkedHashMap<String, BoneId>();
     bones.put("head", new BoneId("head-id"));
     var map =
-        new SemanticRigMap(
+        SemanticRigMap.create(
             bones,
             Map.of(),
             new CompiledRootRoles(Map.of()),

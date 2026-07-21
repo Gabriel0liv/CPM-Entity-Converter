@@ -94,7 +94,7 @@ public final class MappingCompiler {
                 Boolean.TRUE.equals(document.diagnosticPolicy().warningsAsErrors()),
                 Boolean.TRUE.equals(document.diagnosticPolicy().ignoreUnsupported()));
     return Result.success(
-        new SemanticRigMap(
+        SemanticRigMap.create(
             bones,
             clips,
             new CompiledRootRoles(rootRoles),
