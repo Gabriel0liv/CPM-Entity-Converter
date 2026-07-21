@@ -1,0 +1,11 @@
+{
+  "compiledIds": [
+    "body",
+    "head",
+    "left_arm",
+    "right_arm",
+    "left_leg",
+    "right_leg"
+  ],
+  "mappingPath": "mapping.yaml"
+}

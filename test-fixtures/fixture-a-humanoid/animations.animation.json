@@ -1,1 +1,1 @@
-{"format":"authorial","animations":{"idle":{"loop":true,"bones":{"head":{"rotation":{"0.0":[0,0,0],"1.0":[0,2,0]}}}},"walk":{"loop":true,"bones":{"left_leg":{"rotation":{"0.0":[0,0,0],"0.5":[25,0,0]}}}}}}
+{"animations":{"idle":{"bones":{"head":{"rotation":{"0.0":[0,0,0],"1.0":[0,2,0]}}},"loop":true},"walk":{"bones":{"left_leg":{"rotation":{"0.0":[0,0,0],"0.5":[25,0,0]}}},"loop":true}},"format_version":"1.8.0"}

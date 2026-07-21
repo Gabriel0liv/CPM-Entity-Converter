@@ -1,0 +1,14 @@
+{
+  "animationFormat": "1.8.0",
+  "bones": [
+    "body",
+    "head",
+    "left_arm",
+    "right_arm",
+    "left_leg",
+    "right_leg"
+  ],
+  "fixture": "fixture-a-humanoid",
+  "geometryFormat": "1.12.0",
+  "hasCubes": true
+}

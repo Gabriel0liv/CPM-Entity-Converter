@@ -1,0 +1,15 @@
+{
+  "animationFormat": "1.8.0",
+  "bones": [
+    "body",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "jaw",
+    "accessory"
+  ],
+  "fixture": "fixture-c-deep-hierarchy",
+  "geometryFormat": "1.12.0",
+  "hasCubes": true
+}

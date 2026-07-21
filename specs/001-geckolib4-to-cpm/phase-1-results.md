@@ -1,6 +1,7 @@
 # Resultados da Fase 1 inicial (T100–T105)
 
-Data: 2026-07-21. Estado: concluído para o escopo liberado pelo Gate B.
+Data: 2026-07-21. Estado: revisão corretiva em andamento; o commit anterior
+criou um esqueleto compilável, mas não encerrava os critérios de aceite.
 
 ## Módulos e APIs
 
@@ -20,7 +21,7 @@ Minecraft, Forge, GeckoLib, CPM ou Blockbench.
 
 ## Evidência
 
-`gradlew clean check` passou, incluindo testes de diagnostics, matemática,
+`gradlew clean check` passou nesta rodada, incluindo testes de diagnostics,
 arquitetura, configuração JSON/YAML, invariantes IR e inventário de fixtures.
 O oracle S004 passou auditoria e assertions separadamente; seu lifecycle
 terminal permanece ADR-006 provisional.
@@ -34,5 +35,6 @@ serem usadas em produção.
 
 ## Próximo gate
 
-T200+ pode iniciar após revisão deste conjunto. T300/T304/T400/T401/T402/T500/
-T501 continuam bloqueadas conforme Gate B.
+T100–T105 permanecem `[~]` até revisão final dos critérios corretivos e CI
+Windows/Ubuntu. T200 está `[!]` bloqueada pela revisão da Fase 1. T300/T304/
+T400/T401/T402/T500/T501 continuam bloqueadas conforme Gate B.

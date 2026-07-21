@@ -32,7 +32,7 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
   - [x] S003-B M0–M5 executados pelo `ProjectIO` oficial.
   - [!] S003-C abrir/salvar/reabrir M2–M5 no editor gráfico.
 - [~] S004 executar oracle real GeckoLib 4.4.9; assertions corrigidas, lifecycle terminal ainda isolado.
-  - [~] S004-A fixtures auditadas e executadas; 37 distintas, 66 assertions, sem FAIL.
+  - [x] S004-A fixtures auditadas e executadas; 37 distintas, 90 assertions semânticas, sem FAIL; 3 casos de controller BLOCKED.
   - [x] S004-B relatório estruturado com parser/evaluator/controller/policy, hashes e contadores.
   - [!] S004-C tick/controller terminal de `play_once` e `hold_on_last_frame` requer CoreGeoModel completo.
   - [x] S004-D Molang constante/dinâmica detectada; dinâmica rejeitada por política offline.
@@ -43,16 +43,16 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 1
 
-- [x] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002, NFR-004/008/014).
-- [x] T101 implementar diagnostics e source locations (FR-023, NFR-006/007).
-- [x] T102 implementar math value objects e golden axes (FR-009/010).
-- [x] T103 implementar ModelIR/invariants (ADR-002).
-- [x] T104 implementar mapping schema JSON/YAML (FR-005).
-- [x] T105 criar fixtures autorais A–D e licença (NFR-016).
+- [~] T100 revisão de reprodutibilidade e namespace.
+- [~] T101 revisão da API de diagnostics e Result.
+- [~] T102 completar matemática e golden tests.
+- [~] T103 alinhar ModelIR e validator ao contrato.
+- [~] T104 completar schema, loader e compilação semântica.
+- [~] T105 reconstruir fixtures A–D.
 
 ## Fase 2
 
-- [ ] T200 parser geometry/bones/cubes (FR-001/002/006/007).
+- [!] T200 parser geometry/bones/cubes — bloqueada pela revisão da Fase 1.
 - [ ] T201 parser UV/PNG (FR-004/008).
 - [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).

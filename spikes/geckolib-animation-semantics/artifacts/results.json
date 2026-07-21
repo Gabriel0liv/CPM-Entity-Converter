@@ -1,8 +1,8 @@
 {
   "assertionsFailed": 0,
-  "assertionsPassed": 66,
-  "assertionsTotal": 66,
-  "checkout": "D:\\documentos\\Projetos\\CPMConverterWorkspace\\GeckoLibOracle",
+  "assertionsPassed": 90,
+  "assertionsTotal": 90,
+  "checkout": "..\\GeckoLibOracle",
   "checkoutCommit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
   "commit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
   "fixtures": [
@@ -231,6 +231,24 @@
           "actual": "step",
           "expected": "step",
           "name": "easing name",
+          "status": "PASS"
+        },
+        {
+          "actual": -0.0,
+          "expected": 0.0,
+          "name": "semantic.sample25",
+          "status": "PASS"
+        },
+        {
+          "actual": -0.0,
+          "expected": 0.0,
+          "name": "semantic.sample50",
+          "status": "PASS"
+        },
+        {
+          "actual": -0.008726646259971648,
+          "expected": -0.00872664626,
+          "name": "semantic.sample75",
           "status": "PASS"
         }
       ],
@@ -871,6 +889,12 @@
           "expected": "easeinbounce",
           "name": "easing name",
           "status": "PASS"
+        },
+        {
+          "actual": "easeinbounce",
+          "expected": "easeinbounce",
+          "name": "semantic.easing",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -1095,6 +1119,24 @@
             0.35
           ],
           "name": "easing args",
+          "status": "PASS"
+        },
+        {
+          "actual": "easeinback",
+          "expected": "easeinback",
+          "name": "semantic.easing",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            1.2,
+            0.35
+          ],
+          "expected": [
+            1.2,
+            0.35
+          ],
+          "name": "semantic.easingArgs",
           "status": "PASS"
         }
       ],
@@ -1333,6 +1375,24 @@
             0.35
           ],
           "name": "easing args",
+          "status": "PASS"
+        },
+        {
+          "actual": "easeinelastic",
+          "expected": "easeinelastic",
+          "name": "semantic.easing",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            1.2,
+            0.35
+          ],
+          "expected": [
+            1.2,
+            0.35
+          ],
+          "name": "semantic.easingArgs",
           "status": "PASS"
         }
       ],
@@ -4009,6 +4069,18 @@
           "expected": "catmullrom",
           "name": "keyframe catmullrom",
           "status": "PASS"
+        },
+        {
+          "actual": "catmullrom",
+          "expected": "catmullrom",
+          "name": "semantic.easing",
+          "status": "PASS"
+        },
+        {
+          "actual": true,
+          "expected": true,
+          "name": "semantic.overshootExpected",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -6356,6 +6428,34 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "expected": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "name": "semantic.first",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            2.0,
+            3.0,
+            4.0
+          ],
+          "expected": [
+            2.0,
+            3.0,
+            4.0
+          ],
+          "name": "semantic.last",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -6584,6 +6684,12 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": 10.0,
+          "expected": 10.0,
+          "name": "semantic.rotationXDegrees",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -6725,6 +6831,12 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": 10.0,
+          "expected": 10.0,
+          "name": "semantic.rotationXDegrees",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -6865,6 +6977,20 @@
           "actual": "PARSED",
           "expected": "PARSED",
           "name": "parser success",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "expected": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "name": "semantic.rotationDegrees",
           "status": "PASS"
         }
       ],
@@ -7011,6 +7137,20 @@
           "actual": "PARSED",
           "expected": "PARSED",
           "name": "parser success",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "expected": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "name": "semantic.preWinsDegrees",
           "status": "PASS"
         }
       ],
@@ -7186,6 +7326,12 @@
           "actual": "PARSED",
           "expected": "PARSED",
           "name": "parser success",
+          "status": "PASS"
+        },
+        {
+          "actual": 190.0,
+          "expected": 190.0,
+          "name": "semantic.xDegrees",
           "status": "PASS"
         }
       ],
@@ -7391,6 +7537,12 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": 720.0,
+          "expected": 720.0,
+          "name": "semantic.xDegrees",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -7595,6 +7747,24 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": [
+            350.00000000000006,
+            10.0
+          ],
+          "expected": [
+            350.0,
+            10.0
+          ],
+          "name": "semantic.xDegrees",
+          "status": "PASS"
+        },
+        {
+          "actual": false,
+          "expected": false,
+          "name": "semantic.shortestPath",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -7798,6 +7968,34 @@
           "actual": "PARSED",
           "expected": "PARSED",
           "name": "parser success",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "expected": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "name": "semantic.first",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            2.0,
+            2.0,
+            2.0
+          ],
+          "expected": [
+            2.0,
+            2.0,
+            2.0
+          ],
+          "name": "semantic.last",
           "status": "PASS"
         }
       ],
@@ -8027,6 +8225,34 @@
           "expected": "PARSED",
           "name": "parser success",
           "status": "PASS"
+        },
+        {
+          "actual": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "expected": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "name": "semantic.first",
+          "status": "PASS"
+        },
+        {
+          "actual": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "expected": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "name": "semantic.last",
+          "status": "PASS"
         }
       ],
       "controllerObservation": {
@@ -8253,7 +8479,7 @@
   "fixturesExpectedRejection": 1,
   "fixturesFailed": 0,
   "fixturesPassed": 33,
-  "gradleVersionOutput": "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.\nDaemon will be stopped at the end of the build \n> Task :compileJava\n>",
+  "gradleVersionOutput": "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.\nDaemon will be stopped at the end of the build \n> Task :verifyGeckoIn",
   "nonProduction": true,
   "oracle": "EXECUTED"
 }

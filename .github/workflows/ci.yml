@@ -1,0 +1,14 @@
+name: build
+on: [push, pull_request]
+jobs:
+  check:
+    strategy:
+      matrix: {os: [windows-latest, ubuntu-latest]}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew clean check
+      - run: python test-fixtures/scripts/manifest.py --check

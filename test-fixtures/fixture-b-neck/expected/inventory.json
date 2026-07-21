@@ -1,0 +1,12 @@
+{
+  "animationFormat": "1.8.0",
+  "bones": [
+    "body",
+    "neck",
+    "head",
+    "horn"
+  ],
+  "fixture": "fixture-b-neck",
+  "geometryFormat": "1.12.0",
+  "hasCubes": true
+}

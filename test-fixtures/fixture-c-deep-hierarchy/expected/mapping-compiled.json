@@ -1,0 +1,12 @@
+{
+  "compiledIds": [
+    "body",
+    "spine",
+    "chest",
+    "neck",
+    "head",
+    "jaw",
+    "accessory"
+  ],
+  "mappingPath": "mapping.yaml"
+}

@@ -1,0 +1,3 @@
+package io.github.gabriel0liv.cpmconverter.diagnostics;
+import java.util.*;
+public record Diagnostic(Severity severity,DiagnosticCode code,SourceLocation location,String message,String suggestion,String bone,String animation,NavigableMap<String,String> context){public Diagnostic{Objects.requireNonNull(severity);Objects.requireNonNull(code);if(message==null||message.isBlank())throw new IllegalArgumentException("message");context=Collections.unmodifiableNavigableMap(new TreeMap<>(context==null?Map.of():context));}public static Diagnostic of(Severity s,String c,String m){return new Diagnostic(s,new DiagnosticCode(c),null,m,null,null,null,new TreeMap<>());}}

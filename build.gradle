@@ -1,4 +1,4 @@
-allprojects { group = 'org.example.cpmconverter'; version = '0.1.0-SNAPSHOT' }
+allprojects { group = 'io.github.gabriel0liv.cpmconverter'; version = '0.1.0-SNAPSHOT' }
 
 subprojects {
     apply plugin: 'java-library'

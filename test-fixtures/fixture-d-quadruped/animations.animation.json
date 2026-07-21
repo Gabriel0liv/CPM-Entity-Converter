@@ -1,1 +1,1 @@
-{"format":"authorial","animations":{"walk":{"loop":true,"bones":{"leg_fl":{"rotation":{"0.0":[20,0,0],"0.5":[-20,0,0]}}}}}}
+{"animations":{"walk":{"bones":{"leg_fl":{"rotation":{"0.0":[20,0,0],"0.5":[-20,0,0]}}},"loop":true}},"format_version":"1.8.0"}

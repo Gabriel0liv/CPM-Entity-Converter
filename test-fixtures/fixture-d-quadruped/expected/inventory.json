@@ -1,0 +1,15 @@
+{
+  "animationFormat": "1.8.0",
+  "bones": [
+    "body",
+    "head",
+    "leg_fl",
+    "leg_fr",
+    "leg_bl",
+    "leg_br",
+    "tail"
+  ],
+  "fixture": "fixture-d-quadruped",
+  "geometryFormat": "1.12.0",
+  "hasCubes": true
+}

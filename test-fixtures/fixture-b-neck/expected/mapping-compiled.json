@@ -1,0 +1,9 @@
+{
+  "compiledIds": [
+    "body",
+    "neck",
+    "head",
+    "horn"
+  ],
+  "mappingPath": "mapping.yaml"
+}

@@ -54,7 +54,7 @@ normally provided by Minecraft/Forge; no GeckoLib semantics were reimplemented.
 
 ## Assertions e estados
 
-`assertionsTotal=66`, `assertionsPassed=66`, `assertionsFailed=0`,
+`assertionsTotal=90`, `assertionsPassed=90`, `assertionsFailed=0`,
 `fixturesPassed=33`, `fixturesExpectedRejection=1`, `fixturesFailed=0` e
 `fixturesBlocked=3`. `PREPOST-005` é a rejeição esperada. Os três BLOCKED são
 exclusivamente a etapa terminal de controller para `PLAYBACK-001`,
