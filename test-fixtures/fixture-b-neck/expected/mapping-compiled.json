@@ -1,9 +1,25 @@
 {
-  "compiledIds": [
-    "body",
-    "neck",
-    "head",
-    "horn"
-  ],
-  "mappingPath": "mapping.yaml"
+  "boneIds": {
+    "body": "fixture-b-neck:body",
+    "head": "fixture-b-neck:head",
+    "horn": "fixture-b-neck:horn",
+    "neck": "fixture-b-neck:neck"
+  },
+  "diagnosticPolicy": {
+    "warningsAsErrors": false
+  },
+  "ignoreRules": [],
+  "mappingPath": "mapping.yaml",
+  "rootRoles": {
+    "body": "fixture-b-neck:body"
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "stateMappings": {
+    "standing": {
+      "clipId": "fixture-b-neck:idle",
+      "mode": "LOOP"
+    }
+  }
 }

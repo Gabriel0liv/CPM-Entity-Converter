@@ -37,7 +37,7 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
   - [!] S004-C tick/controller terminal de `play_once` e `hold_on_last_frame` requer CoreGeoModel completo.
   - [x] S004-D Molang constante/dinâmica detectada; dinâmica rejeitada por política offline.
   - [x] S004-E completar assertions semânticas independentes.
-  - [x] S004-F tornar oracle reproduzível e validar commit/inputs.
+  - [x] S004-F tornar oracle reproduzível: sources compilados diretamente, sem coreJar preexistente, commit/tree hash registrados.
 
 Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. S004-C permanece isolado em ADR-006; checks visuais continuam separados.
 

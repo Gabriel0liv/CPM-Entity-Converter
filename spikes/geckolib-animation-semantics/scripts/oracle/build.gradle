@@ -2,7 +2,6 @@
 plugins { id 'java'; id 'application' }
 repositories { mavenCentral(); maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' } }
 def gecko = providers.gradleProperty('geckoDir').get()
-def coreJar = file("${gecko}/core/build/libs/geckolib-core-2.0.4.6.jar")
 sourceSets.main.java.srcDirs = [
     'src/main/java',
     "${gecko}/core/src/main/java",
@@ -15,7 +14,6 @@ sourceSets.main.java.setIncludes([
     'software/bernie/geckolib/GeckoLib.java', 'software/bernie/geckolib/util/JsonUtil.java'
 ])
 dependencies {
-    implementation files(coreJar)
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'it.unimi.dsi:fastutil:8.5.9'
     implementation 'com.eliotlash.mclib:mclib:20'
@@ -30,9 +28,8 @@ tasks.register('verifyGeckoInputs') {
         def expected = '25a41d7375bb7eeda37dadc04b1e03fe486b33e5'
         def actual = ['git','-C',gecko,'rev-parse','HEAD'].execute().text.trim()
         if (actual != expected) throw new GradleException("GeckoLib checkout mismatch: ${actual}")
-        if (!coreJar.exists()) throw new GradleException("Missing core jar built from pinned checkout: ${coreJar}")
-        def sha = java.security.MessageDigest.getInstance('SHA-256').digest(coreJar.bytes).encodeHex().toString()
-        file("${layout.buildDirectory.get()}/gecko-inputs.json").text = groovy.json.JsonOutput.toJson([commit: actual, coreJar: coreJar.absolutePath.replace('\\','/'), coreJarSha256: sha, java: System.getProperty('java.version'), gradle: gradle.gradleVersion]) + '\n'
+        def sourceHash = ['git','-C',gecko,'rev-parse','HEAD^{tree}'].execute().text.trim()
+        file("${layout.buildDirectory.get()}/gecko-inputs.json").text = groovy.json.JsonOutput.toJson([commit: actual, sourceTree: sourceHash, input: 'external pinned GeckoLib sources', java: System.getProperty('java.version'), gradle: gradle.gradleVersion]) + '\n'
     }
 }
 tasks.named('compileJava') { dependsOn 'verifyGeckoInputs' }

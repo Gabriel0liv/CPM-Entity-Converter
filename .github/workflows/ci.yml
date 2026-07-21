@@ -1,4 +1,6 @@
 name: build
+permissions:
+  contents: read
 on: [push, pull_request]
 jobs:
   check:
@@ -6,9 +8,12 @@ jobs:
       matrix: {os: [windows-latest, ubuntu-latest]}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v4 # major tag policy: Dependabot-reviewed official action
+      - uses: actions/setup-java@v4 # major tag policy: Dependabot-reviewed official action
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew clean check
+      - run: python scripts/verify-reproducible-build.py
       - run: python test-fixtures/scripts/manifest.py --check
+      - if: runner.os == 'Linux'
+        run: python spikes/geckolib-animation-semantics/scripts/audit_fixtures.py

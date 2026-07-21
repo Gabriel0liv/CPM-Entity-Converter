@@ -15,3 +15,14 @@ subprojects {
     dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2' }
     dependencyLocking { lockAllConfigurations() }
 }
+configure([project(':converter-core'), project(':converter-config'), project(':test-fixtures')]) {
+    apply plugin: 'com.diffplug.spotless'
+    spotless {
+        java {
+            target 'src/**/*.java'
+            googleJavaFormat('1.22.0').reorderImports(false)
+            removeUnusedImports()
+        }
+    }
+    tasks.named('check') { dependsOn 'spotlessCheck' }
+}

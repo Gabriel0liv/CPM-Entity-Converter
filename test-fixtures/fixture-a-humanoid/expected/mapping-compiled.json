@@ -1,11 +1,27 @@
 {
-  "compiledIds": [
-    "body",
-    "head",
-    "left_arm",
-    "right_arm",
-    "left_leg",
-    "right_leg"
-  ],
-  "mappingPath": "mapping.yaml"
+  "boneIds": {
+    "body": "fixture-a-humanoid:body",
+    "head": "fixture-a-humanoid:head",
+    "left_arm": "fixture-a-humanoid:left_arm",
+    "left_leg": "fixture-a-humanoid:left_leg",
+    "right_arm": "fixture-a-humanoid:right_arm",
+    "right_leg": "fixture-a-humanoid:right_leg"
+  },
+  "diagnosticPolicy": {
+    "warningsAsErrors": false
+  },
+  "ignoreRules": [],
+  "mappingPath": "mapping.yaml",
+  "rootRoles": {
+    "body": "fixture-a-humanoid:body"
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "stateMappings": {
+    "standing": {
+      "clipId": "fixture-a-humanoid:idle",
+      "mode": "LOOP"
+    }
+  }
 }

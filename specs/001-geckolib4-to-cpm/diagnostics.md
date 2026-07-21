@@ -64,3 +64,30 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `INTERNAL_ERROR` | ERROR | bug; inclui correlation id |
 
 Nenhum `catch` pode converter erro em warning sem code/policy explícitos.
+# Catálogo normativo de códigos
+
+Os códigos abaixo são a fonte normativa compartilhada por `DiagnosticCodes`.
+Mensagens podem variar, mas o identificador não.
+
+## Configuração e mapping
+
+`CONFIG_SCHEMA_VERSION`, `CONFIG_SAMPLING_RANGE`, `CONFIG_NON_FINITE`,
+`CONFIG_OVERROTATION`, `CONFIG_INFLUENCE_RANGE`, `CONFIG_UNKNOWN_PROPERTY`,
+`CONFIG_PARSE_ERROR`, `CONFIG_BONE_MISSING`, `CONFIG_BONE_AMBIGUOUS`,
+`CONFIG_CLIP_MISSING`, `CONFIG_SCHEMA_INVALID`.
+
+## ModelIR
+
+`IR_DUPLICATE_BONE_ID`, `IR_DUPLICATE_CUBE_ID`, `IR_DUPLICATE_CLIP_ID`,
+`IR_CYCLE`, `IR_ROOT_MISSING`, `IR_ROOT_PARENT`, `IR_ROOT_DUPLICATE`,
+`IR_PARENT_MISSING`, `IR_CHILD_MISSING`, `IR_CHILD_DUPLICATE`,
+`IR_PARENT_CHILD_MISMATCH`, `IR_UNREACHABLE_BONE`, `IR_CUBE_BONE_MISSING`,
+`IR_TRACK_BONE_MISSING`, `IR_DURATION_INVALID`, `IR_KEYFRAME_ORDER`,
+`IR_KEYFRAME_DUPLICATE`, `IR_KEYFRAME_AFTER_DURATION`,
+`IR_CUSTOM_PLAYBACK_ID`, `IR_TIMESTAMP_INVALID`.
+
+## Spike e integração futura
+
+Os códigos de parser/animação, CPM, IO e limitações permanecem definidos nas
+seções de suas respectivas fases e não são usados pelo core nesta rodada.
+`INTERNAL_ERROR` é reservado para falhas internas sem stack trace no domínio.

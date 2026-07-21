@@ -8,10 +8,10 @@
       "expected/diagnostics.json": "3a0b7007e050270eecf5a15a2d26a32115993a63c9bcdf70ff5e98025de5fbc7",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
       "expected/inventory.json": "d22de3b01d8b0bb6d2a82af362397e82037a52d675d99bc85d6fdd5015f264ac",
-      "expected/mapping-compiled.json": "928516f2460c1786c495d0308755595e0d6de8df20e51e84e6114d150d4f69ec",
-      "geometry.geo.json": "b26693b22b39c526d4b9314ad37ba5e414b66722dc825c3904b2b635ae97f869",
+      "expected/mapping-compiled.json": "601f992a3bdb3219a917421962bc3e34a0639638fc513d4dd5d919a2f9ce1935",
+      "geometry.geo.json": "fce730ad9f10f1b4b5586efa149ece06d7f41a6851f10760f0c8e38f5efe7c09",
       "mapping.yaml": "b7b25ce0fc0a363b30407103b9830a313bee688bd68ae3c29e0066414b457fb2",
-      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-b-neck": {
       "PROVENANCE.md": "707df6ee397fc44a45cf2e66b33e9d09f0b0185ffcef29a9e11cebf375a88b0c",
@@ -21,10 +21,10 @@
       "expected/diagnostics.json": "3a0b7007e050270eecf5a15a2d26a32115993a63c9bcdf70ff5e98025de5fbc7",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
       "expected/inventory.json": "43284f1f051f768e9a07285d55c7505f5ee11536814f0410ddc3be52fc8f7969",
-      "expected/mapping-compiled.json": "0efb0955100dd7569d6f634997dedf198a3c45148b33e6dea08b162dcf0aa688",
-      "geometry.geo.json": "12e306d662458d97f8a1ce2f5e816169e464c68477d2ceb0289c67c664d3ccb4",
+      "expected/mapping-compiled.json": "3e95121223afe3764d53b222f619b5e3c9a9caffdb445fbc67171b30377837fb",
+      "geometry.geo.json": "e747102bdf5162f60c4016e300d7230c173494a98ded4f1526028a93e1c96d9b",
       "mapping.yaml": "2d56c899312e3b172f98a3976fbc59ef65a05b840e6099b88779bb178fa261b1",
-      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-c-deep-hierarchy": {
       "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
@@ -34,10 +34,10 @@
       "expected/diagnostics.json": "3a0b7007e050270eecf5a15a2d26a32115993a63c9bcdf70ff5e98025de5fbc7",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
       "expected/inventory.json": "ee66a556787f98f084e851331a77ca7aba626181c60377c3b7e8ff6b13ef4e6e",
-      "expected/mapping-compiled.json": "b19e52ea59d730aa15773ef87f76efa740ab6c6abda81bd35c6778f49bb4a2ac",
-      "geometry.geo.json": "26710099120d505fbbe5f228c4aad0cd1a0ec409395dfc526e29dc70006d2b16",
+      "expected/mapping-compiled.json": "72ba4ca0886e52a636a43fb389f84565963a77ede32625e6f8f75d19414169ff",
+      "geometry.geo.json": "76f778b5e2db18143d42441e4b76134f3922f92ca23bf69cb69861e0217eed17",
       "mapping.yaml": "dedeb658ca2e343b3e316a292c86b7dabcde8bc2c7ce160a394f9df78f99db04",
-      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     },
     "fixture-d-quadruped": {
       "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
@@ -47,10 +47,10 @@
       "expected/diagnostics.json": "91abf3bf766b00734c3d471334ebe7aa2891e25b01aae7dd54b7dd6a75c877a1",
       "expected/invariants.json": "d5fb2edd42e668ea618a3906e42f654fae3bb0b6235000f42a1de275c495d64d",
       "expected/inventory.json": "93587216bc58b6ccbba1d8de50f3c0cc3e7c027c6093b3f98c7a36781f9860d4",
-      "expected/mapping-compiled.json": "d5b71b33ddeb6e91436184789d23f3c611bbebb7de9ada10eece2b556e64ea23",
-      "geometry.geo.json": "b65e8561956faab977db7672603c444c952fbaaa63cf9df27e6784d9042d1c58",
+      "expected/mapping-compiled.json": "a623bbfdcc0fa50cbcba1e01ebe093760580be8ffb468f5da0f056df068a9745",
+      "geometry.geo.json": "0279d96e2897b615d0e3be7fdf369993a7914de0d191fa0d02348d11225784dd",
       "mapping.yaml": "ca42929401c9538f784f4b69e0c4a21b8a0e4224617465d4e8560dfedece5097",
-      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
     }
   },
   "marker": "NON_PRODUCTION"

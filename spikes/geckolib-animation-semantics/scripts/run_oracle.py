@@ -5,7 +5,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; PIN="25a41d7375bb7eeda37dadc04b1e03fe486b33e5"
 
 def assertion(name, ok, actual=None, expected=None):
-    return {"name":name,"status":"PASS" if ok else "FAIL","actual":actual,"expected":expected}
+    return {"name":name,"status":"PASS" if ok else "FAIL","actual":actual,"expected":expected,
+            "observedAccess": actual is not None}
 
 def close(actual, expected, tolerance=1e-8):
     if isinstance(expected, bool): return actual == expected
@@ -39,8 +40,23 @@ def semantic_assertions(name, spec, f):
             result.append(assertion(f"semantic.{key}",close(actual,expected),actual,expected))
         elif key in {"easing","easingArgs"}:
             frame=rotation[-1]; actual=frame.get("easingName") if key=="easing" else frame.get("easingArgs",[]); result.append(assertion(f"semantic.{key}",close(actual,expected),actual,expected))
-        elif key=="shortestPath": result.append(assertion("semantic.shortestPath",expected is False,False,expected))
-        elif key=="overshootExpected": result.append(assertion("semantic.overshootExpected",True,True,expected))
+        elif key=="shortestPath":
+            samples = ([rotation[0].get("start", {}).get("value")]
+                       + rotation[-1].get("samples", [])) if rotation else []
+            degrees = [-sample * 180 / 3.141592653589793 for sample in samples]
+            sustained_winding = (len(degrees) >= 3 and abs(abs(degrees[0]) - 350.0) < 1e-6
+                                 and abs(abs(degrees[-1]) - 10.0) < 1e-6
+                                 and max(abs(x) for x in degrees[1:-1]) > 90.0)
+            result.append(assertion("semantic.shortestPath", sustained_winding and expected is False,
+                                    {"degrees": degrees, "observed": sustained_winding}, expected))
+        elif key=="overshootExpected":
+            samples = rotation[-1].get("samples", []) if rotation else []
+            start = rotation[-1].get("start", {}).get("value") if rotation else None
+            end = rotation[-1].get("end", {}).get("value") if rotation else None
+            observed = bool(samples) and start is not None and end is not None and any(
+                sample < min(start, end) or sample > max(start, end) for sample in samples)
+            result.append(assertion("semantic.overshootExpected", observed == bool(expected),
+                                    {"samples": samples, "overshoot": observed}, expected))
         elif key in {"sample25","sample50","sample75"}:
             sample_index={"sample25":1,"sample50":2,"sample75":3}[key]; actual=rotation[-1].get("samples",[])[sample_index]; result.append(assertion(f"semantic.{key}",close(actual,expected),actual,expected))
     return result
@@ -104,5 +120,9 @@ def main():
         if isinstance(nested,dict) and "parserObservation" in nested:
             f.update(nested); f["parserObservation"]=nested["parserObservation"]
         f["inputSha256"]=hashlib.sha256(src).hexdigest(); f["sourceJson"]=json.loads(src); f["assertions"],f["status"]=assert_fixture(f,expectations[n],semantic.get(n)) if rec["oracle"]=="EXECUTED" else ([assertion("oracle available",False,"BLOCKED","EXECUTED")],"BLOCKED"); results.append(f)
+        for check in f["assertions"]:
+            if check["name"].startswith("semantic.") and not check.get("observedAccess", False):
+                check["status"] = "FAIL"
+                f["status"] = "FAIL"
     rec["fixtures"]=results; counts={"assertionsTotal":sum(len(f["assertions"]) for f in results),"assertionsPassed":sum(sum(a["status"]=="PASS" for a in f["assertions"]) for f in results),"assertionsFailed":sum(sum(a["status"]=="FAIL" for a in f["assertions"]) for f in results),"fixturesPassed":sum(f["status"]=="PASS" for f in results),"fixturesExpectedRejection":sum(f["status"]=="EXPECTED_REJECTION" for f in results),"fixturesFailed":sum(f["status"]=="FAIL" for f in results),"fixturesBlocked":sum(f["status"]=="BLOCKED" for f in results)}; rec.update(counts); (ROOT/"artifacts"/"results.json").write_text(json.dumps(rec,indent=2,sort_keys=True)+"\n",encoding="utf8"); print(json.dumps({"oracle":rec["oracle"],**counts},indent=2)); return 1 if counts["fixturesFailed"] else 0
 if __name__=="__main__": raise SystemExit(main())

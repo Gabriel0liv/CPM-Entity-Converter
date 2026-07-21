@@ -1,12 +1,28 @@
 {
-  "compiledIds": [
-    "body",
-    "spine",
-    "chest",
-    "neck",
-    "head",
-    "jaw",
-    "accessory"
-  ],
-  "mappingPath": "mapping.yaml"
+  "boneIds": {
+    "accessory": "fixture-c-deep-hierarchy:accessory",
+    "body": "fixture-c-deep-hierarchy:body",
+    "chest": "fixture-c-deep-hierarchy:chest",
+    "head": "fixture-c-deep-hierarchy:head",
+    "jaw": "fixture-c-deep-hierarchy:jaw",
+    "neck": "fixture-c-deep-hierarchy:neck",
+    "spine": "fixture-c-deep-hierarchy:spine"
+  },
+  "diagnosticPolicy": {
+    "warningsAsErrors": false
+  },
+  "ignoreRules": [],
+  "mappingPath": "mapping.yaml",
+  "rootRoles": {
+    "body": "fixture-c-deep-hierarchy:body"
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "stateMappings": {
+    "standing": {
+      "clipId": "fixture-c-deep-hierarchy:idle",
+      "mode": "LOOP"
+    }
+  }
 }

@@ -1,12 +1,28 @@
 {
-  "compiledIds": [
-    "body",
-    "head",
-    "leg_fl",
-    "leg_fr",
-    "leg_bl",
-    "leg_br",
-    "tail"
-  ],
-  "mappingPath": "mapping.yaml"
+  "boneIds": {
+    "body": "fixture-d-quadruped:body",
+    "head": "fixture-d-quadruped:head",
+    "leg_bl": "fixture-d-quadruped:leg_bl",
+    "leg_br": "fixture-d-quadruped:leg_br",
+    "leg_fl": "fixture-d-quadruped:leg_fl",
+    "leg_fr": "fixture-d-quadruped:leg_fr",
+    "tail": "fixture-d-quadruped:tail"
+  },
+  "diagnosticPolicy": {
+    "warningsAsErrors": false
+  },
+  "ignoreRules": [],
+  "mappingPath": "mapping.yaml",
+  "rootRoles": {
+    "body": "fixture-d-quadruped:body"
+  },
+  "sampling": {
+    "requestedFps": 20
+  },
+  "stateMappings": {
+    "standing": {
+      "clipId": "fixture-d-quadruped:idle",
+      "mode": "LOOP"
+    }
+  }
 }

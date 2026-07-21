@@ -1,3 +1,37 @@
 package io.github.gabriel0liv.cpmconverter.config;
-import org.junit.jupiter.api.*; import static org.junit.jupiter.api.Assertions.*; import java.nio.file.*; import java.nio.charset.StandardCharsets;
-class ConfigTest { @Test void jsonYamlParity() throws Exception {Path j=Files.createTempFile("m", ".json"), y=Files.createTempFile("m", ".yaml");String s="{\"schemaVersion\":1,\"bones\":{\"head\":\"head\"},\"clips\":{\"idle\":\"idle\"},\"sampling\":{\"requestedFps\":20}}";Files.writeString(j,s);Files.writeString(y,"schemaVersion: 1\nbones: {head: head}\nclips: {idle: idle}\nsampling: {requestedFps: 20}\n");var l=new MappingLoader();assertEquals(l.load(j).value().schemaVersion(),l.load(y).value().schemaVersion());assertFalse(new MappingValidator().validate(l.load(j).value()).hasErrors());} @Test void range(){assertTrue(new MappingValidator().validate(new MappingDocumentV1(1,java.util.Map.of(),java.util.Map.of(),null,new MappingDocumentV1.Sampling(0),java.util.List.of())).hasErrors());}}
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.nio.file.*;
+import org.junit.jupiter.api.*;
+
+class ConfigTest {
+  @Test
+  void jsonYamlParity() throws Exception {
+    Path j = Files.createTempFile("m", ".json"), y = Files.createTempFile("m", ".yaml");
+    String s =
+        "{\"schemaVersion\":1,\"bones\":{\"head\":\"head\"},\"clips\":{\"idle\":\"idle\"},\"sampling\":{\"requestedFps\":20}}";
+    Files.writeString(j, s);
+    Files.writeString(
+        y,
+        "schemaVersion: 1\nbones: {head: head}\nclips: {idle: idle}\nsampling: {requestedFps: 20}\n");
+    var l = new MappingLoader();
+    assertEquals(l.load(j).value().schemaVersion(), l.load(y).value().schemaVersion());
+    assertFalse(new MappingValidator().validate(l.load(j).value()).hasErrors());
+  }
+
+  @Test
+  void range() {
+    assertTrue(
+        new MappingValidator()
+            .validate(
+                new MappingDocumentV1(
+                    1,
+                    java.util.Map.of(),
+                    java.util.Map.of(),
+                    null,
+                    new MappingDocumentV1.Sampling(0),
+                    java.util.List.of()))
+            .hasErrors());
+  }
+}
