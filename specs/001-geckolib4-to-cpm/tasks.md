@@ -45,10 +45,10 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
-- [~] T102 completar matemática e golden tests (`3f2bff1`; ainda sem cobertura integral do contrato de continuidade/decomposição).
-- [~] T103 alinhar ModelIR e validator ao contrato (`46b5a3f`; source locations/provenance e matriz integral ainda pendentes).
-- [~] T104 completar schema, loader e compilação semântica (`286ba03`; SemanticRigMap endurecido, mas matriz normativa ainda parcial).
-- [~] T105 reconstruir fixtures A–D (`5541973`; MappingCompiler executado para A–D, oracle GeckoLib específico permanece BLOCKED).
+- [~] T102 continuidade Euler e contratos matemáticos (`6b6065d`; resolved Euler e sequências adicionados, revisão independente ainda pendente).
+- [~] T103 source locations, provenance e validator (`8cdf6c0`; provenance/location ampliados, matriz completa ainda pendente).
+- [~] T104 matriz normativa e SemanticRigMap (`0da295e`; compilação endurecida, cobertura integral ainda pendente).
+- [~] T105 contratos reais das fixtures A–D (`5541973`; auditoria estrutural passa, oracle específico A–D ainda sem evidência PASS).
 
 ## Fase 2
 

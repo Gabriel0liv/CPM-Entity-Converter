@@ -53,3 +53,4 @@ independente R2 foi executada em `review/r2-phase1`.
 
 Enquanto qualquer item permanecer pendente, T200 continua `[!]`. Nenhum parser
 GeckoLib de produção, writer, CLI ou projeção CPM foi iniciado.
+
