@@ -33,4 +33,9 @@ public record Transform(Vec3d translation, Quatd rotation, Vec3d scale) {
   public Mat4d matrix() {
     return Mat4d.trs(translation, rotation, scale);
   }
+
+  /** General composition, retaining shear in a matrix instead of approximating it as TRS. */
+  public Mat4d composeMatrix(Transform child, boolean retainShear) {
+    return matrix().multiply(child.matrix());
+  }
 }

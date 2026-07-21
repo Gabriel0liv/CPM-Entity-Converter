@@ -4,6 +4,7 @@ import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import io.github.gabriel0liv.cpmconverter.math.Vec3i;
 import java.util.Optional;
 
+/** Authorial Euler continuity retained alongside an instantaneous quaternion sample. */
 public record RotationContinuityIR(
     Vec3d sourceEulerHint, Vec3i winding, Optional<Vec3d> previousOutputEuler) {
   public RotationContinuityIR {
@@ -11,6 +12,8 @@ public record RotationContinuityIR(
       throw new IllegalArgumentException("rotation continuity");
   }
 
+  /** Compatibility constructor for legacy callers; new parsers must provide an explicit hint. */
+  @Deprecated
   public RotationContinuityIR(boolean continuousPerAxis) {
     this(Vec3d.ZERO, new Vec3i(0, 0, 0), Optional.empty());
   }

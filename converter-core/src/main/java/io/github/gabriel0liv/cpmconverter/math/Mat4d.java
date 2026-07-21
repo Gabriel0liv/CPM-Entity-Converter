@@ -110,6 +110,17 @@ public final class Mat4d {
     return values.clone();
   }
 
+  public double get(int row, int column) {
+    if (row < 0 || row >= 4 || column < 0 || column >= 4) {
+      throw new IndexOutOfBoundsException("matrix index");
+    }
+    return values[row * 4 + column];
+  }
+
+  public boolean isFinite() {
+    return Arrays.stream(values).allMatch(Double::isFinite);
+  }
+
   @Override
   public boolean equals(Object o) {
     return o instanceof Mat4d m && Arrays.equals(values, m.values);

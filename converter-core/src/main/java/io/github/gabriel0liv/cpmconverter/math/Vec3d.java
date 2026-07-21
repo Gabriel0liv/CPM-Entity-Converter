@@ -15,6 +15,10 @@ public record Vec3d(double x, double y, double z) {
     return Double.isFinite(v);
   }
 
+  public boolean isFinite() {
+    return finite(x) && finite(y) && finite(z);
+  }
+
   public Vec3d add(Vec3d o) {
     return new Vec3d(x + o.x, y + o.y, z + o.z);
   }
