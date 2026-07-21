@@ -12,6 +12,14 @@ public record RotationContinuityIR(
       throw new IllegalArgumentException("rotation continuity");
   }
 
+  /** Returns the authorial Euler value represented by this continuity state. */
+  public Vec3d resolvedEuler() {
+    return new Vec3d(
+        sourceEulerHint.x() + 360.0 * winding.x(),
+        sourceEulerHint.y() + 360.0 * winding.y(),
+        sourceEulerHint.z() + 360.0 * winding.z());
+  }
+
   /** Compatibility constructor for legacy callers; new parsers must provide an explicit hint. */
   @Deprecated
   public RotationContinuityIR(boolean continuousPerAxis) {
