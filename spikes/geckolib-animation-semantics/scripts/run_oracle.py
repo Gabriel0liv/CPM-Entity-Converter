@@ -99,7 +99,7 @@ def assert_fixture(f, exp, semantic=None):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--geckolib-dir",type=Path,required=True); ap.add_argument("--gradle",type=Path,default=None); ns=ap.parse_args(); checkout=ns.geckolib_dir; fixtures=ROOT/"fixtures"; project=ROOT/"scripts"/"oracle"; gradle=ns.gradle or Path(os.environ.get("GRADLE_BIN","gradle"))
-    rec={"nonProduction":True,"commit":PIN,"checkout":str(checkout),"checkoutCommit":subprocess.check_output(["git","-C",str(checkout),"rev-parse","HEAD"],text=True).strip(),"oracle":"NOT_EXECUTED"}
+    rec={"nonProduction":True,"commit":PIN,"checkout":checkout.name,"checkoutCommit":subprocess.check_output(["git","-C",str(checkout),"rev-parse","HEAD"],text=True).strip(),"oracle":"NOT_EXECUTED"}
     try:
         gradle = gradle.resolve()
         checkout = checkout.resolve()

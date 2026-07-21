@@ -7,7 +7,7 @@
       "fixture": "EASE-001",
       "path": "fixtures/EASE-001.json",
       "purpose": "Linear easing",
-      "sha256": "d42f0e3b53b6b68be848c8f2a12ae975f586e5db4e0dd2af3cf0ce0aa00d0675"
+      "sha256": "a3ad598b349e4aa9e5e5d4bad8b31f601d6bca4f8f0c5d6cc6ace0273e1675bf"
     },
     {
       "expectedDistinctFrom": [],
@@ -16,7 +16,7 @@
       "fixture": "EASE-002",
       "path": "fixtures/EASE-002.json",
       "purpose": "Step easing",
-      "sha256": "3a30799185588cdba27f1e32d0784fb27031a6e65cb4b4cbd0541e9e384bf988"
+      "sha256": "8f9ab2db783190c15d9bacde228a7b14fa8717a77bbe6cc0228d4fcb4cde0b5b"
     },
     {
       "expectedDistinctFrom": [],
@@ -25,7 +25,7 @@
       "fixture": "EASE-003",
       "path": "fixtures/EASE-003.json",
       "purpose": "Sine easing",
-      "sha256": "cca3e31e9984aa546f007fe2c7cacc4f7591604b8fa94d2e4ed4ae03a51b7186"
+      "sha256": "db88dff8e350811ec015daf3e2e9d05bf4288c4df48b413a689888c0a9bde419"
     },
     {
       "expectedDistinctFrom": [],
@@ -34,7 +34,7 @@
       "fixture": "EASE-004",
       "path": "fixtures/EASE-004.json",
       "purpose": "Unknown custom easing",
-      "sha256": "cdfc41c3de32ee194edd02739e443446681172bdb7dc29fb8a651d71b17f1ad7"
+      "sha256": "1d9db1ed5bd3b643f41defecddce8a7c1e746c48ad0d5b2492694d5fc3577f78"
     },
     {
       "expectedDistinctFrom": [],
@@ -43,7 +43,7 @@
       "fixture": "EASE-005",
       "path": "fixtures/EASE-005.json",
       "purpose": "Bounce easing",
-      "sha256": "c657742f67dea0b8f6ce287f53f524288c07fe292d50a50326c38d61b764d4e7"
+      "sha256": "0836b7fec9b5860f7695eefb394600c171cc04778f610bc85ab5696f5e938561"
     },
     {
       "expectedDistinctFrom": [],
@@ -52,7 +52,7 @@
       "fixture": "EASE-006",
       "path": "fixtures/EASE-006.json",
       "purpose": "Back easing with arguments",
-      "sha256": "b31687ce647ed3c69aec6f87c0d3c9e496ac66231e59606e38335c45caf233aa"
+      "sha256": "fe2c6579df8eb6bd6c2c03ade0ec0f5df8c7c45ea53ab83a6a9847e81b7f902e"
     },
     {
       "expectedDistinctFrom": [],
@@ -61,7 +61,7 @@
       "fixture": "EASE-007",
       "path": "fixtures/EASE-007.json",
       "purpose": "Elastic easing with arguments",
-      "sha256": "4cbfacf988e25620b4f04997087098af848aea52b4de3621fe6d43be8f6f91aa"
+      "sha256": "749c062e7cbe15abfab2e8d1a83de19cb7a19973b5d94310737b4ca0073f911c"
     },
     {
       "expectedDistinctFrom": [],
@@ -70,7 +70,7 @@
       "fixture": "KEYFRAME-001",
       "path": "fixtures/KEYFRAME-001.json",
       "purpose": "Textual timestamps out of order",
-      "sha256": "f76c6f73615797fce0bba75a7f729b90e09543226a0572c30c32c6a27c38d39f"
+      "sha256": "ceb98e3a307322d6ce32220c9705360415b524f918a4f8a67c6c3a29f5f87db4"
     },
     {
       "expectedDistinctFrom": [],
@@ -79,7 +79,7 @@
       "fixture": "KEYFRAME-002",
       "path": "fixtures/KEYFRAME-002.json",
       "purpose": "Duplicate timestamp raw JSON",
-      "sha256": "763ab9917af32392ac22e1653cfc387ab9c2854f847729790348082a67037220"
+      "sha256": "f619ecb457e01d4fce2df8ca283ea2125501b1dc870b6378c9a08309e0528eed"
     },
     {
       "expectedDistinctFrom": [
@@ -90,7 +90,7 @@
       "fixture": "KEYFRAME-003",
       "path": "fixtures/KEYFRAME-003.json",
       "purpose": "Different channel timelines",
-      "sha256": "ee86b053bbe48c4190ec9036b2267893741236509dc4a3c5bbb69a0713c99d1f"
+      "sha256": "7c2d1b7e211b83f383893a059b3b44f3c5ade8480154a7fc67e0650fbea0aa26"
     },
     {
       "expectedDistinctFrom": [],
@@ -99,7 +99,7 @@
       "fixture": "KEYFRAME-004",
       "path": "fixtures/KEYFRAME-004.json",
       "purpose": "Absent channels",
-      "sha256": "3e1f866dda00ed01e3dfa9aab48db63b08ef0e98d8a852880a09dbdae346edb2"
+      "sha256": "e42d330aaef3ffb0a5286e1a76190ab5c39e7f4c3159ee5ef0b49240e56cf509"
     },
     {
       "expectedDistinctFrom": [],
@@ -108,7 +108,7 @@
       "fixture": "LENGTH-001",
       "path": "fixtures/LENGTH-001.json",
       "purpose": "Explicit animation length",
-      "sha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709"
+      "sha256": "e029b1d63b66f6256ea60ea8a29c6437664d4b92b4e76f6bf1ac13565fdbc7a1"
     },
     {
       "expectedDistinctFrom": [
@@ -119,7 +119,7 @@
       "fixture": "LENGTH-002",
       "path": "fixtures/LENGTH-002.json",
       "purpose": "Implicit length from all last keyframes",
-      "sha256": "5acf8f2a699c93a9b258964e36738b285f59d0c73804231bae3552dd4ba34624"
+      "sha256": "a1b94c10ba2808beccda44c5561f83d9fcc1256ce86cd9875a92c10f28b8ee60"
     },
     {
       "expectedDistinctFrom": [],
@@ -128,7 +128,7 @@
       "fixture": "LENGTH-003",
       "path": "fixtures/LENGTH-003.json",
       "purpose": "Implicit unbounded empty animation",
-      "sha256": "7cec0e6f867fe200cd785c58423e2c27fb039cf352f9e9a58781c0583205828c"
+      "sha256": "e585e8a0a5f4b68d2ca33f360d4c636b01e97ff86c4f77a7d7cd4a915b616dce"
     },
     {
       "expectedDistinctFrom": [],
@@ -137,7 +137,7 @@
       "fixture": "LENGTH-004",
       "path": "fixtures/LENGTH-004.json",
       "purpose": "Short explicit length",
-      "sha256": "ed81d0225d1ecd551d1522d35be0d54e8704299aef554b14637a7515e1dcba1f"
+      "sha256": "7c9046625baa69d48852ecd0a6868b70f31e16d5c708825649f8e11dfdaade60"
     },
     {
       "expectedDistinctFrom": [],
@@ -146,7 +146,7 @@
       "fixture": "LERP-001",
       "path": "fixtures/LERP-001.json",
       "purpose": "Channel lerp_mode catmullrom",
-      "sha256": "0b8f9c1ad0fde9e32063ab46d29d5e829c3a5931eb6b37b30733cce6e8448006"
+      "sha256": "a2d2c1f3601e345efc27c332efa395b3e124cc69fa94f149848cb38f806e77b1"
     },
     {
       "expectedDistinctFrom": [],
@@ -155,7 +155,7 @@
       "fixture": "LERP-002",
       "path": "fixtures/LERP-002.json",
       "purpose": "Per-keyframe catmullrom",
-      "sha256": "6a598cac9ac11128477b57d86757cc7cf9a14f241c37101d6550eab5bb286607"
+      "sha256": "7b524afd7a29307fb3802b4b4e45e70fb58cb45fc195d241ca59bcdd84848a59"
     },
     {
       "expectedDistinctFrom": [],
@@ -164,7 +164,7 @@
       "fixture": "MOLANG-001",
       "path": "fixtures/MOLANG-001.json",
       "purpose": "Numeric constants",
-      "sha256": "2ad1f08567a65d58552be32623e28a0ad21a8069d0b716e56b0b664528bafa29"
+      "sha256": "db9186d9fd5b30986f471bba1c7bbf75bed5b3150de8dcc96f58bdac2f5cb621"
     },
     {
       "expectedDistinctFrom": [],
@@ -173,7 +173,7 @@
       "fixture": "MOLANG-002",
       "path": "fixtures/MOLANG-002.json",
       "purpose": "Constant Molang expression",
-      "sha256": "d19e3e746175f998f17a004857bfe11aaffb6d5bdd78e8e4abea40ef6bc7a0f6"
+      "sha256": "fa22c1222604b6f3a401acee6b161eeef06a9db8d3b1a1ceceedb5cb8b770173"
     },
     {
       "expectedDistinctFrom": [
@@ -185,7 +185,7 @@
       "fixture": "MOLANG-003",
       "path": "fixtures/MOLANG-003.json",
       "purpose": "Runtime-dependent registered query",
-      "sha256": "484157b1e65d8d08fdab2e411921cb8aa42a2bd121ae01944e26e5b5a8f2ca4d"
+      "sha256": "2798795a4b3c91c83322cc14b8e0db940391571ee0062f3701acd8819eb44302"
     },
     {
       "expectedDistinctFrom": [],
@@ -194,7 +194,7 @@
       "fixture": "PLAYBACK-001",
       "path": "fixtures/PLAYBACK-001.json",
       "purpose": "Boolean loop true",
-      "sha256": "2170d40eade235a61c510ee46ba499a8a4d7472a9d2c4e050e7cdd76f3761398"
+      "sha256": "b876948fe76e629f0319f5cd5a037402ac3a830786d6bb2a6df7b403d8c4e541"
     },
     {
       "expectedDistinctFrom": [],
@@ -203,7 +203,7 @@
       "fixture": "PLAYBACK-002",
       "path": "fixtures/PLAYBACK-002.json",
       "purpose": "Boolean loop false",
-      "sha256": "94f8e41978866de05a1a3e60612260f90ddc104ad2cf9fcea8d13bad1b7e3794"
+      "sha256": "a38427a5680cbc030f26318b49c072e14fd6e68c7da20c9557979d1af9a205f3"
     },
     {
       "expectedDistinctFrom": [],
@@ -212,7 +212,7 @@
       "fixture": "PLAYBACK-003",
       "path": "fixtures/PLAYBACK-003.json",
       "purpose": "String loop",
-      "sha256": "ec3291f9db03ac6d26f3aaf17cc14d17416c451dd215def07093dcdb48bdf3d5"
+      "sha256": "577d94e71faf8845aaf75e2762c2b446f11b4c005cba999bcf19bc1a2580ffc7"
     },
     {
       "expectedDistinctFrom": [],
@@ -221,7 +221,7 @@
       "fixture": "PLAYBACK-004",
       "path": "fixtures/PLAYBACK-004.json",
       "purpose": "Play once",
-      "sha256": "0a6ab7c5c369d738ed1ff956e644eed341236911680a1630d460c3d0e9869b25"
+      "sha256": "2bb46fc39e9829b8bb9501331405e73d25f9054c9a8ea2460e3cbd20730d272d"
     },
     {
       "expectedDistinctFrom": [],
@@ -230,7 +230,7 @@
       "fixture": "PLAYBACK-005",
       "path": "fixtures/PLAYBACK-005.json",
       "purpose": "Hold on last frame",
-      "sha256": "60065da76d53762f1977d3ad39b29062e8dd818b93f2ae70ee37990d6d74e086"
+      "sha256": "8b29255aa3e61d97b9e002bc81fc1023c043bb3b3b453bd32cdbdf4aa5c32c41"
     },
     {
       "expectedDistinctFrom": [],
@@ -239,7 +239,7 @@
       "fixture": "PLAYBACK-006",
       "path": "fixtures/PLAYBACK-006.json",
       "purpose": "Unknown custom loop",
-      "sha256": "0ac2117b55a966cac8e792131209e4a729b04ceb13d6c37785828e326397574f"
+      "sha256": "f632abf62faedb2fcaa5a6dbade17c8569924fe792b12ca9b3eddd998e435b14"
     },
     {
       "expectedDistinctFrom": [],
@@ -248,7 +248,7 @@
       "fixture": "POSITION-001",
       "path": "fixtures/POSITION-001.json",
       "purpose": "Position offsets",
-      "sha256": "b2b9622403477df912500a0e98a59959e7d0ca47417f647c093cfdb3df11220a"
+      "sha256": "71e36974d97e672af861e70611d1e7aa352cfc8bdb04ccbcf4710837b0fe1f3f"
     },
     {
       "expectedDistinctFrom": [],
@@ -257,7 +257,7 @@
       "fixture": "PREPOST-001",
       "path": "fixtures/PREPOST-001.json",
       "purpose": "Only pre value",
-      "sha256": "a644d9331d157c2aaca29107d67c3afa8dee7919a35547735d57c232bf5f06df"
+      "sha256": "05f2ca18223c42d2be2138609af3a648bd9f552029c2b3b645a5442d1e8fc9eb"
     },
     {
       "expectedDistinctFrom": [],
@@ -266,7 +266,7 @@
       "fixture": "PREPOST-002",
       "path": "fixtures/PREPOST-002.json",
       "purpose": "Only post value",
-      "sha256": "3d384cb32bf107c22679849d8d5b0fc13b0a79603f98797954b13ba0d3ace2ac"
+      "sha256": "1f97fb9615829909c8486a045a985392ebdfcfc21773ae1180a8432ae094bfaf"
     },
     {
       "expectedDistinctFrom": [],
@@ -275,7 +275,7 @@
       "fixture": "PREPOST-003",
       "path": "fixtures/PREPOST-003.json",
       "purpose": "Equal pre and post",
-      "sha256": "d4fb82b15cba7aee6c30e5af5ac6dc560ebdeff380a192e15812bac481a7d851"
+      "sha256": "f94704266e7466d3eafbabe49bfc7f34888951814918154462b32eaedc7942a7"
     },
     {
       "expectedDistinctFrom": [],
@@ -284,7 +284,7 @@
       "fixture": "PREPOST-004",
       "path": "fixtures/PREPOST-004.json",
       "purpose": "Different pre and post",
-      "sha256": "01aa8ec1a934bedbf1b25833dfefcee47018d6756e98b259355c477992df765f"
+      "sha256": "4039b6b427fde6a4993d4c56b3ee6843e9cce279ffc241bdd715ec370e79d32b"
     },
     {
       "expectedDistinctFrom": [],
@@ -293,7 +293,7 @@
       "fixture": "PREPOST-005",
       "path": "fixtures/PREPOST-005.json",
       "purpose": "Invalid empty keyframe",
-      "sha256": "d012ac32028ca2c96acfbbef2c2d484fd633c26a7994a734ed83297e89ab5fa3"
+      "sha256": "791c16aab51e3b6fd17933889e581d4146d0dc4aa44d8bd03b05be08e740fd4a"
     },
     {
       "expectedDistinctFrom": [],
@@ -302,7 +302,7 @@
       "fixture": "ROTATION-001",
       "path": "fixtures/ROTATION-001.json",
       "purpose": "Rotation above 180 degrees",
-      "sha256": "dc19065df565c53d97f58414d9d9a0092d0dccf6b7d8a71942327a2caab860a8"
+      "sha256": "0a197e846b39382139d9fc0d892276f581463452d5903d0a0daaad9caf333fb1"
     },
     {
       "expectedDistinctFrom": [],
@@ -311,7 +311,7 @@
       "fixture": "ROTATION-002",
       "path": "fixtures/ROTATION-002.json",
       "purpose": "Rotation above 360 degrees",
-      "sha256": "48641242de4277f1966f9dcadc31027c02295204839029b53744664f61d33281"
+      "sha256": "e2558f06bcd4f73de5eff083ce0f91c0bc1b58447fd6d9878391999ad14a1f8a"
     },
     {
       "expectedDistinctFrom": [],
@@ -320,7 +320,7 @@
       "fixture": "ROTATION-003",
       "path": "fixtures/ROTATION-003.json",
       "purpose": "350 to 10 scalar transition",
-      "sha256": "d66a9d7266ef456336735d706d2f23fac422277808e5091e3afa4ee007e4d71b"
+      "sha256": "92e6032f5f0fd7a934546aef01133dfd612b364709aa279eb661efaf0f21ac2d"
     },
     {
       "expectedDistinctFrom": [],
@@ -329,7 +329,7 @@
       "fixture": "SCALE-001",
       "path": "fixtures/SCALE-001.json",
       "purpose": "Normal scale",
-      "sha256": "4aaa5b881384c7e87dcf9adb85928f771483839ccf887388a67d8ea8c54563ec"
+      "sha256": "a7e4cfa0f8bdb8316e4b1b22acfdde821baf2cf39b260d5d8f50397223af5da0"
     },
     {
       "expectedDistinctFrom": [],
@@ -338,7 +338,7 @@
       "fixture": "SCALE-002",
       "path": "fixtures/SCALE-002.json",
       "purpose": "Zero scale",
-      "sha256": "6aac0975e716e5361d7f336928a6beb4740c32c56ac31baab554b51c2c3c89f6"
+      "sha256": "b81b833e63261a1f32d24c814401fe82873a4661c81e3880d5566e840c25e576"
     }
   ],
   "marker": "NON_PRODUCTION"

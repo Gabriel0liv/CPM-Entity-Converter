@@ -29,7 +29,9 @@ tasks.register('verifyGeckoInputs') {
         def actual = ['git','-C',gecko,'rev-parse','HEAD'].execute().text.trim()
         if (actual != expected) throw new GradleException("GeckoLib checkout mismatch: ${actual}")
         def sourceHash = ['git','-C',gecko,'rev-parse','HEAD^{tree}'].execute().text.trim()
-        file("${layout.buildDirectory.get()}/gecko-inputs.json").text = groovy.json.JsonOutput.toJson([commit: actual, sourceTree: sourceHash, input: 'external pinned GeckoLib sources', java: System.getProperty('java.version'), gradle: gradle.gradleVersion]) + '\n'
+        def metadata = file("${layout.buildDirectory.get()}/gecko-inputs.json")
+        metadata.parentFile.mkdirs()
+        metadata.text = groovy.json.JsonOutput.toJson([commit: actual, sourceTree: sourceHash, input: 'external pinned GeckoLib sources', java: System.getProperty('java.version'), gradle: gradle.gradleVersion]) + '\n'
     }
 }
 tasks.named('compileJava') { dependsOn 'verifyGeckoInputs' }
