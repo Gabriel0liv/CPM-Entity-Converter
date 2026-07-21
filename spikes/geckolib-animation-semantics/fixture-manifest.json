@@ -1,0 +1,345 @@
+{
+  "fixtures": [
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-001",
+      "path": "fixtures/EASE-001.json",
+      "purpose": "Linear easing",
+      "sha256": "d42f0e3b53b6b68be848c8f2a12ae975f586e5db4e0dd2af3cf0ce0aa00d0675"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-002",
+      "path": "fixtures/EASE-002.json",
+      "purpose": "Step easing",
+      "sha256": "3a30799185588cdba27f1e32d0784fb27031a6e65cb4b4cbd0541e9e384bf988"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-003",
+      "path": "fixtures/EASE-003.json",
+      "purpose": "Sine easing",
+      "sha256": "cca3e31e9984aa546f007fe2c7cacc4f7591604b8fa94d2e4ed4ae03a51b7186"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-004",
+      "path": "fixtures/EASE-004.json",
+      "purpose": "Unknown custom easing",
+      "sha256": "cdfc41c3de32ee194edd02739e443446681172bdb7dc29fb8a651d71b17f1ad7"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-005",
+      "path": "fixtures/EASE-005.json",
+      "purpose": "Bounce easing",
+      "sha256": "c657742f67dea0b8f6ce287f53f524288c07fe292d50a50326c38d61b764d4e7"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-006",
+      "path": "fixtures/EASE-006.json",
+      "purpose": "Back easing with arguments",
+      "sha256": "b31687ce647ed3c69aec6f87c0d3c9e496ac66231e59606e38335c45caf233aa"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "EASE-007",
+      "path": "fixtures/EASE-007.json",
+      "purpose": "Elastic easing with arguments",
+      "sha256": "4cbfacf988e25620b4f04997087098af848aea52b4de3621fe6d43be8f6f91aa"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "KEYFRAME-001",
+      "path": "fixtures/KEYFRAME-001.json",
+      "purpose": "Textual timestamps out of order",
+      "sha256": "f76c6f73615797fce0bba75a7f729b90e09543226a0572c30c32c6a27c38d39f"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "KEYFRAME-002",
+      "path": "fixtures/KEYFRAME-002.json",
+      "purpose": "Duplicate timestamp raw JSON",
+      "sha256": "763ab9917af32392ac22e1653cfc387ab9c2854f847729790348082a67037220"
+    },
+    {
+      "expectedDistinctFrom": [
+        "KEYFRAME-004"
+      ],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "KEYFRAME-003",
+      "path": "fixtures/KEYFRAME-003.json",
+      "purpose": "Different channel timelines",
+      "sha256": "ee86b053bbe48c4190ec9036b2267893741236509dc4a3c5bbb69a0713c99d1f"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "KEYFRAME-004",
+      "path": "fixtures/KEYFRAME-004.json",
+      "purpose": "Absent channels",
+      "sha256": "3e1f866dda00ed01e3dfa9aab48db63b08ef0e98d8a852880a09dbdae346edb2"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LENGTH-001",
+      "path": "fixtures/LENGTH-001.json",
+      "purpose": "Explicit animation length",
+      "sha256": "35aab42fa61f1226cc08fa4da68ee4ee439aaec59fcb0729796e28adc5e82709"
+    },
+    {
+      "expectedDistinctFrom": [
+        "LENGTH-001"
+      ],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LENGTH-002",
+      "path": "fixtures/LENGTH-002.json",
+      "purpose": "Implicit length from all last keyframes",
+      "sha256": "5acf8f2a699c93a9b258964e36738b285f59d0c73804231bae3552dd4ba34624"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LENGTH-003",
+      "path": "fixtures/LENGTH-003.json",
+      "purpose": "Implicit unbounded empty animation",
+      "sha256": "7cec0e6f867fe200cd785c58423e2c27fb039cf352f9e9a58781c0583205828c"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LENGTH-004",
+      "path": "fixtures/LENGTH-004.json",
+      "purpose": "Short explicit length",
+      "sha256": "ed81d0225d1ecd551d1522d35be0d54e8704299aef554b14637a7515e1dcba1f"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LERP-001",
+      "path": "fixtures/LERP-001.json",
+      "purpose": "Channel lerp_mode catmullrom",
+      "sha256": "0b8f9c1ad0fde9e32063ab46d29d5e829c3a5931eb6b37b30733cce6e8448006"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "LERP-002",
+      "path": "fixtures/LERP-002.json",
+      "purpose": "Per-keyframe catmullrom",
+      "sha256": "6a598cac9ac11128477b57d86757cc7cf9a14f241c37101d6550eab5bb286607"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "MOLANG-001",
+      "path": "fixtures/MOLANG-001.json",
+      "purpose": "Numeric constants",
+      "sha256": "2ad1f08567a65d58552be32623e28a0ad21a8069d0b716e56b0b664528bafa29"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "MOLANG-002",
+      "path": "fixtures/MOLANG-002.json",
+      "purpose": "Constant Molang expression",
+      "sha256": "d19e3e746175f998f17a004857bfe11aaffb6d5bdd78e8e4abea40ef6bc7a0f6"
+    },
+    {
+      "expectedDistinctFrom": [
+        "MOLANG-001",
+        "MOLANG-002"
+      ],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "CONTEXT_REQUIRED",
+      "fixture": "MOLANG-003",
+      "path": "fixtures/MOLANG-003.json",
+      "purpose": "Runtime-dependent registered query",
+      "sha256": "484157b1e65d8d08fdab2e411921cb8aa42a2bd121ae01944e26e5b5a8f2ca4d"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PLAYBACK-001",
+      "path": "fixtures/PLAYBACK-001.json",
+      "purpose": "Boolean loop true",
+      "sha256": "2170d40eade235a61c510ee46ba499a8a4d7472a9d2c4e050e7cdd76f3761398"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PLAYBACK-002",
+      "path": "fixtures/PLAYBACK-002.json",
+      "purpose": "Boolean loop false",
+      "sha256": "94f8e41978866de05a1a3e60612260f90ddc104ad2cf9fcea8d13bad1b7e3794"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PLAYBACK-003",
+      "path": "fixtures/PLAYBACK-003.json",
+      "purpose": "String loop",
+      "sha256": "ec3291f9db03ac6d26f3aaf17cc14d17416c451dd215def07093dcdb48bdf3d5"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "CONTROLLER_REQUIRED",
+      "fixture": "PLAYBACK-004",
+      "path": "fixtures/PLAYBACK-004.json",
+      "purpose": "Play once",
+      "sha256": "0a6ab7c5c369d738ed1ff956e644eed341236911680a1630d460c3d0e9869b25"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "CONTROLLER_REQUIRED",
+      "fixture": "PLAYBACK-005",
+      "path": "fixtures/PLAYBACK-005.json",
+      "purpose": "Hold on last frame",
+      "sha256": "60065da76d53762f1977d3ad39b29062e8dd818b93f2ae70ee37990d6d74e086"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PLAYBACK-006",
+      "path": "fixtures/PLAYBACK-006.json",
+      "purpose": "Unknown custom loop",
+      "sha256": "0ac2117b55a966cac8e792131209e4a729b04ceb13d6c37785828e326397574f"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "POSITION-001",
+      "path": "fixtures/POSITION-001.json",
+      "purpose": "Position offsets",
+      "sha256": "b2b9622403477df912500a0e98a59959e7d0ca47417f647c093cfdb3df11220a"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PREPOST-001",
+      "path": "fixtures/PREPOST-001.json",
+      "purpose": "Only pre value",
+      "sha256": "a644d9331d157c2aaca29107d67c3afa8dee7919a35547735d57c232bf5f06df"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PREPOST-002",
+      "path": "fixtures/PREPOST-002.json",
+      "purpose": "Only post value",
+      "sha256": "3d384cb32bf107c22679849d8d5b0fc13b0a79603f98797954b13ba0d3ace2ac"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PREPOST-003",
+      "path": "fixtures/PREPOST-003.json",
+      "purpose": "Equal pre and post",
+      "sha256": "d4fb82b15cba7aee6c30e5af5ac6dc560ebdeff380a192e15812bac481a7d851"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PREPOST-004",
+      "path": "fixtures/PREPOST-004.json",
+      "purpose": "Different pre and post",
+      "sha256": "01aa8ec1a934bedbf1b25833dfefcee47018d6756e98b259355c477992df765f"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "REJECTED",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "PREPOST-005",
+      "path": "fixtures/PREPOST-005.json",
+      "purpose": "Invalid empty keyframe",
+      "sha256": "d012ac32028ca2c96acfbbef2c2d484fd633c26a7994a734ed83297e89ab5fa3"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "ROTATION-001",
+      "path": "fixtures/ROTATION-001.json",
+      "purpose": "Rotation above 180 degrees",
+      "sha256": "dc19065df565c53d97f58414d9d9a0092d0dccf6b7d8a71942327a2caab860a8"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "ROTATION-002",
+      "path": "fixtures/ROTATION-002.json",
+      "purpose": "Rotation above 360 degrees",
+      "sha256": "48641242de4277f1966f9dcadc31027c02295204839029b53744664f61d33281"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "ROTATION-003",
+      "path": "fixtures/ROTATION-003.json",
+      "purpose": "350 to 10 scalar transition",
+      "sha256": "d66a9d7266ef456336735d706d2f23fac422277808e5091e3afa4ee007e4d71b"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "SCALE-001",
+      "path": "fixtures/SCALE-001.json",
+      "purpose": "Normal scale",
+      "sha256": "4aaa5b881384c7e87dcf9adb85928f771483839ccf887388a67d8ea8c54563ec"
+    },
+    {
+      "expectedDistinctFrom": [],
+      "expectedParserStatus": "SUCCESS",
+      "expectedRuntimeStatus": "OBSERVED",
+      "fixture": "SCALE-002",
+      "path": "fixtures/SCALE-002.json",
+      "purpose": "Zero scale",
+      "sha256": "6aac0975e716e5361d7f336928a6beb4740c32c56ac31baab554b51c2c3c89f6"
+    }
+  ],
+  "marker": "NON_PRODUCTION"
+}

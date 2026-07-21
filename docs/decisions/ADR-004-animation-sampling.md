@@ -1,6 +1,7 @@
 # ADR-004 — Reamostragem de animações
 
-Status: **provisional** após S004; gates restantes estão registrados abaixo.
+Status: **accepted** após assertions S004 de sampling/easing; lifecycle e Molang
+estão fora do escopo deste ADR e registrados em ADR-006.
 
 Data da decisão: 2026-07-21.
 
@@ -57,12 +58,9 @@ Copiar keyframes não funciona com grid uniforme/canais diferentes; mapeamento d
 
 ## Riscos residuais
 
-Arredondamento de duração em milissegundos, controller
-hold/play-once, duração ausente sem keyframes, Molang dinâmico e calibração
-visual permanecem gates. A timeline CPM e os semânticos observados de pre/post,
-linear, step, easing sine e catmullrom por keyframe estão confirmados; o
-`lerp_mode` no canal é ignorado pelo parser 4.4.9. O comportamento terminal de
-playback e a política Molang dinâmica ainda não estão confirmados.
+Arredondamento de duração em milissegundos e calibração visual permanecem riscos.
+As 66 assertions S004 relevantes a parser/evaluator/sampling passaram; o
+controller terminal e a política Molang são tratados em ADR-006.
 
 ## Condição de reavaliação
 

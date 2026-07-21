@@ -13,6 +13,7 @@ Run from this directory (Gradle 8.8 shown here):
 
 ```text
 python scripts/generate_fixtures.py
+python scripts/audit_fixtures.py
 python scripts/run_oracle.py --geckolib-dir <checkout> --gradle <gradle.bat>
 ```
 

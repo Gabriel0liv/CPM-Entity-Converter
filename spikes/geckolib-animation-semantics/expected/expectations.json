@@ -1,0 +1,301 @@
+{
+  "fixtures": {
+    "EASE-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-004": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-005": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-006": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "EASE-007": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "KEYFRAME-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "KEYFRAME-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "KEYFRAME-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "KEYFRAME-004": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LENGTH-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LENGTH-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LENGTH-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LENGTH-004": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LERP-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "LERP-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "MOLANG-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "MOLANG-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "MOLANG-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "CONTEXT_REQUIRED"
+      }
+    },
+    "PLAYBACK-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PLAYBACK-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PLAYBACK-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PLAYBACK-004": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "CONTROLLER_REQUIRED"
+      }
+    },
+    "PLAYBACK-005": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "CONTROLLER_REQUIRED"
+      }
+    },
+    "PLAYBACK-006": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "POSITION-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PREPOST-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PREPOST-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PREPOST-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PREPOST-004": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "PREPOST-005": {
+      "parser": {
+        "status": "REJECTED"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "ROTATION-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "ROTATION-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "ROTATION-003": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "SCALE-001": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    },
+    "SCALE-002": {
+      "parser": {
+        "status": "SUCCESS"
+      },
+      "runtime": {
+        "status": "OBSERVED"
+      }
+    }
+  },
+  "marker": "NON_PRODUCTION"
+}

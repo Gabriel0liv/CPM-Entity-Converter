@@ -76,3 +76,11 @@ Parser com streaming/árvore limitada: tamanho de arquivo configurável, profund
 ## Evidências
 
 [BakedAnimationsAdapter 4.4.9](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/BakedAnimationsAdapter.java), [KeyFramesAdapter](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/json/typeadapter/KeyFramesAdapter.java), [BakedModelFactory](https://github.com/bernie-g/geckolib/blob/25a41d7375bb7eeda37dadc04b1e03fe486b33e5/Forge/src/main/java/software/bernie/geckolib/loading/object/BakedModelFactory.java), [S004 results](../spikes/geckolib-animation-semantics/results.md), [GeckoLib 4 changes](https://github.com/bernie-g/geckolib/wiki/Geckolib-4-Changes).
+## Evidência S004 corrigida
+
+O spike mantém `fixture-manifest.json` e `expected/expectations.json` como
+contratos executáveis. A execução de 2026-07-21 usou 37 fixtures distintas e 66
+assertions; 33 fixtures passaram, uma foi rejeitada conforme esperado e três
+ficaram `BLOCKED` somente para o tick terminal do controller. Molang numérico e
+expressão constante foram separados de `query.anim_time`, que é dinâmica e
+recebe `ANIM_DYNAMIC_MOLANG_UNSUPPORTED` no modo offline.

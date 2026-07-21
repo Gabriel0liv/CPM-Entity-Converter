@@ -10,7 +10,7 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
 - [x] T003 verificar licenças CPM/GeckoLib.
 - [x] T004 criar documentação e spec 001.
 - [x] T005 comparar estratégias A–D e propor arquitetura.
-- [~] T006 revisão técnica continua aberta apenas para os gates manuais/ADR-004/005.
+- [~] T006 revisão técnica continua aberta apenas para os gates manuais/ADR-005/006.
 - [x] T007 corrigir documentação conforme revisão técnica.
   - [x] T007-A separar Euler autoral contínuo de quaternion amostrado.
   - [x] T007-B corrigir timeline loop/single e política N/FPS efetivo.
@@ -31,22 +31,22 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
   - [x] S003-A M0–M5 determinísticos e verificações estruturais.
   - [x] S003-B M0–M5 executados pelo `ProjectIO` oficial.
   - [!] S003-C abrir/salvar/reabrir M2–M5 no editor gráfico.
-- [x] S004 executar oracle real GeckoLib 4.4.9 no commit `25a41d7375bb7eeda37dadc04b1e03fe486b33e5` (34 fixtures; parser/easing/playback observados).
-  - [x] S004-A executar fixtures PREPOST/LERP/EASE/PLAYBACK/LENGTH/KEYFRAME/ROTATION/POSITION/SCALE.
-  - [x] S004-B registrar parser structures, amostras e hashes em `artifacts/results.json`.
-  - [!] S004-C observar tick/controller terminal de `play_once` e `hold_on_last_frame` no runtime completo.
-  - [!] S004-D fechar política de Molang dinâmico com contexto real.
+- [~] S004 executar oracle real GeckoLib 4.4.9; assertions corrigidas, lifecycle terminal ainda isolado.
+  - [~] S004-A fixtures auditadas e executadas; 37 distintas, 66 assertions, sem FAIL.
+  - [x] S004-B relatório estruturado com parser/evaluator/controller/policy, hashes e contadores.
+  - [!] S004-C tick/controller terminal de `play_once` e `hold_on_last_frame` requer CoreGeoModel completo.
+  - [x] S004-D Molang constante/dinâmica detectada; dinâmica rejeitada por política offline.
 
-Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. S004 automático está executado, mas a Fase 0 permanece aberta pelos gates S004-C/D e pelos checks visuais.
+Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. S004-C permanece isolado em ADR-006; checks visuais continuam separados.
 
 ## Fase 1
 
-- [!] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002), aguardando Gate C.
-- [!] T101 implementar diagnostics e source locations (FR-023, NFR-006/007), aguardando Gate C.
-- [!] T102 implementar math value objects e golden axes (FR-009/010), aguardando Gate C.
-- [!] T103 implementar ModelIR/invariants (ADR-002), aguardando Gate C.
-- [!] T104 implementar mapping schema JSON/YAML (FR-005), aguardando Gate C.
-- [!] T105 criar fixtures autorais A–D e licença (NFR-016), aguardando Gate C.
+- [ ] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002).
+- [ ] T101 implementar diagnostics e source locations (FR-023, NFR-006/007).
+- [ ] T102 implementar math value objects e golden axes (FR-009/010).
+- [ ] T103 implementar ModelIR/invariants (ADR-002).
+- [ ] T104 implementar mapping schema JSON/YAML (FR-005).
+- [ ] T105 criar fixtures autorais A–D e licença (NFR-016).
 
 ## Fase 2
 
