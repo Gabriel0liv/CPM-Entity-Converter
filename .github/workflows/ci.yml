@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-java@v4 # major tag policy: Dependabot-reviewed official action
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew clean check
+      - run: ./gradlew spotlessCheck clean check
       - run: python scripts/verify-reproducible-build.py
       - run: python test-fixtures/scripts/manifest.py --check
       - if: runner.os == 'Linux'
