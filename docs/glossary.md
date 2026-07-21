@@ -1,0 +1,25 @@
+# Glossário
+
+- **Absolute / absoluto:** valor final local, incluindo bind/default necessário pelo destino.
+- **Additive / aditivo:** delta aplicado sobre a pose já existente; escala requer semântica de composição explícita.
+- **Anchor:** transformação que conecta uma árvore fonte a um root CPM.
+- **Bind pose / pose neutra:** transformação local estática antes de animações.
+- **Bone:** nó hierárquico transformável; pode conter cubes e children.
+- **CPM root:** parte raiz vanilla (`head`, `body`, braços, pernas) ou `RootModelType`.
+- **Cube:** caixa texturizada; não é sinônimo de bone.
+- **Drift:** erro crescente causado por acumular transforms ou precisão inadequada.
+- **Frame grid:** conjunto uniforme de samples exigido pela animação CPM V1.
+- **Gecko/Bedrock space:** coordenadas autorais dos JSONs `.geo.json`/`.animation.json`.
+- **IR:** representação intermediária independente de GeckoLib e CPM.
+- **Local transform:** transformação relativa ao parent.
+- **Molang:** linguagem de expressões usada por Bedrock/GeckoLib.
+- **Pose dinâmica:** `VanillaPose` cujo tempo representa um valor de estado, como yaw/pitch, não relógio.
+- **Reparenting:** trocar o parent preservando a transformação global por rebake local.
+- **Retargeting:** adaptar rig/animações fonte aos papéis e estados do rig destino.
+- **Root partition:** divisão de uma árvore fonte entre roots CPM independentes.
+- **Sampling:** avaliação de curvas em tempos discretos.
+- **SemanticRigMap:** configuração explícita de roles, clips, look e ajustes.
+- **Seam:** transição fim→início de um loop.
+- **storeID:** identidade numérica persistente usada por frames CPM.
+- **Transform space:** espaço em que um valor está expresso (`LOCAL`, `MODEL`, `ROOT_ANCHOR`).
+- **UV:** coordenadas que mapeiam faces do cube à textura.
