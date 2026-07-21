@@ -44,11 +44,11 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 ## Fase 1
 
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
-- [~] T101 revisão da API de diagnostics e Result.
-- [~] T102 completar matemática e golden tests.
-- [~] T103 alinhar ModelIR e validator ao contrato.
-- [~] T104 completar schema, loader e compilação semântica.
-- [~] T105 reconstruir fixtures A–D.
+- [~] T101 revisão da API de diagnostics e Result (Onda 1: `82d7a1b`; correção de boundary: `3948e7b`; construtor/código arbitrário ainda requer fechamento).
+- [~] T102 completar matemática e golden tests (Onda 1: `f2e4130`; matriz extrema e continuidade ainda incompletas).
+- [~] T103 alinhar ModelIR e validator ao contrato (Onda 2: `f69f8f3`; matriz completa e provenance/diagnostics ainda incompletas).
+- [~] T104 completar schema, loader e compilação semântica (Onda 2: `94709d5`; engine 2020-12 executável, mas SemanticRigMap/coverage ainda parciais).
+- [~] T105 reconstruir fixtures A–D (Onda 1: `3d96858`; contratos semânticos executáveis permanecem pendentes, explicitados em `test-fixtures/CONTRACT-STATUS.md`).
 
 ## Fase 2
 
