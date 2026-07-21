@@ -39,7 +39,7 @@ public final class ModelIrValidator {
     }
     Map<BoneId, SourceLocation> locations = new LinkedHashMap<>();
     for (BoneIR bone : model.bones()) {
-      locations.putIfAbsent(bone.id(), bone.provenance());
+      locations.putIfAbsent(bone.id(), bone.sourceLocation());
     }
     boneLocations = locations;
     Set<BoneId> roots = new LinkedHashSet<>();
