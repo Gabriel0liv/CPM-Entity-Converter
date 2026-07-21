@@ -43,7 +43,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 1
 
-- [~] T100 revisão de reprodutibilidade e namespace.
+- [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [~] T101 revisão da API de diagnostics e Result.
 - [~] T102 completar matemática e golden tests.
 - [~] T103 alinhar ModelIR e validator ao contrato.

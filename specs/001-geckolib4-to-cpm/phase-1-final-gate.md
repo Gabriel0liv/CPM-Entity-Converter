@@ -17,15 +17,17 @@ execução remota ainda é necessária para confirmar ambos os runners.
 - Fixtures A–D passam o manifesto estrutural e possuem provenance/expected.
 - O oracle executável reporta 90/90 assertions, 33 PASS, 1 rejeição esperada e
   3 BLOCKED de lifecycle terminal explicitamente fora do escopo.
+- CI verde no workflow run `29861585146`, commit
+  `e5fa5fcb3e35030853f2d282079a470667602130`: `check (ubuntu-latest)` e
+  `check (windows-latest)` concluíram com sucesso, usando Java 17 e Gradle
+  Wrapper 8.8. Referência: `actions/runs/29861585146`.
 
 ## Bloqueios restantes
 
-1. Não houve execução verde observada do GitHub Actions em Ubuntu e Windows;
-   portanto T100 permanece `[~]` e NFR-014 não está aceito.
-2. A engine JSON Schema 2020-12 está concluída: `MappingLoader` carrega o
+1. A engine JSON Schema 2020-12 está concluída: `MappingLoader` carrega o
    recurso do classpath e valida antes do binding. Permanecem pendentes os
    testes completos de nested constraints e a compilação integral de referências.
-3. A matriz completa de golden tests e a cobertura integral de invariantes IR
+2. A matriz completa de golden tests e a cobertura integral de invariantes IR
    ainda requerem expansão antes de marcar T102/T103/T105 como concluídas.
 
 Enquanto qualquer item permanecer pendente, T200 continua `[!]`. Nenhum parser
