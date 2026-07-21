@@ -13,9 +13,9 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - if: runner.os == 'Linux'
-        run: bash ./gradlew spotlessCheck clean check
+        run: bash ./gradlew spotlessCheck clean check --no-daemon --stacktrace
       - if: runner.os == 'Windows'
-        run: .\gradlew.bat spotlessCheck clean check
+        run: .\gradlew.bat spotlessCheck clean check --no-daemon --stacktrace
       - run: python scripts/verify-reproducible-build.py
       - run: python test-fixtures/scripts/manifest.py --check
       - if: runner.os == 'Linux'
