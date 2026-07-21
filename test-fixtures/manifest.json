@@ -1,0 +1,41 @@
+{
+  "fixtures": {
+    "fixture-a-humanoid": {
+      "PROVENANCE.md": "3f910122421b055c4f4af107c83c008e8129826fc0a7ef86b9e6cafd85c7772f",
+      "README.md": "1c56c00dd14dbc62706a49e33f4beeda973b93e70eb8e55014ffc232b2ec5376",
+      "animations.animation.json": "0e50bb0bc19499451b0adeb91832ffeeac391313fb84d4ea1f9a705b6e547b97",
+      "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
+      "geometry.geo.json": "ee930c4fa6bbf8200500415221a2e0a4c6c878330cadfa1988b8e427d3c6890b",
+      "mapping.yaml": "b7b25ce0fc0a363b30407103b9830a313bee688bd68ae3c29e0066414b457fb2",
+      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+    },
+    "fixture-b-neck": {
+      "PROVENANCE.md": "707df6ee397fc44a45cf2e66b33e9d09f0b0185ffcef29a9e11cebf375a88b0c",
+      "README.md": "7b3e38b170277df403fe579b1c3532f59e629a583a9cb4ce0f8040a4d1d8e572",
+      "animations.animation.json": "bb41276a195720e3b8fd69817428bd7fc0d5f45f170302ed2206946f416450df",
+      "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
+      "geometry.geo.json": "78ad9411e284a2e17b6675d385dec443f430ad457841d22ae95b82ea32811ff6",
+      "mapping.yaml": "2d56c899312e3b172f98a3976fbc59ef65a05b840e6099b88779bb178fa261b1",
+      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+    },
+    "fixture-c-deep-hierarchy": {
+      "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
+      "README.md": "b8c0e81179f1ba37dbc08ebbcbf88e964b5257f7b346c9471221591f09d43353",
+      "animations.animation.json": "be5b5ff88c9c0d53c96539eec835b4e40b26da4818be335ad62bea02ed4c5578",
+      "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
+      "geometry.geo.json": "bf6fc9e363a29cf2622500a986e6ad38a6b58060bab37af070beb9cfb57c96e5",
+      "mapping.yaml": "dedeb658ca2e343b3e316a292c86b7dabcde8bc2c7ce160a394f9df78f99db04",
+      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+    },
+    "fixture-d-quadruped": {
+      "PROVENANCE.md": "d85027bc3a3fef380f37f48322841458c16abdc63a498ee03b659f4296179774",
+      "README.md": "0c94f1ab398a66c36f1c89d9882e2f9dde0a378e9137af15e0dc64df6108c612",
+      "animations.animation.json": "1991196de86f5a13c1c3413ce9431f9f3bfa12bd9fe6837d060f29ee02e8d75a",
+      "expected/README.md": "0d24bd8bf6524ed48e0b2e15465e98abd1ec3c5f664c23e10dbc27a971334ada",
+      "geometry.geo.json": "5fdd2bbb7cd60476205290b8f7dd379bb08bdc26fe5bdea79e904f15aeac8f0d",
+      "mapping.yaml": "ca42929401c9538f784f4b69e0c4a21b8a0e4224617465d4e8560dfedece5097",
+      "texture.png": "5a19d86b001ce386519baa1336c0bbd71404a32710c1f2fb6b19ffed2157a7b8"
+    }
+  },
+  "marker": "NON_PRODUCTION"
+}

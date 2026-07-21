@@ -59,8 +59,10 @@ Copiar keyframes não funciona com grid uniforme/canais diferentes; mapeamento d
 ## Riscos residuais
 
 Arredondamento de duração em milissegundos e calibração visual permanecem riscos.
-As 66 assertions S004 relevantes a parser/evaluator/sampling passaram; o
-controller terminal e a política Molang são tratados em ADR-006.
+O relatório S004 registra 66 assertions do conjunto parser/evaluator, incluindo
+easing e estruturas de keyframe; isso não é um teste de seam CPM nem prova o
+tick terminal do controller. Esses pontos e a política Molang são tratados em
+ADR-006/T401.
 
 ## Condição de reavaliação
 

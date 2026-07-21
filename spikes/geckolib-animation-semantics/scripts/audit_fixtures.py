@@ -37,8 +37,14 @@ def main() -> int:
             if hashes.get(n)==hashes.get(o): errors.append(f"{n} and {o} unexpectedly identical")
     manifest={"marker":"NON_PRODUCTION","fixtures":entries}
     (ROOT/"fixture-manifest.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n",encoding="utf-8")
-    expectations={"marker":"NON_PRODUCTION","fixtures":{e["fixture"]:{"parser":{"status":e["expectedParserStatus"]},"runtime":{"status":e["expectedRuntimeStatus"]}} for e in entries}}
-    (ROOT/"expected"/"expectations.json").write_text(json.dumps(expectations,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    expectation_path=ROOT/"expected"/"expectations.json"
+    if not expectation_path.exists(): errors.append("expected/expectations.json is missing; auditor never creates it")
+    else:
+        try:
+            manual=json.loads(expectation_path.read_text(encoding="utf-8")); declared=set(manual.get("fixtures",{}))
+            if declared != expected: errors.append("manual expectations must cover exactly the fixture set")
+            if manual.get("marker") != "NON_PRODUCTION": errors.append("manual expectations marker missing")
+        except Exception as e: errors.append(f"invalid manual expectations: {e}")
     print(json.dumps({"status":"PASS" if not errors else "FAIL","fixtures":len(entries),"errors":errors},indent=2))
     return 0 if not errors else 1
 if __name__ == "__main__": raise SystemExit(main())

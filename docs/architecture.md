@@ -109,3 +109,11 @@ A primeira minimiza drift; a segunda integra melhor com animação vanilla. ADR-
 7. integração/regressão/inspeção CPM.
 
 Nenhuma fase avança sem seus requisitos e aceites rastreados em `tasks.md`.
+## Fase 1 — módulos e fronteiras
+
+`converter-core` é independente de runtimes externos e hospeda diagnostics,
+matemática e ModelIR. `converter-config` depende apenas dele; adapters e
+projeções futuras permanecem em módulos separados. Nesta fase os módulos de
+parser/writer/validator/CLI têm somente configuração Gradle, sem classes de
+produção, preservando o Gate B e evitando dependência acidental de CPM,
+Minecraft, Forge ou GeckoLib no core.

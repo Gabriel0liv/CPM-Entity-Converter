@@ -1,0 +1,2 @@
+package org.example.cpm.math;
+public record RotationContinuity(Vec3d authoredEulerDegrees){ public RotationContinuity{if(authoredEulerDegrees==null)throw new IllegalArgumentException("rotation");} public RotationContinuity unwrapNear(RotationContinuity previous){Vec3d p=previous.authoredEulerDegrees();return new RotationContinuity(new Vec3d(near(authoredEulerDegrees.x(),p.x()),near(authoredEulerDegrees.y(),p.y()),near(authoredEulerDegrees.z(),p.z())));} private static double near(double v,double p){while(v-p>180)v-=360;while(v-p<-180)v+=360;return v;} }

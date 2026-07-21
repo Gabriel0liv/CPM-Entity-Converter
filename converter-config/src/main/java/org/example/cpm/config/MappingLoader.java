@@ -1,0 +1,3 @@
+package org.example.cpm.config;
+import com.fasterxml.jackson.databind.*;import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;import java.io.*;import java.nio.file.*;
+public final class MappingLoader{private final ObjectMapper json=new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,true);private final ObjectMapper yaml=new ObjectMapper(new YAMLFactory()).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,true);public MappingDocumentV1 load(Path p)throws IOException{return (p.toString().endsWith(".yaml")||p.toString().endsWith(".yml")?yaml:json).readValue(Files.readString(p),MappingDocumentV1.class);}}

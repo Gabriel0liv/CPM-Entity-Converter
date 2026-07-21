@@ -36,17 +36,19 @@ Estados permitidos: `[ ] não iniciada`, `[~] em andamento`, `[!] bloqueada`, `[
   - [x] S004-B relatório estruturado com parser/evaluator/controller/policy, hashes e contadores.
   - [!] S004-C tick/controller terminal de `play_once` e `hold_on_last_frame` requer CoreGeoModel completo.
   - [x] S004-D Molang constante/dinâmica detectada; dinâmica rejeitada por política offline.
+  - [x] S004-E completar assertions semânticas independentes.
+  - [x] S004-F tornar oracle reproduzível e validar commit/inputs.
 
 Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenciais → Fase 1. S004-C permanece isolado em ADR-006; checks visuais continuam separados.
 
 ## Fase 1
 
-- [ ] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002).
-- [ ] T101 implementar diagnostics e source locations (FR-023, NFR-006/007).
-- [ ] T102 implementar math value objects e golden axes (FR-009/010).
-- [ ] T103 implementar ModelIR/invariants (ADR-002).
-- [ ] T104 implementar mapping schema JSON/YAML (FR-005).
-- [ ] T105 criar fixtures autorais A–D e licença (NFR-016).
+- [x] T100 inicializar Gradle Java 17 reproduzível (NFR-001/002, NFR-004/008/014).
+- [x] T101 implementar diagnostics e source locations (FR-023, NFR-006/007).
+- [x] T102 implementar math value objects e golden axes (FR-009/010).
+- [x] T103 implementar ModelIR/invariants (ADR-002).
+- [x] T104 implementar mapping schema JSON/YAML (FR-005).
+- [x] T105 criar fixtures autorais A–D e licença (NFR-016).
 
 ## Fase 2
 

@@ -1,0 +1,17 @@
+allprojects { group = 'org.example.cpmconverter'; version = '0.1.0-SNAPSHOT' }
+
+subprojects {
+    apply plugin: 'java-library'
+    java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xlint:all'] }
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        systemProperty 'user.language', 'en'; systemProperty 'user.country', 'US'
+        systemProperty 'user.timezone', 'UTC'; systemProperty 'file.encoding', 'UTF-8'
+    }
+    tasks.withType(AbstractArchiveTask).configureEach {
+        preserveFileTimestamps = false; reproducibleFileOrder = true
+    }
+    dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2' }
+    dependencyLocking { lockAllConfigurations() }
+}

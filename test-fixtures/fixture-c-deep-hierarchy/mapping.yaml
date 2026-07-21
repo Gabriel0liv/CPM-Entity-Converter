@@ -1,0 +1,4 @@
+schemaVersion: 1
+bones: {body: body, spine: spine, chest: chest, neck: neck, head: head, jaw: jaw, accessory: accessory}
+clips: {idle: idle}
+look: {composition: inherited_split, neckInfluence: 0.5, headInfluence: 0.5}

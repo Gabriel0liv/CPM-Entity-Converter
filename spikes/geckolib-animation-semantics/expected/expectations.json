@@ -1,4 +1,23 @@
 {
+  "semanticAssertions": {
+    "PREPOST-001": {"rotationXDegrees": 10.0},
+    "PREPOST-002": {"rotationXDegrees": 10.0},
+    "PREPOST-003": {"rotationDegrees": [1.0, 2.0, 3.0]},
+    "PREPOST-004": {"preWinsDegrees": [1.0, 2.0, 3.0], "postDiscarded": true},
+    "KEYFRAME-001": {"textualOrder": ["1.0", "0.0", "0.5"]},
+    "ROTATION-001": {"xDegrees": 190.0},
+    "ROTATION-002": {"xDegrees": 720.0},
+    "ROTATION-003": {"xDegrees": [350.0, 10.0], "shortestPath": false},
+    "POSITION-001": {"first": [1.0, 2.0, 3.0], "last": [2.0, 3.0, 4.0]},
+    "SCALE-001": {"first": [1.0, 1.0, 1.0], "last": [2.0, 2.0, 2.0]},
+    "SCALE-002": {"first": [0.0, 0.0, 0.0], "last": [0.0, 0.0, 0.0]},
+    "EASE-002": {"sample25": 0.0, "sample50": 0.0, "sample75": 1.0},
+    "EASE-003": {"sample50Approx": 0.2928932188},
+    "EASE-005": {"easing": "easeinbounce"},
+    "EASE-006": {"easing": "easeinback", "easingArgs": [1.2, 0.35]},
+    "EASE-007": {"easing": "easeinelastic", "easingArgs": [1.2, 0.35]},
+    "LERP-002": {"easing": "catmullrom", "overshootExpected": true}
+  },
   "fixtures": {
     "EASE-001": {
       "parser": {

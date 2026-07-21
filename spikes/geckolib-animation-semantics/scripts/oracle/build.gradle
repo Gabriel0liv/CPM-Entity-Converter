@@ -3,7 +3,6 @@ plugins { id 'java'; id 'application' }
 repositories { mavenCentral(); maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' } }
 def gecko = providers.gradleProperty('geckoDir').get()
 def coreJar = file("${gecko}/core/build/libs/geckolib-core-2.0.4.6.jar")
-def datafixerJar = file(System.getProperty('user.home') + '/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar')
 sourceSets.main.java.srcDirs = [
     'src/main/java',
     "${gecko}/core/src/main/java",
@@ -20,9 +19,21 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'it.unimi.dsi:fastutil:8.5.9'
     implementation 'com.eliotlash.mclib:mclib:20'
-    implementation files(datafixerJar)
+    implementation 'com.mojang:datafixerupper:6.0.8'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 }
 application { mainClass = 'spike.S004Oracle' }
 java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+
+tasks.register('verifyGeckoInputs') {
+    doLast {
+        def expected = '25a41d7375bb7eeda37dadc04b1e03fe486b33e5'
+        def actual = ['git','-C',gecko,'rev-parse','HEAD'].execute().text.trim()
+        if (actual != expected) throw new GradleException("GeckoLib checkout mismatch: ${actual}")
+        if (!coreJar.exists()) throw new GradleException("Missing core jar built from pinned checkout: ${coreJar}")
+        def sha = java.security.MessageDigest.getInstance('SHA-256').digest(coreJar.bytes).encodeHex().toString()
+        file("${layout.buildDirectory.get()}/gecko-inputs.json").text = groovy.json.JsonOutput.toJson([commit: actual, coreJar: coreJar.absolutePath.replace('\\','/'), coreJarSha256: sha, java: System.getProperty('java.version'), gradle: gradle.gradleVersion]) + '\n'
+    }
+}
+tasks.named('compileJava') { dependsOn 'verifyGeckoInputs' }

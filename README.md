@@ -1,5 +1,10 @@
 # CPM Entity Converter
 
+Fase 1 inicial (Gate B): T100–T105 implementadas em módulos Gradle separados.
+O core contém apenas contratos, matemática, diagnostics e ModelIR; parser,
+writer, CLI, sampling definitivo e projeção CPM permanecem fora do escopo.
+Consulte `specs/001-geckolib4-to-cpm/phase-1-results.md`.
+
 Spec-driven project for converting Minecraft entity models authored for
 GeckoLib 4.4.9 into editable Custom Player Models `.cpmproject` files.
 

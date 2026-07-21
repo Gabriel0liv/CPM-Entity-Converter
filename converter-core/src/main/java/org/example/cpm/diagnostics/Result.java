@@ -1,0 +1,3 @@
+package org.example.cpm.diagnostics;
+import java.util.function.*;
+public record Result<T>(T value, DiagnosticBag diagnostics) { public Result { if(diagnostics==null) diagnostics=new DiagnosticBag(); } public boolean success(){return value!=null&&!diagnostics.hasErrors();} public <U> Result<U> map(Function<T,U> f){return new Result<>(value==null?null:f.apply(value),diagnostics);} public <U> Result<U> flatMap(Function<T,Result<U>> f){if(value==null)return new Result<>(null,diagnostics); var n=f.apply(value); var all=new DiagnosticBag(diagnostics.all()).addAll(n.diagnostics()); return new Result<>(n.value(),all);} }

@@ -1,7 +1,8 @@
 # Matriz de rastreabilidade
 
-Status em 2026-07-21. `specified` significa contrato documentado, não
-implementado. IDs `TST-*` são testes planejados em `test-plan.md`.
+Status em 2026-07-21. T100–T105 têm implementação e testes executados nesta
+rodada; `specified` continua significando apenas contrato para tarefas futuras.
+IDs `TST-*` são testes planejados em `test-plan.md`.
 
 ## Requisitos funcionais
 
@@ -41,8 +42,8 @@ implementado. IDs `TST-*` são testes planejados em `test-plan.md`.
 
 | Requirement | ADR/decisão | Task | Test ou spike | AC | Status |
 |---|---|---|---|---|---|
-| NFR-001 | ADR-001 | T100 | TST-TOOLCHAIN | AC-033 | accepted design |
-| NFR-002 | ADR-001 | T100 | TST-REPRO-BUILD | AC-038 | specified |
+| NFR-001 | ADR-001 | T100 | TST-TOOLCHAIN | AC-033 | implemented/tested |
+| NFR-002 | ADR-001 | T100 | TST-REPRO-BUILD | AC-038 | implemented/tested |
 | NFR-003 | determinism contract | T302, T700 | S003/TST-DETERMINISM | AC-005, AC-038 | specified |
 | NFR-004 | ADR-001/003 | T100, T302 | dependency audit | AC-001 | specified |
 | NFR-005 | test plan | T204, T304, T700 | full suite | AC-010–028 | specified |
