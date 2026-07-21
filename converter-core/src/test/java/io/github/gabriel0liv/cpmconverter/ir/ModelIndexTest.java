@@ -20,7 +20,15 @@ class ModelIndexTest {
 
   @Test
   void resolvesUniqueBoneAndClip() {
-    BoneIR head = new BoneIR(new BoneId("head-id"), "head", null, List.of(), Transform.identity(), List.of(), "fixture");
+    BoneIR head =
+        new BoneIR(
+            new BoneId("head-id"),
+            "head",
+            null,
+            List.of(),
+            Transform.identity(),
+            List.of(),
+            "fixture");
     var index = new ModelIndex(model(head));
     assertEquals(new BoneId("head-id"), index.bone("head").value());
     assertEquals(new ClipId("idle"), index.clip("idle").value());
@@ -28,8 +36,24 @@ class ModelIndexTest {
 
   @Test
   void reportsAmbiguousBoneWithDeterministicCandidates() {
-    BoneIR first = new BoneIR(new BoneId("first"), "joint", null, List.of(), Transform.identity(), List.of(), "fixture");
-    BoneIR second = new BoneIR(new BoneId("second"), "joint", null, List.of(), Transform.identity(), List.of(), "fixture");
+    BoneIR first =
+        new BoneIR(
+            new BoneId("first"),
+            "joint",
+            null,
+            List.of(),
+            Transform.identity(),
+            List.of(),
+            "fixture");
+    BoneIR second =
+        new BoneIR(
+            new BoneId("second"),
+            "joint",
+            null,
+            List.of(),
+            Transform.identity(),
+            List.of(),
+            "fixture");
     var result = new ModelIndex(model(first, second)).bone("joint");
     assertFalse(result.success());
     assertEquals("CONFIG_BONE_AMBIGUOUS", result.diagnostics().errors().get(0).code().value());
@@ -39,7 +63,15 @@ class ModelIndexTest {
 
   @Test
   void reportsMissingReferences() {
-    BoneIR head = new BoneIR(new BoneId("head-id"), "head", null, List.of(), Transform.identity(), List.of(), "fixture");
+    BoneIR head =
+        new BoneIR(
+            new BoneId("head-id"),
+            "head",
+            null,
+            List.of(),
+            Transform.identity(),
+            List.of(),
+            "fixture");
     var index = new ModelIndex(model(head));
     assertFalse(index.bone("missing").success());
     assertFalse(index.clip("missing").success());
