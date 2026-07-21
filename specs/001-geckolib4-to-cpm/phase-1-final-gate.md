@@ -2,7 +2,7 @@
 
 Data: 2026-07-21
 
-HEAD integrado: `f389477`, descendente direto do commit-base. A revisão
+HEAD integrado: `0caf9a2`, descendente direto do commit-base. A revisão
 independente R2 foi executada em `review/r2-phase1`.
 
 ## Decisão
