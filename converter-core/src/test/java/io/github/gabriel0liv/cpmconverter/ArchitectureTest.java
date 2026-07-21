@@ -38,6 +38,29 @@ class ArchitectureTest {
           assertFalse(
               source.matches("(?s).*Diagnostic\\.of\\([^;]*\\\"[A-Z][A-Z0-9_]+\\\".*"),
               path.toString());
+          assertFalse(
+              source.matches("(?s).*new\\s+DiagnosticCode\\s*\\(\\s*\\\"[A-Z][A-Z0-9_]+\\\".*"),
+              path.toString());
+        }
+      }
+    }
+  }
+
+  @Test
+  void productionDoesNotDeclareLocalDiagnosticCodeFactories() throws Exception {
+    for (Path module : productionModules()) {
+      Path root = module.resolve("src/main/java");
+      if (!Files.isDirectory(root)) continue;
+      try (var stream = Files.walk(root)) {
+        for (Path path : stream.filter(Files::isRegularFile).toList()) {
+          String source = Files.readString(path);
+          if (path.getFileName().toString().equals("DiagnosticCode.java")
+              || path.getFileName().toString().equals("DiagnosticCodes.java")) {
+            continue;
+          }
+          assertFalse(
+              source.matches("(?s).*DiagnosticCode\\s+(?:[A-Za-z0-9_]+)\\s*\\([^)]*\\).*"),
+              path.toString());
         }
       }
     }

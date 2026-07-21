@@ -1,8 +1,35 @@
 package io.github.gabriel0liv.cpmconverter.diagnostics;
 
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
+
 /** Stable diagnostic identifiers used by production contracts. */
 public final class DiagnosticCodes {
   private DiagnosticCodes() {}
+
+  private static final Set<String> ALL = discover();
+
+  /** Returns the immutable, canonical catalog used by architecture checks and reports. */
+  public static Set<String> all() {
+    return ALL;
+  }
+
+  private static Set<String> discover() {
+    TreeSet<String> values = new TreeSet<>();
+    for (Field field : DiagnosticCodes.class.getDeclaredFields()) {
+      if (field.getType() != String.class) {
+        continue;
+      }
+      try {
+        values.add((String) field.get(null));
+      } catch (IllegalAccessException exception) {
+        throw new ExceptionInInitializerError(exception);
+      }
+    }
+    return Collections.unmodifiableSet(values);
+  }
 
   public static final String CONFIG_SCHEMA_VERSION = "CONFIG_SCHEMA_VERSION";
   public static final String CONFIG_SAMPLING_RANGE = "CONFIG_SAMPLING_RANGE";

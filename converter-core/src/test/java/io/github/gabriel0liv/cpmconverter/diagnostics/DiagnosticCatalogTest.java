@@ -18,15 +18,19 @@ class DiagnosticCatalogTest {
     }
     String documentation =
         Files.readString(Path.of("..", "specs", "001-geckolib4-to-cpm", "diagnostics.md"));
-    for (String value : values) {
-      assertTrue(documentation.contains("`" + value + "`") || documentation.contains(value), value);
-    }
+    assertEquals(values.size(), DiagnosticCodes.all().size());
+    String block =
+        documentation.substring(
+            documentation.indexOf("<!-- NORMATIVE-CATALOG-BEGIN -->"),
+            documentation.indexOf("<!-- NORMATIVE-CATALOG-END -->"));
     HashSet<String> documented = new HashSet<>();
-    var matcher = Pattern.compile("`([A-Z][A-Z0-9_]+)`").matcher(documentation);
+    var matcher = Pattern.compile("`([A-Z][A-Z0-9_]+)`").matcher(block);
     while (matcher.find()) documented.add(matcher.group(1));
-    documented.remove("ERROR");
-    documented.remove("WARNING");
-    documented.remove("INFO");
     assertEquals(values, documented, "catalog and diagnostics.md differ");
+    assertEquals(values.size(), matcherResults(block), "duplicate code in normative block");
+  }
+
+  private static int matcherResults(String block) {
+    return (int) Pattern.compile("`([A-Z][A-Z0-9_]+)`").matcher(block).results().count();
   }
 }

@@ -71,4 +71,46 @@ class DiagnosticBagTest {
     assertThrows(UnsupportedOperationException.class, () -> bag.all().add(diagnostic));
     assertThrows(NullPointerException.class, () -> new DiagnosticBag(List.of((Diagnostic) null)));
   }
+
+  @Test
+  void nullLocationSortsAfterLocatedDiagnosticsAndContextsAreCanonical() {
+    Diagnostic located = diagnostic("c.json", 1, 1, "/a", "A");
+    Diagnostic withoutLocation = Diagnostic.of(Severity.ERROR, new DiagnosticCode("B"), "b");
+    DiagnosticBag bag = new DiagnosticBag(List.of(withoutLocation, located));
+    assertEquals("B", bag.all().get(0).code().value());
+    assertEquals("A", bag.all().get(1).code().value());
+    assertEquals(
+        "a=1;b=2",
+        located.context().entrySet().stream()
+            .map(entry -> entry.getKey() + "=" + entry.getValue())
+            .reduce((left, right) -> left + ";" + right)
+            .orElseThrow());
+  }
+
+  @Test
+  void orderingDifferentiatesEveryNormativeField() {
+    Diagnostic base =
+        new Diagnostic(
+            Severity.ERROR,
+            new DiagnosticCode("A"),
+            new SourceLocation(new SourcePath("a.json"), 1, 1, "/a", 0L),
+            "m",
+            null,
+            "bone-a",
+            "clip-a",
+            new TreeMap<>(Map.of("k", "a")));
+    Diagnostic changed =
+        new Diagnostic(
+            Severity.ERROR,
+            new DiagnosticCode("B"),
+            new SourceLocation(new SourcePath("b.json"), 2, 2, "/b", 1L),
+            "m",
+            null,
+            "bone-b",
+            "clip-b",
+            new TreeMap<>(Map.of("k", "b")));
+    Diagnostic info = Diagnostic.of(Severity.INFO, new DiagnosticCode("C"), "i");
+    DiagnosticBag bag = new DiagnosticBag(List.of(changed, info, base));
+    assertEquals(List.of("A", "B", "C"), bag.all().stream().map(d -> d.code().value()).toList());
+  }
 }
