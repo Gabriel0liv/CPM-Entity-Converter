@@ -3,7 +3,7 @@
 Date: 2026-07-22
 Commit base: `c6eee9550d27322aafa53eaba2caed8a7e4a9b58`
 Implementation HEAD reviewed: `0722f15eaa171793708fa9070a3b4899b1ec146a`
-Gate record: pending integrator commit
+Gate record: this document commit (`12ce8d7`)
 Independent review: `review/r8-final` — PASS para T103 e regressão T105
 Workflow run: `29906231896`
 Workflow HEAD: `0722f15eaa171793708fa9070a3b4899b1ec146a`
