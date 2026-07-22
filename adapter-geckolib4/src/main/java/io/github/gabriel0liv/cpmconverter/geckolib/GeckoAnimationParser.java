@@ -399,7 +399,7 @@ public final class GeckoAnimationParser {
         if (pre == null) chosen = post;
         else {
           chosen = pre;
-          if (post != null && !post.equals(pre))
+          if (post != null && !equivalentVectorForm(pre, post))
             bag =
                 bag.add(
                     diag(
@@ -416,7 +416,7 @@ public final class GeckoAnimationParser {
       Vec3d v = parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone);
       if (v == null) {
         String code =
-            chosen != null && chosen.isTextual()
+            containsTextualComponent(chosen)
                 ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
                 : DiagnosticCodes.ANIM_CHANNEL_INVALID;
         bag =
@@ -474,6 +474,34 @@ public final class GeckoAnimationParser {
     } catch (IllegalArgumentException ex) {
       return null;
     }
+  }
+
+  /** Treat array and {"vector": array} as the same authored value for pre/post comparison. */
+  private static boolean equivalentVectorForm(JsonNode left, JsonNode right) {
+    return canonicalVectorNode(left).equals(canonicalVectorNode(right));
+  }
+
+  private static JsonNode canonicalVectorNode(JsonNode node) {
+    if (node != null && node.isObject() && node.size() == 1 && node.has("vector")) {
+      return node.get("vector");
+    }
+    return node;
+  }
+
+  /** Strings anywhere in a supported vector form are Molang, not structural errors. */
+  private static boolean containsTextualComponent(JsonNode node) {
+    if (node == null) return false;
+    if (node.isTextual()) return true;
+    if (node.isArray()) {
+      for (JsonNode component : node) if (containsTextualComponent(component)) return true;
+      return false;
+    }
+    if (node.isObject()) {
+      for (String key : List.of("vector", "pre", "post")) {
+        if (node.has(key) && containsTextualComponent(node.get(key))) return true;
+      }
+    }
+    return false;
   }
 
   private record ChannelParse<T>(
