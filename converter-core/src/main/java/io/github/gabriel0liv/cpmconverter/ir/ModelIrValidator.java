@@ -262,7 +262,7 @@ public final class ModelIrValidator {
                         "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     bone,
                     clip,
-                    keyframe.source());
+                    keyframe.source()));
         continue;
       }
       if (!seen.add(time))
@@ -274,7 +274,7 @@ public final class ModelIrValidator {
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip,
-                    keyframe.source());
+                    keyframe.source()));
       if (time < previous)
         diagnostics =
             diagnostics.add(
@@ -284,7 +284,7 @@ public final class ModelIrValidator {
                     Map.of("timestamp", Double.toString(time)),
                     bone,
                     clip,
-                    keyframe.source());
+                    keyframe.source()));
       if (time > duration)
         diagnostics =
             diagnostics.add(
