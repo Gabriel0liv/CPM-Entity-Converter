@@ -1,5 +1,6 @@
 package io.github.gabriel0liv.cpmconverter.geckolib;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabriel0liv.cpmconverter.diagnostics.*;
@@ -13,7 +14,7 @@ public final class GeckoUvDecoder {
   public Result<UvIR> decode(
       RawUvBoundary raw, ParsedCube cube, int textureWidth, int textureHeight) {
     if (raw == null || cube == null)
-      return Result.failure(error(DiagnosticCodes.UV_INVALID, "UV is required", cube));
+      return Result.failure(error(DiagnosticCodes.UV_MISSING, "UV is required", cube, "/uv"));
     try {
       JsonNode node = JSON.readTree(raw.canonicalJson());
       if (node == null)
@@ -47,15 +48,21 @@ public final class GeckoUvDecoder {
         String name = fields.next();
         CubeFaceIR face = face(name);
         if (face == null) {
-          warnings =
-              warnings.add(
-                  error(DiagnosticCodes.UV_FACE_UNKNOWN, "unknown UV face: " + name, cube));
-          continue;
+          return Result.failure(
+              error(
+                  DiagnosticCodes.UV_FACE_UNKNOWN,
+                  "unknown UV face: " + name,
+                  cube,
+                  "/uv/" + name));
         }
         JsonNode entry = node.get(name);
         if (!entry.isObject() || !pair(entry.get("uv")) || !pair(entry.get("uv_size")))
           return Result.failure(
-              error(DiagnosticCodes.UV_INVALID, "face UV requires uv and uv_size pairs", cube));
+              error(
+                  DiagnosticCodes.UV_INVALID,
+                  "face UV requires uv and uv_size pairs",
+                  cube,
+                  "/uv/" + name));
         double u = entry.get("uv").get(0).doubleValue(), v = entry.get("uv").get(1).doubleValue();
         double w = entry.get("uv_size").get(0).doubleValue(),
             h = entry.get("uv_size").get(1).doubleValue();
@@ -63,11 +70,28 @@ public final class GeckoUvDecoder {
           return Result.failure(error(DiagnosticCodes.UV_INVALID, "face UV must be finite", cube));
         faces.put(face, new FaceUvIR(u, v, w, h));
         warnings = warnings.addAll(bounds(cube, name, u, v, w, h, textureWidth, textureHeight));
+        if (entry.has("material_instance")) {
+          var context = new TreeMap<String, String>();
+          context.put("face", name);
+          context.put("cubeId", cube.id().value());
+          context.put("materialInstance", entry.get("material_instance").asText());
+          warnings =
+              warnings.add(
+                  new Diagnostic(
+                      Severity.WARNING,
+                      DiagnosticCode.fromCatalog(DiagnosticCodes.UV_MATERIAL_INSTANCE_UNSUPPORTED),
+                      location(cube, "/uv/" + name + "/material_instance"),
+                      "material_instance is not routed",
+                      "remove material_instance or defer routing",
+                      cube.boneId().value(),
+                      null,
+                      context));
+        }
       }
       if (faces.isEmpty())
         return Result.failure(error(DiagnosticCodes.UV_INVALID, "no valid UV faces", cube));
       return Result.success(new PerFaceUvIR(faces), warnings);
-    } catch (Exception ex) {
+    } catch (JsonProcessingException ex) {
       return Result.failure(error(DiagnosticCodes.UV_INVALID, "invalid UV JSON", cube));
     }
   }
@@ -109,7 +133,7 @@ public final class GeckoUvDecoder {
               new Diagnostic(
                   Severity.WARNING,
                   DiagnosticCode.fromCatalog(DiagnosticCodes.UV_OUT_OF_BOUNDS),
-                  cube.source(),
+                  location(cube, "/uv"),
                   "UV outside texture grid",
                   "correct UV coordinates or texture dimensions",
                   null,
@@ -120,14 +144,24 @@ public final class GeckoUvDecoder {
   }
 
   private static Diagnostic error(String code, String message, ParsedCube cube) {
+    return error(code, message, cube, "/uv");
+  }
+
+  private static Diagnostic error(String code, String message, ParsedCube cube, String pointer) {
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
-        cube == null ? null : cube.source(),
+        cube == null ? null : location(cube, pointer),
         message,
         "correct the UV value",
         null,
         null,
         new TreeMap<>());
+  }
+
+  private static SourceLocation location(ParsedCube cube, String pointer) {
+    if (cube == null || cube.source() == null) return null;
+    var s = cube.source();
+    return new SourceLocation(s.source(), s.line(), s.column(), pointer, s.byteOffset());
   }
 }

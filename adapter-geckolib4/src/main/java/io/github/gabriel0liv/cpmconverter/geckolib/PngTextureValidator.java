@@ -14,7 +14,15 @@ public final class PngTextureValidator {
 
   public Result<ValidatedPng> validate(Path path, PngValidationRequest request) {
     if (path == null) return Result.failure(error("PNG path is required", null));
-    SourcePath source = new SourcePath(path.toString());
+    SourcePath source = new SourcePath(path.getFileName().toString());
+    return validate(path, source, request);
+  }
+
+  public Result<ValidatedPng> validate(
+      Path path, SourcePath logicalSource, PngValidationRequest request) {
+    if (path == null || logicalSource == null)
+      return Result.failure(error("PNG path is required", null));
+    SourcePath source = logicalSource;
     SourceLocation loc = SourceLocation.of(source);
     try {
       if (!Files.isRegularFile(path) || !Files.isReadable(path))
