@@ -2,11 +2,11 @@
 
 Date: 2026-07-22
 Commit base: 22d954abbb5dc616010b500968127fbcbff6f16b
-Implementation HEAD: 429dd0f (integration/phase2)
-Independent review: review/t200-geometry-parser
-Workflow: 29914175599 (`429dd0fed88f1ca8f6a0b953d16e616dd585e5da`)
-Ubuntu: FAIL (`Gradle clean check`; API logs unavailable without authentication)
-Windows: CANCELLED after Ubuntu failure
+Implementation HEAD: acc9f61 (integration/phase2)
+Independent review: review/t200-final-pass
+Workflow: 29917081549 (`acc9f61859210ade273894c5949ddd5be527f5b4`)
+Ubuntu: PASS
+Windows: PASS
 
 ## Scope evidence
 
@@ -46,5 +46,6 @@ Deferred to T202: animation clips, tracks and keyframes.
 Deferred to T203: easing, Molang and related diagnostics.
 Deferred to T204: hostile inputs, full limits and oracle comparison matrix.
 
-T200 decision: **[~] partial; corrective evidence remains**. CI is not green on
-the integrated corrective HEAD, so T200 cannot be marked complete.
+T200 decision: **[~] partial; corrective evidence remains**. CI is green on the
+integrated corrective HEAD, but the complete cube-level snapshot schema and
+the full table-driven path/value/feature test matrix are not yet present.
