@@ -27,7 +27,8 @@ public final class AnimationClipIrBuilder {
       return failure("custom playback requires source id", location, id);
     }
     return Result.success(
-        new AnimationClipIR(new ClipId(id), duration, playback, customLoop, List.of(), List.of()));
+        new AnimationClipIR(
+            new ClipId(id), duration, playback, customLoop, List.of(), List.of(), location));
   }
 
   private Result<AnimationClipIR> failure(String message, SourceLocation location, String id) {

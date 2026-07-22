@@ -261,7 +261,8 @@ public final class ModelIrValidator {
                     Map.of(
                         "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source());
         continue;
       }
       if (!seen.add(time))
@@ -272,7 +273,8 @@ public final class ModelIrValidator {
                     "duplicate timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source());
       if (time < previous)
         diagnostics =
             diagnostics.add(
@@ -281,7 +283,8 @@ public final class ModelIrValidator {
                     "timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source());
       if (time > duration)
         diagnostics =
             diagnostics.add(
