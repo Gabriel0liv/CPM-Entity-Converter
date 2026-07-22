@@ -50,6 +50,24 @@ class GeckoGeometryParserTest {
   }
 
   @Test
+  void rejectsAmbiguousExactIdentifier() {
+    String source =
+        "{\"format_version\":\"1.12.0\",\"minecraft:geometry\":["
+            + geometry("same", "one")
+            + ","
+            + geometry("same", "two")
+            + "]}";
+    var result =
+        parser.parse(
+            source.getBytes(StandardCharsets.UTF_8),
+            new SourcePath("fixture.geo.json"),
+            new GeometryParseRequest(new GeometryId("same"), GeometryParserLimits.defaults()));
+    assertFalse(result.success());
+    assertEquals(
+        DiagnosticCodes.GEO_MODEL_AMBIGUOUS, result.diagnostics().errors().get(0).code().value());
+  }
+
+  @Test
   void computesLocalBindTranslationAndDeterministicIds() {
     String json =
         "{\"format_version\":\"1.12.0\",\"minecraft:geometry\":[{\"description\":{\"identifier\":\"g\"},\"bones\":["
@@ -74,6 +92,8 @@ class GeckoGeometryParserTest {
     var cube = parse(json).value().bones().get(0).cubes().get(0);
     assertEquals(0.5, cube.inflate(), 1e-9);
     assertFalse(cube.mirror());
+    assertEquals(0.5, parse(json).value().bones().get(0).inflate(), 1e-9);
+    assertTrue(parse(json).value().bones().get(0).mirror());
     assertEquals("{\"north\":{\"uv\":[0,0],\"uv_size\":[2,2]}}", cube.rawUv().canonicalJson());
   }
 
@@ -114,6 +134,13 @@ class GeckoGeometryParserTest {
     assertEquals(
         DiagnosticCodes.GEO_MESH_UNSUPPORTED, result.diagnostics().errors().get(0).code().value());
     assertEquals("poly_mesh", result.diagnostics().errors().get(0).context().get("feature"));
+  }
+
+  @Test
+  void validatesParsedGraphBoundary() {
+    var parsed = parse(json("1.12.0", "body", "")).value();
+    var result = new ParsedGeometryValidator().validate(parsed);
+    assertTrue(result.success(), result.diagnostics().all().toString());
   }
 
   private io.github.gabriel0liv.cpmconverter.diagnostics.Result<ParsedGeometry> parse(String json) {
