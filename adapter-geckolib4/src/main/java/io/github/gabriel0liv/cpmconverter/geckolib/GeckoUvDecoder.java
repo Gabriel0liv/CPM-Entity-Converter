@@ -136,7 +136,7 @@ public final class GeckoUvDecoder {
                   location(cube, "/uv"),
                   "UV outside texture grid",
                   "correct UV coordinates or texture dimensions",
-                  null,
+                  cube.boneId().value(),
                   null,
                   c));
     }
@@ -148,15 +148,17 @@ public final class GeckoUvDecoder {
   }
 
   private static Diagnostic error(String code, String message, ParsedCube cube, String pointer) {
+    var context = new TreeMap<String, String>();
+    if (cube != null) context.put("cubeId", cube.id().value());
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
         cube == null ? null : location(cube, pointer),
         message,
         "correct the UV value",
+        cube == null ? null : cube.boneId().value(),
         null,
-        null,
-        new TreeMap<>());
+        context);
   }
 
   private static SourceLocation location(ParsedCube cube, String pointer) {
