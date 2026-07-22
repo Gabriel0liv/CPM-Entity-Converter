@@ -35,16 +35,42 @@ class MappingSchemaMatrixTest {
         Arguments.of("bones value", "{\"schemaVersion\":1,\"bones\":{\"head\":3}}"),
         Arguments.of("bones nested value", "{\"schemaVersion\":1,\"bones\":{\"head\":{}}}"),
         Arguments.of("root roles null", "{\"schemaVersion\":1,\"rootRoles\":null}"),
+        Arguments.of("root roles type", "{\"schemaVersion\":1,\"rootRoles\":[]}"),
+        Arguments.of("root roles value type", "{\"schemaVersion\":1,\"rootRoles\":{\"body\":3}}"),
+        Arguments.of("clips type", "{\"schemaVersion\":1,\"clips\":[]}"),
+        Arguments.of("clips value type", "{\"schemaVersion\":1,\"clips\":{\"idle\":3}}"),
         Arguments.of("clips null", "{\"schemaVersion\":1,\"clips\":null}"),
         Arguments.of("look type", "{\"schemaVersion\":1,\"look\":\"head\"}"),
         Arguments.of("look unknown", "{\"schemaVersion\":1,\"look\":{\"extra\":1}}"),
+        Arguments.of("look head type", "{\"schemaVersion\":1,\"look\":{\"head\":3}}"),
+        Arguments.of("look neck type", "{\"schemaVersion\":1,\"look\":{\"neck\":3}}"),
         Arguments.of(
             "look composition", "{\"schemaVersion\":1,\"look\":{\"composition\":\"bad\"}}"),
         Arguments.of(
             "look influence type", "{\"schemaVersion\":1,\"look\":{\"headInfluence\":\"1\"}}"),
+        Arguments.of(
+            "look overrotation type",
+            "{\"schemaVersion\":1,\"look\":{\"allowOverrotation\":\"true\"}}"),
+        Arguments.of("look limits type", "{\"schemaVersion\":1,\"look\":{\"limits\":[]}}"),
+        Arguments.of(
+            "look limits value type",
+            "{\"schemaVersion\":1,\"look\":{\"limits\":{\"yaw\":\"60\"}}}"),
+        Arguments.of(
+            "look limits negative", "{\"schemaVersion\":1,\"look\":{\"limits\":{\"yaw\":-1}}}"),
         Arguments.of("state type", "{\"schemaVersion\":1,\"stateMappings\":[]}"),
         Arguments.of(
             "state required clip", "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{}}}"),
+        Arguments.of(
+            "state clip type", "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":3}}}"),
+        Arguments.of(
+            "state mode type",
+            "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"x\",\"mode\":3}}}"),
+        Arguments.of(
+            "state mode empty",
+            "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"x\",\"mode\":\"\"}}}"),
+        Arguments.of(
+            "state optional type",
+            "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"x\",\"optional\":\"false\"}}}"),
         Arguments.of(
             "state unknown",
             "{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"x\",\"extra\":1}}}"),
@@ -57,7 +83,19 @@ class MappingSchemaMatrixTest {
         Arguments.of("sampling type", "{\"schemaVersion\":1,\"sampling\":[]}"),
         Arguments.of(
             "sampling fps type", "{\"schemaVersion\":1,\"sampling\":{\"requestedFps\":\"24\"}}"),
+        Arguments.of("sampling fps low", "{\"schemaVersion\":1,\"sampling\":{\"requestedFps\":0}}"),
+        Arguments.of(
+            "sampling fps high", "{\"schemaVersion\":1,\"sampling\":{\"requestedFps\":241}}"),
+        Arguments.of("sampling unknown", "{\"schemaVersion\":1,\"sampling\":{\"unexpected\":24}}"),
         Arguments.of("ignore type", "{\"schemaVersion\":1,\"ignore\":{}}"),
+        Arguments.of("ignore item type", "{\"schemaVersion\":1,\"ignore\":[3]}"),
+        Arguments.of("ignore item empty", "{\"schemaVersion\":1,\"ignore\":[\"\"]}"),
+        Arguments.of(
+            "policy warnings type",
+            "{\"schemaVersion\":1,\"diagnosticPolicy\":{\"warningsAsErrors\":\"false\"}}"),
+        Arguments.of(
+            "policy ignore type",
+            "{\"schemaVersion\":1,\"diagnosticPolicy\":{\"ignoreUnsupported\":0}}"),
         Arguments.of(
             "policy unknown", "{\"schemaVersion\":1,\"diagnosticPolicy\":{\"extra\":true}}"));
   }
