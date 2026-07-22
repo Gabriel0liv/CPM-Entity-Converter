@@ -1,7 +1,9 @@
 package io.github.gabriel0liv.cpmconverter.geckolib;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,48 @@ class StaticModelFixtureTest {
               StaticModelAssemblyRequest.defaults());
       assertTrue(result.success(), name + " static model: " + result.diagnostics().all());
       assertTrue(result.value().clips().isEmpty(), name + " must not parse animation clips");
+      assertEquals(1, result.value().textures().size());
+      assertFalse(
+          new io.github.gabriel0liv.cpmconverter.ir.ModelIrValidator()
+              .validate(result.value())
+              .hasErrors());
+    }
+  }
+
+  @Test
+  void comparesIntegralStaticSnapshots() throws Exception {
+    Path root = Path.of("..", "test-fixtures").normalize();
+    var mapper = new ObjectMapper();
+    for (String name :
+        List.of(
+            "fixture-a-humanoid",
+            "fixture-b-neck",
+            "fixture-c-deep-hierarchy",
+            "fixture-d-quadruped")) {
+      Path directory = root.resolve(name);
+      var geometry =
+          new GeckoGeometryParser()
+              .parse(directory.resolve("geometry.geo.json"), GeometryParseRequest.defaults());
+      assertTrue(geometry.success(), name + geometry.diagnostics().all());
+      var result =
+          new GeckoStaticModelAssembler()
+              .assemble(
+                  geometry.value(),
+                  directory.resolve("texture.png"),
+                  StaticModelAssemblyRequest.defaults());
+      assertTrue(result.success(), name + result.diagnostics().all());
+      Path expectedPath = directory.resolve("expected/model-static.json");
+      if (Boolean.getBoolean("writeStaticSnapshots")) {
+        Files.createDirectories(expectedPath.getParent());
+        Files.writeString(
+            expectedPath,
+            mapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(StaticModelSnapshot.write(result.value())));
+      }
+      assertTrue(Files.exists(expectedPath), name + " missing model-static.json");
+      assertEquals(
+          mapper.readTree(expectedPath.toFile()), StaticModelSnapshot.write(result.value()), name);
     }
   }
 }

@@ -10,6 +10,7 @@
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "43e52a7fb4d539656efb70534436b1f12cbd5de270e96ffe7afacd4eb602bf8a",
       "expected/mapping-compiled.json": "792786b2eef7f19cabfdd177bb174a4b81675c48244bc0d3ee83afe9c096b584",
+      "expected/model-static.json": "7c69dd0d1a4f432dead3df17f4d3d6737a9049d54a701e16ae38f8375dfb0da5",
       "geometry.geo.json": "35f35819ca1cb27e2398a1d506136e3b894ebd10fd20de463e9f2c87213befbe",
       "mapping.yaml": "5b3642a87683f71a5968d2b354a19bb870b3f6e35c07db68a24c7e20f815d456",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
@@ -24,6 +25,7 @@
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "0f823e7f1aa509c039ec3ec1c32fe838c781b0db2515856fd8d30905058e8279",
       "expected/mapping-compiled.json": "0e9cb6c489623ab1b9744e5da517c040f7dd64b3c611967537d51a35cda72e41",
+      "expected/model-static.json": "5b13d1f8a114764e15bfbc2d3af3b704aa2d57a8e445f3264589984834e77f19",
       "geometry.geo.json": "ee2ce81a5604e580e52b9f5c1f26187f9cdf11ac638f54ca596f29c9cf8f3181",
       "mapping.yaml": "7dd9cb7f44cb6a0ea0f195b501deca20d20425c57d0a3527ff2a236c594367ba",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
@@ -38,6 +40,7 @@
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "24985aaf9784f069416c79678c7328858a0ae06cad55005925d54a69117df28a",
       "expected/mapping-compiled.json": "5b82eaf79dce1d378c2856267e6a80b2938b7087aa1772344c8ea040a2c25e74",
+      "expected/model-static.json": "a31714caf8f54325054434af1e7be5f9b10ca3e6f0d65321f6c35bf053540032",
       "geometry.geo.json": "18e6b57d2ce7e10857e4902324b28c86c64796c4f02e8e0737f36e5f2bfc1b4c",
       "mapping.yaml": "78a343fd5e8934d9b3d0b0d0ca0cdedd487c6d46e68531ffce563415479dd872",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
@@ -52,6 +55,7 @@
       "expected/invariants.json": "8bd3832a29f28d510191263e695d94fe261e4a7e0de2737d0583facd316c4d3b",
       "expected/inventory.json": "86e1f019eca56c95283ca3bd0feaf810fe79b3c43a569a6f1d92170078c7689b",
       "expected/mapping-compiled.json": "2ccaf2f17793d17fe7147383e32f9da721712aa4c60407038a904c5aacb55a73",
+      "expected/model-static.json": "ec3255fcfac65dd932ec98c1a0de7600a6812a74cf7010eba41675d53a58806c",
       "geometry.geo.json": "0ff2dd906d01cfddb98c39ca367070aa7498fb491895d817b8315074982a532a",
       "mapping.yaml": "ef045bbd7e13b0165b77f31eae55fe3321af62c504792d8ce76128ddc3a20928",
       "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"

@@ -1,0 +1,188 @@
+{
+  "source" : {
+    "path" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+    "format" : "geckolib-4.4.9/geometry-1.12.0"
+  },
+  "geometryId" : "cpm:b",
+  "roots" : [ "cpm:b/bone/0" ],
+  "textures" : [ {
+    "path" : "texture.png",
+    "width" : 32,
+    "height" : 32
+  } ],
+  "clips" : [ ],
+  "bones" : [ {
+    "id" : "cpm:b/bone/0",
+    "name" : "body",
+    "parent" : null,
+    "children" : [ "cpm:b/bone/1" ],
+    "bind" : {
+      "translation" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "provenance" : {
+      "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/0"
+    },
+    "cubes" : [ {
+      "id" : "cpm:b/bone/0/cube/0",
+      "boneId" : "cpm:b/bone/0",
+      "origin" : [ -2.0, -2.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "inflate" : 0.0,
+      "mirror" : false,
+      "provenance" : {
+        "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+        "pointer" : "/minecraft:geometry/0/bones/0/cubes/0"
+      },
+      "uv" : {
+        "type" : "box",
+        "u" : 0.0,
+        "v" : 0.0
+      }
+    } ]
+  }, {
+    "id" : "cpm:b/bone/1",
+    "name" : "neck",
+    "parent" : "cpm:b/bone/0",
+    "children" : [ "cpm:b/bone/2" ],
+    "bind" : {
+      "translation" : [ -0.0, -8.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "provenance" : {
+      "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/1"
+    },
+    "cubes" : [ {
+      "id" : "cpm:b/bone/1/cube/0",
+      "boneId" : "cpm:b/bone/1",
+      "origin" : [ -3.0, -2.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "inflate" : 0.0,
+      "mirror" : false,
+      "provenance" : {
+        "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+        "pointer" : "/minecraft:geometry/0/bones/1/cubes/0"
+      },
+      "uv" : {
+        "type" : "box",
+        "u" : 1.0,
+        "v" : 1.0
+      }
+    } ]
+  }, {
+    "id" : "cpm:b/bone/2",
+    "name" : "head",
+    "parent" : "cpm:b/bone/1",
+    "children" : [ "cpm:b/bone/3" ],
+    "bind" : {
+      "translation" : [ -0.0, -2.0, 1.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "provenance" : {
+      "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/2"
+    },
+    "cubes" : [ {
+      "id" : "cpm:b/bone/2/cube/0",
+      "boneId" : "cpm:b/bone/2",
+      "origin" : [ -4.0, -2.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "inflate" : 0.0,
+      "mirror" : false,
+      "provenance" : {
+        "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+        "pointer" : "/minecraft:geometry/0/bones/2/cubes/0"
+      },
+      "uv" : {
+        "type" : "box",
+        "u" : 2.0,
+        "v" : 2.0
+      }
+    } ]
+  }, {
+    "id" : "cpm:b/bone/3",
+    "name" : "horn",
+    "parent" : "cpm:b/bone/2",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -1.0, -2.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "provenance" : {
+      "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/3"
+    },
+    "cubes" : [ {
+      "id" : "cpm:b/bone/3/cube/0",
+      "boneId" : "cpm:b/bone/3",
+      "origin" : [ -2.0, -2.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "inflate" : 0.0,
+      "mirror" : false,
+      "provenance" : {
+        "source" : "../test-fixtures/fixture-b-neck/geometry.geo.json",
+        "pointer" : "/minecraft:geometry/0/bones/3/cubes/0"
+      },
+      "uv" : {
+        "type" : "box",
+        "u" : 3.0,
+        "v" : 3.0
+      }
+    } ]
+  } ],
+  "unsupportedFeatures" : [ ]
+}
