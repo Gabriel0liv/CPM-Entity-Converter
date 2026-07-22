@@ -266,4 +266,3 @@ class FixtureSemanticContractTest {
     throw new IllegalStateException("cannot locate fixture root from " + current);
   }
 }
-

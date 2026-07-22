@@ -12,12 +12,14 @@ public record AnimationClipIR(
     List<UnsupportedEventIR> events,
     SourceLocation source) {
   public AnimationClipIR {
-    if (id == null || !Double.isFinite(duration) || duration <= 0 || playback == null || source == null)
-      throw new IllegalArgumentException("clip");
+    if (id == null
+        || !Double.isFinite(duration)
+        || duration <= 0
+        || playback == null
+        || source == null) throw new IllegalArgumentException("clip");
     tracks = List.copyOf(tracks == null ? List.of() : tracks);
     events = List.copyOf(events == null ? List.of() : events);
     if (playback == PlaybackMode.CUSTOM && (customLoop == null || customLoop.isBlank()))
       throw new IllegalArgumentException("custom loop");
   }
-
 }

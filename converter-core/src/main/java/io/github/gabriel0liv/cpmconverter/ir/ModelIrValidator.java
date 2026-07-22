@@ -395,8 +395,7 @@ public final class ModelIrValidator {
       String code, String message, Map<String, String> context, String bone, String clip) {
     String suggestion = suggestionFor(code);
     SourceLocation location =
-        SourceLocation.of(
-            new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<model>"));
+        SourceLocation.of(new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<model>"));
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
