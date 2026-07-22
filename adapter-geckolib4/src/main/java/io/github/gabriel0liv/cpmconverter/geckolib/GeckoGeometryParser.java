@@ -375,9 +375,10 @@ public final class GeckoGeometryParser {
     ParsedGeometry result =
         new ParsedGeometry(
             source, geometryId, textureWidth, textureHeight, parsedBones, roots, unsupported);
-    return diagnostics.hasErrors()
-        ? Result.failure(diagnostics)
-        : Result.success(result, diagnostics);
+    if (diagnostics.hasErrors()) return Result.failure(diagnostics);
+    Result<ParsedGeometry> validated = new ParsedGeometryValidator().validate(result);
+    DiagnosticBag combined = diagnostics.addAll(validated.diagnostics());
+    return combined.hasErrors() ? Result.failure(combined) : Result.success(result, combined);
   }
 
   private static final ThreadLocal<DiagnosticBag> LAST_DIAGNOSTICS =
