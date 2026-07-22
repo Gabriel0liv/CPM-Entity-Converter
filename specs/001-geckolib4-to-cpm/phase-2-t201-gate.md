@@ -2,48 +2,32 @@
 
 Date: 2026-07-22
 Commit base: ee3cc5c2e5b408297c59776820043e6bc6c4a274
-Intermediate workflow: 29944929015 (ee3cc5c; Ubuntu PASS; Windows PASS)
-Implementation/evidence HEAD: bb60053
-Independent review: review/t201-final-acceptance-v2 — pending
-Workflow run: pending for bb60053
-Workflow HEAD: bb60053
-Ubuntu: PENDING
-Windows: PENDING
+Implementation/evidence commit: bb60053bd97db09c976e5845961553fe4dd2c89d
+Gate record commit: this commit
+Independent review: review/t201-final-acceptance-v2 — PASS
+Workflow run: 29946604478
+Workflow HEAD: 07454937481501f735602a9c5264d1dbfb512d92
+Ubuntu: PASS
+Windows: PASS
 
-## Evidence completed in P2.10
+## Acceptance evidence
 
-- PNG logical diagnostics and the four local limits are covered with pointers,
-  limitName, limit, observed and logical sources.
-- Box and per-face UV tests preserve signed/fractional values and canonical
-  face order; the existing Gecko box formulas and bounds behavior remain tested.
-- `StaticModelSnapshot` is test-only and compares the complete static ModelIR
-  tree for fixtures A–D. The four reviewed `expected/model-static.json` files
-  include source, geometry, roots, textures, empty clips, bones, bind transforms,
-  provenance, cubes and box/per-face UV data.
-- Static assembly tests confirm one texture, empty clips, validator execution and
-  no animation input. PNG bytes remain unchanged. Manifest and GeckoLib oracle
-  regression pass; oracle reports 41/41 assertions.
-- Local `clean check`, reproducible build, manifest check and S004 audit pass.
+- PNG success/failure and logical-path tests cover valid files, malformed
+  signatures, missing files, hash/byte preservation and the local limits
+  `maxBytes`, `maxWidth`, `maxHeight` and `maxPixels`.
+- PNG diagnostics expose logical pointers and structured limit context.
+- Box and per-face UV retain signed/fractional values, canonical face ordering
+  and bounds warnings without clamping.
+- Static assembly A–D is exercised with one texture, empty clips, validator
+  execution and unchanged PNG bytes.
+- Test-only `StaticModelSnapshot` compares complete expected trees for all four
+  fixtures, including source, geometry, roots, textures, bones, bind transforms,
+  provenance, cubes and box/per-face UV.
+- Manifest check, S004 audit, reproducible build and GeckoLib regression pass;
+  oracle result is 41/41 assertions with clips A/B `idle,walk`, C `idle`, D
+  `walk`.
 
-## Frozen checklist
-
-PNG matrix: PASS for the implemented local scope.
-PNG limits: PASS (`maxBytes`, `maxWidth`, `maxHeight`, `maxPixels`).
-PNG pointers/context: PASS.
-Box UV matrix: PASS.
-Per-face UV matrix: PASS for signed/fractional/order/material warning paths.
-Bounds: PASS for the implemented box/per-face boundary behavior.
-UV diagnostics: PASS for covered malformed, missing and unknown-face paths.
-Logical path smoke: PASS for the T201 boundary scope.
-Record invariants: PASS through constructors and tests.
-Static ModelIrValidator/assembler: PASS for represented relational invariants.
-Snapshots A–D: PASS; expected trees compare integrally.
-PNG bytes: PASS.
-Manifest: PASS.
-Oracle: PASS, 41/41.
-Clean check: PASS locally.
-
-T201 decision: **[~] pending final independent review and CI for bb60053**.
+T201: **[x] PASS**
 
 Deferred to T202: animation clips, tracks, keyframes and playback.
 Deferred to T203: easing, Molang and related diagnostics.
