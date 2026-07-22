@@ -144,6 +144,12 @@ public final class ParsedGeometryValidator {
                   Map.of("component", "roots")));
     Set<String> visited = new HashSet<>();
     Set<String> visiting = new HashSet<>();
+    Set<String> reachable = new HashSet<>();
+    for (var root : geometry.roots()) {
+      if (root != null && byId.containsKey(root.value())) {
+        markReachable(root.value(), byId, reachable, new HashSet<>());
+      }
+    }
     for (ParsedBone bone : geometry.bones()) {
       if (bone == null || bone.id() == null) continue;
       if (bone.parent() != null && !byId.containsKey(bone.parent().value()))
@@ -211,7 +217,7 @@ public final class ParsedGeometryValidator {
       }
     }
     for (ParsedBone bone : geometry.bones()) {
-      if (bone != null && bone.id() != null && !visited.contains(bone.id().value()))
+      if (bone != null && bone.id() != null && !reachable.contains(bone.id().value()))
         diagnostics =
             diagnostics.add(
                 error(
@@ -296,6 +302,20 @@ public final class ParsedGeometryValidator {
     visiting.remove(id);
     visited.add(id);
     return result;
+  }
+
+  private static void markReachable(
+      String id, Map<String, ParsedBone> byId, Set<String> reachable, Set<String> active) {
+    if (!reachable.add(id) || !active.add(id)) return;
+    ParsedBone bone = byId.get(id);
+    if (bone != null) {
+      for (var child : bone.children()) {
+        if (child != null && byId.containsKey(child.value())) {
+          markReachable(child.value(), byId, reachable, active);
+        }
+      }
+    }
+    active.remove(id);
   }
 
   private static boolean finite(Transform transform) {
