@@ -1,37 +1,41 @@
 # Gate final da Fase 1
 
 Date: 2026-07-22
-Commit base: `3c9965ae992f466e1d90bf8c70dd06fe6793a737`
-Implementation HEAD reviewed: `e515207`
-Gate record: this commit
-Independent review: `review/r7-scope` concluída; revisão final ainda pendente
-Workflow run: não confirmado para o SHA final
-Ubuntu: não confirmado
-Windows: não confirmado
+Commit base: `c6eee9550d27322aafa53eaba2caed8a7e4a9b58`
+Implementation HEAD reviewed: `0722f15eaa171793708fa9070a3b4899b1ec146a`
+Gate record: pending integrator commit
+Independent review: `review/r8-final` — PASS para T103 e regressão T105
+Workflow run: `29906231896`
+Workflow HEAD: `0722f15eaa171793708fa9070a3b4899b1ec146a`
+Ubuntu: PASS
+Windows: FAIL (`Gradle clean check`; logs públicos forneceram apenas falha genérica)
 
-## Decisão normativa T105
+## Escopo normativo de T105
 
-`T105_SCOPE = ORIGINAL_FIXTURE_CONTRACT`.
+`T105_SCOPE = ORIGINAL_FIXTURE_CONTRACT`. O parsing completo de geometry,
+textura/UV e animações permanece atribuído a T200/T201/T202/T204; T105 cobre
+fixtures autorais, proveniência, manifests, mapping boundary e o oracle real.
 
-`tasks.md` atribui geometry/bones/cubes a T200, UV/PNG a T201, animation/playback/keyframes a T202 e oracle/limits a T204. `traceability.md` atribui FR-001/002/006/007/009 a T200, FR-003/014 a T202 e NFR-016/CON-004 de licensing a T105. `test-plan.md` define T105 como fixtures autorais, source JSON/PNG, mapping, expected e licença. Portanto T105 não exige um segundo parser fixture-only de ModelIR.
+## Evidências
 
-## Classificação
+- `clean check`: PASS local.
+- `test-fixtures/scripts/manifest.py --check`: 4 fixtures verificadas.
+- auditoria S004: PASS, 37 fixtures, 0 erros.
+- oracle A–D: PASS, 41/41 assertions; A `idle, walk`, B `idle, walk`, C `idle`, D `walk`.
+- T103: PASS na revisão independente; todas as assinaturas exigem `SourceLocation`, call sites de teste migrados e validator sem fallback genérico indevido.
+- T102/T104 permanecem PASS protegidas por regressão.
 
-T102: PASS.
-
-T103: PARTIAL — source obrigatória foi implementada, mas `clean check` ainda falha em call sites de testes antigos sem `SourceLocation`; há fallbacks de location que precisam de migração final.
-
-T104: PASS — matriz schema e paridade JSON/YAML passam.
-
-T105: PASS no escopo original — fixtures, provenance, manifest/hashes, mapping smoke e oracle S004 real estão cobertos; claims sintéticos de ModelIR foram removidos/rebaixados. Parsing completo permanece deferido.
+## Estado do gate
 
 S004-F: [x]
 T100: [x]
 T101: [x]
 T102: [x]
-T103: [~]
+T103: [~] — evidência local e revisão PASS; CI Windows ainda falha.
 T104: [x]
 T105: [x]
 T200: [!] bloqueada
 
-T200 não foi implementada. A liberação depende de T103 com `clean check` verde, revisão final independente e CI Ubuntu/Windows verde no mesmo SHA.
+T200 não foi implementada. A liberação exige uma execução Windows verde no
+mesmo SHA que a execução Ubuntu verde; a rodada atual não satisfez esse
+critério.
