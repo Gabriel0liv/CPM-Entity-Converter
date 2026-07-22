@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class GeckoAnimationParserTest {
   @TempDir Path temp;
@@ -91,6 +93,80 @@ class GeckoAnimationParserTest {
         result.diagnostics().all().stream()
             .anyMatch(
                 d -> d.code().value().equals(DiagnosticCodes.ANIM_CUSTOM_EASING_UNSUPPORTED)));
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "loop,LOOP",
+    "true,LOOP",
+    "false,PLAY_ONCE",
+    "play_once,PLAY_ONCE",
+    "hold_on_last_frame,HOLD"
+  })
+  void mapsSupportedPlaybackModes(String authored, PlaybackMode expected) throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("playback-" + authored + ".json");
+    Files.writeString(input, animationWith("\"loop\":\"" + authored + "\""));
+    var result = parse(model, input);
+    assertTrue(result.success(), String.valueOf(result.diagnostics().all()));
+    assertEquals(expected, result.value().get(0).playback());
+  }
+
+  @Test
+  void classifiesMolangComponentsSeparatelyFromStructuralErrors() throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("molang-components.json");
+    Files.writeString(
+        input,
+        "{\"format_version\":\"1.8.0\",\"animations\":{\"bad\":{\"bones\":{\"head\":{"
+            + "\"position\":[\"query.anim_time\",0,0],\"rotation\":[0,true,0]}}}}}");
+    var result = parse(model, input);
+    assertFalse(result.success());
+    assertTrue(
+        result.diagnostics().all().stream()
+            .anyMatch(
+                d -> d.code().value().equals(DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED)));
+    assertTrue(
+        result.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_CHANNEL_INVALID)));
+  }
+
+  @Test
+  void equivalentPrePostVectorFormsDoNotWarn() throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("pre-post-equivalent.json");
+    Files.writeString(
+        input,
+        "{\"format_version\":\"1.8.0\",\"animations\":{\"idle\":{\"animation_length\":1,\"bones\":{\"head\":{"
+            + "\"rotation\":{\"0\":{\"pre\":[1,2,3],\"post\":{\"vector\":[1,2,3]}}}}}}}}");
+    var result = parse(model, input);
+    assertTrue(result.success(), String.valueOf(result.diagnostics().all()));
+    assertTrue(
+        result.diagnostics().all().stream()
+            .noneMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449)));
+  }
+
+  @Test
+  void differingPrePostStillWarnsAndUsesPre() throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("pre-post-different.json");
+    Files.writeString(
+        input,
+        "{\"format_version\":\"1.8.0\",\"animations\":{\"idle\":{\"animation_length\":1,\"bones\":{\"head\":{"
+            + "\"rotation\":{\"0\":{\"pre\":{\"vector\":[1,2,3]},\"post\":[4,5,6]}}}}}}}");
+    var result = parse(model, input);
+    assertTrue(result.success(), String.valueOf(result.diagnostics().all()));
+    assertTrue(
+        result.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449)));
+    var key = result.value().get(0).tracks().get(0).rotation().keyframes().get(0);
+    assertEquals(1.0, key.incomingValue().x());
+  }
+
+  private static String animationWith(String loopField) {
+    return "{\"format_version\":\"1.8.0\",\"animations\":{\"idle\":{"
+        + loopField
+        + ",\"animation_length\":1,\"bones\":{\"head\":{\"rotation\":[0,0,0]}}}}}";
   }
 
   private ModelIR staticModel(String fixture) throws Exception {
