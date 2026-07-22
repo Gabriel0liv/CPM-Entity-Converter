@@ -35,15 +35,28 @@ final class ModelIrValidatorTest {
                         frame.time(),
                         new Vec3d(frame.incomingValue(), 0, 0),
                         new Vec3d(frame.outgoingValue(), 0, 0),
-                        frame.interpolation()))
+                        frame.interpolation(),
+                        TestSourceLocations.animation("/animations/idle/bones/body/position")))
             .toList();
     ChannelIR<Vec3d> channel =
         new ChannelIR<>("position", TransformMode.ABSOLUTE, TransformSpace.LOCAL, vectors);
     BoneTrackIR track =
         new BoneTrackIR(
-            trackBone, channel, null, null, TransformMode.ABSOLUTE, TransformSpace.LOCAL);
+            trackBone,
+            channel,
+            null,
+            null,
+            TransformMode.ABSOLUTE,
+            TransformSpace.LOCAL,
+            TestSourceLocations.animation("/animations/idle/bones/body"));
     return new AnimationClipIR(
-        new ClipId("idle"), 1.0, PlaybackMode.LOOP, null, List.of(track), List.of());
+        new ClipId("idle"),
+        1.0,
+        PlaybackMode.LOOP,
+        null,
+        List.of(track),
+        List.of(),
+        TestSourceLocations.animation("/animations/idle"));
   }
 
   @Test
@@ -82,10 +95,30 @@ final class ModelIrValidatorTest {
   void reportsTimelineOrderDuplicatesAndAfterDuration() {
     var frames =
         List.of(
-            new KeyframeIR<>(0.75, 1.0, 1.0, InterpolationIR.LINEAR),
-            new KeyframeIR<>(0.25, 2.0, 2.0, InterpolationIR.LINEAR),
-            new KeyframeIR<>(0.25, 3.0, 3.0, InterpolationIR.LINEAR),
-            new KeyframeIR<>(2.0, 4.0, 4.0, InterpolationIR.LINEAR));
+            new KeyframeIR<>(
+                0.75,
+                1.0,
+                1.0,
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/0.75")),
+            new KeyframeIR<>(
+                0.25,
+                2.0,
+                2.0,
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/0.25")),
+            new KeyframeIR<>(
+                0.25,
+                3.0,
+                3.0,
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/0.25b")),
+            new KeyframeIR<>(
+                2.0,
+                4.0,
+                4.0,
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/2.0")));
     var diagnostics =
         new ModelIrValidator()
             .validate(

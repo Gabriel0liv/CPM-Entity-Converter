@@ -13,9 +13,24 @@ final class ModelIrValidatorTimelineTest {
   void reportsInvalidTimelineMetadataWithSpecificSuggestions() {
     var frames =
         List.of(
-            new KeyframeIR<>(0.8, new Vec3d(0, 0, 0), new Vec3d(0, 0, 0), InterpolationIR.LINEAR),
-            new KeyframeIR<>(0.2, new Vec3d(0, 0, 0), new Vec3d(0, 0, 0), InterpolationIR.LINEAR),
-            new KeyframeIR<>(1.2, new Vec3d(0, 0, 0), new Vec3d(0, 0, 0), InterpolationIR.LINEAR));
+            new KeyframeIR<>(
+                0.8,
+                new Vec3d(0, 0, 0),
+                new Vec3d(0, 0, 0),
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/0.8")),
+            new KeyframeIR<>(
+                0.2,
+                new Vec3d(0, 0, 0),
+                new Vec3d(0, 0, 0),
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/0.2")),
+            new KeyframeIR<>(
+                1.2,
+                new Vec3d(0, 0, 0),
+                new Vec3d(0, 0, 0),
+                InterpolationIR.LINEAR,
+                TestSourceLocations.animation("/animations/idle/bones/body/position/1.2")));
     var track =
         new BoneTrackIR(
             new BoneId("body"),
@@ -23,10 +38,17 @@ final class ModelIrValidatorTimelineTest {
             null,
             null,
             TransformMode.ABSOLUTE,
-            TransformSpace.LOCAL);
+            TransformSpace.LOCAL,
+            TestSourceLocations.animation("/animations/idle/bones/body"));
     var clip =
         new AnimationClipIR(
-            new ClipId("idle"), 1.0, PlaybackMode.LOOP, null, List.of(track), List.of());
+            new ClipId("idle"),
+            1.0,
+            PlaybackMode.LOOP,
+            null,
+            List.of(track),
+            List.of(),
+            TestSourceLocations.animation("/animations/idle"));
     var model =
         new ModelIR(
             new SourceDescriptor("fixture.geo.json", "geometry"),

@@ -11,4 +11,14 @@ final class TestSourceLocations {
     return new SourceLocation(
         new SourcePath("fixtures/test.animation.json"), null, null, pointer, null);
   }
+
+  static SourceLocation animation(String pointer) {
+    return new SourceLocation(
+        new SourcePath("fixtures/test.animation.json"), null, null, pointer, null);
+  }
+
+  static SourceLocation geometry(String pointer) {
+    return new SourceLocation(
+        new SourcePath("fixtures/test.geo.json"), null, null, pointer, null);
+  }
 }
