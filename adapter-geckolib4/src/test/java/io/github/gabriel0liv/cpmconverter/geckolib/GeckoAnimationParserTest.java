@@ -55,6 +55,62 @@ class GeckoAnimationParserTest {
   }
 
   @Test
+  void assertsStructuredFixtureCAndDContracts() throws Exception {
+    Path root = Path.of("..", "test-fixtures").normalize();
+    var cModel = staticModel("fixture-c-deep-hierarchy");
+    var c = parse(cModel, root.resolve("fixture-c-deep-hierarchy/animations.animation.json"));
+    assertTrue(c.success(), String.valueOf(c.diagnostics().all()));
+    var cClip = c.value().get(0);
+    assertEquals("idle", cClip.id().value());
+    assertEquals(PlaybackMode.LOOP, cClip.playback());
+    assertEquals(1.0, cClip.duration());
+    assertEquals(5, cClip.tracks().size());
+    assertEquals(
+        List.of("chest", "neck", "head", "jaw", "accessory"),
+        cClip.tracks().stream()
+            .map(
+                t ->
+                    cModel.bones().stream()
+                        .filter(b -> b.id().equals(t.bone()))
+                        .findFirst()
+                        .orElseThrow()
+                        .name())
+            .toList());
+    var accessory = cClip.tracks().get(4);
+    assertNotNull(accessory.rotation());
+    assertEquals(0.0, accessory.rotation().keyframes().get(1).outgoingValue().x());
+    assertEquals(0.0, accessory.rotation().keyframes().get(1).outgoingValue().y());
+    assertEquals(8.0, accessory.rotation().keyframes().get(1).outgoingValue().z());
+    assertEquals(RotationOrder.ZYX, accessory.rotation().rotationOrder());
+    assertNull(accessory.position());
+    assertNull(accessory.scale());
+    assertTrue(cClip.events().isEmpty());
+
+    var dModel = staticModel("fixture-d-quadruped");
+    var d = parse(dModel, root.resolve("fixture-d-quadruped/animations.animation.json"));
+    assertTrue(d.success(), String.valueOf(d.diagnostics().all()));
+    var dClip = d.value().get(0);
+    assertEquals("walk", dClip.id().value());
+    assertEquals(PlaybackMode.LOOP, dClip.playback());
+    assertEquals(0.5, dClip.duration());
+    assertEquals(1, dClip.tracks().size());
+    var leg = dClip.tracks().get(0);
+    assertEquals(
+        "leg_fl",
+        dModel.bones().stream()
+            .filter(b -> b.id().equals(leg.bone()))
+            .findFirst()
+            .orElseThrow()
+            .name());
+    assertNotNull(leg.rotation());
+    assertEquals(0.0, leg.rotation().keyframes().get(0).timeSeconds());
+    assertEquals(0.5, leg.rotation().keyframes().get(1).timeSeconds());
+    assertEquals(20.0, leg.rotation().keyframes().get(0).outgoingValue().x());
+    assertEquals(-20.0, leg.rotation().keyframes().get(1).outgoingValue().x());
+    assertTrue(dClip.events().isEmpty());
+  }
+
+  @Test
   void mapsPlaybackComponentsAndTrackOrder() throws Exception {
     var model = staticModel("fixture-a-humanoid");
     Path input = temp.resolve("channels.animation.json");
