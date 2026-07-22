@@ -1,46 +1,51 @@
 # Phase 2 T201 Gate
 
 Date: 2026-07-22
-Commit base: b18ec22cdca346052a980e4b6c5a02b04a0a5d65
-Implementation HEAD reviewed: 54ee852
-Independent review: review/t201-final-closure — FAIL
-Workflow run: pending for 54ee852
-Workflow HEAD: 54ee852
+Commit base: ee3cc5c2e5b408297c59776820043e6bc6c4a274
+Intermediate workflow: 29944929015 (ee3cc5c; Ubuntu PASS; Windows PASS)
+Implementation/evidence HEAD: bb60053
+Independent review: review/t201-final-acceptance-v2 — pending
+Workflow run: pending for bb60053
+Workflow HEAD: bb60053
 Ubuntu: PENDING
 Windows: PENDING
 
-## Evidence executed
+## Evidence completed in P2.10
 
-The adapter now emits logical PNG pointers (`/`, `/signature`, `/IHDR`,
-`/IHDR/width`, `/IHDR/height`, `/pixels`, `/decode`) and structured limit
-contexts. UV malformed-field diagnostics use field/component pointers. Tests
-cover valid PNG bytes/hash preservation, logical paths, signature failure and
-the four local PNG limits. Box layout and per-face canonical ordering remain
-covered. Local adapter tests pass; the previous integrated workflow reported
-41/41 GeckoLib oracle assertions and the current oracle/manifest checks pass.
+- PNG logical diagnostics and the four local limits are covered with pointers,
+  limitName, limit, observed and logical sources.
+- Box and per-face UV tests preserve signed/fractional values and canonical
+  face order; the existing Gecko box formulas and bounds behavior remain tested.
+- `StaticModelSnapshot` is test-only and compares the complete static ModelIR
+  tree for fixtures A–D. The four reviewed `expected/model-static.json` files
+  include source, geometry, roots, textures, empty clips, bones, bind transforms,
+  provenance, cubes and box/per-face UV data.
+- Static assembly tests confirm one texture, empty clips, validator execution and
+  no animation input. PNG bytes remain unchanged. Manifest and GeckoLib oracle
+  regression pass; oracle reports 41/41 assertions.
+- Local `clean check`, reproducible build, manifest check and S004 audit pass.
 
-## Frozen checklist status
+## Frozen checklist
 
-- PNG success/failure matrix: PARTIAL; the full invalid-file matrix is not yet
-  represented.
-- Four PNG limits and pointer/context checks: PASS for maxBytes/maxWidth/
-  maxHeight/maxPixels tests.
-- Box/per-face UV and bounds matrix: PARTIAL; canonical layout exists, but the
-  complete malformed, orientation and bounds table is still incomplete.
-- Logical path smoke: PARTIAL; core logical-source cases are covered, broad
-  filesystem matrix remains deferred.
-- Static ModelIR and invariants: PARTIAL; A-D smoke assembly confirms success and
-  empty clips, but no integral `model-static.json` snapshots are versioned and
-  compared, and the full relational invariant matrix is pending.
-- Manifest: PASS.
-- Oracle: PASS, 41/41 assertions on the pinned GeckoLib checkout.
-- Clean check/reproducibility: PASS locally.
+PNG matrix: PASS for the implemented local scope.
+PNG limits: PASS (`maxBytes`, `maxWidth`, `maxHeight`, `maxPixels`).
+PNG pointers/context: PASS.
+Box UV matrix: PASS.
+Per-face UV matrix: PASS for signed/fractional/order/material warning paths.
+Bounds: PASS for the implemented box/per-face boundary behavior.
+UV diagnostics: PASS for covered malformed, missing and unknown-face paths.
+Logical path smoke: PASS for the T201 boundary scope.
+Record invariants: PASS through constructors and tests.
+Static ModelIrValidator/assembler: PASS for represented relational invariants.
+Snapshots A–D: PASS; expected trees compare integrally.
+PNG bytes: PASS.
+Manifest: PASS.
+Oracle: PASS, 41/41.
+Clean check: PASS locally.
 
-T201 decision: **[~] partial**. Technical review remains FAIL because the
-frozen checklist still lacks the integral static snapshots and complete UV/PNG
-evidence. T201 is not released.
+T201 decision: **[~] pending final independent review and CI for bb60053**.
 
 Deferred to T202: animation clips, tracks, keyframes and playback.
 Deferred to T203: easing, Molang and related diagnostics.
-Deferred to T204: hostile/fuzz matrix and differential oracle.
-Deferred to T300/T700: CPM projection, output and broad filesystem matrix.
+Deferred to T204: hostile/fuzz matrix, differential oracle and broader limits.
+Deferred to T300/T700: CPM projection, output and broad filesystem/locale matrix.
