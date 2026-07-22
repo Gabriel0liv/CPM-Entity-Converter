@@ -10,7 +10,6 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -245,10 +244,8 @@ public final class ModelIrValidator {
                       clip.id().value(),
                       track.source()));
         }
-        diagnostics =
-            validateChannel(track.position(), clip.duration(), diagnostics, clip, track);
-        diagnostics =
-            validateRotation(track.rotation(), clip.duration(), diagnostics, clip, track);
+        diagnostics = validateChannel(track.position(), clip.duration(), diagnostics, clip, track);
+        diagnostics = validateRotation(track.rotation(), clip.duration(), diagnostics, clip, track);
         diagnostics = validateChannel(track.scale(), clip.duration(), diagnostics, clip, track);
       }
     }
@@ -272,7 +269,8 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_TIMESTAMP_INVALID,
                     "timestamp must be finite and non-negative",
-                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     track.bone().value(),
                     clip.id().value(),
                     keyframe.source()));
@@ -306,7 +304,8 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_KEYFRAME_AFTER_DURATION,
                     "timestamp exceeds clip duration",
-                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     track.bone().value(),
                     clip.id().value(),
                     keyframe.source()));
@@ -333,7 +332,8 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_TIMESTAMP_INVALID,
                     "rotation timestamp must be finite and non-negative",
-                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     track.bone().value(),
                     clip.id().value(),
                     keyframe.source()));
@@ -367,7 +367,8 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_KEYFRAME_AFTER_DURATION,
                     "rotation timestamp exceeds clip duration",
-                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    Map.of(
+                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     track.bone().value(),
                     clip.id().value(),
                     keyframe.source()));
