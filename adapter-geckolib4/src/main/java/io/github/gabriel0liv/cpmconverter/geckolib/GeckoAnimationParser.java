@@ -466,10 +466,14 @@ public final class GeckoAnimationParser {
 
   private Vec3d parseVector(JsonNode n, SourcePath s, String p, ClipId c, String b) {
     if (n == null || n.isNull() || n.isTextual()) return null;
-    if (n.isNumber()) return new Vec3d(n.doubleValue(), n.doubleValue(), n.doubleValue());
-    if (!n.isArray() || n.size() != 3) return null;
-    if (!n.get(0).isNumber() || !n.get(1).isNumber() || !n.get(2).isNumber()) return null;
-    return new Vec3d(n.get(0).doubleValue(), n.get(1).doubleValue(), n.get(2).doubleValue());
+    try {
+      if (n.isNumber()) return new Vec3d(n.doubleValue(), n.doubleValue(), n.doubleValue());
+      if (!n.isArray() || n.size() != 3) return null;
+      if (!n.get(0).isNumber() || !n.get(1).isNumber() || !n.get(2).isNumber()) return null;
+      return new Vec3d(n.get(0).doubleValue(), n.get(1).doubleValue(), n.get(2).doubleValue());
+    } catch (IllegalArgumentException ex) {
+      return null;
+    }
   }
 
   private record ChannelParse<T>(
