@@ -101,6 +101,8 @@ public final class DiagnosticCodes {
   public static final String ANIM_EVENT_IGNORED_BY_SCOPE = "ANIM_EVENT_IGNORED_BY_SCOPE";
   public static final String ANIM_HOLD_REQUIRES_MAPPING = "ANIM_HOLD_REQUIRES_MAPPING";
   public static final String ANIM_LOOP_DISCONTINUITY = "ANIM_LOOP_DISCONTINUITY";
+  public static final String ANIM_PARSE_ERROR = "ANIM_PARSE_ERROR";
+  public static final String ANIM_CHANNEL_INVALID = "ANIM_CHANNEL_INVALID";
   public static final String ANIM_RESAMPLED = "ANIM_RESAMPLED";
   public static final String ANIM_FRAME_GRID_DENSITY_DIFFERENCE =
       "ANIM_FRAME_GRID_DENSITY_DIFFERENCE";

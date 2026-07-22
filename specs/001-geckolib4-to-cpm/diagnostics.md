@@ -88,10 +88,12 @@ duplicados ou documentados fora do catálogo.
 `ANIM_FRAME_GRID_DENSITY_DIFFERENCE`
 `ANIM_HOLD_REQUIRES_MAPPING`
 `ANIM_IMPLICIT_LENGTH_UNBOUNDED`
+`ANIM_CHANNEL_INVALID`
 `ANIM_LERP_MODE_IGNORED_449`
 `ANIM_LOOP_DISCONTINUITY`
 `ANIM_OPTIONAL_CLIP_MISSING`
 `ANIM_PRE_POST_COLLAPSED_449`
+`ANIM_PARSE_ERROR`
 `ANIM_RESAMPLED`
 `ANIM_ZERO_DURATION_INVALID`
 `ANIM_ZERO_SCALE_UNREPRESENTABLE`
@@ -189,3 +191,7 @@ Boundary construction uses `IR_INVALID_ID` and `IR_INVALID_VALUE`.
 Os códigos de parser/animação, CPM, IO e limitações permanecem definidos nas
 seções de suas respectivas fases e não são usados pelo core nesta rodada.
 `INTERNAL_ERROR` é reservado para falhas internas sem stack trace no domínio.
+
+- ANIM_PARSE_ERROR — malformed animation input.
+- ANIM_CHANNEL_INVALID — unsupported channel shape.
+
