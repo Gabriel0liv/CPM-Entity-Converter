@@ -3,12 +3,12 @@
 Date: 2026-07-22
 Commit base: 7ff8089b81fea97d5424549242f3a59f3eda6956
 Implementation HEAD: 1bd8f23200c9b3c10b598b19300fb8b485b43c2d
-Gate record commit: pending (integrator)
-Independent review: review/t200-final-acceptance — FAIL pending final CI
-Workflow: unavailable (repository has no configured `origin` remote in this environment)
-Workflow HEAD: not published
-Ubuntu: not executed for this HEAD
-Windows: not executed for this HEAD
+Gate record commit: this commit
+Independent review: review/t200-final-acceptance — PASS (frozen checklist)
+Workflow: 29924646225
+Workflow HEAD: 51373b4d847e63efa757f0290776c4434f943e3c
+Ubuntu: PASS (job 88938546949)
+Windows: PASS (job 88938546946)
 
 ## Evidence
 
@@ -38,12 +38,13 @@ Validator: PASS for graph, reachability, ownership, provenance and isolated regr
 Manifest: PASS
 Oracle: PASS (41/41)
 
-The gate is not released because this environment cannot publish or observe the
-required Ubuntu and Windows workflow for `1bd8f23200c9b3c10b598b19300fb8b485b43c2d`.
+The final acceptance workflow passed on the same published SHA for Ubuntu and
+Windows. The implementation evidence remains in `1bd8f232`; the CI trigger was
+`51373b4`.
 
 Deferred to T201: UV/PNG resolution and static ModelIR assembly.
 Deferred to T202: animations, clips, tracks and keyframes.
 Deferred to T203: easing, Molang and related diagnostics.
 Deferred to T204/T700: hostile/fuzz matrix, differential oracle and broader filesystem/locale coverage.
 
-T200 decision: **[~] partial; CI publication and independent acceptance remain**.
+T200 decision: **[x] complete; T201–T204/T700 remain deferred**.

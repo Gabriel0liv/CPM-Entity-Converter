@@ -52,7 +52,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 2
 
-- [~] T200 parser geometry/bones/cubes — implementação funcional; evidência test-only em fechamento.
+- [x] T200 parser geometry/bones/cubes — `1bd8f232` + CI final `29924646225`.
 - [ ] T201 parser UV/PNG (FR-004/008).
 - [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
