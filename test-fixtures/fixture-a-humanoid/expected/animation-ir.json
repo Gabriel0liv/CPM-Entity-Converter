@@ -1,0 +1,185 @@
+{
+  "clips" : [ {
+    "id" : "idle",
+    "duration" : 1.0,
+    "playback" : "LOOP",
+    "customLoop" : null,
+    "source" : {
+      "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+      "pointer" : "/animations/idle"
+    },
+    "tracks" : [ {
+      "boneId" : "cpm:a/bone/1",
+      "mode" : "ADDITIVE",
+      "space" : "LOCAL",
+      "source" : {
+        "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+        "pointer" : "/animations/idle/bones/head"
+      },
+      "position" : null,
+      "rotation" : {
+        "rotationOrder" : "ZYX",
+        "keyframes" : [ {
+          "time" : 0.0,
+          "incoming" : [ 0.0, 0.0, 0.0 ],
+          "outgoing" : [ 0.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/idle/bones/head/rotation/0.0"
+          }
+        }, {
+          "time" : 1.0,
+          "incoming" : [ 0.0, 2.0, 0.0 ],
+          "outgoing" : [ 0.0, 2.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/idle/bones/head/rotation/1.0"
+          }
+        } ]
+      },
+      "scale" : null
+    } ],
+    "events" : [ ]
+  }, {
+    "id" : "walk",
+    "duration" : 0.5,
+    "playback" : "LOOP",
+    "customLoop" : null,
+    "source" : {
+      "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+      "pointer" : "/animations/walk"
+    },
+    "tracks" : [ {
+      "boneId" : "cpm:a/bone/2",
+      "mode" : "ADDITIVE",
+      "space" : "LOCAL",
+      "source" : {
+        "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+        "pointer" : "/animations/walk/bones/left_arm"
+      },
+      "position" : null,
+      "rotation" : {
+        "rotationOrder" : "ZYX",
+        "keyframes" : [ {
+          "time" : 0.0,
+          "incoming" : [ -15.0, 0.0, 0.0 ],
+          "outgoing" : [ -15.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/left_arm/rotation/0.0"
+          }
+        }, {
+          "time" : 0.5,
+          "incoming" : [ 15.0, 0.0, 0.0 ],
+          "outgoing" : [ 15.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/left_arm/rotation/0.5"
+          }
+        } ]
+      },
+      "scale" : null
+    }, {
+      "boneId" : "cpm:a/bone/3",
+      "mode" : "ADDITIVE",
+      "space" : "LOCAL",
+      "source" : {
+        "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+        "pointer" : "/animations/walk/bones/right_arm"
+      },
+      "position" : null,
+      "rotation" : {
+        "rotationOrder" : "ZYX",
+        "keyframes" : [ {
+          "time" : 0.0,
+          "incoming" : [ 15.0, 0.0, 0.0 ],
+          "outgoing" : [ 15.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/right_arm/rotation/0.0"
+          }
+        }, {
+          "time" : 0.5,
+          "incoming" : [ -15.0, 0.0, 0.0 ],
+          "outgoing" : [ -15.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/right_arm/rotation/0.5"
+          }
+        } ]
+      },
+      "scale" : null
+    }, {
+      "boneId" : "cpm:a/bone/4",
+      "mode" : "ADDITIVE",
+      "space" : "LOCAL",
+      "source" : {
+        "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+        "pointer" : "/animations/walk/bones/left_leg"
+      },
+      "position" : null,
+      "rotation" : {
+        "rotationOrder" : "ZYX",
+        "keyframes" : [ {
+          "time" : 0.0,
+          "incoming" : [ 25.0, 0.0, 0.0 ],
+          "outgoing" : [ 25.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/left_leg/rotation/0.0"
+          }
+        }, {
+          "time" : 0.5,
+          "incoming" : [ -25.0, 0.0, 0.0 ],
+          "outgoing" : [ -25.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/left_leg/rotation/0.5"
+          }
+        } ]
+      },
+      "scale" : null
+    }, {
+      "boneId" : "cpm:a/bone/5",
+      "mode" : "ADDITIVE",
+      "space" : "LOCAL",
+      "source" : {
+        "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+        "pointer" : "/animations/walk/bones/right_leg"
+      },
+      "position" : null,
+      "rotation" : {
+        "rotationOrder" : "ZYX",
+        "keyframes" : [ {
+          "time" : 0.0,
+          "incoming" : [ -25.0, 0.0, 0.0 ],
+          "outgoing" : [ -25.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/right_leg/rotation/0.0"
+          }
+        }, {
+          "time" : 0.5,
+          "incoming" : [ 25.0, 0.0, 0.0 ],
+          "outgoing" : [ 25.0, 0.0, 0.0 ],
+          "interpolation" : "LINEAR",
+          "source" : {
+            "path" : "fixtures/fixture-a-humanoid/animations.animation.json",
+            "pointer" : "/animations/walk/bones/right_leg/rotation/0.5"
+          }
+        } ]
+      },
+      "scale" : null
+    } ],
+    "events" : [ ]
+  } ]
+}
