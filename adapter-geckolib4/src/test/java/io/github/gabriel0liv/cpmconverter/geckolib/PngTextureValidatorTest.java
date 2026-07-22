@@ -72,4 +72,39 @@ class PngTextureValidatorTest {
     assertEquals("/", d.location().jsonPointer());
     assertFalse(d.location().source().value().contains(temp.toString()));
   }
+
+  @Test
+  void widthHeightAndPixelLimitsUseSpecificPointers() throws Exception {
+    Path p = temp.resolve("limits.png");
+    byte[] bytes = ONE_BY_ONE.clone();
+    writeInt(bytes, 16, 2);
+    writeInt(bytes, 20, 3);
+    Files.write(p, bytes);
+    var validator = new PngTextureValidator();
+    var width =
+        validator.validate(
+            p,
+            new SourcePath("limits.png"),
+            new PngValidationRequest(new PngParserLimits(1000, 1, 100, 1000)));
+    assertEquals("/IHDR/width", width.diagnostics().all().get(0).location().jsonPointer());
+    var height =
+        validator.validate(
+            p,
+            new SourcePath("limits.png"),
+            new PngValidationRequest(new PngParserLimits(1000, 100, 1, 1000)));
+    assertEquals("/IHDR/height", height.diagnostics().all().get(0).location().jsonPointer());
+    var pixels =
+        validator.validate(
+            p,
+            new SourcePath("limits.png"),
+            new PngValidationRequest(new PngParserLimits(1000, 100, 100, 2)));
+    assertEquals("/pixels", pixels.diagnostics().all().get(0).location().jsonPointer());
+  }
+
+  private static void writeInt(byte[] bytes, int offset, int value) {
+    bytes[offset] = (byte) (value >>> 24);
+    bytes[offset + 1] = (byte) (value >>> 16);
+    bytes[offset + 2] = (byte) (value >>> 8);
+    bytes[offset + 3] = (byte) value;
+  }
 }
