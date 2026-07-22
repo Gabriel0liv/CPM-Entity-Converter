@@ -9,6 +9,8 @@ import io.github.gabriel0liv.cpmconverter.config.MappingCompiler;
 import io.github.gabriel0liv.cpmconverter.config.MappingDocumentV1;
 import io.github.gabriel0liv.cpmconverter.config.MappingLoader;
 import io.github.gabriel0liv.cpmconverter.config.SemanticRigMap;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import io.github.gabriel0liv.cpmconverter.ir.AnimationClipIR;
 import io.github.gabriel0liv.cpmconverter.ir.BoneIR;
 import io.github.gabriel0liv.cpmconverter.ir.BoneId;
@@ -173,7 +175,7 @@ class FixtureSemanticContractTest {
               children,
               Transform.identity(),
               cubes,
-              fixture + "/geometry.geo.json"));
+              SourceLocation.of(new SourcePath(fixture + "/geometry.geo.json"))));
     }
     JsonNode animations = JSON.readTree(directory.resolve("animations.animation.json").toFile());
     List<AnimationClipIR> clips = new ArrayList<>();
@@ -264,3 +266,4 @@ class FixtureSemanticContractTest {
     throw new IllegalStateException("cannot locate fixture root from " + current);
   }
 }
+
