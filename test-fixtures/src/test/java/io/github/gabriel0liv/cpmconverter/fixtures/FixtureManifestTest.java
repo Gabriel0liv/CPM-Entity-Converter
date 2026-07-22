@@ -26,7 +26,7 @@ class FixtureManifestTest {
     Path root = fixtureRoot();
     String status = Files.readString(root.resolve("CONTRACT-STATUS.md"));
     assertTrue(status.contains("MappingCompiler") && status.contains("PASS"));
-    assertTrue(status.contains("GeckoLib animation oracle") && status.contains("BLOCKED"));
+    assertTrue(status.contains("GeckoLib animation oracle") && status.contains("PASS"));
     Process process =
         new ProcessBuilder("python", "scripts/manifest.py", "--check")
             .directory(root.toFile())
