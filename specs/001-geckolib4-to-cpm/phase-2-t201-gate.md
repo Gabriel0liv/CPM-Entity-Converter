@@ -1,42 +1,49 @@
 # Phase 2 T201 Gate
 
 Date: 2026-07-22
-Commit base: 25f2a64022b78f6d50b220b5daa7b53908942d4b
-Implementation commit: 03be749
-Evidence test commit: 8484bc7
-Independent review: not yet executed
-Workflow: not yet dispatched
+Commit base: b18ec22cdca346052a980e4b6c5a02b04a0a5d65
+Implementation HEAD reviewed: ad85b0802b96a592949ae37d8f1dac37a8f57d5f
+Independent review: review/t201-final-acceptance (technical review pending)
+Workflow run: 29933174675
+Workflow HEAD: ad85b0802b96a592949ae37d8f1dac37a8f57d5f
+Ubuntu: PASS
+Windows: PASS
 
-## Local evidence
+## Evidence
 
-`BoxUvIR`/`FaceUvIR` preserve finite doubles and signed dimensions;
-`PerFaceUvIR` is immutable and canonicalized by `CubeFaceIR`. `PngTextureValidator`
-validates PNG signature, IHDR dimensions, decodeability, byte size and local
-limits without re-encoding. `GeckoUvDecoder` and
-`GeckoStaticModelAssembler` are present, and adapter tests cover basic PNG byte
-preservation and signed/fractional box UV.
+The integrated implementation contains the UV/PNG boundary, canonical
+per-face ordering, Gecko box-layout derivation, logical PNG source paths, and
+fixture-only static assembly smoke coverage. Local `clean check`, reproducible
+build, manifest check, S004 audit and GeckoLib oracle check pass. The oracle
+regression reports 41/41 assertions passed with clips A `idle,walk`, B
+`idle,walk`, C `idle`, and D `walk`.
 
 ## Frozen acceptance checklist
 
-PNG validation: PARTIAL
-PNG byte preservation: PASS (basic test)
-PNG limits: PARTIAL
-Dimension policy: PASS in assembler
-Box UV: PARTIAL
-Per-face UV: PARTIAL
-Signed `uv_size`: supported by core types; integration tests pending
-Orientation: NOT YET PROVEN
-Mirror: preserved, orientation tests pending
-Bounds: implemented in decoder; matrix pending
-Static ModelIR: assembler present; A–D integration/goldens pending
-ModelIrValidator: invoked by assembler; full static invariant coverage pending
-Fixture goldens: NOT GENERATED
-Manifest: unchanged for T201 outputs
-Oracle: 41/41 regression remains available, not evidence of T201
+UV diagnostics and `Result` error semantics: PASS for the covered decoder paths.
+Per-face order and defensive copy: PASS.
+Box layout formulas and floor semantics: PASS in `GeckoBoxUvLayoutTest`.
+Signed/fractional UV transport: PASS in core/decoder coverage.
+PNG validation, logical paths and local limits: PARTIAL; a complete matrix of
+invalid files, all limits and pointer/context assertions is not yet present.
+Dimension policy: PASS in `GeckoStaticModelAssembler`.
+Bounds: PARTIAL; implementation evaluates box faces, but the complete frozen
+edge/inversion matrix is not yet represented by tests.
+Static ModelIR A-D: PARTIAL; `StaticModelFixtureTest` executes all four fixtures
+and confirms clips remain empty, but canonical `model-static.json` snapshots are
+not yet versioned and compared.
+ModelIrValidator static invariants: PARTIAL; assembler invokes the validator,
+but the complete T201-specific invariant matrix is pending.
+Fixture geometry snapshots: PASS for the existing geometry-only A-D snapshots.
+Manifest: PASS (`manifest.py --check`).
+Oracle regression: PASS (41/41).
 
-T201 decision: **[~] partial; implementation and evidence remain incomplete**.
+T201 decision: **[~] partial**. CI is green, but the technical gate remains
+closed until the concrete PNG/limits, bounds, and static ModelIR golden tests
+above are added and independently reviewed.
 
 Deferred to T202: animation clips, tracks, keyframes and playback.
 Deferred to T203: easing, Molang and related diagnostics.
 Deferred to T204: hostile/fuzz matrix and differential oracle.
-Deferred to T300: CPM projection, helper nodes, anchors and output.
+Deferred to T300/T700: CPM projection, helper nodes, output and broad filesystem
+compatibility.
