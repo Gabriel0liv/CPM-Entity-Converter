@@ -29,7 +29,7 @@ class ModelIndexConfigTest {
             List.of(bone),
             List.of(bone.id()),
             List.of(
-                new AnimationClipIR(new ClipId("idle"), 1.0, PlaybackMode.LOOP, null, List.of())),
+                new AnimationClipIR(new ClipId("idle"), 1.0, PlaybackMode.LOOP, null, List.of(), List.of(), SourceLocation.of(new SourcePath("fixture.animation.json")))),
             List.of(),
             List.of());
     var document =

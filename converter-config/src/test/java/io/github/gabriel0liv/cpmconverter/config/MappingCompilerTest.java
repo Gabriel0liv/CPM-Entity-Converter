@@ -30,7 +30,7 @@ class MappingCompilerTest {
             Transform.identity(),
             List.of(),
             SourceLocation.of(new SourcePath("fixture")));
-    var clip = new AnimationClipIR(new ClipId("walk-id"), 1.0, PlaybackMode.LOOP, null, List.of());
+    var clip = new AnimationClipIR(new ClipId("walk-id"), 1.0, PlaybackMode.LOOP, null, List.of(), List.of(), SourceLocation.of(new SourcePath("fixture.animation.json")));
     return new ModelIndex(
         new ModelIR(
             new SourceDescriptor("fixture.geo.json", "geometry"),
