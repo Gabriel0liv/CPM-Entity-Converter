@@ -52,7 +52,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 2
 
-- [ ] T200 parser geometry/bones/cubes — não iniciada; liberada após fechamento da Fase 1.
+- [~] T200 parser geometry/bones/cubes — implementação funcional; evidência test-only em fechamento.
 - [ ] T201 parser UV/PNG (FR-004/008).
 - [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
@@ -86,4 +86,3 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [ ] T700 integração A–D, determinismo e CI cross-platform.
 - [ ] T701 aceite visual CPM documentado.
 - [ ] T702 release checklist e roadmap pós-MVP.
-
