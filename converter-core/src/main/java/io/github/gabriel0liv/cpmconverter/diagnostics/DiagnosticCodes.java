@@ -69,10 +69,13 @@ public final class DiagnosticCodes {
   public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
   public static final String INPUT_LIMIT_EXCEEDED = "INPUT_LIMIT_EXCEEDED";
   public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";
+  public static final String GEO_MODEL_NOT_FOUND = "GEO_MODEL_NOT_FOUND";
+  public static final String GEO_FEATURE_UNSUPPORTED = "GEO_FEATURE_UNSUPPORTED";
   public static final String GEO_PARENT_NOT_FOUND = "GEO_PARENT_NOT_FOUND";
   public static final String GEO_HIERARCHY_CYCLE = "GEO_HIERARCHY_CYCLE";
   public static final String GEO_DUPLICATE_BONE_NAME = "GEO_DUPLICATE_BONE_NAME";
   public static final String GEO_MESH_UNSUPPORTED = "GEO_MESH_UNSUPPORTED";
+  public static final String INPUT_PARSE_ERROR = "INPUT_PARSE_ERROR";
   public static final String GEO_CUBE_HELPER_SYNTHESIZED = "GEO_CUBE_HELPER_SYNTHESIZED";
   public static final String UV_OUT_OF_BOUNDS = "UV_OUT_OF_BOUNDS";
   public static final String PNG_INVALID = "PNG_INVALID";

@@ -1,0 +1,10 @@
+{
+  "geometryId":"cpm:b","roots":["cpm:b/bone/0"],
+  "bones":[
+    {"id":"cpm:b/bone/0","name":"body","parent":null,"children":["cpm:b/bone/1"],"bindTranslation":[0,0,0],"cubeCount":1},
+    {"id":"cpm:b/bone/1","name":"neck","parent":"cpm:b/bone/0","children":["cpm:b/bone/2"],"bindTranslation":[0,-8,0],"cubeCount":1},
+    {"id":"cpm:b/bone/2","name":"head","parent":"cpm:b/bone/1","children":["cpm:b/bone/3"],"bindTranslation":[0,-2,1],"cubeCount":1},
+    {"id":"cpm:b/bone/3","name":"horn","parent":"cpm:b/bone/2","children":[],"bindTranslation":[-1,-2,0],"cubeCount":1}
+  ],
+  "scope":"T200 geometry-only; raw UV forwarded to T201"
+}

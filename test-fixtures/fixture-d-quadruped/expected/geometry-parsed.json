@@ -1,0 +1,13 @@
+{
+  "geometryId":"cpm:d","roots":["cpm:d/bone/0"],
+  "bones":[
+    {"id":"cpm:d/bone/0","name":"body","parent":null,"children":["cpm:d/bone/1","cpm:d/bone/2","cpm:d/bone/3","cpm:d/bone/4","cpm:d/bone/5","cpm:d/bone/6"],"bindTranslation":[0,0,0],"cubeCount":1},
+    {"id":"cpm:d/bone/1","name":"head","parent":"cpm:d/bone/0","children":[],"bindTranslation":[0,-6,2],"cubeCount":1},
+    {"id":"cpm:d/bone/2","name":"leg_fl","parent":"cpm:d/bone/0","children":[],"bindTranslation":[-3,0,2],"cubeCount":1},
+    {"id":"cpm:d/bone/3","name":"leg_fr","parent":"cpm:d/bone/0","children":[],"bindTranslation":[3,0,2],"cubeCount":1},
+    {"id":"cpm:d/bone/4","name":"leg_bl","parent":"cpm:d/bone/0","children":[],"bindTranslation":[-3,0,-2],"cubeCount":1},
+    {"id":"cpm:d/bone/5","name":"leg_br","parent":"cpm:d/bone/0","children":[],"bindTranslation":[3,0,-2],"cubeCount":1},
+    {"id":"cpm:d/bone/6","name":"tail","parent":"cpm:d/bone/0","children":[],"bindTranslation":[0,-5,-4],"cubeCount":1}
+  ],
+  "scope":"T200 geometry-only; no QUADRUPED_LIMITATION diagnostic"
+}

@@ -19,6 +19,10 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 
 ## Códigos iniciais
 
+O parser de geometry utiliza também `INPUT_PARSE_ERROR`,
+`GEO_MODEL_NOT_FOUND` e `GEO_FEATURE_UNSUPPORTED`, além dos códigos de
+versão, limites, seleção, hierarquia e meshes listados abaixo.
+
 | Código | Default | Quando |
 |---|---|---|
 | `INPUT_UNSUPPORTED_VERSION` | ERROR | geometry/Gecko fora do baseline |
@@ -109,11 +113,14 @@ duplicados ou documentados fora do catálogo.
 `FEATURE_EXPLICITLY_IGNORED`
 `GEO_CUBE_HELPER_SYNTHESIZED`
 `GEO_DUPLICATE_BONE_NAME`
+`GEO_FEATURE_UNSUPPORTED`
 `GEO_HIERARCHY_CYCLE`
 `GEO_MESH_UNSUPPORTED`
+`GEO_MODEL_NOT_FOUND`
 `GEO_MULTIPLE_MODELS`
 `GEO_PARENT_NOT_FOUND`
 `INPUT_LIMIT_EXCEEDED`
+`INPUT_PARSE_ERROR`
 `INPUT_UNSUPPORTED_VERSION`
 `INTERNAL_ERROR`
 `IO_OUTPUT_EXISTS`
