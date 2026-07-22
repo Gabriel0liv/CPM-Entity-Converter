@@ -18,7 +18,6 @@ final class TestSourceLocations {
   }
 
   static SourceLocation geometry(String pointer) {
-    return new SourceLocation(
-        new SourcePath("fixtures/test.geo.json"), null, null, pointer, null);
+    return new SourceLocation(new SourcePath("fixtures/test.geo.json"), null, null, pointer, null);
   }
 }
