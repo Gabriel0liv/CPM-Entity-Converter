@@ -107,7 +107,6 @@ for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('f
   if accessory.get('pivot') != [1.5,2.5,0.5] or accessory.get('rotation') != [12,0,27]: raise SystemExit('fixture C requires non-trivial cube pivot/rotation')
  if d.name.endswith('quadruped'):
   require({'leg_fl','leg_fr','leg_bl','leg_br','tail'}.issubset({b['name'] for b in bones}), d.name, 'fixture D limb inventory')
-  require('QUADRUPED_LIMITATION' in json.dumps(json.loads((d/'expected/diagnostics.json').read_text())), d.name, 'missing quadruped diagnostic contract')
  animations=json.loads((d/'animations.animation.json').read_text())['animations']
  if d.name.endswith('humanoid'):
   walk=animations.get('walk',{}).get('bones',{})

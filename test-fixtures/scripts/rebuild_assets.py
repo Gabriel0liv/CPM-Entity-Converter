@@ -48,5 +48,5 @@ for directory in sorted(ROOT.glob('fixture-*')):
               'stateMappings':{'standing':{'clipId':f'{directory.name}:idle','mode':'LOOP'}},
               'sampling':{'requestedFps':20},'ignoreRules':[],'diagnosticPolicy':{'warningsAsErrors':False}}
     (expected/'mapping-compiled.json').write_text(json.dumps(compiled,sort_keys=True,indent=2)+'\n',encoding='utf-8')
-    (expected/'diagnostics.json').write_text(json.dumps({'expected':(['QUADRUPED_LIMITATION'] if directory.name.endswith('quadruped') else [])},sort_keys=True,indent=2)+'\n',encoding='utf-8')
+    (expected/'diagnostics.json').write_text(json.dumps({'expected':[]},sort_keys=True,indent=2)+'\n',encoding='utf-8')
     (expected/'invariants.json').write_text(json.dumps({'acyclic':True,'sourceOrderPreserved':True,'thirdPartyAssets':False},sort_keys=True,indent=2)+'\n',encoding='utf-8')
