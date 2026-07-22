@@ -12,11 +12,55 @@ jobs:
       - uses: actions/setup-java@v4 # major tag policy: Dependabot-reviewed official action
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
-      - if: runner.os == 'Linux'
-        run: bash ./gradlew spotlessCheck clean check --no-daemon --stacktrace
-      - if: runner.os == 'Windows'
-        run: .\gradlew.bat spotlessCheck clean check --no-daemon --stacktrace
-      - run: python scripts/verify-reproducible-build.py
-      - run: python test-fixtures/scripts/manifest.py --check
-      - if: runner.os == 'Linux'
+      - name: Gradle spotlessCheck
+        if: runner.os == 'Linux'
+        run: ./gradlew spotlessCheck --no-daemon --stacktrace --info
+      - name: Gradle spotlessCheck
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat spotlessCheck --no-daemon --stacktrace --info
+      - name: Gradle clean check
+        if: runner.os == 'Linux'
+        run: ./gradlew clean check --no-daemon --stacktrace --info
+      - name: Gradle clean check
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat clean check --no-daemon --stacktrace --info
+      - name: Reproducible build
+        run: python scripts/verify-reproducible-build.py
+      - name: Fixture manifest
+        run: python test-fixtures/scripts/manifest.py --check
+      - name: S004 fixture audit
+        if: runner.os == 'Linux'
         run: python spikes/geckolib-animation-semantics/scripts/audit_fixtures.py
+      - name: Upload failure reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-failure-reports-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            **/build/reports/**
+            **/build/test-results/**
+            **/build/spotless/**
+            build/reports/**
+      - name: Verify worktree clean
+        if: always() && runner.os == 'Linux'
+        shell: bash
+        run: |
+          git status --short
+          if [ -n "$(git diff --name-only)" ] || [ -n "$(git diff --cached --name-only)" ]; then
+            echo "Tracked files were modified by the build."
+            exit 1
+          fi
+      - name: Verify worktree clean
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          git status --short
+          $tracked = @(git diff --name-only)
+          $cached = @(git diff --cached --name-only)
+          if ($tracked.Count -gt 0 -or $cached.Count -gt 0) {
+            Write-Error "Tracked files were modified by the build."
+            exit 1
+          }
