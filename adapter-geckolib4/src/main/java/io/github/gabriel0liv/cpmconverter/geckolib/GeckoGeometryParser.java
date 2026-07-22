@@ -221,7 +221,19 @@ public final class GeckoGeometryParser {
         continue;
       }
       String name = text(node, "name");
-      if (name == null || name.isBlank() || name.length() > request.limits().maxStringLength()) {
+      if (name != null && name.length() > request.limits().maxStringLength()) {
+        diagnostics =
+            diagnostics.add(
+                limitDiagnostic(
+                    source,
+                    base + "/name",
+                    "maxStringLength",
+                    request.limits().maxStringLength(),
+                    name.length(),
+                    "Increase maxStringLength"));
+        continue;
+      }
+      if (name == null || name.isBlank()) {
         diagnostics =
             diagnostics.add(
                 error(
@@ -284,7 +296,13 @@ public final class GeckoGeometryParser {
                       DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
                       "cube count exceeds configured limit",
                       "Increase maxCubesPerBone",
-                      Map.of()));
+                      Map.of(
+                          "limitName",
+                          "maxCubesPerBone",
+                          "limit",
+                          Integer.toString(request.limits().maxCubesPerBone()),
+                          "observed",
+                          Integer.toString(cubes.size()))));
         }
         for (int c = 0; c < cubes.size(); c++) {
           ParsedCube parsed =
@@ -308,7 +326,13 @@ public final class GeckoGeometryParser {
                   DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
                   "total cube count exceeds configured limit",
                   "Increase maxTotalCubes",
-                  Map.of()));
+                  Map.of(
+                      "limitName",
+                      "maxTotalCubes",
+                      "limit",
+                      Integer.toString(request.limits().maxTotalCubes()),
+                      "observed",
+                      Integer.toString(cubeCount))));
     }
     List<BoneId> roots = new ArrayList<>();
     for (BoneData bone : data) {
@@ -673,6 +697,28 @@ public final class GeckoGeometryParser {
                             "limitName", limitName,
                             "limit", Long.toString(limit),
                             "observed", Long.toString(observed))))));
+  }
+
+  private static Diagnostic limitDiagnostic(
+      SourcePath source,
+      String pointer,
+      String name,
+      long limit,
+      long observed,
+      String suggestion) {
+    return new Diagnostic(
+        Severity.ERROR,
+        DiagnosticCode.fromCatalog(DiagnosticCodes.INPUT_LIMIT_EXCEEDED),
+        location(source, pointer),
+        "geometry parser limit exceeded: " + name,
+        suggestion,
+        null,
+        null,
+        new java.util.TreeMap<>(
+            Map.of(
+                "limitName", name,
+                "limit", Long.toString(limit),
+                "observed", Long.toString(observed))));
   }
 
   private static final class BoneData {
