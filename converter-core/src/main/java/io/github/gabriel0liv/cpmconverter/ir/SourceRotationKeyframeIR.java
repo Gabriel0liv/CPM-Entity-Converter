@@ -8,14 +8,14 @@ public record SourceRotationKeyframeIR(
     double timeSeconds,
     Vec3d incomingValue,
     Vec3d outgoingValue,
-    InterpolationIR interpolationAfter,
+    EasingIR easingFromPrevious,
     SourceLocation source) {
   public SourceRotationKeyframeIR {
     if (!Double.isFinite(timeSeconds)
         || timeSeconds < 0
         || incomingValue == null
         || outgoingValue == null
-        || interpolationAfter == null
+        || easingFromPrevious == null
         || source == null) throw new IllegalArgumentException("rotation keyframe");
   }
 
@@ -30,8 +30,12 @@ public record SourceRotationKeyframeIR(
         timeSeconds,
         incomingValue,
         outgoingValue,
-        interpolationAfter,
+        EasingIR.linear(),
         SourceLocation.of(
             new SourcePath(source == null || source.isBlank() ? "legacy/animation" : source)));
+  }
+
+  public InterpolationIR interpolationAfter() {
+    return InterpolationIR.LINEAR;
   }
 }

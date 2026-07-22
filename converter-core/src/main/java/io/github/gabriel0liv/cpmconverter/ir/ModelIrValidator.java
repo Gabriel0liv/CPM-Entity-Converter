@@ -358,6 +358,20 @@ public final class ModelIrValidator {
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (KeyframeIR<?> keyframe : channel.keyframes()) {
+      if (keyframe.easingFromPrevious() == null
+          || (keyframe.easingFromPrevious().kind() == EasingKindIR.STEP
+              && !keyframe.easingFromPrevious().args().isEmpty()
+              && keyframe.easingFromPrevious().args().get(0) < 2)) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    DiagnosticCodes.IR_INVALID_VALUE,
+                    "invalid easing",
+                    Map.of("field", "easingFromPrevious"),
+                    track.bone().value(),
+                    clip.id().value(),
+                    keyframe.source()));
+      }
       double time = keyframe.time();
       if (!Double.isFinite(time) || time < 0) {
         diagnostics =
@@ -421,6 +435,20 @@ public final class ModelIrValidator {
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (SourceRotationKeyframeIR keyframe : channel.keyframes()) {
+      if (keyframe.easingFromPrevious() == null
+          || (keyframe.easingFromPrevious().kind() == EasingKindIR.STEP
+              && !keyframe.easingFromPrevious().args().isEmpty()
+              && keyframe.easingFromPrevious().args().get(0) < 2)) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    DiagnosticCodes.IR_INVALID_VALUE,
+                    "invalid easing",
+                    Map.of("field", "easingFromPrevious"),
+                    track.bone().value(),
+                    clip.id().value(),
+                    keyframe.source()));
+      }
       double time = keyframe.timeSeconds();
       if (!Double.isFinite(time) || time < 0) {
         diagnostics =

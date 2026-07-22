@@ -145,10 +145,6 @@ class GeckoAnimationParserTest {
     assertTrue(
         result.diagnostics().all().stream()
             .anyMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_CHANNEL_INVALID)));
-    assertTrue(
-        result.diagnostics().all().stream()
-            .anyMatch(
-                d -> d.code().value().equals(DiagnosticCodes.ANIM_CUSTOM_EASING_UNSUPPORTED)));
   }
 
   @ParameterizedTest

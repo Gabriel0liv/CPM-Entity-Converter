@@ -39,6 +39,7 @@ versão, limites, seleção, hierarquia e meshes listados abaixo.
 | `ANIM_OPTIONAL_CLIP_MISSING` | INFO | clip optional ausente |
 | `ANIM_BONE_NOT_FOUND` | ERROR | track refere bone inexistente |
 | `ANIM_DYNAMIC_MOLANG_UNSUPPORTED` | ERROR | expressão depende de runtime |
+| `ANIM_MOLANG_PARSE_ERROR` | ERROR | expressão constante inválida ou não suportada |
 | `ANIM_CUSTOM_EASING_UNSUPPORTED` | ERROR | easing não registrado/conhecido |
 | `ANIM_LERP_MODE_IGNORED_449` | WARNING | `lerp_mode` de canal ignorado pelo adapter 4.4.9 |
 | `ANIM_PRE_POST_COLLAPSED_449` | WARNING | pre/post diferentes colapsados como GeckoLib 4.4.9 |
@@ -83,6 +84,7 @@ duplicados ou documentados fora do catálogo.
 `ANIM_CUSTOM_LOOP_TYPE_UNSUPPORTED`
 `ANIM_DUPLICATE_TIMESTAMP`
 `ANIM_DYNAMIC_MOLANG_UNSUPPORTED`
+`ANIM_MOLANG_PARSE_ERROR`
 `ANIM_EULER_DECOMPOSITION_AMBIGUOUS`
 `ANIM_EVENT_IGNORED_BY_SCOPE`
 `ANIM_FRAME_GRID_DENSITY_DIFFERENCE`
@@ -194,4 +196,3 @@ seções de suas respectivas fases e não são usados pelo core nesta rodada.
 
 - ANIM_PARSE_ERROR — malformed animation input.
 - ANIM_CHANNEL_INVALID — unsupported channel shape.
-
