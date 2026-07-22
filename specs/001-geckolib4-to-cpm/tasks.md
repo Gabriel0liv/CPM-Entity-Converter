@@ -45,10 +45,10 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
-- [~] T102 continuidade Euler e contratos matemáticos (`6b6065d`; resolved Euler e sequências adicionados, revisão independente ainda pendente).
-- [~] T103 source locations, provenance e validator (`8cdf6c0`; provenance/location ampliados, matriz completa ainda pendente).
-- [~] T104 matriz normativa e SemanticRigMap (`0da295e`; compilação endurecida, cobertura integral ainda pendente).
-- [~] T105 contratos reais das fixtures A–D (`5541973`; auditoria estrutural passa, oracle específico A–D ainda sem evidência PASS).
+- [~] T102 continuidade Euler e contratos matemáticos (`876adb0`; matriz de unwrap e resolved Euler adicionados; revisão independente pendente).
+- [~] T103 source locations, provenance e validator (`876adb0`; provenance tipada e validator sem estado residual; revisão independente pendente).
+- [~] T104 matriz normativa e SemanticRigMap (`50d3909`; matriz schema/JSON-YAML ampliada; revisão independente pendente).
+- [~] T105 contratos reais das fixtures A–D (`3ffb99d`; oracle itera clips, mas relatório A–D ainda bloqueia por boundary de fixture não executado).
 
 ## Fase 2
 
