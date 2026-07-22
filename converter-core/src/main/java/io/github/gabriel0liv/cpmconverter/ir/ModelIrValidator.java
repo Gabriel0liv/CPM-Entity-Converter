@@ -6,9 +6,11 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -24,12 +26,10 @@ public final class ModelIrValidator {
               "model is null",
               Map.of(),
               null,
-              SourceLocation.of(
-                  new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<input>"))));
+              null,
+              SourceLocation.of(new SourcePath("<input>"))));
     }
-    SourceLocation modelSource =
-        SourceLocation.of(
-            new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath(model.source().path()));
+    SourceLocation modelSource = SourceLocation.of(new SourcePath(model.source().path()));
     Map<BoneId, BoneIR> bones = new LinkedHashMap<>();
     for (BoneIR bone : model.bones()) {
       if (bones.putIfAbsent(bone.id(), bone) != null) {
@@ -40,7 +40,8 @@ public final class ModelIrValidator {
                     "duplicate bone id",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
-                    modelSource));
+                    null,
+                    bone.provenance()));
       }
     }
     Set<BoneId> roots = new LinkedHashSet<>();
@@ -53,6 +54,7 @@ public final class ModelIrValidator {
                     "duplicate root",
                     Map.of("boneId", root.value()),
                     root.value(),
+                    null,
                     modelSource));
       }
       BoneIR rootBone = bones.get(root);
@@ -64,6 +66,7 @@ public final class ModelIrValidator {
                     "root not found",
                     Map.of("boneId", root.value()),
                     root.value(),
+                    null,
                     modelSource));
       } else if (rootBone.parent() != null) {
         diagnostics =
@@ -73,6 +76,7 @@ public final class ModelIrValidator {
                     "root has a parent",
                     Map.of("boneId", root.value(), "parentId", rootBone.parent().value()),
                     root.value(),
+                    null,
                     rootBone.provenance()));
       }
     }
@@ -87,6 +91,7 @@ public final class ModelIrValidator {
                       "parent not found",
                       Map.of("boneId", bone.id().value(), "parentId", bone.parent().value()),
                       bone.id().value(),
+                      null,
                       bone.provenance()));
         } else if (!parent.children().contains(bone.id())) {
           diagnostics =
@@ -96,6 +101,7 @@ public final class ModelIrValidator {
                       "parent does not list child",
                       Map.of("boneId", bone.id().value(), "parentId", bone.parent().value()),
                       bone.id().value(),
+                      null,
                       bone.provenance()));
         }
       }
@@ -109,6 +115,7 @@ public final class ModelIrValidator {
                       "duplicate child",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
+                      null,
                       bone.provenance()));
         }
         BoneIR childBone = bones.get(child);
@@ -120,6 +127,7 @@ public final class ModelIrValidator {
                       "child not found",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
+                      null,
                       bone.provenance()));
         } else if (!bone.id().equals(childBone.parent())) {
           diagnostics =
@@ -129,6 +137,7 @@ public final class ModelIrValidator {
                       "child parent differs",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
+                      null,
                       bone.provenance()));
         }
       }
@@ -141,6 +150,7 @@ public final class ModelIrValidator {
                       "cube bone not found",
                       Map.of("cubeId", cube.id().value(), "boneId", cube.bone().value()),
                       bone.id().value(),
+                      null,
                       cube.provenance()));
         }
       }
@@ -155,6 +165,7 @@ public final class ModelIrValidator {
                     "bone graph contains a cycle",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
+                    null,
                     bone.provenance()));
       }
       if (!reachableFromRoots(bone.id(), bones, roots)) {
@@ -165,11 +176,11 @@ public final class ModelIrValidator {
                     "bone is unreachable from roots",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
+                    null,
                     bone.provenance()));
       }
     }
     Set<CubeId> cubes = new LinkedHashSet<>();
-    Set<ClipId> clips = new LinkedHashSet<>();
     for (BoneIR bone : model.bones()) {
       for (CubeIR cube : bone.cubes()) {
         if (!cubes.add(cube.id())) {
@@ -180,10 +191,12 @@ public final class ModelIrValidator {
                       "duplicate cube id",
                       Map.of("cubeId", cube.id().value()),
                       bone.id().value(),
+                      null,
                       cube.provenance()));
         }
       }
     }
+    Set<ClipId> clips = new LinkedHashSet<>();
     for (AnimationClipIR clip : model.clips()) {
       if (!clips.add(clip.id())) {
         diagnostics =
@@ -193,7 +206,8 @@ public final class ModelIrValidator {
                     "duplicate clip id",
                     Map.of("clipId", clip.id().value()),
                     null,
-                    clip.id().value()));
+                    clip.id().value(),
+                    clip.source()));
       }
       if (!Double.isFinite(clip.duration()) || clip.duration() <= 0) {
         diagnostics =
@@ -204,7 +218,8 @@ public final class ModelIrValidator {
                     Map.of(
                         "clipId", clip.id().value(), "duration", Double.toString(clip.duration())),
                     null,
-                    clip.id().value()));
+                    clip.id().value(),
+                    clip.source()));
       }
       if (clip.playback() == PlaybackMode.CUSTOM
           && (clip.customLoop() == null || clip.customLoop().isBlank())) {
@@ -215,7 +230,8 @@ public final class ModelIrValidator {
                     "custom playback requires source id",
                     Map.of("clipId", clip.id().value()),
                     null,
-                    clip.id().value()));
+                    clip.id().value(),
+                    clip.source()));
       }
       for (BoneTrackIR track : clip.tracks()) {
         if (!bones.containsKey(track.bone())) {
@@ -226,36 +242,25 @@ public final class ModelIrValidator {
                       "track bone not found",
                       Map.of("clipId", clip.id().value(), "boneId", track.bone().value()),
                       track.bone().value(),
-                      clip.id().value()));
+                      clip.id().value(),
+                      track.source()));
         }
         diagnostics =
-            validateChannel(
-                track.position(),
-                clip.duration(),
-                diagnostics,
-                clip.id().value(),
-                track.bone().value());
+            validateChannel(track.position(), clip.duration(), diagnostics, clip, track);
         diagnostics =
-            validateRotation(
-                track.rotation(),
-                clip.duration(),
-                diagnostics,
-                clip.id().value(),
-                track.bone().value());
-        diagnostics =
-            validateChannel(
-                track.scale(),
-                clip.duration(),
-                diagnostics,
-                clip.id().value(),
-                track.bone().value());
+            validateRotation(track.rotation(), clip.duration(), diagnostics, clip, track);
+        diagnostics = validateChannel(track.scale(), clip.duration(), diagnostics, clip, track);
       }
     }
     return diagnostics;
   }
 
   private DiagnosticBag validateChannel(
-      ChannelIR<?> channel, double duration, DiagnosticBag diagnostics, String clip, String bone) {
+      ChannelIR<?> channel,
+      double duration,
+      DiagnosticBag diagnostics,
+      AnimationClipIR clip,
+      BoneTrackIR track) {
     if (channel == null) return diagnostics;
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
@@ -267,43 +272,45 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_TIMESTAMP_INVALID,
                     "timestamp must be finite and non-negative",
-                    Map.of(
-                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
-                    bone,
-                    clip,
+                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
         continue;
       }
-      if (!seen.add(time))
+      if (!seen.add(time)) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_DUPLICATE,
                     "duplicate timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
-                    bone,
-                    clip,
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
-      if (time < previous)
+      }
+      if (time < previous) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_ORDER,
                     "timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
-                    bone,
-                    clip,
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
-      if (time > duration)
+      }
+      if (time > duration) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_AFTER_DURATION,
                     "timestamp exceeds clip duration",
-                    Map.of(
-                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
-                    bone,
-                    clip));
+                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    track.bone().value(),
+                    clip.id().value(),
+                    keyframe.source()));
+      }
       previous = time;
     }
     return diagnostics;
@@ -313,8 +320,8 @@ public final class ModelIrValidator {
       SourceRotationChannelIR channel,
       double duration,
       DiagnosticBag diagnostics,
-      String clip,
-      String bone) {
+      AnimationClipIR clip,
+      BoneTrackIR track) {
     if (channel == null) return diagnostics;
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
@@ -326,43 +333,45 @@ public final class ModelIrValidator {
                 error(
                     DiagnosticCodes.IR_TIMESTAMP_INVALID,
                     "rotation timestamp must be finite and non-negative",
-                    Map.of(
-                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
-                    bone,
-                    clip,
+                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
         continue;
       }
-      if (!seen.add(time))
+      if (!seen.add(time)) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_DUPLICATE,
                     "duplicate rotation timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
-                    bone,
-                    clip,
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
-      if (time < previous)
+      }
+      if (time < previous) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_ORDER,
                     "rotation timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
-                    bone,
-                    clip,
+                    track.bone().value(),
+                    clip.id().value(),
                     keyframe.source()));
-      if (time > duration)
+      }
+      if (time > duration) {
         diagnostics =
             diagnostics.add(
                 error(
                     DiagnosticCodes.IR_KEYFRAME_AFTER_DURATION,
                     "rotation timestamp exceeds clip duration",
-                    Map.of(
-                        "timestamp", Double.toString(time), "duration", Double.toString(duration)),
-                    bone,
-                    clip));
+                    Map.of("timestamp", Double.toString(time), "duration", Double.toString(duration)),
+                    track.bone().value(),
+                    clip.id().value(),
+                    keyframe.source()));
+      }
       previous = time;
     }
     return diagnostics;
@@ -392,26 +401,11 @@ public final class ModelIrValidator {
   }
 
   private Diagnostic error(
-      String code, String message, Map<String, String> context, String bone, String clip) {
-    String suggestion = suggestionFor(code);
-    SourceLocation location =
-        SourceLocation.of(new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<model>"));
-    return new Diagnostic(
-        Severity.ERROR,
-        DiagnosticCode.fromCatalog(code),
-        location,
-        message,
-        suggestion,
-        bone,
-        clip,
-        new TreeMap<>(context));
-  }
-
-  private Diagnostic error(
       String code,
       String message,
       Map<String, String> context,
       String bone,
+      String animation,
       SourceLocation location) {
     return new Diagnostic(
         Severity.ERROR,
@@ -420,30 +414,8 @@ public final class ModelIrValidator {
         message,
         suggestionFor(code),
         bone,
-        null,
+        animation,
         new TreeMap<>(context));
-  }
-
-  private Diagnostic error(
-      String code,
-      String message,
-      Map<String, String> context,
-      String bone,
-      String clip,
-      SourceLocation location) {
-    return new Diagnostic(
-        Severity.ERROR,
-        DiagnosticCode.fromCatalog(code),
-        location,
-        message,
-        suggestionFor(code),
-        bone,
-        clip,
-        new TreeMap<>(context));
-  }
-
-  private BoneId boneId(String value) {
-    return value == null ? null : new BoneId(value);
   }
 
   private String suggestionFor(String code) {
