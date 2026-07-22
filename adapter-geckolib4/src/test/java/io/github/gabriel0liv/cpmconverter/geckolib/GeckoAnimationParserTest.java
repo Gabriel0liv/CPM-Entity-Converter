@@ -2,11 +2,17 @@ package io.github.gabriel0liv.cpmconverter.geckolib;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
+import io.github.gabriel0liv.cpmconverter.ir.*;
 import java.nio.file.Path;
+import java.nio.file.Files;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class GeckoAnimationParserTest {
+  @TempDir Path temp;
   @Test
   void parsesAuthorialFixturesAndAttachesClips() {
     Path root = Path.of("..", "test-fixtures").normalize();
@@ -43,5 +49,50 @@ class GeckoAnimationParserTest {
       assertTrue(attached.success(), name + attached.diagnostics().all());
       assertEquals(clips.value().size(), attached.value().clips().size());
     }
+  }
+
+  @Test
+  void mapsPlaybackComponentsAndTrackOrder() throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("channels.animation.json");
+    Files.writeString(input, "{\"format_version\":\"1.8.0\",\"animations\":{\"z\":{\"animation_length\":1,\"loop\":\"loop\",\"bones\":{\"head\":{\"position\":{\"0.5\":[1,2,3]},\"scale\":[1,2,0.5],\"rotation\":[190,0,720]},\"body\":{\"rotation\":[0,0,0]}}}}}");
+    var result = parse(model, input);
+    assertTrue(result.success(), String.valueOf(result.diagnostics().all()));
+    var clip = result.value().get(0);
+    assertEquals(PlaybackMode.LOOP, clip.playback());
+    assertEquals(1.0, clip.duration());
+    assertEquals("body", model.bones().get(0).name());
+    assertEquals(model.bones().get(0).id(), clip.tracks().get(0).bone());
+    var head = clip.tracks().get(1);
+    assertEquals("position", head.position().component());
+    assertEquals(TransformMode.ADDITIVE, head.position().mode());
+    assertEquals("scale", head.scale().component());
+    assertEquals(TransformMode.ABSOLUTE, head.scale().mode());
+    assertEquals(-1.0, head.position().keyframes().get(0).incomingValue().x());
+    assertEquals(190.0, head.rotation().keyframes().get(0).incomingValue().x());
+  }
+
+  @Test
+  void rejectsStructuralValuesAndDefersEasing() throws Exception {
+    var model = staticModel("fixture-a-humanoid");
+    Path input = temp.resolve("invalid.animation.json");
+    Files.writeString(input, "{\"format_version\":\"1.8.0\",\"animations\":{\"bad\":{\"bones\":{\"head\":{\"position\":[1,2],\"rotation\":{\"0\":{\"vector\":[0,0,0],\"easing\":\"step\"}}}}}}}");
+    var result = parse(model, input);
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_CHANNEL_INVALID)));
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_CUSTOM_EASING_UNSUPPORTED)));
+  }
+
+  private ModelIR staticModel(String fixture) throws Exception {
+    Path dir = Path.of("..", "test-fixtures", fixture).normalize();
+    var geometry = new GeckoGeometryParser().parse(dir.resolve("geometry.geo.json"), GeometryParseRequest.defaults());
+    assertTrue(geometry.success(), String.valueOf(geometry.diagnostics().all()));
+    var model = new GeckoStaticModelAssembler().assemble(geometry.value(), dir.resolve("texture.png"), StaticModelAssemblyRequest.defaults());
+    assertTrue(model.success(), String.valueOf(model.diagnostics().all()));
+    return model.value();
+  }
+
+  private static Result<List<AnimationClipIR>> parse(ModelIR model, Path input) {
+    return new GeckoAnimationParser().parse(List.of(new AnimationInput(input, new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("fixtures/test.animation.json"))), model, AnimationParseRequest.defaults());
   }
 }
