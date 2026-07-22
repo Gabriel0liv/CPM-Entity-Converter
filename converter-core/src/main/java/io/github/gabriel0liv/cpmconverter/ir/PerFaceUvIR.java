@@ -1,7 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-import java.util.EnumMap;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.Map;
 
 public record PerFaceUvIR(Map<CubeFaceIR, FaceUvIR> faces) implements UvIR {
