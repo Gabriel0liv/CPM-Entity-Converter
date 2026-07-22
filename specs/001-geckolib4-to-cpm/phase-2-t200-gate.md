@@ -2,7 +2,7 @@
 
 Date: 2026-07-22
 Commit base: 22d954abbb5dc616010b500968127fbcbff6f16b
-Implementation HEAD: 22f5cc3 (integration/phase2)
+Implementation HEAD: 89deeb8 (integration/phase2)
 Independent review: review/t200-geometry-parser
 Workflow: not yet green for this HEAD
 Ubuntu: pending
@@ -22,14 +22,16 @@ semantics at GeckoLib commit `25a41d7375bb7eeda37dadc04b1e03fe486b33e5`.
 ## Verification
 
 `clean check`, adapter tests, reproducible build, fixture manifest and the S004
-audit pass locally. The fixture oracle check currently reports its existing
-artifact as stale after the harness regenerates its manifest; this is retained
-as a separate pre-existing spike issue and is not presented as T200 evidence.
+audit pass locally. The A–D fixture oracle was regenerated against the pinned
+GeckoLib checkout and now reports 41/41 assertions passed; clips remain
+A `idle/walk`, B `idle/walk`, C `idle`, D `walk`.
 
-Independent review classification: **PARTIAL**. Remaining concrete gaps are
-the complete parsed-boundary validator matrix, full independent geometry golden
-comparisons and the complete hostile/feature/limit test matrix. Therefore T200
-is not marked complete and the phase-2 gate remains closed.
+Independent review classification: **PARTIAL**. The validator is now invoked by
+the parser and covers graph, roots, ownership, finiteness, provenance and
+cycles; geometry goldens compare identifiers, topology, translations and cube
+counts. The remaining review concern is that the complete hostile/feature/path
+matrix and all cube-level golden fields are not yet independently asserted.
+Therefore T200 is not marked complete and the phase-2 gate remains closed.
 
 FR-001: partial parse evidence
 FR-002: partial static geometry evidence
@@ -44,4 +46,4 @@ Deferred to T202: animation clips, tracks and keyframes.
 Deferred to T203: easing, Molang and related diagnostics.
 Deferred to T204: hostile inputs, full limits and oracle comparison matrix.
 
-T200 decision: **[!] remains blocked pending the listed corrective evidence**.
+T200 decision: **[~] partial; corrective evidence remains**.
