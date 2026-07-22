@@ -1,37 +1,33 @@
 # Phase 2 T202 Gate
 
 Date: 2026-07-22
-Commit base: 7706a58e857f2a3b4e4d5b8cdd10e4c705b88910
-Implementation branch: feature/t202-final
-Integrated HEAD: 2147b8478c645fe6d8552b1b4de627e78102ae93
-Intermediate workflow: 29955716041 (Windows PASS on 7686d48)
-Current workflow: pending for integrated HEAD
+Commit base: 93a0ae16c7eda6da4442307f71e616d3a7bc0135
+Initial implementation: 080a6e0
+Initial integration: fd8e96d
+P2.12 corrections: 604e1dc
+P2.13 evidence: 3c431c8, 4e010bf
+Implementation HEAD: 4e010bffabdd7748492c3adb83314d2325fbaaf4
+Windows workflow: pending for final integrated HEAD
 
-## Implemented corrections
+Evidence:
 
-- tracks are ordered by the source order of `ModelIR.bones()`, not a hash map;
-- position and scale channels carry `position`/`scale` components and their
-  required modes;
-- `lerp_mode` emits the GeckoLib 4.4.9 warning without becoming a timestamp;
-- easing and easingArgs are rejected and deferred to T203;
-- textual values are classified as deferred Molang while structural values use
-  channel diagnostics;
-- pre/post vector forms are supported with GeckoLib precedence;
-- invalid bones/durations and empty tracks are rejected;
-- ModelIrValidator checks duplicate tracks, empty tracks, channel components and
-  ZYX rotation order;
-- focused A–D integration and semantic parser tests pass locally.
+- playback is covered parametrically for the supported GeckoLib modes and
+  rejected custom/invalid values;
+- explicit and inferred durations, duration errors, channel scalar/vector/map,
+  ordered timestamps, duplicate timestamps, and absent channels are covered;
+- position uses the coordinate change, rotation preserves authored Euler values,
+  and scale preserves authored values and components;
+- pre/post array and object/vector forms are normalized for comparison; Molang
+  components are classified as deferred and structural errors remain distinct;
+- `lerp_mode` emits the 4.4.9 warning, easing/easingArgs remain deferred to T203,
+  and scoped sound/particle/timeline events are preserved as warnings;
+- A and B have integral test-only animation snapshots; C and D have structured
+  assertions for clip IDs, playback, duration, track order, BoneId resolution,
+  and keyframes;
+- manifest check, S004 audit and local clean check pass.
 
-## Gate status
-
-T202: **[~] partial**
-
-The parser corrections and local `clean check` pass, but the frozen checklist
-still lacks dedicated parametrized playback/duration/channel coverage, complete
-animation snapshots A/B and structured C/D assertions. T202 must remain partial
-until those evidence items and the Windows workflow for the integrated commit
-are complete.
+T202: **[~] technical evidence PASS; final Windows workflow pending**
 
 Deferred to T203: easing evaluation and Molang semantics.
-Deferred to T204: hostile/fuzz matrix, integrated limits and differential oracle.
+Deferred to T204: hostile/fuzz inputs and differential oracle.
 Deferred to T300/T400/T401/T402: CPM projection, sampling, lifecycle and pose mapping.
