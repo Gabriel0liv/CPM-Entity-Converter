@@ -70,6 +70,7 @@ public final class DiagnosticCodes {
   public static final String INPUT_LIMIT_EXCEEDED = "INPUT_LIMIT_EXCEEDED";
   public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";
   public static final String GEO_MODEL_NOT_FOUND = "GEO_MODEL_NOT_FOUND";
+  public static final String GEO_MODEL_AMBIGUOUS = "GEO_MODEL_AMBIGUOUS";
   public static final String GEO_FEATURE_UNSUPPORTED = "GEO_FEATURE_UNSUPPORTED";
   public static final String GEO_PARENT_NOT_FOUND = "GEO_PARENT_NOT_FOUND";
   public static final String GEO_HIERARCHY_CYCLE = "GEO_HIERARCHY_CYCLE";

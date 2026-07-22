@@ -11,6 +11,8 @@ public record ParsedBone(
     BoneId parent,
     List<BoneId> children,
     Transform bindLocal,
+    double inflate,
+    boolean mirror,
     List<ParsedCube> cubes,
     SourceLocation source) {
   public ParsedBone {

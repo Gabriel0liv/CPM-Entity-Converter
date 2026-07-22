@@ -31,7 +31,7 @@ import java.util.Set;
 public final class GeckoGeometryParser {
   private static final ObjectMapper JSON = new ObjectMapper();
 
-  public Result<ParsedGeometry> parse(Path path, GeometryParseRequest request) {
+  public synchronized Result<ParsedGeometry> parse(Path path, GeometryParseRequest request) {
     if (path == null) {
       return failure(
           null, DiagnosticCodes.INPUT_PARSE_ERROR, "geometry path is null", "Provide a path");
@@ -55,7 +55,7 @@ public final class GeckoGeometryParser {
     }
   }
 
-  public Result<ParsedGeometry> parse(
+  public synchronized Result<ParsedGeometry> parse(
       byte[] content, SourcePath source, GeometryParseRequest request) {
     GeometryParseRequest safe = request == null ? GeometryParseRequest.defaults() : request;
     if (content == null || source == null) {
@@ -133,16 +133,22 @@ public final class GeckoGeometryParser {
     int selected = selectGeometry(geometries, request.geometryId(), source);
     if (selected < 0) {
       String code =
-          request.geometryId() == null
-              ? DiagnosticCodes.GEO_MULTIPLE_MODELS
-              : DiagnosticCodes.GEO_MODEL_NOT_FOUND;
+          selected == -2
+              ? DiagnosticCodes.GEO_MODEL_AMBIGUOUS
+              : request.geometryId() == null
+                  ? DiagnosticCodes.GEO_MULTIPLE_MODELS
+                  : DiagnosticCodes.GEO_MODEL_NOT_FOUND;
       return failure(
           location(source, "/minecraft:geometry"),
           code,
-          request.geometryId() == null
-              ? "multiple geometries require an explicit geometryId"
-              : "requested geometry identifier was not found",
-          request.geometryId() == null ? "Provide geometryId" : "Use an exact identifier");
+          selected == -2
+              ? "requested geometry identifier is ambiguous"
+              : request.geometryId() == null
+                  ? "multiple geometries require an explicit geometryId"
+                  : "requested geometry identifier was not found",
+          selected == -2
+              ? "Use an identifier that occurs exactly once"
+              : request.geometryId() == null ? "Provide geometryId" : "Use an exact identifier");
     }
     JsonNode geometry = geometries.get(selected);
     JsonNode description = geometry.get("description");
@@ -227,16 +233,21 @@ public final class GeckoGeometryParser {
       BoneId id = new BoneId(identifier + "/bone/" + i);
       SourceLocation boneSource = location(source, base);
       Vec3d pivot = vector(node, "pivot", Vec3d.ZERO, source, base + "/pivot", diagnostics);
-      diagnostics = lastDiagnostics;
+      diagnostics = LAST_DIAGNOSTICS.get();
       Vec3d rotation =
           vector(node, "rotation", Vec3d.ZERO, source, base + "/rotation", diagnostics);
-      diagnostics = lastDiagnostics;
+      diagnostics = LAST_DIAGNOSTICS.get();
       Quatd quaternion =
           Quatd.fromEulerZYX(
               Math.toRadians(-rotation.x()),
               Math.toRadians(-rotation.y()),
               Math.toRadians(rotation.z()));
-      BoneData bone = new BoneData(id, name, text(node, "parent"), pivot, quaternion, boneSource);
+      double inflate = number(node, "inflate", 0.0, source, base + "/inflate", diagnostics);
+      diagnostics = LAST_DIAGNOSTICS.get();
+      boolean mirror = node.path("mirror").asBoolean(false);
+      BoneData bone =
+          new BoneData(
+              id, name, text(node, "parent"), pivot, quaternion, inflate, mirror, i, boneSource);
       JsonNode cubes = node.get("cubes");
       if (cubes != null && !cubes.isArray()) {
         diagnostics =
@@ -263,7 +274,7 @@ public final class GeckoGeometryParser {
         for (int c = 0; c < cubes.size(); c++) {
           ParsedCube parsed =
               parseCube(cubes.get(c), source, base + "/cubes/" + c, id, c, node, diagnostics);
-          diagnostics = lastDiagnostics;
+          diagnostics = LAST_DIAGNOSTICS.get();
           if (parsed != null) {
             bone.cubes.add(parsed);
             cubeCount++;
@@ -329,7 +340,7 @@ public final class GeckoGeometryParser {
     List<ParsedBone> parsedBones = data.stream().map(bone -> bone.toParsed(byName)).toList();
     List<FeatureOccurrence> unsupported = new ArrayList<>();
     for (BoneData bone : data) {
-      JsonNode sourceNode = bonesNode.get(data.indexOf(bone));
+      JsonNode sourceNode = bonesNode.get(bone.sourceIndex);
       for (String field :
           List.of(
               "poly_mesh",
@@ -341,7 +352,7 @@ public final class GeckoGeometryParser {
               "reset")) {
         if (sourceNode != null && sourceNode.has(field)) {
           SourceLocation featureSource =
-              location(source, pointer(selected, "bones/" + data.indexOf(bone) + "/" + field));
+              location(source, pointer(selected, "bones/" + bone.sourceIndex + "/" + field));
           unsupported.add(new FeatureOccurrence(field, featureSource));
           String code =
               field.equals("poly_mesh")
@@ -369,7 +380,8 @@ public final class GeckoGeometryParser {
         : Result.success(result, diagnostics);
   }
 
-  private static DiagnosticBag lastDiagnostics = new DiagnosticBag();
+  private static final ThreadLocal<DiagnosticBag> LAST_DIAGNOSTICS =
+      ThreadLocal.withInitial(DiagnosticBag::new);
 
   private static Vec3d vector(
       JsonNode node,
@@ -378,11 +390,11 @@ public final class GeckoGeometryParser {
       SourcePath source,
       String pointer,
       DiagnosticBag diagnostics) {
-    lastDiagnostics = diagnostics;
+    LAST_DIAGNOSTICS.set(diagnostics);
     JsonNode value = node.get(field);
     if (value == null) return fallback;
     if (!value.isArray() || value.size() != 3) {
-      lastDiagnostics =
+      LAST_DIAGNOSTICS.set(
           diagnostics.add(
               error(
                   source,
@@ -390,13 +402,13 @@ public final class GeckoGeometryParser {
                   DiagnosticCodes.IR_INVALID_VALUE,
                   "vector must contain exactly three finite numbers",
                   "Provide [x, y, z]",
-                  Map.of()));
+                  Map.of())));
       return fallback;
     }
     double[] values = new double[3];
     for (int i = 0; i < 3; i++) {
       if (!value.get(i).isNumber() || !Double.isFinite(value.get(i).asDouble())) {
-        lastDiagnostics =
+        LAST_DIAGNOSTICS.set(
             diagnostics.add(
                 error(
                     source,
@@ -404,7 +416,7 @@ public final class GeckoGeometryParser {
                     DiagnosticCodes.IR_INVALID_VALUE,
                     "vector component must be finite",
                     "Use a finite number",
-                    Map.of()));
+                    Map.of())));
         return fallback;
       }
       values[i] = value.get(i).asDouble();
@@ -420,9 +432,9 @@ public final class GeckoGeometryParser {
       int index,
       JsonNode boneNode,
       DiagnosticBag diagnostics) {
-    lastDiagnostics = diagnostics;
+    LAST_DIAGNOSTICS.set(diagnostics);
     if (!node.isObject()) {
-      lastDiagnostics =
+      LAST_DIAGNOSTICS.set(
           diagnostics.add(
               error(
                   source,
@@ -430,13 +442,13 @@ public final class GeckoGeometryParser {
                   DiagnosticCodes.INPUT_PARSE_ERROR,
                   "cube must be an object",
                   "Use a cube object",
-                  Map.of()));
+                  Map.of())));
       return null;
     }
     Vec3d origin = vector(node, "origin", Vec3d.ZERO, source, pointer + "/origin", diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     Vec3d size = vector(node, "size", Vec3d.ZERO, source, pointer + "/size", diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     if (size.x() < 0 || size.y() < 0 || size.z() < 0) {
       diagnostics =
           diagnostics.add(
@@ -449,15 +461,15 @@ public final class GeckoGeometryParser {
                   Map.of()));
     }
     Vec3d pivot = vector(node, "pivot", Vec3d.ZERO, source, pointer + "/pivot", diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     Vec3d rotation =
         vector(node, "rotation", Vec3d.ZERO, source, pointer + "/rotation", diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     double boneInflate = number(boneNode, "inflate", 0, source, pointer, diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     double inflate =
         number(node, "inflate", boneInflate, source, pointer + "/inflate", diagnostics);
-    diagnostics = lastDiagnostics;
+    diagnostics = LAST_DIAGNOSTICS.get();
     boolean mirror =
         node.has("mirror") && node.get("mirror").isBoolean() && node.get("mirror").booleanValue();
     RawUvBoundary rawUv = node.has("uv") ? new RawUvBoundary(node.get("uv").toString()) : null;
@@ -481,11 +493,11 @@ public final class GeckoGeometryParser {
       SourcePath source,
       String pointer,
       DiagnosticBag diagnostics) {
-    lastDiagnostics = diagnostics;
+    LAST_DIAGNOSTICS.set(diagnostics);
     JsonNode value = node.get(field);
     if (value == null) return fallback;
     if (!value.isNumber() || !Double.isFinite(value.asDouble())) {
-      lastDiagnostics =
+      LAST_DIAGNOSTICS.set(
           diagnostics.add(
               error(
                   source,
@@ -493,7 +505,7 @@ public final class GeckoGeometryParser {
                   DiagnosticCodes.IR_INVALID_VALUE,
                   "value must be finite",
                   "Use a finite number",
-                  Map.of()));
+                  Map.of())));
       return fallback;
     }
     return value.asDouble();
@@ -524,7 +536,7 @@ public final class GeckoGeometryParser {
     for (int i = 0; i < geometries.size(); i++) {
       String id = text(geometries.get(i).path("description"), "identifier");
       if (requested.value().equals(id)) {
-        if (found >= 0) return -1;
+        if (found >= 0) return -2;
         found = i;
       }
     }
@@ -570,8 +582,20 @@ public final class GeckoGeometryParser {
   }
 
   private static SourcePath sourcePath(Path path) {
-    String logical =
-        path.getFileName() == null ? "geometry.geo.json" : path.getFileName().toString();
+    Path normalized = path.normalize();
+    String logical;
+    if (normalized.isAbsolute()) {
+      try {
+        logical = Path.of("").toAbsolutePath().normalize().relativize(normalized).toString();
+      } catch (IllegalArgumentException exception) {
+        logical =
+            normalized.getFileName() == null
+                ? "geometry.geo.json"
+                : normalized.getFileName().toString();
+      }
+    } else {
+      logical = normalized.toString();
+    }
     return new SourcePath(logical);
   }
 
@@ -615,6 +639,9 @@ public final class GeckoGeometryParser {
     private final String parentName;
     private final Vec3d pivot;
     private final Quatd rotation;
+    private final double inflate;
+    private final boolean mirror;
+    private final int sourceIndex;
     private final SourceLocation source;
     private final List<BoneId> children = new ArrayList<>();
     private final List<ParsedCube> cubes = new ArrayList<>();
@@ -625,12 +652,18 @@ public final class GeckoGeometryParser {
         String parentName,
         Vec3d pivot,
         Quatd rotation,
+        double inflate,
+        boolean mirror,
+        int sourceIndex,
         SourceLocation source) {
       this.id = id;
       this.name = name;
       this.parentName = parentName;
       this.pivot = pivot;
       this.rotation = rotation;
+      this.inflate = inflate;
+      this.mirror = mirror;
+      this.sourceIndex = sourceIndex;
       this.source = source;
     }
 
@@ -651,6 +684,8 @@ public final class GeckoGeometryParser {
           parent,
           children,
           new Transform(translation, rotation, new Vec3d(1, 1, 1)),
+          inflate,
+          mirror,
           cubes,
           source);
     }
