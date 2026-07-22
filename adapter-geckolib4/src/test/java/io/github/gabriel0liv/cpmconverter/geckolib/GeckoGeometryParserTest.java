@@ -143,6 +143,45 @@ class GeckoGeometryParserTest {
     assertTrue(result.success(), result.diagnostics().all().toString());
   }
 
+  @Test
+  void reportsAllRecognizedUnsupportedFeatures() {
+    for (String feature :
+        java.util.List.of(
+            "poly_mesh",
+            "texture_meshes",
+            "locators",
+            "render_group_id",
+            "debug",
+            "never_render",
+            "reset")) {
+      String json =
+          "{\"format_version\":\"1.12.0\",\"minecraft:geometry\":[{\"description\":{\"identifier\":\"g\"},\"bones\":[{\"name\":\"body\",\""
+              + feature
+              + "\":{}}]}]}";
+      var result = parse(json);
+      assertTrue(
+          result.diagnostics().all().stream()
+              .anyMatch(d -> feature.equals(d.context().get("feature"))),
+          feature);
+    }
+  }
+
+  @Test
+  void rejectsWrongVectorShapeAndPreservesZeroSize() {
+    var wrong =
+        parse(
+            "{\"format_version\":\"1.12.0\",\"minecraft:geometry\":[{\"description\":{\"identifier\":\"g\"},\"bones\":[{\"name\":\"body\",\"pivot\":[0,1]}]}]}");
+    assertFalse(wrong.success());
+    assertTrue(
+        wrong.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals("IR_INVALID_VALUE")));
+    var zero =
+        parse(
+            "{\"format_version\":\"1.12.0\",\"minecraft:geometry\":[{\"description\":{\"identifier\":\"g\"},\"bones\":[{\"name\":\"body\",\"cubes\":[{\"origin\":[0,0,0],\"size\":[0,0,0]}]}]}]}");
+    assertTrue(zero.success());
+    assertEquals(0, zero.value().bones().get(0).cubes().get(0).size().length(), 1e-9);
+  }
+
   private io.github.gabriel0liv.cpmconverter.diagnostics.Result<ParsedGeometry> parse(String json) {
     var result =
         parser.parse(
