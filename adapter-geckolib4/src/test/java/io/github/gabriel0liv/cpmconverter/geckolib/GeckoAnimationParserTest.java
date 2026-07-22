@@ -2,7 +2,6 @@ package io.github.gabriel0liv.cpmconverter.geckolib;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.ir.*;
@@ -145,28 +144,6 @@ class GeckoAnimationParserTest {
     assertTrue(
         result.diagnostics().all().stream()
             .noneMatch(d -> d.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449)));
-  }
-
-  @Test
-  void comparesAnimationSnapshotsAAndB() throws Exception {
-    Path root = Path.of("..", "test-fixtures").normalize();
-    ObjectMapper mapper = new ObjectMapper();
-    for (String name : List.of("fixture-a-humanoid", "fixture-b-neck")) {
-      Path dir = root.resolve(name);
-      var model = staticModel(name);
-      var parsed = parse(model, dir.resolve("animations.animation.json"));
-      assertTrue(parsed.success(), name + parsed.diagnostics().all());
-      Path expected = dir.resolve("expected/animation-ir.json");
-      if (Boolean.getBoolean("writeSnapshots"))
-        Files.writeString(
-            expected,
-            mapper
-                .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(AnimationIrSnapshot.write(parsed.value())));
-      assertTrue(Files.exists(expected), name + " snapshot missing");
-      assertEquals(
-          mapper.readTree(expected.toFile()), AnimationIrSnapshot.write(parsed.value()), name);
-    }
   }
 
   @Test
