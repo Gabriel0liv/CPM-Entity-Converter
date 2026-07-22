@@ -46,9 +46,9 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
 - [x] T102 continuidade Euler e contratos matemáticos (`876adb0`; revisão inicial R5 PASS).
-- [~] T103 source locations, provenance e validator (`716235b`; locations adicionadas, construtores de compatibilidade e revisão final ainda pendentes).
-- [~] T104 matriz normativa e SemanticRigMap (`3721944`; lacunas objetivas cobertas, revisão final ainda pendente).
-- [~] T105 contratos reais das fixtures A–D (`659cce1`; oracle GeckoLib real PASS nas quatro fixtures, harness de invariants/diagnostics completo ainda pendente).
+- [~] T103 source locations, provenance e validator (`f4eb17c`; source obrigatória adicionada, mas testes antigos não compilam e há fallbacks de location inadequados).
+- [x] T104 matriz normativa e SemanticRigMap (`3721944`; matriz restante coberta e testes do módulo passam).
+- [~] T105 contratos reais das fixtures A–D (`3abf1a4`; oracle real 41/41 PASS, harness fixture-backed ainda contém invariants/diagnostics sintéticos).
 
 ## Fase 2
 

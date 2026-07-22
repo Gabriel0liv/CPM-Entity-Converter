@@ -1,36 +1,32 @@
 # Gate final da Fase 1
 
 Date: 2026-07-22
-Commit base: `3ec224635acce19931c48b98f58c3a2d7b28862a`
-Implementation HEAD reviewed: `109aa74`
-Gate record commit: pending (this edit)
-Independent review branch: `review/r5-initial` (auditoria executada; revisão final R5 ainda pendente)
-Workflow run: não disponível neste ambiente; `gh` ausente
+Commit base: `d19d56ead1443307cd4333966814218760f6ddf3`
+Implementation HEAD reviewed: `3abf1a4`
+Gate record: this commit
+Independent review branch: `review/r6-final`
+Workflow run: não confirmado para o SHA final; não há `gh` local nem execução síncrona observável
+Workflow HEAD: não confirmado
 Ubuntu: não confirmado no SHA final
 Windows: não confirmado no SHA final
 
-## Evidência
+## Classificação independente R6
 
-S004-F permanece aceito. T102 foi classificada PASS pela revisão inicial: `resolvedEuler`, unwrap 350→10, ±720°, sequências, empate de 180°, goldens independentes e shear possuem testes executáveis.
+T102: PASS. A revisão confirmou unwrap correto, `resolvedEuler`, sequências, ±720°, empate de 180° e goldens matemáticos.
 
-T103 recebeu `SourceLocation` em clip, track e keyframe e locations são propagadas pelo validator. Ainda existem construtores de compatibilidade e a revisão final deve confirmar que não há provenance artificial em produção; por isso permanece PARTIAL.
+T103: PARTIAL. A API exige source em clip/track/keyframe, mas a suíte de testes ainda não compila após a remoção dos construtores antigos. O validator ainda possui caminhos que usam fallback global onde a especificação exige location de clip/track/keyframe.
 
-T104 recebeu os casos table-driven restantes do schema e paridade JSON/YAML; `MappingSchemaMatrixTest` passa. Permanece pendente apenas revisão independente final.
+T104: PASS local. A matriz table-driven cobre as lacunas identificadas e os testes do módulo passam.
 
-T105 agora executa Gradle e o GeckoLib fixado em diretório temporário, percorre todos os clips e gera `test-fixtures/artifacts/fixture-oracle-a-d.json`. As quatro fixtures foram parseadas com status PASS. A observação de lifecycle terminal continua explicitamente fora deste gate.
+T105: FAIL. O oracle GeckoLib real executa as quatro fixtures com 41/41 assertions PASS, mas o harness fixture-backed ainda contém invariants/diagnostics sintéticos, `Transform.identity()`/clips artificiais e mutation tests incompletos.
 
-## Decisão
+S004-F: [x]
+T100: [x]
+T101: [x]
+T102: [x]
+T103: [~]
+T104: [x]
+T105: [~]
+T200 decision: bloqueada
 
-```text
-S004-F [x]
-T100   [x]
-T101   [x]
-T102   [x]
-T103   [~]
-T104   [~]
-T105   [~]
-T200   [!] bloqueada
-```
-
-T200 não pode ser liberada sem revisão independente R5 concluída e CI Ubuntu/Windows verde no mesmo SHA. Nenhum parser GeckoLib de produção, writer CPM, CLI ou código de T200 foi implementado.
-
+T200 não foi implementada. O gate não pode ser aberto sem corrigir os testes quebrados de T103, remover os resultados sintéticos do harness T105, concluir mutation tests e obter Ubuntu/Windows verdes no mesmo SHA.
