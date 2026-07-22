@@ -3,39 +3,3997 @@
   "fixtures": [
     {
       "fixture": "fixture-a-humanoid",
-      "inputHashes": {
-        "animations": "1f8e2d30890c0f2452b2c7e1cb24ae15d8c4a48f68829c8eb0846f4eec224ab1",
-        "geometry": "35f35819ca1cb27e2398a1d506136e3b894ebd10fd20de463e9f2c87213befbe"
+      "inputSha256": "1f8e2d30890c0f2452b2c7e1cb24ae15d8c4a48f68829c8eb0846f4eec224ab1",
+      "parserObservation": {
+        "clips": [
+          {
+            "bones": [
+              {
+                "bone": "left_arm",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.2617993877991494
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.2617993950843811,
+                        0.2617993950843811,
+                        0.2617993950843811,
+                        0.2617993950843811,
+                        0.2617993950843811
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.2617993877991494
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.2617993877991494
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.2617993877991494,
+                        0.1308996938995747,
+                        0.0,
+                        -0.13089969389957473,
+                        -0.2617993950843811
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.2617993877991494
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "left_leg",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.4363323129985824
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.4363323152065277,
+                        -0.4363323152065277,
+                        -0.4363323152065277,
+                        -0.4363323152065277,
+                        -0.4363323152065277
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.4363323129985824
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.4363323129985824
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        -0.4363323129985824,
+                        -0.2181661564992912,
+                        0.0,
+                        0.21816615649929122,
+                        0.4363323152065277
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.4363323129985824
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "right_arm",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.2617993877991494
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.2617993950843811,
+                        -0.2617993950843811,
+                        -0.2617993950843811,
+                        -0.2617993950843811,
+                        -0.2617993950843811
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.2617993877991494
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.2617993877991494
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        -0.2617993877991494,
+                        -0.1308996938995747,
+                        0.0,
+                        0.13089969389957473,
+                        0.2617993950843811
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.2617993877991494
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "right_leg",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.4363323129985824
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.4363323152065277,
+                        0.4363323152065277,
+                        0.4363323152065277,
+                        0.4363323152065277,
+                        0.4363323152065277
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.4363323129985824
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.4363323129985824
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.4363323129985824,
+                        0.2181661564992912,
+                        0.0,
+                        -0.21816615649929122,
+                        -0.4363323152065277
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.4363323129985824
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 10.0,
+            "loopType": "loop",
+            "name": "walk"
+          },
+          {
+            "bones": [
+              {
+                "bone": "head",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.03490658503988659
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.008726646259971648,
+                        -0.017453292519943295,
+                        -0.026179938779914945,
+                        -0.03490658476948738
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 20.0,
+            "loopType": "loop",
+            "name": "idle"
+          }
+        ],
+        "controllerObservation": {
+          "api": "AnimationController + Animation.LoopType",
+          "hasAnimationFinishedBeforeSet": false,
+          "requestedTimes": [
+            "D-epsilon",
+            "D",
+            "D+epsilon",
+            "2D"
+          ],
+          "shouldPlayAgain": true,
+          "stateAfterLoopDecision": "STOPPED",
+          "stateBefore": "STOPPED",
+          "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+        },
+        "keyframeEvaluation": {
+          "evaluator": "EasingType.lerpWithOverride",
+          "samplesLocated": "clips.*.bones.*.*.*.samples"
+        },
+        "parserObservation": {
+          "bones": [
+            {
+              "bone": "left_arm",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.2617993877991494
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.2617993950843811,
+                      0.2617993950843811,
+                      0.2617993950843811,
+                      0.2617993950843811,
+                      0.2617993950843811
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.2617993877991494
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.2617993877991494
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.2617993877991494,
+                      0.1308996938995747,
+                      0.0,
+                      -0.13089969389957473,
+                      -0.2617993950843811
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.2617993877991494
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "left_leg",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.4363323129985824
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.4363323152065277,
+                      -0.4363323152065277,
+                      -0.4363323152065277,
+                      -0.4363323152065277,
+                      -0.4363323152065277
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.4363323129985824
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.4363323129985824
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      -0.4363323129985824,
+                      -0.2181661564992912,
+                      0.0,
+                      0.21816615649929122,
+                      0.4363323152065277
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.4363323129985824
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "right_arm",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.2617993877991494
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.2617993950843811,
+                      -0.2617993950843811,
+                      -0.2617993950843811,
+                      -0.2617993950843811,
+                      -0.2617993950843811
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.2617993877991494
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.2617993877991494
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      -0.2617993877991494,
+                      -0.1308996938995747,
+                      0.0,
+                      0.13089969389957473,
+                      0.2617993950843811
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.2617993877991494
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "right_leg",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.4363323129985824
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.4363323152065277,
+                      0.4363323152065277,
+                      0.4363323152065277,
+                      0.4363323152065277,
+                      0.4363323152065277
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.4363323129985824
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.4363323129985824
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.4363323129985824,
+                      0.2181661564992912,
+                      0.0,
+                      -0.21816615649929122,
+                      -0.4363323152065277
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.4363323129985824
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            }
+          ],
+          "controllerObservation": {
+            "api": "AnimationController + Animation.LoopType",
+            "hasAnimationFinishedBeforeSet": false,
+            "requestedTimes": [
+              "D-epsilon",
+              "D",
+              "D+epsilon",
+              "2D"
+            ],
+            "shouldPlayAgain": true,
+            "stateAfterLoopDecision": "STOPPED",
+            "stateBefore": "STOPPED",
+            "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+          },
+          "lengthTicks": 10.0,
+          "loopType": "loop",
+          "name": "walk"
+        },
+        "policyDecision": {
+          "expressions": []
+        }
       },
-      "parseResult": "BLOCKED",
-      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+      "sourceJson": {
+        "animations": {
+          "idle": {
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    0,
+                    2,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          },
+          "walk": {
+            "bones": {
+              "left_arm": {
+                "rotation": {
+                  "0.0": [
+                    -15,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    15,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "left_leg": {
+                "rotation": {
+                  "0.0": [
+                    25,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    -25,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "right_arm": {
+                "rotation": {
+                  "0.0": [
+                    15,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    -15,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "right_leg": {
+                "rotation": {
+                  "0.0": [
+                    -25,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    25,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          }
+        },
+        "format_version": "1.8.0"
+      },
+      "status": "PASS"
     },
     {
       "fixture": "fixture-b-neck",
-      "inputHashes": {
-        "animations": "07e0967b9a16e600bb03bf7363c683a53f9a605d38a4a643b1064f7492d82c48",
-        "geometry": "ee2ce81a5604e580e52b9f5c1f26187f9cdf11ac638f54ca596f29c9cf8f3181"
+      "inputSha256": "07e0967b9a16e600bb03bf7363c683a53f9a605d38a4a643b1064f7492d82c48",
+      "parserObservation": {
+        "clips": [
+          {
+            "bones": [
+              {
+                "bone": "head",
+                "position": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.2
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.05,
+                        0.1,
+                        0.15000000000000002,
+                        0.20000000298023224
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                        "holder": "com.eliotlash.mclib.math.Constant",
+                        "isConstant": true,
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "rotation": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 10.0,
+            "loopType": "loop",
+            "name": "walk"
+          },
+          {
+            "bones": [
+              {
+                "bone": "head",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.03490658503988659
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.008726646259971648,
+                        -0.017453292519943295,
+                        -0.026179938779914945,
+                        -0.03490658476948738
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 20.0,
+            "loopType": "loop",
+            "name": "idle"
+          }
+        ],
+        "controllerObservation": {
+          "api": "AnimationController + Animation.LoopType",
+          "hasAnimationFinishedBeforeSet": false,
+          "requestedTimes": [
+            "D-epsilon",
+            "D",
+            "D+epsilon",
+            "2D"
+          ],
+          "shouldPlayAgain": true,
+          "stateAfterLoopDecision": "STOPPED",
+          "stateBefore": "STOPPED",
+          "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+        },
+        "keyframeEvaluation": {
+          "evaluator": "EasingType.lerpWithOverride",
+          "samplesLocated": "clips.*.bones.*.*.*.samples"
+        },
+        "parserObservation": {
+          "bones": [
+            {
+              "bone": "head",
+              "position": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.2
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.05,
+                      0.1,
+                      0.15000000000000002,
+                      0.20000000298023224
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "software.bernie.geckolib.core.molang.expressions.MolangValue",
+                      "holder": "com.eliotlash.mclib.math.Constant",
+                      "isConstant": true,
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "rotation": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            }
+          ],
+          "controllerObservation": {
+            "api": "AnimationController + Animation.LoopType",
+            "hasAnimationFinishedBeforeSet": false,
+            "requestedTimes": [
+              "D-epsilon",
+              "D",
+              "D+epsilon",
+              "2D"
+            ],
+            "shouldPlayAgain": true,
+            "stateAfterLoopDecision": "STOPPED",
+            "stateBefore": "STOPPED",
+            "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+          },
+          "lengthTicks": 10.0,
+          "loopType": "loop",
+          "name": "walk"
+        },
+        "policyDecision": {
+          "expressions": []
+        }
       },
-      "parseResult": "BLOCKED",
-      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+      "sourceJson": {
+        "animations": {
+          "idle": {
+            "bones": {
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    2,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          },
+          "walk": {
+            "bones": {
+              "head": {
+                "position": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    0,
+                    0.2,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          }
+        },
+        "format_version": "1.8.0"
+      },
+      "status": "PASS"
     },
     {
       "fixture": "fixture-c-deep-hierarchy",
-      "inputHashes": {
-        "animations": "d3c5dafbaab5439ac628da93c5aacc53296b0c4b4b4cf881d91c8b1d2f463388",
-        "geometry": "18e6b57d2ce7e10857e4902324b28c86c64796c4f02e8e0737f36e5f2bfc1b4c"
+      "inputSha256": "d3c5dafbaab5439ac628da93c5aacc53296b0c4b4b4cf881d91c8b1d2f463388",
+      "parserObservation": {
+        "clips": [
+          {
+            "bones": [
+              {
+                "bone": "accessory",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.13962634015954636
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.03490658503988659,
+                        0.06981317007977318,
+                        0.10471975511965978,
+                        0.13962633907794952
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "chest",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.03490658503988659
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.008726646259971648,
+                        -0.017453292519943295,
+                        -0.026179938779914945,
+                        -0.03490658476948738
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "head",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.06981317007977318
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.017453292519943295,
+                        -0.03490658503988659,
+                        -0.05235987755982989,
+                        -0.06981316953897476
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "jaw",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.08726646259971647
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.02181661564992912,
+                        -0.04363323129985824,
+                        -0.06544984694978735,
+                        -0.0872664600610733
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              },
+              {
+                "bone": "neck",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.05235987755982989
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        -0.0,
+                        -0.013089969389957472,
+                        -0.026179938779914945,
+                        -0.039269908169872414,
+                        -0.05235987901687622
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 20.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 20.0,
+            "loopType": "loop",
+            "name": "idle"
+          }
+        ],
+        "controllerObservation": {
+          "api": "AnimationController + Animation.LoopType",
+          "hasAnimationFinishedBeforeSet": false,
+          "requestedTimes": [
+            "D-epsilon",
+            "D",
+            "D+epsilon",
+            "2D"
+          ],
+          "shouldPlayAgain": true,
+          "stateAfterLoopDecision": "STOPPED",
+          "stateBefore": "STOPPED",
+          "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+        },
+        "keyframeEvaluation": {
+          "evaluator": "EasingType.lerpWithOverride",
+          "samplesLocated": "clips.*.bones.*.*.*.samples"
+        },
+        "parserObservation": {
+          "bones": [
+            {
+              "bone": "accessory",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.13962634015954636
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.03490658503988659,
+                      0.06981317007977318,
+                      0.10471975511965978,
+                      0.13962633907794952
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "chest",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.03490658503988659
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      -0.0,
+                      -0.008726646259971648,
+                      -0.017453292519943295,
+                      -0.026179938779914945,
+                      -0.03490658476948738
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "head",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.06981317007977318
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      -0.0,
+                      -0.017453292519943295,
+                      -0.03490658503988659,
+                      -0.05235987755982989,
+                      -0.06981316953897476
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "jaw",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.08726646259971647
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      -0.0,
+                      -0.02181661564992912,
+                      -0.04363323129985824,
+                      -0.06544984694978735,
+                      -0.0872664600610733
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            },
+            {
+              "bone": "neck",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.05235987755982989
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      -0.0,
+                      -0.013089969389957472,
+                      -0.026179938779914945,
+                      -0.039269908169872414,
+                      -0.05235987901687622
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 20.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            }
+          ],
+          "controllerObservation": {
+            "api": "AnimationController + Animation.LoopType",
+            "hasAnimationFinishedBeforeSet": false,
+            "requestedTimes": [
+              "D-epsilon",
+              "D",
+              "D+epsilon",
+              "2D"
+            ],
+            "shouldPlayAgain": true,
+            "stateAfterLoopDecision": "STOPPED",
+            "stateBefore": "STOPPED",
+            "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+          },
+          "lengthTicks": 20.0,
+          "loopType": "loop",
+          "name": "idle"
+        },
+        "policyDecision": {
+          "expressions": []
+        }
       },
-      "parseResult": "BLOCKED",
-      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+      "sourceJson": {
+        "animations": {
+          "idle": {
+            "bones": {
+              "accessory": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    0,
+                    0,
+                    8
+                  ]
+                }
+              },
+              "chest": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    2,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "head": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    4,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "jaw": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    5,
+                    0,
+                    0
+                  ]
+                }
+              },
+              "neck": {
+                "rotation": {
+                  "0.0": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "1.0": [
+                    0,
+                    3,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          }
+        },
+        "format_version": "1.8.0"
+      },
+      "status": "PASS"
     },
     {
       "fixture": "fixture-d-quadruped",
-      "inputHashes": {
-        "animations": "0d254ab36ec0257fcd2ded7d7a608f5740b5b4b52b9c542e118a2983e2e7c26c",
-        "geometry": "0ff2dd906d01cfddb98c39ca367070aa7498fb491895d817b8315074982a532a"
+      "inputSha256": "0d254ab36ec0257fcd2ded7d7a608f5740b5b4b52b9c542e118a2983e2e7c26c",
+      "parserObservation": {
+        "clips": [
+          {
+            "bones": [
+              {
+                "bone": "leg_fl",
+                "position": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                },
+                "rotation": {
+                  "x": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.3490658503988659
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.3490658402442932,
+                        -0.3490658402442932,
+                        -0.3490658402442932,
+                        -0.3490658402442932,
+                        -0.3490658402442932
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.3490658503988659
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.3490658503988659
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        -0.3490658503988659,
+                        -0.17453292519943295,
+                        0.0,
+                        0.17453292519943292,
+                        0.3490658402442932
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.3490658503988659
+                      }
+                    }
+                  ],
+                  "y": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": -0.0
+                      }
+                    }
+                  ],
+                  "z": [
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 0.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    },
+                    {
+                      "easingArgs": [],
+                      "easingName": "linear",
+                      "end": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      },
+                      "lengthTicks": 10.0,
+                      "samples": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "start": {
+                        "class": "com.eliotlash.mclib.math.Constant",
+                        "value": 0.0
+                      }
+                    }
+                  ]
+                },
+                "scale": {
+                  "x": [],
+                  "y": [],
+                  "z": []
+                }
+              }
+            ],
+            "controllerObservation": {
+              "api": "AnimationController + Animation.LoopType",
+              "hasAnimationFinishedBeforeSet": false,
+              "requestedTimes": [
+                "D-epsilon",
+                "D",
+                "D+epsilon",
+                "2D"
+              ],
+              "shouldPlayAgain": true,
+              "stateAfterLoopDecision": "STOPPED",
+              "stateBefore": "STOPPED",
+              "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+            },
+            "lengthTicks": 10.0,
+            "loopType": "loop",
+            "name": "walk"
+          }
+        ],
+        "controllerObservation": {
+          "api": "AnimationController + Animation.LoopType",
+          "hasAnimationFinishedBeforeSet": false,
+          "requestedTimes": [
+            "D-epsilon",
+            "D",
+            "D+epsilon",
+            "2D"
+          ],
+          "shouldPlayAgain": true,
+          "stateAfterLoopDecision": "STOPPED",
+          "stateBefore": "STOPPED",
+          "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+        },
+        "keyframeEvaluation": {
+          "evaluator": "EasingType.lerpWithOverride",
+          "samplesLocated": "clips.*.bones.*.*.*.samples"
+        },
+        "parserObservation": {
+          "bones": [
+            {
+              "bone": "leg_fl",
+              "position": {
+                "x": [],
+                "y": [],
+                "z": []
+              },
+              "rotation": {
+                "x": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.3490658503988659
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.3490658402442932,
+                      -0.3490658402442932,
+                      -0.3490658402442932,
+                      -0.3490658402442932,
+                      -0.3490658402442932
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.3490658503988659
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.3490658503988659
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      -0.3490658503988659,
+                      -0.17453292519943295,
+                      0.0,
+                      0.17453292519943292,
+                      0.3490658402442932
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.3490658503988659
+                    }
+                  }
+                ],
+                "y": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      -0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": -0.0
+                    }
+                  }
+                ],
+                "z": [
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 0.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "easingArgs": [],
+                    "easingName": "linear",
+                    "end": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    },
+                    "lengthTicks": 10.0,
+                    "samples": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "start": {
+                      "class": "com.eliotlash.mclib.math.Constant",
+                      "value": 0.0
+                    }
+                  }
+                ]
+              },
+              "scale": {
+                "x": [],
+                "y": [],
+                "z": []
+              }
+            }
+          ],
+          "controllerObservation": {
+            "api": "AnimationController + Animation.LoopType",
+            "hasAnimationFinishedBeforeSet": false,
+            "requestedTimes": [
+              "D-epsilon",
+              "D",
+              "D+epsilon",
+              "2D"
+            ],
+            "shouldPlayAgain": true,
+            "stateAfterLoopDecision": "STOPPED",
+            "stateBefore": "STOPPED",
+            "terminalTimeline": "BLOCKED_REQUIRES_CORE_GEOMODEL_PROCESS"
+          },
+          "lengthTicks": 10.0,
+          "loopType": "loop",
+          "name": "walk"
+        },
+        "policyDecision": {
+          "expressions": []
+        }
       },
-      "parseResult": "BLOCKED",
-      "reason": "S004 oracle accepts its own manifest; consuming A-D here would require a production geometry/animation parser"
+      "sourceJson": {
+        "animations": {
+          "walk": {
+            "bones": {
+              "leg_fl": {
+                "rotation": {
+                  "0.0": [
+                    20,
+                    0,
+                    0
+                  ],
+                  "0.5": [
+                    -20,
+                    0,
+                    0
+                  ]
+                }
+              }
+            },
+            "loop": true
+          }
+        },
+        "format_version": "1.8.0"
+      },
+      "status": "PASS"
     }
   ],
   "nonProduction": true,
