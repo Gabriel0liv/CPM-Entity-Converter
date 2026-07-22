@@ -2,13 +2,13 @@
 
 Date: 2026-07-22
 Commit base: `c6eee9550d27322aafa53eaba2caed8a7e4a9b58`
-Implementation HEAD reviewed: `0722f15eaa171793708fa9070a3b4899b1ec146a`
-Gate record: this commit
+Implementation HEAD reviewed: `3a10a5f814519e024bde6813a008cd49043050cf`
+Gate record: this document commit
 Independent review: `review/r8-final` — PASS para T103 e regressão T105
-Workflow run: `29906231896`
-Workflow HEAD: `0722f15eaa171793708fa9070a3b4899b1ec146a`
+Workflow run: `29907504166`
+Workflow HEAD: `3a10a5f814519e024bde6813a008cd49043050cf`
 Ubuntu: PASS
-Windows: FAIL (`Gradle clean check`; logs públicos forneceram apenas falha genérica)
+Windows: PASS
 
 ## Escopo normativo de T105
 
@@ -31,11 +31,19 @@ S004-F: [x]
 T100: [x]
 T101: [x]
 T102: [x]
-T103: [~] — evidência local e revisão PASS; CI Windows ainda falha.
+T103: [x]
 T104: [x]
 T105: [x]
-T200: [!] bloqueada
+T200: [ ] não iniciada
 
-T200 não foi implementada. A liberação exige uma execução Windows verde no
-mesmo SHA que a execução Ubuntu verde; a rodada atual não satisfez esse
-critério.
+## Verification metadata
+
+Run `29906480493` diagnosticou dois POMs sem checksum na configuração
+`:converter-config:compileClasspath`: `com.fasterxml.jackson:jackson-base:2.17.2`
+(`jackson-base-2.17.2.pom`) e
+`com.fasterxml.jackson.dataformat:jackson-dataformats-text:2.17.2`
+(`jackson-dataformats-text-2.17.2.pom`). O commit `3a10a5f` adicionou somente
+esses dois SHA-256, mantendo `verify-metadata=true`, versões fixas e todos os
+checksums existentes.
+
+T200 não foi implementada; está liberada apenas para início posterior.

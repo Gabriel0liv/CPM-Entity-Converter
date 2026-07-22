@@ -46,13 +46,13 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
 - [x] T102 continuidade Euler e contratos matemáticos (`876adb0`; revisão inicial R5 PASS).
-- [~] T103 source locations, provenance e validator (`0722f15`; call sites migrados e clean check local verde; CI Windows pendente).
+- [x] T103 source locations, provenance e validator (`0722f15`; call sites migrados, clean check e CI Ubuntu/Windows verdes no `3a10a5f`).
 - [x] T104 matriz normativa e SemanticRigMap (`3721944`; matriz restante coberta e testes do módulo passam).
 - [x] T105 contratos originais das fixtures A–D (`e515207`; escopo limitado a autoria, provenance, manifest, mapping smoke e oracle S004; parser completo deferido)..
 
 ## Fase 2
 
-- [!] T200 parser geometry/bones/cubes — bloqueada pela revisão da Fase 1.
+- [ ] T200 parser geometry/bones/cubes — não iniciada; liberada após fechamento da Fase 1.
 - [ ] T201 parser UV/PNG (FR-004/008).
 - [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
