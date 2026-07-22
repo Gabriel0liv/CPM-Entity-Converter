@@ -26,17 +26,23 @@ public final class GeckoUvDecoder {
         double u = node.get(0).doubleValue(), v = node.get(1).doubleValue();
         if (!Double.isFinite(u) || !Double.isFinite(v))
           return Result.failure(error(DiagnosticCodes.UV_INVALID, "UV must be finite", cube));
-        return Result.success(
-            new BoxUvIR(u, v),
-            bounds(
-                cube,
-                "box",
-                u,
-                v,
-                Math.floor(cube.size().x()) + Math.floor(cube.size().z()),
-                Math.floor(cube.size().y()) + Math.floor(cube.size().z()),
-                textureWidth,
-                textureHeight));
+        var warnings = new DiagnosticBag();
+        for (var entry : GeckoBoxUvLayout.derive(new BoxUvIR(u, v), cube.size()).entrySet()) {
+          var faceUv = entry.getValue();
+          warnings =
+              warnings.addAll(
+                  bounds(
+                      cube,
+                      entry.getKey().name().toLowerCase(Locale.ROOT),
+                      faceUv.u(),
+                      faceUv.v(),
+                      faceUv.width(),
+                      faceUv.height(),
+                      textureWidth,
+                      textureHeight,
+                      "/uv/" + entry.getKey().name().toLowerCase(Locale.ROOT)));
+        }
+        return Result.success(new BoxUvIR(u, v), warnings);
       }
       if (!node.isObject() || node.isEmpty())
         return Result.failure(
@@ -69,7 +75,9 @@ public final class GeckoUvDecoder {
         if (!finite(u, v, w, h))
           return Result.failure(error(DiagnosticCodes.UV_INVALID, "face UV must be finite", cube));
         faces.put(face, new FaceUvIR(u, v, w, h));
-        warnings = warnings.addAll(bounds(cube, name, u, v, w, h, textureWidth, textureHeight));
+        warnings =
+            warnings.addAll(
+                bounds(cube, name, u, v, w, h, textureWidth, textureHeight, "/uv/" + name));
         if (entry.has("material_instance")) {
           var context = new TreeMap<String, String>();
           context.put("face", name);
@@ -107,14 +115,30 @@ public final class GeckoUvDecoder {
 
   private static CubeFaceIR face(String n) {
     try {
-      return CubeFaceIR.valueOf(n.toUpperCase(Locale.ROOT));
-    } catch (Exception e) {
+      return switch (n) {
+        case "north" -> CubeFaceIR.NORTH;
+        case "south" -> CubeFaceIR.SOUTH;
+        case "east" -> CubeFaceIR.EAST;
+        case "west" -> CubeFaceIR.WEST;
+        case "up" -> CubeFaceIR.UP;
+        case "down" -> CubeFaceIR.DOWN;
+        default -> null;
+      };
+    } catch (RuntimeException e) {
       return null;
     }
   }
 
   private static DiagnosticBag bounds(
-      ParsedCube cube, String face, double u, double v, double w, double h, int tw, int th) {
+      ParsedCube cube,
+      String face,
+      double u,
+      double v,
+      double w,
+      double h,
+      int tw,
+      int th,
+      String pointer) {
     double minU = Math.min(u, u + w),
         maxU = Math.max(u, u + w),
         minV = Math.min(v, v + h),
@@ -133,7 +157,7 @@ public final class GeckoUvDecoder {
               new Diagnostic(
                   Severity.WARNING,
                   DiagnosticCode.fromCatalog(DiagnosticCodes.UV_OUT_OF_BOUNDS),
-                  location(cube, "/uv"),
+                  location(cube, pointer),
                   "UV outside texture grid",
                   "correct UV coordinates or texture dimensions",
                   cube.boneId().value(),
