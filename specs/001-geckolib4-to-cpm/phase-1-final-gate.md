@@ -2,8 +2,8 @@
 
 Date: 2026-07-22
 Commit base: `3ec224635acce19931c48b98f58c3a2d7b28862a`
-Implementation HEAD reviewed: `659cce1`
-Gate record commit: pending
+Implementation HEAD reviewed: `109aa74`
+Gate record commit: pending (this edit)
 Independent review branch: `review/r5-initial` (auditoria executada; revisão final R5 ainda pendente)
 Workflow run: não disponível neste ambiente; `gh` ausente
 Ubuntu: não confirmado no SHA final
@@ -33,3 +33,4 @@ T200   [!] bloqueada
 ```
 
 T200 não pode ser liberada sem revisão independente R5 concluída e CI Ubuntu/Windows verde no mesmo SHA. Nenhum parser GeckoLib de produção, writer CPM, CLI ou código de T200 foi implementado.
+
