@@ -18,14 +18,21 @@ public final class GeckoUvDecoder {
     try {
       JsonNode node = JSON.readTree(raw.canonicalJson());
       if (node == null)
-        return Result.failure(error(DiagnosticCodes.UV_INVALID, "UV is empty", cube));
+        return Result.failure(error(DiagnosticCodes.UV_INVALID, "UV is empty", cube, "/uv"));
       if (node.isArray()) {
-        if (node.size() != 2 || !node.get(0).isNumber() || !node.get(1).isNumber())
+        if (node.size() != 2)
           return Result.failure(
-              error(DiagnosticCodes.UV_INVALID, "box UV requires two numbers", cube));
+              error(DiagnosticCodes.UV_INVALID, "box UV requires two numbers", cube, "/uv"));
+        if (!node.get(0).isNumber())
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "box UV component must be numeric", cube, "/uv/0"));
+        if (!node.get(1).isNumber())
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "box UV component must be numeric", cube, "/uv/1"));
         double u = node.get(0).doubleValue(), v = node.get(1).doubleValue();
         if (!Double.isFinite(u) || !Double.isFinite(v))
-          return Result.failure(error(DiagnosticCodes.UV_INVALID, "UV must be finite", cube));
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "UV must be finite", cube, "/uv"));
         var warnings = new DiagnosticBag();
         for (var entry : GeckoBoxUvLayout.derive(new BoxUvIR(u, v), cube.size()).entrySet()) {
           var faceUv = entry.getValue();
@@ -46,7 +53,8 @@ public final class GeckoUvDecoder {
       }
       if (!node.isObject() || node.isEmpty())
         return Result.failure(
-            error(DiagnosticCodes.UV_INVALID, "per-face UV must be a non-empty object", cube));
+            error(
+                DiagnosticCodes.UV_INVALID, "per-face UV must be a non-empty object", cube, "/uv"));
       var faces = new EnumMap<CubeFaceIR, FaceUvIR>(CubeFaceIR.class);
       DiagnosticBag warnings = new DiagnosticBag();
       var fields = node.fieldNames();
@@ -62,18 +70,36 @@ public final class GeckoUvDecoder {
                   "/uv/" + name));
         }
         JsonNode entry = node.get(name);
-        if (!entry.isObject() || !pair(entry.get("uv")) || !pair(entry.get("uv_size")))
+        String facePointer = "/uv/" + name;
+        if (!entry.isObject())
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "face UV must be an object", cube, facePointer));
+        if (!entry.has("uv"))
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "face uv is required", cube, facePointer + "/uv"));
+        if (!entry.has("uv_size"))
           return Result.failure(
               error(
                   DiagnosticCodes.UV_INVALID,
-                  "face UV requires uv and uv_size pairs",
+                  "face uv_size is required",
                   cube,
-                  "/uv/" + name));
+                  facePointer + "/uv_size"));
+        if (!pair(entry.get("uv"))) {
+          String p = invalidPairPointer(entry.get("uv"), facePointer + "/uv");
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "face uv requires two numbers", cube, p));
+        }
+        if (!pair(entry.get("uv_size"))) {
+          String p = invalidPairPointer(entry.get("uv_size"), facePointer + "/uv_size");
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "face uv_size requires two numbers", cube, p));
+        }
         double u = entry.get("uv").get(0).doubleValue(), v = entry.get("uv").get(1).doubleValue();
         double w = entry.get("uv_size").get(0).doubleValue(),
             h = entry.get("uv_size").get(1).doubleValue();
         if (!finite(u, v, w, h))
-          return Result.failure(error(DiagnosticCodes.UV_INVALID, "face UV must be finite", cube));
+          return Result.failure(
+              error(DiagnosticCodes.UV_INVALID, "face UV must be finite", cube, facePointer));
         faces.put(face, new FaceUvIR(u, v, w, h));
         warnings =
             warnings.addAll(
@@ -97,7 +123,7 @@ public final class GeckoUvDecoder {
         }
       }
       if (faces.isEmpty())
-        return Result.failure(error(DiagnosticCodes.UV_INVALID, "no valid UV faces", cube));
+        return Result.failure(error(DiagnosticCodes.UV_INVALID, "no valid UV faces", cube, "/uv"));
       return Result.success(new PerFaceUvIR(faces), warnings);
     } catch (JsonProcessingException ex) {
       return Result.failure(error(DiagnosticCodes.UV_INVALID, "invalid UV JSON", cube));
@@ -106,6 +132,13 @@ public final class GeckoUvDecoder {
 
   private static boolean pair(JsonNode n) {
     return n != null && n.isArray() && n.size() == 2 && n.get(0).isNumber() && n.get(1).isNumber();
+  }
+
+  private static String invalidPairPointer(JsonNode n, String base) {
+    if (n == null || !n.isArray() || n.size() != 2) return base;
+    if (!n.get(0).isNumber()) return base + "/0";
+    if (!n.get(1).isNumber()) return base + "/1";
+    return base;
   }
 
   private static boolean finite(double... values) {
