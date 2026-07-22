@@ -39,11 +39,14 @@ public final class GeckoGeometryParser {
     try {
       GeometryParseRequest safe = request == null ? GeometryParseRequest.defaults() : request;
       if (Files.size(path) > safe.limits().maxBytes()) {
-        return failure(
+        return limitFailure(
             source(path, null),
             DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
             "geometry file exceeds maxBytes",
-            "Increase maxBytes or provide a smaller file");
+            "Increase maxBytes or provide a smaller file",
+            "maxBytes",
+            safe.limits().maxBytes(),
+            Files.size(path));
       }
       return parse(Files.readAllBytes(path), sourcePath(path), safe);
     } catch (IOException exception) {
@@ -66,11 +69,14 @@ public final class GeckoGeometryParser {
           "Provide non-null geometry input");
     }
     if (content.length > safe.limits().maxBytes()) {
-      return failure(
+      return limitFailure(
           SourceLocation.of(source),
           DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
           "geometry file exceeds maxBytes",
-          "Increase maxBytes or provide a smaller file");
+          "Increase maxBytes or provide a smaller file",
+          "maxBytes",
+          safe.limits().maxBytes(),
+          content.length);
     }
     try {
       JsonNode root = JSON.readTree(content);
@@ -82,11 +88,14 @@ public final class GeckoGeometryParser {
             "Use a Bedrock geometry document object");
       }
       if (jsonDepth(root, 0) > safe.limits().maxNestingDepth()) {
-        return failure(
+        return limitFailure(
             location(source, ""),
             DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
             "JSON nesting depth exceeds configured limit",
-            "Increase maxNestingDepth");
+            "Increase maxNestingDepth",
+            "maxNestingDepth",
+            safe.limits().maxNestingDepth(),
+            jsonDepth(root, 0));
       }
       return parseRoot(root, source, safe);
     } catch (IOException exception) {
@@ -124,11 +133,14 @@ public final class GeckoGeometryParser {
           "Provide one geometry description");
     }
     if (geometries.size() > request.limits().maxGeometries()) {
-      return failure(
+      return limitFailure(
           location(source, "/minecraft:geometry"),
           DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
           "geometry count exceeds configured limit",
-          "Increase maxGeometries");
+          "Increase maxGeometries",
+          "maxGeometries",
+          request.limits().maxGeometries(),
+          geometries.size());
     }
     int selected = selectGeometry(geometries, request.geometryId(), source);
     if (selected < 0) {
@@ -180,11 +192,14 @@ public final class GeckoGeometryParser {
           "Use an array of bone objects");
     }
     if (bonesNode.size() > request.limits().maxBones()) {
-      return failure(
+      return limitFailure(
           location(source, pointer(selected, "bones")),
           DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
           "bone count exceeds configured limit",
-          "Increase maxBones");
+          "Increase maxBones",
+          "maxBones",
+          request.limits().maxBones(),
+          bonesNode.size());
     }
     DiagnosticBag diagnostics = new DiagnosticBag();
     List<BoneData> data = new ArrayList<>();
@@ -502,7 +517,7 @@ public final class GeckoGeometryParser {
           diagnostics.add(
               error(
                   source,
-                  pointer + "/" + field,
+                  pointer.endsWith("/" + field) ? pointer : pointer + "/" + field,
                   DiagnosticCodes.IR_INVALID_VALUE,
                   "value must be finite",
                   "Use a finite number",
@@ -632,6 +647,32 @@ public final class GeckoGeometryParser {
                     null,
                     null,
                     new java.util.TreeMap<>())));
+  }
+
+  private static <T> Result<T> limitFailure(
+      SourceLocation location,
+      String code,
+      String message,
+      String suggestion,
+      String limitName,
+      long limit,
+      long observed) {
+    return Result.failure(
+        new DiagnosticBag()
+            .add(
+                new Diagnostic(
+                    Severity.ERROR,
+                    DiagnosticCode.fromCatalog(code),
+                    location,
+                    message,
+                    suggestion,
+                    null,
+                    null,
+                    new java.util.TreeMap<>(
+                        Map.of(
+                            "limitName", limitName,
+                            "limit", Long.toString(limit),
+                            "observed", Long.toString(observed))))));
   }
 
   private static final class BoneData {
