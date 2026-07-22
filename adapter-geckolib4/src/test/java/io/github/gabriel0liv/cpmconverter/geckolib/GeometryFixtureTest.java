@@ -33,10 +33,31 @@ class GeometryFixtureTest {
         assertEquals(golden.path("geometryId").asText(), result.value().geometryId().value(), name);
         assertEquals(golden.path("bones").size(), result.value().bones().size(), name);
         for (int index = 0; index < result.value().bones().size(); index++) {
+          var expected = golden.path("bones").get(index);
+          var observed = result.value().bones().get(index);
+          assertEquals(expected.path("name").asText(), observed.sourceName(), name);
+          assertEquals(expected.path("id").asText(), observed.id().value(), name);
           assertEquals(
-              golden.path("bones").get(index).path("name").asText(),
-              result.value().bones().get(index).sourceName(),
+              expected.path("parent").isNull() ? null : expected.path("parent").asText(),
+              observed.parent() == null ? null : observed.parent().value(),
               name);
+          assertEquals(
+              java.util.stream.StreamSupport.stream(expected.path("children").spliterator(), false)
+                  .map(com.fasterxml.jackson.databind.JsonNode::asText)
+                  .toList(),
+              observed.children().stream().map(id -> id.value()).toList(),
+              name);
+          var translation = expected.path("bindTranslation");
+          assertEquals(
+              translation.get(0).asDouble(), observed.bindLocal().translation().x(), 1e-9, name);
+          assertEquals(
+              translation.get(1).asDouble(), observed.bindLocal().translation().y(), 1e-9, name);
+          assertEquals(
+              translation.get(2).asDouble(),
+              observed.bindLocal().translation().z(),
+              1e-9,
+              name + ":" + observed.sourceName());
+          assertEquals(expected.path("cubeCount").asInt(), observed.cubes().size(), name);
         }
       } catch (java.io.IOException exception) {
         throw new AssertionError("invalid geometry golden for " + name, exception);

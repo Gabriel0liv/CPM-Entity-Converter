@@ -114,7 +114,7 @@
       "assertionsFailed": 0,
       "assertionsPassed": 14,
       "fixture": "fixture-a-humanoid",
-      "inputSha256": "1f8e2d30890c0f2452b2c7e1cb24ae15d8c4a48f68829c8eb0846f4eec224ab1",
+      "inputSha256": "5aafe09756c5a47063574fbd99f2ec2fd7e90a9485eca914136ddacc0e94f3a9",
       "parserObservation": {
         "clips": [
           {
@@ -1645,7 +1645,7 @@
       "assertionsFailed": 0,
       "assertionsPassed": 11,
       "fixture": "fixture-b-neck",
-      "inputSha256": "07e0967b9a16e600bb03bf7363c683a53f9a605d38a4a643b1064f7492d82c48",
+      "inputSha256": "a510da17a917de10343cbd0ecf6083645127f46f1ed3721301e37366cc8aca30",
       "parserObservation": {
         "clips": [
           {
@@ -2332,7 +2332,7 @@
       "assertionsFailed": 0,
       "assertionsPassed": 10,
       "fixture": "fixture-c-deep-hierarchy",
-      "inputSha256": "d3c5dafbaab5439ac628da93c5aacc53296b0c4b4b4cf881d91c8b1d2f463388",
+      "inputSha256": "30b9b464b53df9ab349b8cd72ae1fcf332af4b592fbcc7be966a21dbf4ea9970",
       "parserObservation": {
         "clips": [
           {
@@ -3942,7 +3942,7 @@
       "assertionsFailed": 0,
       "assertionsPassed": 6,
       "fixture": "fixture-d-quadruped",
-      "inputSha256": "0d254ab36ec0257fcd2ded7d7a608f5740b5b4b52b9c542e118a2983e2e7c26c",
+      "inputSha256": "615b34cbdb820a23daa36dcc6bce14a0b2cb78808fd57aba88f83deec18d1203",
       "parserObservation": {
         "clips": [
           {
