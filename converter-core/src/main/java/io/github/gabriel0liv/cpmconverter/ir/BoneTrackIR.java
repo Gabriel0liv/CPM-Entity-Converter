@@ -1,7 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 
 public record BoneTrackIR(
     BoneId bone,

@@ -2,9 +2,9 @@ package io.github.gabriel0liv.cpmconverter.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import io.github.gabriel0liv.cpmconverter.ir.*;
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
+import io.github.gabriel0liv.cpmconverter.ir.*;
 import io.github.gabriel0liv.cpmconverter.math.Transform;
 import java.util.List;
 import java.util.Map;

@@ -35,8 +35,8 @@ public record AnimationClipIR(
       ClipId id,
       double duration,
       PlaybackMode playback,
-    String customLoop,
-    List<BoneTrackIR> tracks) {
+      String customLoop,
+      List<BoneTrackIR> tracks) {
     this(id, duration, playback, customLoop, tracks, List.of(), null);
   }
 }
