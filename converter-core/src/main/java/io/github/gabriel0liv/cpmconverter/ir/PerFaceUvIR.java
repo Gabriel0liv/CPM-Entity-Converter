@@ -1,9 +1,12 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Map;
 
-public record PerFaceUvIR(Map<String, FaceUvIR> faces) implements UvIR {
+public record PerFaceUvIR(Map<CubeFaceIR, FaceUvIR> faces) implements UvIR {
   public PerFaceUvIR {
-    faces = Map.copyOf(faces == null ? Map.of() : faces);
+    var copy = new EnumMap<CubeFaceIR, FaceUvIR>(CubeFaceIR.class);
+    if (faces != null) copy.putAll(faces);
+    faces = Map.copyOf(copy);
   }
 }

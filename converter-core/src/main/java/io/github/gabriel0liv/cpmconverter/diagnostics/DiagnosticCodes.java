@@ -80,6 +80,11 @@ public final class DiagnosticCodes {
   public static final String GEO_CUBE_HELPER_SYNTHESIZED = "GEO_CUBE_HELPER_SYNTHESIZED";
   public static final String UV_OUT_OF_BOUNDS = "UV_OUT_OF_BOUNDS";
   public static final String PNG_INVALID = "PNG_INVALID";
+  public static final String PNG_DIMENSION_MISMATCH = "PNG_DIMENSION_MISMATCH";
+  public static final String UV_MISSING = "UV_MISSING";
+  public static final String UV_INVALID = "UV_INVALID";
+  public static final String UV_FACE_UNKNOWN = "UV_FACE_UNKNOWN";
+  public static final String UV_MATERIAL_INSTANCE_UNSUPPORTED = "UV_MATERIAL_INSTANCE_UNSUPPORTED";
   public static final String ANIM_CLIP_NOT_FOUND = "ANIM_CLIP_NOT_FOUND";
   public static final String ANIM_BONE_NOT_FOUND = "ANIM_BONE_NOT_FOUND";
   public static final String ANIM_DYNAMIC_MOLANG_UNSUPPORTED = "ANIM_DYNAMIC_MOLANG_UNSUPPORTED";
