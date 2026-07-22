@@ -1,13 +1,232 @@
 {
-  "geometryId":"cpm:d","roots":["cpm:d/bone/0"],
-  "bones":[
-    {"id":"cpm:d/bone/0","name":"body","parent":null,"children":["cpm:d/bone/1","cpm:d/bone/2","cpm:d/bone/3","cpm:d/bone/4","cpm:d/bone/5","cpm:d/bone/6"],"bindTranslation":[0,0,0],"cubeCount":1},
-    {"id":"cpm:d/bone/1","name":"head","parent":"cpm:d/bone/0","children":[],"bindTranslation":[0,-6,2],"cubeCount":1},
-    {"id":"cpm:d/bone/2","name":"leg_fl","parent":"cpm:d/bone/0","children":[],"bindTranslation":[-3,0,2],"cubeCount":1},
-    {"id":"cpm:d/bone/3","name":"leg_fr","parent":"cpm:d/bone/0","children":[],"bindTranslation":[3,0,2],"cubeCount":1},
-    {"id":"cpm:d/bone/4","name":"leg_bl","parent":"cpm:d/bone/0","children":[],"bindTranslation":[-3,0,-2],"cubeCount":1},
-    {"id":"cpm:d/bone/5","name":"leg_br","parent":"cpm:d/bone/0","children":[],"bindTranslation":[3,0,-2],"cubeCount":1},
-    {"id":"cpm:d/bone/6","name":"tail","parent":"cpm:d/bone/0","children":[],"bindTranslation":[0,-5,-4],"cubeCount":1}
-  ],
-  "scope":"T200 geometry-only; no QUADRUPED_LIMITATION diagnostic"
+  "geometryId" : "cpm:d",
+  "textureWidth" : 32,
+  "textureHeight" : 32,
+  "roots" : [ "cpm:d/bone/0" ],
+  "unsupportedFeatures" : [ ],
+  "bones" : [ {
+    "id" : "cpm:d/bone/0",
+    "sourceName" : "body",
+    "parent" : null,
+    "children" : [ "cpm:d/bone/1", "cpm:d/bone/2", "cpm:d/bone/3", "cpm:d/bone/4", "cpm:d/bone/5", "cpm:d/bone/6" ],
+    "bind" : {
+      "translation" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/0",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/0/cube/0",
+      "boneId" : "cpm:d/bone/0",
+      "origin" : [ 0.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[0,0]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/0/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/1",
+    "sourceName" : "head",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -0.0, -6.0, 2.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/1",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/1/cube/0",
+      "boneId" : "cpm:d/bone/1",
+      "origin" : [ 1.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[1,1]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/1/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/2",
+    "sourceName" : "leg_fl",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -3.0, -0.0, 2.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/2",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/2/cube/0",
+      "boneId" : "cpm:d/bone/2",
+      "origin" : [ 2.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[2,2]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/2/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/3",
+    "sourceName" : "leg_fr",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ 3.0, -0.0, 2.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/3",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/3/cube/0",
+      "boneId" : "cpm:d/bone/3",
+      "origin" : [ 0.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[3,3]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/3/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/4",
+    "sourceName" : "leg_bl",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -3.0, -0.0, -2.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/4",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/4/cube/0",
+      "boneId" : "cpm:d/bone/4",
+      "origin" : [ 1.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[4,4]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/4/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/5",
+    "sourceName" : "leg_br",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ 3.0, -0.0, -2.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/5",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/5/cube/0",
+      "boneId" : "cpm:d/bone/5",
+      "origin" : [ 2.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[5,5]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/5/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:d/bone/6",
+    "sourceName" : "tail",
+    "parent" : "cpm:d/bone/0",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -0.0, -5.0, -4.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/6",
+    "cubes" : [ {
+      "id" : "cpm:d/bone/6/cube/0",
+      "boneId" : "cpm:d/bone/6",
+      "origin" : [ 0.0, 0.0, 2.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[6,6]",
+      "source" : "../test-fixtures/fixture-d-quadruped/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/6/cubes/0"
+    } ]
+  } ]
 }

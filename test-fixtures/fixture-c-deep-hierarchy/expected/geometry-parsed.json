@@ -1,13 +1,232 @@
 {
-  "geometryId":"cpm:c","roots":["cpm:c/bone/0"],
-  "bones":[
-    {"id":"cpm:c/bone/0","name":"body","parent":null,"children":["cpm:c/bone/1"],"bindTranslation":[0,0,0],"cubeCount":1},
-    {"id":"cpm:c/bone/1","name":"spine","parent":"cpm:c/bone/0","children":["cpm:c/bone/2"],"bindTranslation":[0,-4,0],"cubeCount":1},
-    {"id":"cpm:c/bone/2","name":"chest","parent":"cpm:c/bone/1","children":["cpm:c/bone/3"],"bindTranslation":[0,-4,0],"cubeCount":1},
-    {"id":"cpm:c/bone/3","name":"neck","parent":"cpm:c/bone/2","children":["cpm:c/bone/4"],"bindTranslation":[0,-4,0],"cubeCount":1},
-    {"id":"cpm:c/bone/4","name":"head","parent":"cpm:c/bone/3","children":["cpm:c/bone/5","cpm:c/bone/6"],"bindTranslation":[0,-2,1],"cubeCount":1},
-    {"id":"cpm:c/bone/5","name":"jaw","parent":"cpm:c/bone/4","children":[],"bindTranslation":[0,1,1],"cubeCount":1},
-    {"id":"cpm:c/bone/6","name":"accessory","parent":"cpm:c/bone/4","children":[],"bindTranslation":[-2,-1,-1],"cubeCount":1,"cubeRotation":[12,0,27]}
-  ],
-  "scope":"T200 geometry-only; per-face UV remains raw for T201"
+  "geometryId" : "cpm:c",
+  "textureWidth" : 32,
+  "textureHeight" : 32,
+  "roots" : [ "cpm:c/bone/0" ],
+  "unsupportedFeatures" : [ ],
+  "bones" : [ {
+    "id" : "cpm:c/bone/0",
+    "sourceName" : "body",
+    "parent" : null,
+    "children" : [ "cpm:c/bone/1" ],
+    "bind" : {
+      "translation" : [ -0.0, -0.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/0",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/0/cube/0",
+      "boneId" : "cpm:c/bone/0",
+      "origin" : [ 0.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[0,0]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/0/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/1",
+    "sourceName" : "spine",
+    "parent" : "cpm:c/bone/0",
+    "children" : [ "cpm:c/bone/2" ],
+    "bind" : {
+      "translation" : [ -0.0, -4.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/1",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/1/cube/0",
+      "boneId" : "cpm:c/bone/1",
+      "origin" : [ 1.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[1,1]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/1/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/2",
+    "sourceName" : "chest",
+    "parent" : "cpm:c/bone/1",
+    "children" : [ "cpm:c/bone/3" ],
+    "bind" : {
+      "translation" : [ -0.0, -4.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/2",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/2/cube/0",
+      "boneId" : "cpm:c/bone/2",
+      "origin" : [ 2.0, 0.0, 0.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[2,2]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/2/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/3",
+    "sourceName" : "neck",
+    "parent" : "cpm:c/bone/2",
+    "children" : [ "cpm:c/bone/4" ],
+    "bind" : {
+      "translation" : [ -0.0, -4.0, 0.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/3",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/3/cube/0",
+      "boneId" : "cpm:c/bone/3",
+      "origin" : [ 0.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[3,3]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/3/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/4",
+    "sourceName" : "head",
+    "parent" : "cpm:c/bone/3",
+    "children" : [ "cpm:c/bone/5", "cpm:c/bone/6" ],
+    "bind" : {
+      "translation" : [ -0.0, -2.0, 1.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/4",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/4/cube/0",
+      "boneId" : "cpm:c/bone/4",
+      "origin" : [ 1.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[4,4]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/4/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/5",
+    "sourceName" : "jaw",
+    "parent" : "cpm:c/bone/4",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -0.0, 1.0, 1.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/5",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/5/cube/0",
+      "boneId" : "cpm:c/bone/5",
+      "origin" : [ 2.0, 0.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 0.0, 0.0, 0.0 ],
+      "rotationDegrees" : [ 0.0, 0.0, 0.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "[5,5]",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/5/cubes/0"
+    } ]
+  }, {
+    "id" : "cpm:c/bone/6",
+    "sourceName" : "accessory",
+    "parent" : "cpm:c/bone/4",
+    "children" : [ ],
+    "bind" : {
+      "translation" : [ -2.0, -1.0, -1.0 ],
+      "rotation" : {
+        "w" : 1.0,
+        "x" : 0.0,
+        "y" : -0.0,
+        "z" : 0.0
+      },
+      "scale" : [ 1.0, 1.0, 1.0 ]
+    },
+    "inflate" : 0.0,
+    "mirror" : false,
+    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+    "pointer" : "/minecraft:geometry/0/bones/6",
+    "cubes" : [ {
+      "id" : "cpm:c/bone/6/cube/0",
+      "boneId" : "cpm:c/bone/6",
+      "origin" : [ 1.0, 1.0, 1.0 ],
+      "size" : [ 2.0, 2.0, 2.0 ],
+      "pivot" : [ 1.5, 2.5, 0.5 ],
+      "rotationDegrees" : [ 12.0, 0.0, 27.0 ],
+      "inflate" : 0.0,
+      "mirror" : false,
+      "rawUv" : "{\"down\":{\"uv\":[0,0],\"uv_size\":[2,2]},\"east\":{\"uv\":[0,0],\"uv_size\":[2,2]},\"north\":{\"uv\":[0,0],\"uv_size\":[2,2]},\"south\":{\"uv\":[0,0],\"uv_size\":[2,2]},\"up\":{\"uv\":[0,0],\"uv_size\":[2,2]},\"west\":{\"uv\":[0,0],\"uv_size\":[2,2]}}",
+      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+      "pointer" : "/minecraft:geometry/0/bones/6/cubes/0"
+    } ]
+  } ]
 }

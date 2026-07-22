@@ -151,6 +151,29 @@ public final class ParsedGeometryValidator {
       }
     }
     for (ParsedBone bone : geometry.bones()) {
+      if (bone == null || bone.id() == null || bone.parent() == null) {
+        continue;
+      }
+      ParsedBone parent = byId.get(bone.parent().value());
+      if (parent == null) {
+        continue;
+      }
+      long occurrences =
+          parent.children().stream()
+              .filter(child -> child != null && bone.id().equals(child))
+              .count();
+      if (occurrences != 1) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    DiagnosticCodes.IR_PARENT_CHILD_MISMATCH,
+                    bone.source(),
+                    "parent and child declarations disagree",
+                    "List the child exactly once on its parent",
+                    Map.of("parentId", parent.id().value(), "childId", bone.id().value())));
+      }
+    }
+    for (ParsedBone bone : geometry.bones()) {
       if (bone == null || bone.id() == null) continue;
       if (bone.parent() != null && !byId.containsKey(bone.parent().value()))
         diagnostics =

@@ -28,13 +28,7 @@ class GeometryFixtureTest {
       var expected =
           mapper.readTree(root.resolve(name).resolve("expected/geometry-parsed.json").toFile());
       var observed = GeometryParsedSnapshot.write(result.value());
-      assertEquals(
-          expected.path("geometryId").asText(), observed.path("geometryId").asText(), name);
-      assertEquals(expected.path("bones").size(), observed.path("bones").size(), name);
-      assertTrue(observed.has("textureWidth") && observed.has("textureHeight"), name);
-      assertTrue(observed.has("unsupportedFeatures"), name);
-      assertTrue(observed.path("bones").get(0).has("bind"), name);
-      assertTrue(observed.path("bones").get(0).path("cubes").get(0).has("rawUv"), name);
+      assertEquals(expected, observed, name);
     }
   }
 }

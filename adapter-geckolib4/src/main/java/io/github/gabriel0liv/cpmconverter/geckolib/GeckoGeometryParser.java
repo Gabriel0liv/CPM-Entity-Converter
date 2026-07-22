@@ -40,7 +40,7 @@ public final class GeckoGeometryParser {
       GeometryParseRequest safe = request == null ? GeometryParseRequest.defaults() : request;
       if (Files.size(path) > safe.limits().maxBytes()) {
         return limitFailure(
-            source(path, null),
+            source(path, "/"),
             DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
             "geometry file exceeds maxBytes",
             "Increase maxBytes or provide a smaller file",
@@ -70,7 +70,7 @@ public final class GeckoGeometryParser {
     }
     if (content.length > safe.limits().maxBytes()) {
       return limitFailure(
-          SourceLocation.of(source),
+          location(source, "/"),
           DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
           "geometry file exceeds maxBytes",
           "Increase maxBytes or provide a smaller file",
@@ -82,14 +82,14 @@ public final class GeckoGeometryParser {
       JsonNode root = JSON.readTree(content);
       if (root == null || !root.isObject()) {
         return failure(
-            location(source, ""),
+            location(source, "/"),
             DiagnosticCodes.INPUT_PARSE_ERROR,
             "geometry root must be an object",
             "Use a Bedrock geometry document object");
       }
       if (jsonDepth(root, 0) > safe.limits().maxNestingDepth()) {
         return limitFailure(
-            location(source, ""),
+            location(source, "/"),
             DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
             "JSON nesting depth exceeds configured limit",
             "Increase maxNestingDepth",
@@ -178,6 +178,32 @@ public final class GeckoGeometryParser {
           DiagnosticCodes.INPUT_PARSE_ERROR,
           "geometry identifier is missing",
           "Add a non-empty identifier");
+    }
+    if (identifier.length() > request.limits().maxStringLength()) {
+      return limitFailure(
+          location(source, pointer(selected, "description/identifier")),
+          DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+          "geometry identifier exceeds maxStringLength",
+          "Increase maxStringLength",
+          "maxStringLength",
+          request.limits().maxStringLength(),
+          identifier.length());
+    }
+    JsonNode textureWidthNode = description.get("texture_width");
+    if (textureWidthNode != null && !textureWidthNode.isIntegralNumber()) {
+      return failure(
+          location(source, pointer(selected, "description/texture_width")),
+          DiagnosticCodes.IR_INVALID_VALUE,
+          "texture_width must be an integer",
+          "Use a finite integer texture width");
+    }
+    JsonNode textureHeightNode = description.get("texture_height");
+    if (textureHeightNode != null && !textureHeightNode.isIntegralNumber()) {
+      return failure(
+          location(source, pointer(selected, "description/texture_height")),
+          DiagnosticCodes.IR_INVALID_VALUE,
+          "texture_height must be an integer",
+          "Use a finite integer texture height");
     }
     GeometryId geometryId = new GeometryId(identifier);
     int textureWidth = integer(description, "texture_width", 0);
@@ -271,7 +297,19 @@ public final class GeckoGeometryParser {
               Math.toRadians(rotation.z()));
       double inflate = number(node, "inflate", 0.0, source, base + "/inflate", diagnostics);
       diagnostics = LAST_DIAGNOSTICS.get();
-      boolean mirror = node.path("mirror").asBoolean(false);
+      JsonNode mirrorNode = node.get("mirror");
+      if (mirrorNode != null && !mirrorNode.isBoolean()) {
+        diagnostics =
+            diagnostics.add(
+                error(
+                    source,
+                    base + "/mirror",
+                    DiagnosticCodes.IR_INVALID_VALUE,
+                    "bone mirror must be boolean",
+                    "Use true or false",
+                    Map.of("field", "mirror")));
+      }
+      boolean mirror = mirrorNode != null && mirrorNode.isBoolean() && mirrorNode.booleanValue();
       BoneData bone =
           new BoneData(
               id, name, text(node, "parent"), pivot, quaternion, inflate, mirror, i, boneSource);
@@ -375,7 +413,8 @@ public final class GeckoGeometryParser {
                   "Increase maxHierarchyDepth",
                   Map.of(
                       "limit", Integer.toString(request.limits().maxHierarchyDepth()),
-                      "observed", Integer.toString(hierarchyDepth))));
+                      "observed", Integer.toString(hierarchyDepth),
+                      "limitName", "maxHierarchyDepth")));
     List<ParsedBone> parsedBones = data.stream().map(bone -> bone.toParsed(byName)).toList();
     List<FeatureOccurrence> unsupported = new ArrayList<>();
     for (BoneData bone : data) {
@@ -510,8 +549,20 @@ public final class GeckoGeometryParser {
     double inflate =
         number(node, "inflate", boneInflate, source, pointer + "/inflate", diagnostics);
     diagnostics = LAST_DIAGNOSTICS.get();
-    boolean mirror =
-        node.has("mirror") && node.get("mirror").isBoolean() && node.get("mirror").booleanValue();
+    JsonNode mirrorNode = node.get("mirror");
+    if (mirrorNode != null && !mirrorNode.isBoolean()) {
+      diagnostics =
+          diagnostics.add(
+              error(
+                  source,
+                  pointer + "/mirror",
+                  DiagnosticCodes.IR_INVALID_VALUE,
+                  "cube mirror must be boolean",
+                  "Use true or false",
+                  Map.of("field", "mirror")));
+    }
+    boolean mirror = mirrorNode != null && mirrorNode.isBoolean() && mirrorNode.booleanValue();
+    LAST_DIAGNOSTICS.set(diagnostics);
     RawUvBoundary rawUv = node.has("uv") ? new RawUvBoundary(node.get("uv").toString()) : null;
     return new ParsedCube(
         new CubeId(boneId.value() + "/cube/" + index),

@@ -160,6 +160,86 @@ class ParsedGeometryValidatorTest {
     thread.join();
   }
 
+  @Test
+  void reportsParentOmittingChildAndUnreachableFromRoots() {
+    ParsedGeometry base = valid();
+    ParsedBone root = base.bones().get(0);
+    ParsedBone child = base.bones().get(1);
+    ParsedBone omitted =
+        new ParsedBone(
+            root.id(),
+            root.sourceName(),
+            null,
+            List.of(),
+            root.bindLocal(),
+            0,
+            false,
+            root.cubes(),
+            SOURCE);
+    var omittedResult =
+        new ParsedGeometryValidator()
+            .validate(
+                new ParsedGeometry(
+                    base.source(),
+                    base.geometryId(),
+                    32,
+                    32,
+                    List.of(omitted, child),
+                    List.of(root.id()),
+                    List.of()));
+    assertTrue(
+        omittedResult.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.IR_UNREACHABLE_BONE)));
+    assertTrue(
+        omittedResult.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.IR_PARENT_CHILD_MISMATCH)));
+  }
+
+  @Test
+  void reportsMissingBoneAndCubeProvenance() {
+    ParsedGeometry base = valid();
+    ParsedBone root = base.bones().get(0);
+    ParsedCube cube = root.cubes().get(0);
+    ParsedCube missingSourceCube =
+        new ParsedCube(
+            cube.id(),
+            root.id(),
+            cube.origin(),
+            cube.size(),
+            cube.pivot(),
+            cube.rotationDegrees(),
+            cube.inflate(),
+            cube.mirror(),
+            cube.rawUv(),
+            null);
+    ParsedBone missingSourceBone =
+        new ParsedBone(
+            root.id(),
+            root.sourceName(),
+            null,
+            root.children(),
+            root.bindLocal(),
+            root.inflate(),
+            root.mirror(),
+            List.of(missingSourceCube),
+            null);
+    var result =
+        new ParsedGeometryValidator()
+            .validate(
+                new ParsedGeometry(
+                    base.source(),
+                    base.geometryId(),
+                    32,
+                    32,
+                    List.of(missingSourceBone, base.bones().get(1)),
+                    base.roots(),
+                    List.of()));
+    assertFalse(result.success());
+    assertTrue(
+        result.diagnostics().all().stream()
+            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.IR_INVALID_VALUE)));
+  }
+
   private static ParsedGeometry valid() {
     BoneId rootId = new BoneId("g/bone/0");
     BoneId childId = new BoneId("g/bone/1");

@@ -159,10 +159,25 @@ class GeckoGeometryParserTest {
               + feature
               + "\":{}}]}]}";
       var result = parse(json);
-      assertTrue(
+      var diagnostic =
           result.diagnostics().all().stream()
-              .anyMatch(d -> feature.equals(d.context().get("feature"))),
-          feature);
+              .filter(d -> feature.equals(d.context().get("feature")))
+              .findFirst()
+              .orElseThrow(() -> new AssertionError(feature));
+      assertEquals(
+          feature.equals("poly_mesh")
+              ? DiagnosticCodes.GEO_MESH_UNSUPPORTED
+              : DiagnosticCodes.GEO_FEATURE_UNSUPPORTED,
+          diagnostic.code().value());
+      assertEquals(
+          feature.equals("poly_mesh")
+              ? io.github.gabriel0liv.cpmconverter.diagnostics.Severity.ERROR
+              : io.github.gabriel0liv.cpmconverter.diagnostics.Severity.WARNING,
+          diagnostic.severity());
+      assertEquals("body", diagnostic.bone());
+      assertEquals("/minecraft:geometry/0/bones/0/" + feature, diagnostic.location().jsonPointer());
+      assertFalse(diagnostic.suggestion().isBlank());
+      assertEquals(!feature.equals("poly_mesh"), result.success());
     }
   }
 
