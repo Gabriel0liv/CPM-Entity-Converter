@@ -1,7 +1,118 @@
 {
+  "assertionsFailed": 0,
+  "assertionsPassed": 41,
+  "assertionsTotal": 41,
   "checkout": "GeckoLibOracle",
   "fixtures": [
     {
+      "assertions": [
+        {
+          "expected": [
+            "idle",
+            "walk"
+          ],
+          "name": "clipNames",
+          "observed": [
+            "idle",
+            "walk"
+          ],
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "head"
+          ],
+          "name": "clip:idle:bones",
+          "observed": [
+            "head"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:idle:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:head:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 20.0,
+          "name": "clip:idle:length",
+          "observed": 20.0,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "left_arm",
+            "left_leg",
+            "right_arm",
+            "right_leg"
+          ],
+          "name": "clip:walk:bones",
+          "observed": [
+            "left_arm",
+            "left_leg",
+            "right_arm",
+            "right_leg"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:walk:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:left_arm:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:left_leg:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:right_arm:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:right_leg:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 10.0,
+          "name": "clip:walk:length",
+          "observed": 10.0,
+          "passed": true
+        }
+      ],
+      "assertionsFailed": 0,
+      "assertionsPassed": 14,
       "fixture": "fixture-a-humanoid",
       "inputSha256": "1f8e2d30890c0f2452b2c7e1cb24ae15d8c4a48f68829c8eb0846f4eec224ab1",
       "parserObservation": {
@@ -1449,6 +1560,90 @@
       "status": "PASS"
     },
     {
+      "assertions": [
+        {
+          "expected": [
+            "idle",
+            "walk"
+          ],
+          "name": "clipNames",
+          "observed": [
+            "idle",
+            "walk"
+          ],
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "head"
+          ],
+          "name": "clip:idle:bones",
+          "observed": [
+            "head"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:idle:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:head:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 20.0,
+          "name": "clip:idle:length",
+          "observed": 20.0,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "head"
+          ],
+          "name": "clip:walk:bones",
+          "observed": [
+            "head"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:walk:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:head:channel:position",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 10.0,
+          "name": "clip:walk:length",
+          "observed": 10.0,
+          "passed": true
+        }
+      ],
+      "assertionsFailed": 0,
+      "assertionsPassed": 11,
       "fixture": "fixture-b-neck",
       "inputSha256": "07e0967b9a16e600bb03bf7363c683a53f9a605d38a4a643b1064f7492d82c48",
       "parserObservation": {
@@ -2056,6 +2251,86 @@
       "status": "PASS"
     },
     {
+      "assertions": [
+        {
+          "expected": [
+            "idle"
+          ],
+          "name": "clipNames",
+          "observed": [
+            "idle"
+          ],
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "accessory",
+            "chest",
+            "head",
+            "jaw",
+            "neck"
+          ],
+          "name": "clip:idle:bones",
+          "observed": [
+            "accessory",
+            "chest",
+            "head",
+            "jaw",
+            "neck"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:idle:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:accessory:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:chest:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:head:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:jaw:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:idle:bone:neck:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 20.0,
+          "name": "clip:idle:length",
+          "observed": 20.0,
+          "passed": true
+        }
+      ],
+      "assertionsFailed": 0,
+      "assertionsPassed": 10,
       "fixture": "fixture-c-deep-hierarchy",
       "inputSha256": "d3c5dafbaab5439ac628da93c5aacc53296b0c4b4b4cf881d91c8b1d2f463388",
       "parserObservation": {
@@ -3618,6 +3893,54 @@
       "status": "PASS"
     },
     {
+      "assertions": [
+        {
+          "expected": [
+            "walk"
+          ],
+          "name": "clipNames",
+          "observed": [
+            "walk"
+          ],
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:present",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": [
+            "leg_fl"
+          ],
+          "name": "clip:walk:bones",
+          "observed": [
+            "leg_fl"
+          ],
+          "passed": true
+        },
+        {
+          "expected": "loop",
+          "name": "clip:walk:loop",
+          "observed": "loop",
+          "passed": true
+        },
+        {
+          "expected": true,
+          "name": "clip:walk:bone:leg_fl:channel:rotation",
+          "observed": true,
+          "passed": true
+        },
+        {
+          "expected": 10.0,
+          "name": "clip:walk:length",
+          "observed": 10.0,
+          "passed": true
+        }
+      ],
+      "assertionsFailed": 0,
+      "assertionsPassed": 6,
       "fixture": "fixture-d-quadruped",
       "inputSha256": "0d254ab36ec0257fcd2ded7d7a608f5740b5b4b52b9c542e118a2983e2e7c26c",
       "parserObservation": {
@@ -3998,5 +4321,6 @@
   ],
   "nonProduction": true,
   "oracleCommit": "25a41d7375bb7eeda37dadc04b1e03fe486b33e5",
-  "oracleTree": "c7109828f07f88f7279b3c2d60790e8c70390c33"
+  "oracleTree": "c7109828f07f88f7279b3c2d60790e8c70390c33",
+  "status": "PASS"
 }

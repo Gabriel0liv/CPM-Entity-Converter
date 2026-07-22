@@ -7,6 +7,61 @@ TREE = "c7109828f07f88f7279b3c2d60790e8c70390c33"
 
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 
+def source_clip_names(source):
+    return list(source.get("animations", {}).keys())
+
+def source_bones(clip):
+    return list(clip.get("bones", {}).keys())
+
+def source_channels(clip, bone):
+    return sorted(clip.get("bones", {}).get(bone, {}).keys())
+
+def assert_observation(name, source, observed):
+    """Return assertions backed by both source JSON and the real oracle output."""
+    assertions = []
+    expected_names = source_clip_names(source)
+    observed_clips = observed.get("parserObservation", {}).get("clips", [])
+    observed_by_name = {c.get("name"): c for c in observed_clips}
+    assertions.append({"name": "clipNames", "expected": sorted(expected_names),
+                       "observed": sorted(observed_by_name),
+                       "passed": sorted(expected_names) == sorted(observed_by_name)})
+    for clip_name, clip in source.get("animations", {}).items():
+        obs = observed_by_name.get(clip_name)
+        assertions.append({"name": f"clip:{clip_name}:present", "expected": True,
+                           "observed": obs is not None, "passed": obs is not None})
+        if obs is None:
+            continue
+        expected_bones = sorted(source_bones(clip))
+        actual_bones = sorted(b.get("bone") for b in obs.get("bones", []))
+        assertions.append({"name": f"clip:{clip_name}:bones", "expected": expected_bones,
+                           "observed": actual_bones, "passed": expected_bones == actual_bones})
+        declared_loop = clip.get("loop")
+        if declared_loop is not None:
+            expected_loop = "loop" if declared_loop is True else "play_once"
+            actual_loop = obs.get("loopType")
+            assertions.append({"name": f"clip:{clip_name}:loop", "expected": expected_loop,
+                               "observed": actual_loop,
+                               "passed": actual_loop == expected_loop})
+        timestamps = []
+        for bone_name, channels in clip.get("bones", {}).items():
+            observed_bone = next((b for b in obs.get("bones", []) if b.get("bone") == bone_name), None)
+            observed_channels = set()
+            if observed_bone:
+                observed_channels = {k for k in ("position", "rotation", "scale")
+                                     if any(observed_bone.get(k, {}).get(axis) for axis in "xyz")}
+            for channel_name in source_channels(clip, bone_name):
+                timestamps.extend(float(t) for t in channels[channel_name].keys())
+                assertions.append({"name": f"clip:{clip_name}:bone:{bone_name}:channel:{channel_name}",
+                                   "expected": True, "observed": channel_name in observed_channels,
+                                   "passed": channel_name in observed_channels})
+        if timestamps:
+            expected_length = max(timestamps) * 20.0
+            actual_length = float(obs.get("lengthTicks", 0.0))
+            assertions.append({"name": f"clip:{clip_name}:length", "expected": expected_length,
+                               "observed": actual_length,
+                               "passed": abs(actual_length - expected_length) < 1e-6})
+    return assertions
+
 def run(ns, root):
     commit = subprocess.check_output(["git", "-C", str(ns.geckolib_dir), "rev-parse", "HEAD"], text=True).strip()
     tree = subprocess.check_output(["git", "-C", str(ns.geckolib_dir), "rev-parse", "HEAD^{tree}"], text=True).strip()
@@ -33,10 +88,20 @@ def run(ns, root):
             item = by_name.get(name + ".json", by_name.get(name, {}))
             if not item: raise SystemExit(f"oracle omitted {name}")
             item = dict(item); item["inputSha256"] = digest
-            item["status"] = "PASS" if item.get("status") == "PARSED" else "FAIL"
+            source = json.loads((root / name / "animations.animation.json").read_text(encoding="utf-8"))
+            assertions = assert_observation(name, source, item)
+            item["assertions"] = assertions
+            item["assertionsPassed"] = sum(1 for a in assertions if a["passed"])
+            item["assertionsFailed"] = len(assertions) - item["assertionsPassed"]
+            item["status"] = "PASS" if item.get("status") == "PARSED" and item["assertionsFailed"] == 0 else "FAIL"
             fixtures.append(item)
+        total = sum(len(f["assertions"]) for f in fixtures)
+        passed = sum(f["assertionsPassed"] for f in fixtures)
         return {"nonProduction": True, "oracleCommit": commit, "oracleTree": tree,
-                "checkout": ns.geckolib_dir.name, "fixtures": fixtures}
+                "checkout": ns.geckolib_dir.name, "fixtures": fixtures,
+                "assertionsTotal": total, "assertionsPassed": passed,
+                "assertionsFailed": total - passed,
+                "status": "PASS" if total == passed else "FAIL"}
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--geckolib-dir", type=Path, required=True)
