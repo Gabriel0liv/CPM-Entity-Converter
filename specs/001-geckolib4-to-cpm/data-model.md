@@ -176,3 +176,8 @@ CpmFrameV1(componentsByStoreId)
 ## Diagnostics
 
 Diagnostics são dados imutáveis acumuláveis, com code estável e source location. Erros impedem projection/output; warnings não são strings soltas.
+# T203 IR additions
+
+Animation keyframes carry `easingFromPrevious` as an immutable `EasingIR`.
+Offline constant Molang is evaluated before channel conversion; dynamic
+expressions remain diagnostics and are not sampled here.

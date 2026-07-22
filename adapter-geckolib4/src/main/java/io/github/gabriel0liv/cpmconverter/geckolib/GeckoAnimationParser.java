@@ -384,15 +384,14 @@ public final class GeckoAnimationParser {
         continue;
       }
       JsonNode val = e.getValue();
-      if (val.isObject() && (val.has("easing") || val.has("easingArgs")))
-        bag =
-            bag.add(
-                diag(
-                    source,
-                    DiagnosticCodes.ANIM_CUSTOM_EASING_UNSUPPORTED,
-                    "Easing parsing is deferred to T203",
-                    ptr + "/" + (val.has("easing") ? "easing" : "easingArgs"),
-                    Map.of("clipId", clip.value(), "boneName", bone, "deferredTo", "T203")));
+      EasingIR easing = EasingIR.linear();
+      if (val.isObject() && (val.has("easing") || val.has("easingArgs"))) {
+        Result<EasingIR> ep =
+            new GeckoEasingParser()
+                .parse(val, source, ptr + "/" + esc(e.getKey()), clip.value(), bone, component);
+        bag = bag.addAll(ep.diagnostics());
+        if (ep.success()) easing = ep.value();
+      }
       JsonNode chosen = val;
       if (val.isObject() && (val.has("pre") || val.has("post"))) {
         JsonNode pre = val.get("pre"), post = val.get("post");
@@ -413,12 +412,18 @@ public final class GeckoAnimationParser {
       } else if (val.isObject() && val.has("vector")) chosen = val.get("vector");
       if (chosen != null && chosen.isObject() && chosen.has("vector"))
         chosen = chosen.get("vector");
-      Vec3d v = parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone);
+      VectorResult vr =
+          parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone, component);
+      Vec3d v = vr.value;
+      bag = bag.addAll(vr.diagnostics);
       if (v == null) {
+        if (!vr.diagnostics.all().isEmpty()) continue;
         String code =
-            containsTextualComponent(chosen)
-                ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
-                : DiagnosticCodes.ANIM_CHANNEL_INVALID;
+            vr.code == null
+                ? (containsTextualComponent(chosen)
+                    ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
+                    : DiagnosticCodes.ANIM_CHANNEL_INVALID)
+                : vr.code;
         bag =
             bag.add(
                 diag(
@@ -441,9 +446,8 @@ public final class GeckoAnimationParser {
       }
       if (!rotation && ptr.contains("/position")) v = new Vec3d(-v.x(), -v.y(), v.z());
       SourceLocation loc = location(source, ptr + "/" + esc(e.getKey()));
-      if (rotation)
-        rkeys.add(new SourceRotationKeyframeIR(time, v, v, InterpolationIR.LINEAR, loc));
-      else keys.add(new KeyframeIR<>(time, v, v, InterpolationIR.LINEAR, loc));
+      if (rotation) rkeys.add(new SourceRotationKeyframeIR(time, v, v, easing, loc));
+      else keys.add(new KeyframeIR<>(time, v, v, easing, loc));
       max = Math.max(max, time);
     }
     if (rotation)
@@ -464,15 +468,55 @@ public final class GeckoAnimationParser {
         bag);
   }
 
-  private Vec3d parseVector(JsonNode n, SourcePath s, String p, ClipId c, String b) {
-    if (n == null || n.isNull() || n.isTextual()) return null;
+  private VectorResult parseVector(
+      JsonNode n, SourcePath s, String p, ClipId c, String b, String channel) {
+    if (n == null || n.isNull()) return new VectorResult(null, null, new DiagnosticBag());
+    if (n.isTextual()) {
+      Result<Double> r =
+          new ConstantMolangEvaluator()
+              .evaluate(
+                  n.textValue(),
+                  new SourceLocation(s, null, null, p, null),
+                  Map.of("clipId", c.value(), "boneName", b, "channel", channel));
+      return r.success()
+          ? new VectorResult(new Vec3d(r.value(), r.value(), r.value()), null, r.diagnostics())
+          : new VectorResult(
+              null,
+              r.diagnostics().all().isEmpty()
+                  ? DiagnosticCodes.ANIM_MOLANG_PARSE_ERROR
+                  : r.diagnostics().all().get(0).code().value(),
+              r.diagnostics());
+    }
     try {
-      if (n.isNumber()) return new Vec3d(n.doubleValue(), n.doubleValue(), n.doubleValue());
-      if (!n.isArray() || n.size() != 3) return null;
-      if (!n.get(0).isNumber() || !n.get(1).isNumber() || !n.get(2).isNumber()) return null;
-      return new Vec3d(n.get(0).doubleValue(), n.get(1).doubleValue(), n.get(2).doubleValue());
+      if (n.isNumber())
+        return new VectorResult(
+            new Vec3d(n.doubleValue(), n.doubleValue(), n.doubleValue()),
+            null,
+            new DiagnosticBag());
+      if (!n.isArray() || n.size() != 3)
+        return new VectorResult(null, DiagnosticCodes.ANIM_CHANNEL_INVALID, new DiagnosticBag());
+      double[] v = new double[3];
+      DiagnosticBag bag = new DiagnosticBag();
+      for (int i = 0; i < 3; i++) {
+        JsonNode x = n.get(i);
+        if (x.isTextual()) {
+          Result<Double> r =
+              new ConstantMolangEvaluator()
+                  .evaluate(
+                      x.textValue(),
+                      new SourceLocation(s, null, null, p + "/" + i, null),
+                      Map.of("clipId", c.value(), "boneName", b, "channel", channel));
+          if (!r.success())
+            return new VectorResult(
+                null, r.diagnostics().all().get(0).code().value(), r.diagnostics());
+          v[i] = r.value();
+        } else if (x.isNumber()) v[i] = x.doubleValue();
+        else
+          return new VectorResult(null, DiagnosticCodes.ANIM_CHANNEL_INVALID, new DiagnosticBag());
+      }
+      return new VectorResult(new Vec3d(v[0], v[1], v[2]), null, bag);
     } catch (IllegalArgumentException ex) {
-      return null;
+      return new VectorResult(null, DiagnosticCodes.ANIM_CHANNEL_INVALID, new DiagnosticBag());
     }
   }
 
@@ -509,6 +553,8 @@ public final class GeckoAnimationParser {
       SourceRotationChannelIR rotation,
       double maxTime,
       DiagnosticBag diagnostics) {}
+
+  private record VectorResult(Vec3d value, String code, DiagnosticBag diagnostics) {}
 
   private record ParseClip(AnimationClipIR clip, DiagnosticBag diagnostics) {}
 

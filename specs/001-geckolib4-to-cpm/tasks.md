@@ -55,7 +55,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T200 parser geometry/bones/cubes — `1bd8f232` + CI final `29924646225`.
 - [x] T201 parser UV/PNG e ModelIR estático — evidência integral concluída.
 - [x] T202 parser animation/playback/keyframes — parser, snapshots A/B, asserts C/D e Windows CI concluídos.
-- [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
+- [~] T203 easing/Molang constante e diagnostics (FR-015/025) — implementação e evidência locais em andamento; aguardando CI Windows.
 - [ ] T204 testes oracle Gecko e limits (NFR-005/012).
 
 ## Fase 3

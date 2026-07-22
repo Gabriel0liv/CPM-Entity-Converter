@@ -62,7 +62,7 @@ final class AnimationIrSnapshot {
       x.put("time", k.time());
       x.set("incoming", vec(k.incomingValue()));
       x.set("outgoing", vec(k.outgoingValue()));
-      x.put("interpolation", k.interpolation().name());
+      x.set("easingFromPrevious", easing(k.easingFromPrevious()));
       x.set("source", source(k.source()));
     }
     return n;
@@ -78,9 +78,17 @@ final class AnimationIrSnapshot {
       x.put("time", k.timeSeconds());
       x.set("incoming", vec(k.incomingValue()));
       x.set("outgoing", vec(k.outgoingValue()));
-      x.put("interpolation", k.interpolationAfter().name());
+      x.set("easingFromPrevious", easing(k.easingFromPrevious()));
       x.set("source", source(k.source()));
     }
+    return n;
+  }
+
+  private static ObjectNode easing(EasingIR e) {
+    ObjectNode n = M.createObjectNode();
+    n.put("kind", e.kind().name());
+    ArrayNode args = n.putArray("args");
+    e.args().forEach(args::add);
     return n;
   }
 

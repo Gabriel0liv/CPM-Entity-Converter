@@ -9,6 +9,7 @@ keyframe timestamp is inferred.
 Position channels are additive local offsets converted with `(-x,-y,+z)`.
 Rotation remains source Euler degrees in ZYX order. Scale is absolute local
 values. Scalar, vector, timestamp-map, and GeckoLib pre/post forms are parsed;
-Molang and easing are rejected for T203. Sound, particle, and timeline events
+Molang expressions outside the offline constant subset and easing evaluation
+remain deferred to T203. Sound, particle, and timeline events
 are retained as ignored warnings. Sampling, lifecycle policy, and CPM mapping
 remain outside T202.

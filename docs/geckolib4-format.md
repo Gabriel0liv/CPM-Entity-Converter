@@ -84,3 +84,8 @@ assertions; 33 fixtures passaram, uma foi rejeitada conforme esperado e três
 ficaram `BLOCKED` somente para o tick terminal do controller. Molang numérico e
 expressão constante foram separados de `query.anim_time`, que é dinâmica e
 recebe `ANIM_DYNAMIC_MOLANG_UNSUPPORTED` no modo offline.
+# T203 animation semantics
+
+Keyframe easing is attached to `easingFromPrevious`; only deterministic
+constant Molang is evaluated offline. Runtime queries remain unsupported until
+the later sampling/mapping phases.
