@@ -2,6 +2,8 @@ package io.github.gabriel0liv.cpmconverter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import io.github.gabriel0liv.cpmconverter.ir.*;
 import io.github.gabriel0liv.cpmconverter.math.*;
 import java.util.*;
@@ -11,7 +13,14 @@ class IrTest {
   @Test
   void validatesDanglingReferences() {
     var b =
-        new BoneIR(new BoneId("body"), "body", null, List.of(), Transform.identity(), List.of());
+        new BoneIR(
+            new BoneId("body"),
+            "body",
+            null,
+            List.of(),
+            Transform.identity(),
+            List.of(),
+            SourceLocation.of(new SourcePath("test/model")));
     var m =
         new ModelIR(
             new SourceDescriptor("fixture/model", "geo"),

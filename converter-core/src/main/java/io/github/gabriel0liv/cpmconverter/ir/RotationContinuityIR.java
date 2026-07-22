@@ -19,10 +19,4 @@ public record RotationContinuityIR(
         sourceEulerHint.y() + 360.0 * winding.y(),
         sourceEulerHint.z() + 360.0 * winding.z());
   }
-
-  /** Compatibility constructor for legacy callers; new parsers must provide an explicit hint. */
-  @Deprecated
-  public RotationContinuityIR(boolean continuousPerAxis) {
-    this(Vec3d.ZERO, new Vec3i(0, 0, 0), Optional.empty());
-  }
 }

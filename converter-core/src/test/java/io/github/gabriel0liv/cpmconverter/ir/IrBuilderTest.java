@@ -1,5 +1,6 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +20,7 @@ final class IrBuilderTest {
     assertTrue(invalid.diagnostics().hasErrors());
     var valid = new BoneIrBuilder().build("body", "body", LOCATION);
     assertTrue(valid.success());
-    assertTrue(valid.value().provenance().contains("fixture/geometry.geo.json"));
+    assertEquals("fixture/geometry.geo.json", valid.value().provenance().source().value());
   }
 
   @Test

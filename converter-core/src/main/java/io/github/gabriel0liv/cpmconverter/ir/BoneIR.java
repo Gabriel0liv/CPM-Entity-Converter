@@ -2,8 +2,8 @@ package io.github.gabriel0liv.cpmconverter.ir;
 
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
 import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
-import io.github.gabriel0liv.cpmconverter.math.*;
-import java.util.*;
+import io.github.gabriel0liv.cpmconverter.math.Transform;
+import java.util.List;
 
 public record BoneIR(
     BoneId id,
@@ -12,31 +12,27 @@ public record BoneIR(
     List<BoneId> children,
     Transform bind,
     List<CubeIR> cubes,
-    String provenance,
-    SourceLocation sourceLocation) {
+    SourceLocation provenance) {
   public BoneIR {
     if (id == null || name == null || bind == null) throw new IllegalArgumentException("bone");
     children = List.copyOf(children == null ? List.of() : children);
     cubes = List.copyOf(cubes == null ? List.of() : cubes);
-    if (provenance == null || sourceLocation == null)
-      throw new IllegalArgumentException("provenance");
+    if (provenance == null) throw new IllegalArgumentException("provenance");
   }
 
-  public BoneIR(
+  /** Test-only convenience constructor; production boundaries must provide a location. */
+  BoneIR(
       BoneId id,
       String name,
       BoneId parent,
       List<BoneId> children,
       Transform bind,
       List<CubeIR> cubes) {
-    this(id, name, parent, children, bind, cubes, "legacy/model", legacyLocation());
+    this(id, name, parent, children, bind, cubes, SourceLocation.of(new SourcePath("test/model")));
   }
 
-  /**
-   * Compatibility constructor for fixture/test data; production boundaries must provide a location.
-   */
-  @Deprecated
-  public BoneIR(
+  /* Explicit migration constructor retained package-private for fixture tests only. */
+  BoneIR(
       BoneId id,
       String name,
       BoneId parent,
@@ -44,23 +40,6 @@ public record BoneIR(
       Transform bind,
       List<CubeIR> cubes,
       String provenance) {
-    this(
-        id,
-        name,
-        parent,
-        children,
-        bind,
-        cubes,
-        provenance == null ? "legacy/model" : provenance,
-        locationFor(provenance));
-  }
-
-  private static SourceLocation locationFor(String value) {
-    return SourceLocation.of(
-        new SourcePath(value == null || value.isBlank() ? "legacy/model" : value));
-  }
-
-  private static SourceLocation legacyLocation() {
-    return locationFor("legacy/model");
+    this(id, name, parent, children, bind, cubes, SourceLocation.of(new SourcePath(provenance)));
   }
 }

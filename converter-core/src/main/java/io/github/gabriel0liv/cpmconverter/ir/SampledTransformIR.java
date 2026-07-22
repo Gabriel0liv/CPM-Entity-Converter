@@ -10,6 +10,10 @@ public record SampledTransformIR(
   }
 
   public SampledTransformIR(Vec3d translation, Quatd rotation, Vec3d scale) {
-    this(translation, rotation, scale, new RotationContinuityIR(true));
+    this(
+        translation,
+        rotation,
+        scale,
+        new RotationContinuityIR(Vec3d.ZERO, new Vec3i(0, 0, 0), java.util.Optional.empty()));
   }
 }

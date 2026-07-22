@@ -15,9 +15,6 @@ import java.util.TreeMap;
 
 /** Validates relational ModelIR invariants and reports deterministic diagnostics. */
 public final class ModelIrValidator {
-  private Map<BoneId, SourceLocation> boneLocations = Map.of();
-  private SourceLocation keyframeLocation;
-
   public DiagnosticBag validate(ModelIR model) {
     DiagnosticBag diagnostics = new DiagnosticBag();
     if (model == null) {
@@ -37,11 +34,6 @@ public final class ModelIrValidator {
                     null));
       }
     }
-    Map<BoneId, SourceLocation> locations = new LinkedHashMap<>();
-    for (BoneIR bone : model.bones()) {
-      locations.putIfAbsent(bone.id(), bone.sourceLocation());
-    }
-    boneLocations = locations;
     Set<BoneId> roots = new LinkedHashSet<>();
     for (BoneId root : model.roots()) {
       if (!roots.add(root)) {
@@ -315,7 +307,6 @@ public final class ModelIrValidator {
     double previous = Double.NEGATIVE_INFINITY;
     Set<Double> seen = new HashSet<>();
     for (SourceRotationKeyframeIR keyframe : channel.keyframes()) {
-      keyframeLocation = keyframe.source();
       double time = keyframe.timeSeconds();
       if (!Double.isFinite(time) || time < 0) {
         diagnostics =
@@ -326,7 +317,8 @@ public final class ModelIrValidator {
                     Map.of(
                         "timestamp", Double.toString(time), "duration", Double.toString(duration)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source()));
         continue;
       }
       if (!seen.add(time))
@@ -337,7 +329,8 @@ public final class ModelIrValidator {
                     "duplicate rotation timestamp in channel",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source()));
       if (time < previous)
         diagnostics =
             diagnostics.add(
@@ -346,7 +339,8 @@ public final class ModelIrValidator {
                     "rotation timestamps must be non-decreasing",
                     Map.of("timestamp", Double.toString(time)),
                     bone,
-                    clip));
+                    clip,
+                    keyframe.source()));
       if (time > duration)
         diagnostics =
             diagnostics.add(
@@ -359,7 +353,6 @@ public final class ModelIrValidator {
                     clip));
       previous = time;
     }
-    keyframeLocation = null;
     return diagnostics;
   }
 
@@ -389,16 +382,31 @@ public final class ModelIrValidator {
   private Diagnostic error(
       String code, String message, Map<String, String> context, String bone, String clip) {
     String suggestion = suggestionFor(code);
-    SourceLocation location =
-        keyframeLocation != null
-            ? keyframeLocation
-            : (bone == null ? null : boneLocations.get(boneId(bone)));
+    SourceLocation location = null;
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
         location,
         message,
         suggestion,
+        bone,
+        clip,
+        new TreeMap<>(context));
+  }
+
+  private Diagnostic error(
+      String code,
+      String message,
+      Map<String, String> context,
+      String bone,
+      String clip,
+      SourceLocation location) {
+    return new Diagnostic(
+        Severity.ERROR,
+        DiagnosticCode.fromCatalog(code),
+        location,
+        message,
+        suggestionFor(code),
         bone,
         clip,
         new TreeMap<>(context));

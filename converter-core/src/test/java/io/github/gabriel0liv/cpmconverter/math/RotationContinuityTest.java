@@ -6,6 +6,50 @@ import org.junit.jupiter.api.Test;
 
 class RotationContinuityTest {
   @Test
+  void tableDrivenUnwrapUsesHintsAndPreviousOutput() {
+    double[][] cases = {
+      {10, 350, 1, 370},
+      {350, 10, -1, -10},
+      {190, 550, 1, 550},
+      {-190, -550, -1, -550},
+      {0, 720, 2, 720},
+      {0, -720, -2, -720},
+      {720, 710, 0, 720},
+      {-720, -710, 0, -720}
+    };
+    for (double[] row : cases) {
+      RotationContinuity state =
+          new RotationContinuity(new Vec3d(row[0], 0, 0)).unwrapNear(new Vec3d(row[1], 0, 0));
+      assertEquals((int) row[2], state.winding().x(), "winding for hint " + row[0]);
+      assertEquals(row[3], state.resolvedEuler().x(), 1e-9, "resolved for hint " + row[0]);
+      assertEquals(row[1], state.previousOutputEuler().orElseThrow().x(), 1e-9);
+    }
+  }
+
+  @Test
+  void crossingSequenceResolvesEachFrameFromPreviousResolvedOutput() {
+    double[] positiveHints = {350, 10, 30, 190, 10};
+    double previous = positiveHints[0];
+    for (int i = 1; i < positiveHints.length; i++) {
+      RotationContinuity state =
+          new RotationContinuity(new Vec3d(positiveHints[i], 0, 0))
+              .unwrapNear(new Vec3d(previous, 0, 0));
+      previous = state.resolvedEuler().x();
+    }
+    assertEquals(370, previous, 1e-9);
+
+    double[] negativeHints = {-350, -10, -30, -190, -10};
+    previous = negativeHints[0];
+    for (int i = 1; i < negativeHints.length; i++) {
+      RotationContinuity state =
+          new RotationContinuity(new Vec3d(negativeHints[i], 0, 0))
+              .unwrapNear(new Vec3d(previous, 0, 0));
+      previous = state.resolvedEuler().x();
+    }
+    assertEquals(-370, previous, 1e-9);
+  }
+
+  @Test
   void windingIsIndependentOfQuaternion() {
     RotationContinuity continuity =
         new RotationContinuity(

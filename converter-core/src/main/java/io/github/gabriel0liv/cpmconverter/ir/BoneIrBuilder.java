@@ -33,7 +33,7 @@ public final class BoneIrBuilder {
             List.of(),
             io.github.gabriel0liv.cpmconverter.math.Transform.identity(),
             List.of(),
-            location == null ? "legacy/model" : location.source().value()),
+            location),
         created.diagnostics());
   }
 }
