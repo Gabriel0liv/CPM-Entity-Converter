@@ -46,9 +46,9 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
 - [x] T101 revisão da API de diagnostics e Result (`de77ea8`, boundary final `1c70129`; revisão independente confirmou PASS).
 - [x] T102 continuidade Euler e contratos matemáticos (`876adb0`; revisão inicial R5 PASS).
-- [~] T103 source locations, provenance e validator (`f4eb17c`; source obrigatória adicionada, mas testes antigos não compilam e há fallbacks de location inadequados).
+- [~] T103 source locations, provenance e validator (`a4dfa1b`; source obrigatória, mas call sites antigos ainda impedem clean check)..
 - [x] T104 matriz normativa e SemanticRigMap (`3721944`; matriz restante coberta e testes do módulo passam).
-- [~] T105 contratos reais das fixtures A–D (`3abf1a4`; oracle real 41/41 PASS, harness fixture-backed ainda contém invariants/diagnostics sintéticos).
+- [x] T105 contratos originais das fixtures A–D (`e515207`; escopo limitado a autoria, provenance, manifest, mapping smoke e oracle S004; parser completo deferido)..
 
 ## Fase 2
 
@@ -86,3 +86,4 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [ ] T700 integração A–D, determinismo e CI cross-platform.
 - [ ] T701 aceite visual CPM documentado.
 - [ ] T702 release checklist e roadmap pós-MVP.
+

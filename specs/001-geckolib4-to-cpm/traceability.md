@@ -72,3 +72,6 @@ IDs `TST-*` são testes planejados em `test-plan.md`.
 | CON-003 | ADR-005 | T500 | S001/S002 | AC-015, AC-026 | blocked by visual evidence |
 | CON-004 | licensing | T105 | provenance audit | AC-042 | normative |
 | CON-005 | implementation plan | T007/S001–S004 | gate review | AC-042 | in progress |
+
+## R7 scope adjudication
+T105 is limited to authorial fixtures, provenance/licensing, manifest/hashes, mapping smoke and retained S004 oracle evidence. Geometry→ModelIR is T200/T201; animation→ModelIR is T202; parser mutation/oracle limits are T204; converted output is later projection. These are deferred, not T105 failures.

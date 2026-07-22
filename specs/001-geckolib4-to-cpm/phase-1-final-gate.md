@@ -1,24 +1,29 @@
 # Gate final da Fase 1
 
 Date: 2026-07-22
-Commit base: `d19d56ead1443307cd4333966814218760f6ddf3`
-Implementation HEAD reviewed: `3abf1a4`
+Commit base: `3c9965ae992f466e1d90bf8c70dd06fe6793a737`
+Implementation HEAD reviewed: `e515207`
 Gate record: this commit
-Independent review branch: `review/r6-final`
-Workflow run: não confirmado para o SHA final; não há `gh` local nem execução síncrona observável
-Workflow HEAD: não confirmado
-Ubuntu: não confirmado no SHA final
-Windows: não confirmado no SHA final
+Independent review: `review/r7-scope` concluída; revisão final ainda pendente
+Workflow run: não confirmado para o SHA final
+Ubuntu: não confirmado
+Windows: não confirmado
 
-## Classificação independente R6
+## Decisão normativa T105
 
-T102: PASS. A revisão confirmou unwrap correto, `resolvedEuler`, sequências, ±720°, empate de 180° e goldens matemáticos.
+`T105_SCOPE = ORIGINAL_FIXTURE_CONTRACT`.
 
-T103: PARTIAL. A API exige source em clip/track/keyframe, mas a suíte de testes ainda não compila após a remoção dos construtores antigos. O validator ainda possui caminhos que usam fallback global onde a especificação exige location de clip/track/keyframe.
+`tasks.md` atribui geometry/bones/cubes a T200, UV/PNG a T201, animation/playback/keyframes a T202 e oracle/limits a T204. `traceability.md` atribui FR-001/002/006/007/009 a T200, FR-003/014 a T202 e NFR-016/CON-004 de licensing a T105. `test-plan.md` define T105 como fixtures autorais, source JSON/PNG, mapping, expected e licença. Portanto T105 não exige um segundo parser fixture-only de ModelIR.
 
-T104: PASS local. A matriz table-driven cobre as lacunas identificadas e os testes do módulo passam.
+## Classificação
 
-T105: FAIL. O oracle GeckoLib real executa as quatro fixtures com 41/41 assertions PASS, mas o harness fixture-backed ainda contém invariants/diagnostics sintéticos, `Transform.identity()`/clips artificiais e mutation tests incompletos.
+T102: PASS.
+
+T103: PARTIAL — source obrigatória foi implementada, mas `clean check` ainda falha em call sites de testes antigos sem `SourceLocation`; há fallbacks de location que precisam de migração final.
+
+T104: PASS — matriz schema e paridade JSON/YAML passam.
+
+T105: PASS no escopo original — fixtures, provenance, manifest/hashes, mapping smoke e oracle S004 real estão cobertos; claims sintéticos de ModelIR foram removidos/rebaixados. Parsing completo permanece deferido.
 
 S004-F: [x]
 T100: [x]
@@ -26,7 +31,7 @@ T101: [x]
 T102: [x]
 T103: [~]
 T104: [x]
-T105: [~]
-T200 decision: bloqueada
+T105: [x]
+T200: [!] bloqueada
 
-T200 não foi implementada. O gate não pode ser aberto sem corrigir os testes quebrados de T103, remover os resultados sintéticos do harness T105, concluir mutation tests e obter Ubuntu/Windows verdes no mesmo SHA.
+T200 não foi implementada. A liberação depende de T103 com `clean check` verde, revisão final independente e CI Ubuntu/Windows verde no mesmo SHA.

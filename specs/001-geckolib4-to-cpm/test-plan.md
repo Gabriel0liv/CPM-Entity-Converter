@@ -79,3 +79,6 @@ Registrar versão CPM, sistema, fixture, hash output e pass/fail por AC-020–02
 
 Não iniciar Fase 1 antes de T007, S003, S001/S002, S004 e ADRs essenciais. Não
 publicar MVP sem fixtures A–C automatizadas e visuais.
+
+## Fase 1 boundary
+Fixture contracts do not duplicate production geometry or animation parsers. Those tests are assigned to T200/T201/T202/T204 by traceability.
