@@ -1,0 +1,13 @@
+{
+  "geometryId":"cpm:c","roots":["cpm:c/bone/0"],
+  "bones":[
+    {"id":"cpm:c/bone/0","name":"body","parent":null,"children":["cpm:c/bone/1"],"bindTranslation":[0,0,0],"cubeCount":1},
+    {"id":"cpm:c/bone/1","name":"spine","parent":"cpm:c/bone/0","children":["cpm:c/bone/2"],"bindTranslation":[0,-4,0],"cubeCount":1},
+    {"id":"cpm:c/bone/2","name":"chest","parent":"cpm:c/bone/1","children":["cpm:c/bone/3"],"bindTranslation":[0,-4,0],"cubeCount":1},
+    {"id":"cpm:c/bone/3","name":"neck","parent":"cpm:c/bone/2","children":["cpm:c/bone/4"],"bindTranslation":[0,-4,1],"cubeCount":1},
+    {"id":"cpm:c/bone/4","name":"head","parent":"cpm:c/bone/3","children":["cpm:c/bone/5","cpm:c/bone/6"],"bindTranslation":[0,-2,1],"cubeCount":1},
+    {"id":"cpm:c/bone/5","name":"jaw","parent":"cpm:c/bone/4","children":[],"bindTranslation":[0,1,1],"cubeCount":1},
+    {"id":"cpm:c/bone/6","name":"accessory","parent":"cpm:c/bone/4","children":[],"bindTranslation":[-2,-1,-1],"cubeCount":1,"cubeRotation":[12,0,27]}
+  ],
+  "scope":"T200 geometry-only; per-face UV remains raw for T201"
+}

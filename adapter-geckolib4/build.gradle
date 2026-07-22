@@ -1,1 +1,4 @@
-dependencies { api project(':converter-core'); api project(':converter-config') }
+dependencies {
+    api project(':converter-core')
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+}

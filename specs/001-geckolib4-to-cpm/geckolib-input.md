@@ -78,3 +78,15 @@ The following are outside the current evidence boundary:
 
 These limitations relate to T200–T204 and later phases. This document must be
 updated when a production adapter supplies new executable evidence.
+# Evidência T200
+
+O parser implementado aceita exclusivamente `format_version: "1.12.0"`,
+seleciona `description.identifier` por igualdade exata, preserva a ordem de
+bones/cubes e registra JSON pointers. Pivôs e rotações de bind são convertidos
+para a convenção do IR (`C(x,y,z)=(-x,-y,+z)` e graus `(-rx,-ry,+rz)`) antes da
+criação do quaternion ZYX. `inflate` de cube herda o valor do bone quando
+ausente; `mirror` do bone não é aplicado ao cube, conforme observado em
+`BakedModelFactory.constructCube` no checkout GeckoLib fixado.
+
+UV é apenas encaminhada como boundary bruto para T201. PNG, animações,
+keyframes, Molang, sampling e projeção CPM permanecem deferidos.

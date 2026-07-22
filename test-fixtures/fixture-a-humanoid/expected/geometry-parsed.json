@@ -1,0 +1,13 @@
+{
+  "geometryId": "cpm:a",
+  "roots": ["cpm:a/bone/0"],
+  "bones": [
+    {"id":"cpm:a/bone/0","name":"body","parent":null,"children":["cpm:a/bone/1","cpm:a/bone/2","cpm:a/bone/3","cpm:a/bone/4","cpm:a/bone/5"],"bindTranslation":[0,0,0],"cubeCount":1},
+    {"id":"cpm:a/bone/1","name":"head","parent":"cpm:a/bone/0","children":[],"bindTranslation":[0,-8,0],"cubeCount":1},
+    {"id":"cpm:a/bone/2","name":"left_arm","parent":"cpm:a/bone/0","children":[],"bindTranslation":[-3,-7,0],"cubeCount":1},
+    {"id":"cpm:a/bone/3","name":"right_arm","parent":"cpm:a/bone/0","children":[],"bindTranslation":[3,-7,0],"cubeCount":1},
+    {"id":"cpm:a/bone/4","name":"left_leg","parent":"cpm:a/bone/0","children":[],"bindTranslation":[-1,0,0],"cubeCount":1},
+    {"id":"cpm:a/bone/5","name":"right_leg","parent":"cpm:a/bone/0","children":[],"bindTranslation":[1,0,0],"cubeCount":1}
+  ],
+  "scope": "T200 geometry-only; raw UV forwarded to T201"
+}
