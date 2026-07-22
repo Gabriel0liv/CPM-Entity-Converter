@@ -139,7 +139,14 @@ public final class GeckoAnimationParser {
     JsonNode bonesNode = node.get("bones");
     double max = 0;
     if (bonesNode != null && !bonesNode.isObject()) {
-      bag = bag.add(diag(source, DiagnosticCodes.ANIM_PARSE_ERROR, "bones must be an object", ptr + "/bones", Map.of("clipId", id.value())));
+      bag =
+          bag.add(
+              diag(
+                  source,
+                  DiagnosticCodes.ANIM_PARSE_ERROR,
+                  "bones must be an object",
+                  ptr + "/bones",
+                  Map.of("clipId", id.value())));
     } else if (bonesNode != null) {
       for (Map.Entry<String, JsonNode> b : iterable(bonesNode.fields())) {
         ResolvedBone resolved = bones.get(b.getKey());
@@ -169,11 +176,26 @@ public final class GeckoAnimationParser {
           continue;
         }
         ChannelParse<Vec3d> pos =
-            parseChannel(channels.get("position"), source, bp + "/position", id, b.getKey(), false, "position");
+            parseChannel(
+                channels.get("position"),
+                source,
+                bp + "/position",
+                id,
+                b.getKey(),
+                false,
+                "position");
         ChannelParse<Vec3d> scale =
-            parseChannel(channels.get("scale"), source, bp + "/scale", id, b.getKey(), false, "scale");
+            parseChannel(
+                channels.get("scale"), source, bp + "/scale", id, b.getKey(), false, "scale");
         ChannelParse<Vec3d> rot =
-            parseChannel(channels.get("rotation"), source, bp + "/rotation", id, b.getKey(), true, "rotation");
+            parseChannel(
+                channels.get("rotation"),
+                source,
+                bp + "/rotation",
+                id,
+                b.getKey(),
+                true,
+                "rotation");
         bag = bag.addAll(pos.diagnostics).addAll(scale.diagnostics).addAll(rot.diagnostics);
         max = Math.max(max, Math.max(pos.maxTime, Math.max(scale.maxTime, rot.maxTime)));
         if (pos.channel == null && scale.channel == null && rot.rotation == null) continue;
@@ -202,7 +224,14 @@ public final class GeckoAnimationParser {
     tracks.sort(Comparator.comparingInt(t -> sourceIndex(bones, t.bone())));
     double duration = number(node.get("animation_length"));
     if (node.has("animation_length") && !node.get("animation_length").isNumber())
-      bag = bag.add(diag(source, DiagnosticCodes.ANIM_PARSE_ERROR, "animation_length must be a number", ptr + "/animation_length", Map.of("clipId", id.value())));
+      bag =
+          bag.add(
+              diag(
+                  source,
+                  DiagnosticCodes.ANIM_PARSE_ERROR,
+                  "animation_length must be a number",
+                  ptr + "/animation_length",
+                  Map.of("clipId", id.value())));
     else if (node.has("animation_length") && (!Double.isFinite(duration) || duration <= 0))
       bag =
           bag.add(
@@ -274,7 +303,13 @@ public final class GeckoAnimationParser {
   }
 
   private ChannelParse<Vec3d> parseChannel(
-      JsonNode node, SourcePath source, String ptr, ClipId clip, String bone, boolean rotation, String component) {
+      JsonNode node,
+      SourcePath source,
+      String ptr,
+      ClipId clip,
+      String bone,
+      boolean rotation,
+      String component) {
     if (node == null || node.isNull())
       return new ChannelParse<>(null, null, 0, new DiagnosticBag());
     DiagnosticBag bag = new DiagnosticBag();
@@ -284,13 +319,22 @@ public final class GeckoAnimationParser {
     Map<String, JsonNode> frames = new LinkedHashMap<>();
     if (node.isObject()) {
       if (node.has("lerp_mode")) {
-        bag = bag.add(diag(source, DiagnosticCodes.ANIM_LERP_MODE_IGNORED_449,
-            "lerp_mode ignored by GeckoLib 4.4.9", ptr + "/lerp_mode",
-            Map.of("clipId", clip.value(), "boneName", bone, "channel", component), Severity.WARNING));
+        bag =
+            bag.add(
+                diag(
+                    source,
+                    DiagnosticCodes.ANIM_LERP_MODE_IGNORED_449,
+                    "lerp_mode ignored by GeckoLib 4.4.9",
+                    ptr + "/lerp_mode",
+                    Map.of("clipId", clip.value(), "boneName", bone, "channel", component),
+                    Severity.WARNING));
       }
-      node.fields().forEachRemaining(e -> { if (!e.getKey().equals("lerp_mode")) frames.put(e.getKey(), e.getValue()); });
-    }
-    else frames.put("0", node);
+      node.fields()
+          .forEachRemaining(
+              e -> {
+                if (!e.getKey().equals("lerp_mode")) frames.put(e.getKey(), e.getValue());
+              });
+    } else frames.put("0", node);
     List<Map.Entry<String, JsonNode>> ordered = new ArrayList<>(frames.entrySet());
     ordered.sort(
         Comparator.comparingDouble(
@@ -367,19 +411,22 @@ public final class GeckoAnimationParser {
                         Severity.WARNING));
         }
       } else if (val.isObject() && val.has("vector")) chosen = val.get("vector");
-      if (chosen != null && chosen.isObject() && chosen.has("vector")) chosen = chosen.get("vector");
+      if (chosen != null && chosen.isObject() && chosen.has("vector"))
+        chosen = chosen.get("vector");
       Vec3d v = parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone);
       if (v == null) {
-        String code = chosen != null && chosen.isTextual()
-            ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
-            : DiagnosticCodes.ANIM_CHANNEL_INVALID;
+        String code =
+            chosen != null && chosen.isTextual()
+                ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
+                : DiagnosticCodes.ANIM_CHANNEL_INVALID;
         bag =
             bag.add(
                 diag(
                     source,
                     code,
                     code.equals(DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED)
-                        ? "String channel values are deferred to T203" : "Invalid channel value",
+                        ? "String channel values are deferred to T203"
+                        : "Invalid channel value",
                     ptr + "/" + esc(e.getKey()),
                     Map.of(
                         "clipId",
@@ -401,7 +448,10 @@ public final class GeckoAnimationParser {
     }
     if (rotation)
       return new ChannelParse<>(
-          rkeys.isEmpty() ? null : null, rkeys.isEmpty() ? null : new SourceRotationChannelIR(rkeys, RotationOrder.ZYX), max, bag);
+          rkeys.isEmpty() ? null : null,
+          rkeys.isEmpty() ? null : new SourceRotationChannelIR(rkeys, RotationOrder.ZYX),
+          max,
+          bag);
     if (keys.isEmpty()) return new ChannelParse<>(null, null, max, bag);
     return new ChannelParse<>(
         new ChannelIR<>(
@@ -469,7 +519,11 @@ public final class GeckoAnimationParser {
   }
 
   private static int sourceIndex(Map<String, ResolvedBone> bones, BoneId id) {
-    return bones.values().stream().filter(b -> b.id().equals(id)).mapToInt(ResolvedBone::sourceIndex).findFirst().orElse(Integer.MAX_VALUE);
+    return bones.values().stream()
+        .filter(b -> b.id().equals(id))
+        .mapToInt(ResolvedBone::sourceIndex)
+        .findFirst()
+        .orElse(Integer.MAX_VALUE);
   }
 
   private record ResolvedBone(BoneId id, int sourceIndex) {}
