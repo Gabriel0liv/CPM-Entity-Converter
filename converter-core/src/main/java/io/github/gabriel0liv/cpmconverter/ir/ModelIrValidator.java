@@ -244,6 +244,102 @@ public final class ModelIrValidator {
                       clip.id().value(),
                       track.source()));
         }
+        long sameBone = clip.tracks().stream().filter(t -> t.bone().equals(track.bone())).count();
+        if (sameBone > 1) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_INVALID_VALUE,
+                      "clip contains duplicate track for bone",
+                      Map.of(
+                          "field",
+                          "tracks",
+                          "clipId",
+                          clip.id().value(),
+                          "boneId",
+                          track.bone().value(),
+                          "reason",
+                          "duplicate track"),
+                      track.bone().value(),
+                      clip.id().value(),
+                      track.source()));
+        }
+        if (track.position() == null && track.rotation() == null && track.scale() == null) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_INVALID_VALUE,
+                      "track must contain a channel",
+                      Map.of(
+                          "field",
+                          "track",
+                          "clipId",
+                          clip.id().value(),
+                          "boneId",
+                          track.bone().value(),
+                          "reason",
+                          "empty track"),
+                      track.bone().value(),
+                      clip.id().value(),
+                      track.source()));
+        }
+        if (track.position() != null && !"position".equals(track.position().component())) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_INVALID_VALUE,
+                      "position component mismatch",
+                      Map.of(
+                          "field",
+                          "position.component",
+                          "clipId",
+                          clip.id().value(),
+                          "boneId",
+                          track.bone().value(),
+                          "reason",
+                          "component"),
+                      track.bone().value(),
+                      clip.id().value(),
+                      track.source()));
+        }
+        if (track.scale() != null && !"scale".equals(track.scale().component())) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_INVALID_VALUE,
+                      "scale component mismatch",
+                      Map.of(
+                          "field",
+                          "scale.component",
+                          "clipId",
+                          clip.id().value(),
+                          "boneId",
+                          track.bone().value(),
+                          "reason",
+                          "component"),
+                      track.bone().value(),
+                      clip.id().value(),
+                      track.source()));
+        }
+        if (track.rotation() != null && track.rotation().rotationOrder() != RotationOrder.ZYX) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_INVALID_VALUE,
+                      "rotation order must be ZYX",
+                      Map.of(
+                          "field",
+                          "rotationOrder",
+                          "clipId",
+                          clip.id().value(),
+                          "boneId",
+                          track.bone().value(),
+                          "reason",
+                          "rotation order"),
+                      track.bone().value(),
+                      clip.id().value(),
+                      track.source()));
+        }
         diagnostics = validateChannel(track.position(), clip.duration(), diagnostics, clip, track);
         diagnostics = validateRotation(track.rotation(), clip.duration(), diagnostics, clip, track);
         diagnostics = validateChannel(track.scale(), clip.duration(), diagnostics, clip, track);
