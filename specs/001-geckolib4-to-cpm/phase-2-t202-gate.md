@@ -2,31 +2,36 @@
 
 Date: 2026-07-22
 Commit base: 7706a58e857f2a3b4e4d5b8cdd10e4c705b88910
-Implementation commit: 080a6e02ff446e5ff7425f8937e05c671d66a4ba
-Integration test commit: fd8e96d
-Windows profile/CI: implemented in `.github/workflows/ci.yml`
-Windows workflow: not yet dispatched for T202
+Implementation branch: feature/t202-final
+Integrated HEAD: 2147b8478c645fe6d8552b1b4de627e78102ae93
+Intermediate workflow: 29955716041 (Windows PASS on 7686d48)
+Current workflow: pending for integrated HEAD
 
-## Implemented boundary
+## Implemented corrections
 
-The adapter accepts animation JSON baseline `1.8.0`, resolves exact clip and
-bone IDs, supports multiple files, playback modes, explicit/inferred duration,
-scalar/vector/timestamp channels, pre/post values, position basis conversion,
-source Euler rotation, scale channels, ignored event warnings and deferred
-Molang/easing diagnostics. `GeckoAnimatedModelAssembler` replaces only clips
-and revalidates ModelIR.
-
-Fixture A–D integration smoke exists in `GeckoAnimationParserTest`; local
-`clean check`, core tests and adapter tests pass.
+- tracks are ordered by the source order of `ModelIR.bones()`, not a hash map;
+- position and scale channels carry `position`/`scale` components and their
+  required modes;
+- `lerp_mode` emits the GeckoLib 4.4.9 warning without becoming a timestamp;
+- easing and easingArgs are rejected and deferred to T203;
+- textual values are classified as deferred Molang while structural values use
+  channel diagnostics;
+- pre/post vector forms are supported with GeckoLib precedence;
+- invalid bones/durations and empty tracks are rejected;
+- ModelIrValidator checks duplicate tracks, empty tracks, channel components and
+  ZYX rotation order;
+- focused A–D integration and semantic parser tests pass locally.
 
 ## Gate status
 
 T202: **[~] partial**
 
-The implementation still needs the dedicated parser/playback/channel test
-matrix, animation snapshots A/B, structured C/D assertions and a Windows CI run
-on the integrated T202 commit before `[x]` is justified.
+The parser corrections and local `clean check` pass, but the frozen checklist
+still lacks dedicated parametrized playback/duration/channel coverage, complete
+animation snapshots A/B and structured C/D assertions. T202 must remain partial
+until those evidence items and the Windows workflow for the integrated commit
+are complete.
 
-Deferred to T203: complete easing and Molang semantics.
-Deferred to T204: hostile/fuzz matrix and differential oracle.
+Deferred to T203: easing evaluation and Molang semantics.
+Deferred to T204: hostile/fuzz matrix, integrated limits and differential oracle.
 Deferred to T300/T400/T401/T402: CPM projection, sampling, lifecycle and pose mapping.
