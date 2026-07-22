@@ -3,6 +3,8 @@ package io.github.gabriel0liv.cpmconverter.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.gabriel0liv.cpmconverter.ir.*;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import io.github.gabriel0liv.cpmconverter.math.Transform;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ class ModelIndexConfigTest {
             List.of(),
             Transform.identity(),
             List.of(),
-            "fixture");
+            SourceLocation.of(new SourcePath("fixture")));
     var model =
         new ModelIR(
             new SourceDescriptor("fixture.geo.json", "geometry"),

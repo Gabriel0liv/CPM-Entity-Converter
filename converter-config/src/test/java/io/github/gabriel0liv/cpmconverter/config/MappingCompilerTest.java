@@ -3,6 +3,8 @@ package io.github.gabriel0liv.cpmconverter.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.gabriel0liv.cpmconverter.ir.*;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import io.github.gabriel0liv.cpmconverter.math.Transform;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ class MappingCompilerTest {
             List.of(),
             Transform.identity(),
             List.of(),
-            "fixture");
+            SourceLocation.of(new SourcePath("fixture")));
     var neck =
         new BoneIR(
             new BoneId("neck-id"),
@@ -27,7 +29,7 @@ class MappingCompilerTest {
             List.of(),
             Transform.identity(),
             List.of(),
-            "fixture");
+            SourceLocation.of(new SourcePath("fixture")));
     var clip = new AnimationClipIR(new ClipId("walk-id"), 1.0, PlaybackMode.LOOP, null, List.of());
     return new ModelIndex(
         new ModelIR(
@@ -117,10 +119,10 @@ class MappingCompilerTest {
   void ambiguousBoneFailsWithCandidates() {
     var one =
         new BoneIR(
-            new BoneId("a"), "same", null, List.of(), Transform.identity(), List.of(), "fixture");
+            new BoneId("a"), "same", null, List.of(), Transform.identity(), List.of(), SourceLocation.of(new SourcePath("fixture")));
     var two =
         new BoneIR(
-            new BoneId("b"), "same", null, List.of(), Transform.identity(), List.of(), "fixture");
+            new BoneId("b"), "same", null, List.of(), Transform.identity(), List.of(), SourceLocation.of(new SourcePath("fixture")));
     var model =
         new ModelIR(
             new SourceDescriptor("fixture.geo.json", "geometry"),
