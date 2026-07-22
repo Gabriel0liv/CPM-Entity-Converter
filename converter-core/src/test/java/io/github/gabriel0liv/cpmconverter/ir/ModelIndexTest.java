@@ -2,6 +2,8 @@ package io.github.gabriel0liv.cpmconverter.ir;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation;
+import io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath;
 import io.github.gabriel0liv.cpmconverter.math.Transform;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,15 @@ class ModelIndexTest {
         new GeometryId("g"),
         List.of(bones),
         List.of(bones[0].id()),
-        List.of(new AnimationClipIR(new ClipId("idle"), 1.0, PlaybackMode.LOOP, null, List.of())),
+        List.of(
+            new AnimationClipIR(
+                new ClipId("idle"),
+                1.0,
+                PlaybackMode.LOOP,
+                null,
+                List.of(),
+                List.of(),
+                SourceLocation.of(new SourcePath("fixture.animation.json")))),
         List.of(),
         List.of());
   }
