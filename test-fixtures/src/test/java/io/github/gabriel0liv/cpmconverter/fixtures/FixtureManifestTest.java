@@ -28,7 +28,7 @@ class FixtureManifestTest {
     assertTrue(status.contains("MappingCompiler") && status.contains("PASS"));
     assertTrue(status.contains("GeckoLib animation oracle") && status.contains("PASS"));
     Process process =
-        new ProcessBuilder("python", "scripts/manifest.py", "--check")
+        new ProcessBuilder("python", root.resolve("scripts/manifest.py").toString(), "--check")
             .directory(root.toFile())
             .redirectErrorStream(true)
             .start();
@@ -87,6 +87,10 @@ class FixtureManifestTest {
     Path current = Path.of(".").toAbsolutePath().normalize();
     if (Files.isDirectory(current.resolve("fixture-a-humanoid"))) {
       return current;
+    }
+    Path nested = current.resolve("test-fixtures");
+    if (Files.isDirectory(nested.resolve("fixture-a-humanoid"))) {
+      return nested;
     }
     Path parent = current.resolve("..").normalize();
     if (Files.isDirectory(parent.resolve("fixture-a-humanoid"))) {
