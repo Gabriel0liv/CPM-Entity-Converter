@@ -19,8 +19,17 @@ public final class ModelIrValidator {
     DiagnosticBag diagnostics = new DiagnosticBag();
     if (model == null) {
       return diagnostics.add(
-          error(DiagnosticCodes.INTERNAL_ERROR, "model is null", Map.of(), null, null));
+          error(
+              DiagnosticCodes.INTERNAL_ERROR,
+              "model is null",
+              Map.of(),
+              null,
+              SourceLocation.of(
+                  new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<input>"))));
     }
+    SourceLocation modelSource =
+        SourceLocation.of(
+            new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath(model.source().path()));
     Map<BoneId, BoneIR> bones = new LinkedHashMap<>();
     for (BoneIR bone : model.bones()) {
       if (bones.putIfAbsent(bone.id(), bone) != null) {
@@ -31,7 +40,7 @@ public final class ModelIrValidator {
                     "duplicate bone id",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
-                    null));
+                    modelSource));
       }
     }
     Set<BoneId> roots = new LinkedHashSet<>();
@@ -44,7 +53,7 @@ public final class ModelIrValidator {
                     "duplicate root",
                     Map.of("boneId", root.value()),
                     root.value(),
-                    null));
+                    modelSource));
       }
       BoneIR rootBone = bones.get(root);
       if (rootBone == null) {
@@ -55,7 +64,7 @@ public final class ModelIrValidator {
                     "root not found",
                     Map.of("boneId", root.value()),
                     root.value(),
-                    null));
+                    modelSource));
       } else if (rootBone.parent() != null) {
         diagnostics =
             diagnostics.add(
@@ -64,7 +73,7 @@ public final class ModelIrValidator {
                     "root has a parent",
                     Map.of("boneId", root.value(), "parentId", rootBone.parent().value()),
                     root.value(),
-                    null));
+                    rootBone.provenance()));
       }
     }
     for (BoneIR bone : model.bones()) {
@@ -78,7 +87,7 @@ public final class ModelIrValidator {
                       "parent not found",
                       Map.of("boneId", bone.id().value(), "parentId", bone.parent().value()),
                       bone.id().value(),
-                      null));
+                      bone.provenance()));
         } else if (!parent.children().contains(bone.id())) {
           diagnostics =
               diagnostics.add(
@@ -87,7 +96,7 @@ public final class ModelIrValidator {
                       "parent does not list child",
                       Map.of("boneId", bone.id().value(), "parentId", bone.parent().value()),
                       bone.id().value(),
-                      null));
+                      bone.provenance()));
         }
       }
       Set<BoneId> children = new LinkedHashSet<>();
@@ -100,7 +109,7 @@ public final class ModelIrValidator {
                       "duplicate child",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
-                      null));
+                      bone.provenance()));
         }
         BoneIR childBone = bones.get(child);
         if (childBone == null) {
@@ -111,7 +120,7 @@ public final class ModelIrValidator {
                       "child not found",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
-                      null));
+                      bone.provenance()));
         } else if (!bone.id().equals(childBone.parent())) {
           diagnostics =
               diagnostics.add(
@@ -120,7 +129,7 @@ public final class ModelIrValidator {
                       "child parent differs",
                       Map.of("parentId", bone.id().value(), "childId", child.value()),
                       bone.id().value(),
-                      null));
+                      bone.provenance()));
         }
       }
       for (CubeIR cube : bone.cubes()) {
@@ -132,7 +141,7 @@ public final class ModelIrValidator {
                       "cube bone not found",
                       Map.of("cubeId", cube.id().value(), "boneId", cube.bone().value()),
                       bone.id().value(),
-                      null));
+                      cube.provenance()));
         }
       }
     }
@@ -146,7 +155,7 @@ public final class ModelIrValidator {
                     "bone graph contains a cycle",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
-                    null));
+                    bone.provenance()));
       }
       if (!reachableFromRoots(bone.id(), bones, roots)) {
         diagnostics =
@@ -156,7 +165,7 @@ public final class ModelIrValidator {
                     "bone is unreachable from roots",
                     Map.of("boneId", bone.id().value()),
                     bone.id().value(),
-                    null));
+                    bone.provenance()));
       }
     }
     Set<CubeId> cubes = new LinkedHashSet<>();
@@ -171,7 +180,7 @@ public final class ModelIrValidator {
                       "duplicate cube id",
                       Map.of("cubeId", cube.id().value()),
                       bone.id().value(),
-                      null));
+                      cube.provenance()));
         }
       }
     }
@@ -385,7 +394,9 @@ public final class ModelIrValidator {
   private Diagnostic error(
       String code, String message, Map<String, String> context, String bone, String clip) {
     String suggestion = suggestionFor(code);
-    SourceLocation location = null;
+    SourceLocation location =
+        SourceLocation.of(
+            new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("<model>"));
     return new Diagnostic(
         Severity.ERROR,
         DiagnosticCode.fromCatalog(code),
@@ -394,6 +405,23 @@ public final class ModelIrValidator {
         suggestion,
         bone,
         clip,
+        new TreeMap<>(context));
+  }
+
+  private Diagnostic error(
+      String code,
+      String message,
+      Map<String, String> context,
+      String bone,
+      SourceLocation location) {
+    return new Diagnostic(
+        Severity.ERROR,
+        DiagnosticCode.fromCatalog(code),
+        location,
+        message,
+        suggestionFor(code),
+        bone,
+        null,
         new TreeMap<>(context));
   }
 

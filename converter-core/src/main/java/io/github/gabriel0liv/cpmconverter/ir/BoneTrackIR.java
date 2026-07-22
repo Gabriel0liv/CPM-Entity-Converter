@@ -12,17 +12,7 @@ public record BoneTrackIR(
     TransformSpace space,
     SourceLocation source) {
   public BoneTrackIR {
-    if (bone == null || mode == null || space == null) throw new IllegalArgumentException("track");
-  }
-
-  /** Compatibility constructor for test fixtures; production boundaries provide source. */
-  public BoneTrackIR(
-      BoneId bone,
-      ChannelIR<Vec3d> position,
-      SourceRotationChannelIR rotation,
-      ChannelIR<Vec3d> scale,
-      TransformMode mode,
-      TransformSpace space) {
-    this(bone, position, rotation, scale, mode, space, null);
+    if (bone == null || mode == null || space == null || source == null)
+      throw new IllegalArgumentException("track");
   }
 }
