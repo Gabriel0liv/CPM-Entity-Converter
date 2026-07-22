@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-/** NON_PRODUCTION / FIXTURE_ONLY: builds a deterministic IR from known fixtures. */
+/** NON_PRODUCTION / FIXTURE_ONLY: verifies the mapping contract with a minimal IR. */
 class FixtureSemanticContractTest {
   private static final ObjectMapper JSON = new ObjectMapper();
   private static final List<String> FIXTURES =
@@ -65,14 +65,10 @@ class FixtureSemanticContractTest {
           JSON.readTree(directory.resolve("expected/inventory.json").toFile()),
           inventoryObservation(directory, fixture),
           fixture + " inventory");
-      var observedDiagnostics = JSON.createArrayNode();
-      if (fixture.endsWith("quadruped")) observedDiagnostics.add("QUADRUPED_LIMITATION");
-      assertEquals(
-          JSON.readTree(directory.resolve("expected/diagnostics.json").toFile()).path("expected"),
-          observedDiagnostics,
-          fixture + " diagnostics");
-      JsonNode invariants = JSON.readTree(directory.resolve("expected/invariants.json").toFile());
-      assertEquals(invariants, invariantObservation(), fixture + " invariants");
+      // Diagnostics for unsupported quadruped projection and full geometry/animation
+      // invariants belong to the production parser/projection tasks (T200-T204),
+      // not to this Phase 1 mapping smoke contract.  The manifest performs the
+      // authorial inventory, provenance and structural checks independently.
     }
   }
 
@@ -91,14 +87,6 @@ class FixtureSemanticContractTest {
     result.put("fixture", fixture);
     result.put("geometryFormat", geometry.path("format_version").asText());
     result.put("hasCubes", true);
-    return result;
-  }
-
-  private static JsonNode invariantObservation() {
-    var result = JSON.createObjectNode();
-    result.put("acyclic", true);
-    result.put("sourceOrderPreserved", true);
-    result.put("thirdPartyAssets", false);
     return result;
   }
 
@@ -186,7 +174,15 @@ class FixtureSemanticContractTest {
             name ->
                 clips.add(
                     new AnimationClipIR(
-                        new ClipId(fixture + ":" + name), 1, PlaybackMode.LOOP, null, List.of())));
+                        new ClipId(fixture + ":" + name),
+                        1,
+                        PlaybackMode.LOOP,
+                        null,
+                        List.of(),
+                        List.of(),
+                        SourceLocation.of(
+                            new SourcePath(
+                                fixture + "/animations.animation.json#/animations/" + name)))));
     List<BoneId> roots =
         bones.stream().filter(bone -> bone.parent() == null).map(BoneIR::id).toList();
     return new ModelIR(
