@@ -1,6 +1,5 @@
 package io.github.gabriel0liv.cpmconverter.projection;
 
-import io.github.gabriel0liv.cpmconverter.ir.*;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 
 public record CpmLogicalCubeV1(
@@ -10,7 +9,7 @@ public record CpmLogicalCubeV1(
     Vec3d meshScale,
     boolean texture,
     int textureSize,
-    UvIR uv,
+    CpmUvV1 uv,
     String color,
     boolean mirror,
     double mcScale,
@@ -19,7 +18,17 @@ public record CpmLogicalCubeV1(
     boolean glow,
     boolean recolor) {
   public CpmLogicalCubeV1 {
-    if (offset == null || size == null || uv == null || color == null)
-      throw new IllegalArgumentException("cube");
+    if (offset == null
+        || size == null
+        || renderScale == null
+        || meshScale == null
+        || uv == null
+        || color == null
+        || color.isBlank()
+        || textureSize <= 0
+        || !Double.isFinite(mcScale)
+        || size.x() < 0
+        || size.y() < 0
+        || size.z() < 0) throw new IllegalArgumentException("cube");
   }
 }
