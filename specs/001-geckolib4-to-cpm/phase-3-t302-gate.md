@@ -1,26 +1,35 @@
 # Fase 3 — Gate T302
 
-Status: **[~] implementation and CI green; fixture evidence pending**
+Status: **[x] PASS**
 
-Commit-base: `6218272b12be5f645dfb9bc6dcf0be694ae3a665`
-Branch: `feature/t302-deterministic-cpm-writer`
+Base: `f9e7330a03612cd4cc502f9c05ea8639dfcfdf02`
+Implementation: `022746e` (integrated in `075599f`)
+P3.06 evidence: `ace201f` (integrated in `f9e7330`)
+P3.07 acceptance evidence: `a318cb9`
+Integration HEAD reviewed: `a318cb936dfc0ae56f71a100573e0295d050624f`
 
-Implementation commit: `022746e`; integration HEAD: `075599f42eda780606f3cabbb0851e520d7e3b87`.
-P3.06 evidence branch: `feature/t302-final-evidence`.
+The writer emits canonical CPM V1 JSON and a two-entry deterministic ZIP
+(`config.json`, `skin.png`) with DEFLATED entries, fixed 1980-01-01 metadata,
+Locale.ROOT face labels, and byte-preserved texture content. The timezone test
+compares complete ZIP bytes under UTC, Europe/Lisbon and
+America/Los_Angeles. Any extended timestamp normalization is structural and
+limited to local/central ZIP headers; compressed payload bytes are never
+scanned. A payload containing the former byte sequence is covered by the test.
 
-Implementation: `CpmProjectWriteRequest`, `CpmProjectArtifact`,
-`CpmProjectWriter`, canonical JSON e ZIP determinístico no módulo `writer-cpm`.
-O writer reutiliza os IDs T301, serializa seis roots, elementos, box/per-face
-UV e copia `skin.png` byte a byte. A publicação, validação persistida e
-animações permanecem deferidas para T601/T303/T304/T402.
+Acceptance evidence:
 
-Local `clean check` and writer tests pass. Final Windows workflow run
-`30015748381`, job `89235162931`, HEAD `075599f42eda780606f3cabbb0851e520d7e3b87`:
-**PASS**.
+- A/C real pipelines parse geometry, PNG, animations, mapping, projection,
+  store-ID assignment and writer output; canonical config and artifact-manifest
+  goldens are versioned.
+- B/D real pipelines are smoke-tested for successful output, two entries,
+  texture byte parity and repeat-run artifact byte equality.
+- `CpmArtifactInspector` is test-only, checks entry order, names, method,
+  fixed time, uncompressed size, CRC and defensive content copies.
+- Graph/JSON element count and registry/store-ID count parity are asserted;
+  config contains no absolute paths or runtime-only IDs.
+- `clean check`, reproducible build, fixture manifest, S004 audit and frozen
+  Gecko oracle pass locally. Final Windows workflow `30024467639`, job
+  `89265258610`, HEAD `a318cb936dfc0ae56f71a100573e0295d050624f`: **PASS**.
 
-P3.06 adds `setTimeLocal`, timezone normalization, `Locale.ROOT`, ZIP
-inspector tests, canonical JSON tests and facade failure tests.
-
-Ainda pendentes para fechar T302: golden config/artifact manifests A/C, smoke
-pipeline B/D e atualização do fixture manifest. T302 permanece `[~]`; T303 e
-T304 continuam `[ ]`.
+T302 is closed. T303 artifact validation, T304 ProjectIO and later publication
+remain deferred. T301 store-ID assignment is consumed but not changed here.
