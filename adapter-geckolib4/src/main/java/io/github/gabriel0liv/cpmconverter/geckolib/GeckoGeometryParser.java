@@ -79,7 +79,10 @@ public final class GeckoGeometryParser {
           content.length);
     }
     try {
-      JsonNode root = JSON.readTree(content);
+      Result<JsonNode> bounded =
+          new BoundedJsonReader().read(content, source, safe.limits().maxNestingDepth());
+      if (!bounded.success()) return Result.failure(bounded.diagnostics());
+      JsonNode root = bounded.value();
       if (root == null || !root.isObject()) {
         return failure(
             location(source, "/"),
@@ -98,7 +101,7 @@ public final class GeckoGeometryParser {
             jsonDepth(root, 0));
       }
       return parseRoot(root, source, safe);
-    } catch (IOException exception) {
+    } catch (RuntimeException exception) {
       return failure(
           location(source, ""),
           DiagnosticCodes.INPUT_PARSE_ERROR,

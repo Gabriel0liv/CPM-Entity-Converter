@@ -42,6 +42,7 @@ public final class GeckoAnimationParser {
                   "observed",
                   Integer.toString(inputs.size()))));
     Map<ClipId, AnimationClipIR> clips = new TreeMap<>(Comparator.comparing(ClipId::value));
+    long declaredClips = 0;
     Map<String, ResolvedBone> bones = new LinkedHashMap<>();
     for (int i = 0; i < model.bones().size(); i++) {
       BoneIR b = model.bones().get(i);
@@ -71,7 +72,17 @@ public final class GeckoAnimationParser {
       }
       JsonNode root;
       try {
-        root = JSON.readTree(Files.readAllBytes(input.path()));
+        Result<JsonNode> bounded =
+            new BoundedJsonReader()
+                .read(
+                    Files.readAllBytes(input.path()),
+                    input.logicalSource(),
+                    limits.maxNestingDepth());
+        if (!bounded.success()) {
+          bag = bag.addAll(bounded.diagnostics());
+          continue;
+        }
+        root = bounded.value();
       } catch (IOException e) {
         bag =
             bag.add(
@@ -119,9 +130,39 @@ public final class GeckoAnimationParser {
         continue;
       }
       Iterator<Map.Entry<String, JsonNode>> it = animations.fields();
+      declaredClips += animations.size();
+      if (declaredClips > limits.maxClips()) {
+        bag =
+            bag.add(
+                diag(
+                    input.logicalSource(),
+                    DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                    "Too many declared clips",
+                    "/animations",
+                    Map.of(
+                        "limitName",
+                        "maxClips",
+                        "limit",
+                        Integer.toString(limits.maxClips()),
+                        "observed",
+                        Long.toString(declaredClips))));
+        continue;
+      }
       while (it.hasNext()) {
         Map.Entry<String, JsonNode> e = it.next();
         ClipId id;
+        if (e.getKey().length() > limits.maxStringLength()) {
+          bag =
+              bag.add(
+                  limitDiag(
+                      input.logicalSource(),
+                      "/animations/" + esc(e.getKey()),
+                      "maxStringLength",
+                      limits.maxStringLength(),
+                      e.getKey().length(),
+                      "Clip id exceeds configured string limit"));
+          continue;
+        }
         try {
           id = new ClipId(e.getKey());
         } catch (IllegalArgumentException ex) {
@@ -194,6 +235,7 @@ public final class GeckoAnimationParser {
     Playback playback = playback(node.get("loop"), source, ptr, id);
     bag = bag.addAll(playback.diagnostics);
     List<BoneTrackIR> tracks = new ArrayList<>();
+    long[] totalKeyframes = {0};
     JsonNode bonesNode = node.get("bones");
     double max = 0;
     if (bonesNode != null && !bonesNode.isObject()) {
@@ -206,7 +248,7 @@ public final class GeckoAnimationParser {
                   ptr + "/bones",
                   Map.of("clipId", id.value())));
     } else if (bonesNode != null) {
-      if (bonesNode.size() > limits.maxBonesPerClip())
+      if (bonesNode.size() > limits.maxBonesPerClip()) {
         bag =
             bag.add(
                 diag(
@@ -221,7 +263,21 @@ public final class GeckoAnimationParser {
                         Integer.toString(limits.maxBonesPerClip()),
                         "observed",
                         Integer.toString(bonesNode.size()))));
+        return new ParseClip(null, bag);
+      }
       for (Map.Entry<String, JsonNode> b : iterable(bonesNode.fields())) {
+        if (b.getKey().length() > limits.maxStringLength()) {
+          bag =
+              bag.add(
+                  limitDiag(
+                      source,
+                      ptr + "/bones/" + esc(b.getKey()),
+                      "maxStringLength",
+                      limits.maxStringLength(),
+                      b.getKey().length(),
+                      "Bone name exceeds configured string limit"));
+          continue;
+        }
         ResolvedBone resolved = bones.get(b.getKey());
         BoneId bone = resolved == null ? null : resolved.id();
         String bp = ptr + "/bones/" + esc(b.getKey());
@@ -256,10 +312,20 @@ public final class GeckoAnimationParser {
                 id,
                 b.getKey(),
                 false,
-                "position");
+                "position",
+                limits,
+                totalKeyframes);
         ChannelParse<Vec3d> scale =
             parseChannel(
-                channels.get("scale"), source, bp + "/scale", id, b.getKey(), false, "scale");
+                channels.get("scale"),
+                source,
+                bp + "/scale",
+                id,
+                b.getKey(),
+                false,
+                "scale",
+                limits,
+                totalKeyframes);
         ChannelParse<Vec3d> rot =
             parseChannel(
                 channels.get("rotation"),
@@ -268,7 +334,9 @@ public final class GeckoAnimationParser {
                 id,
                 b.getKey(),
                 true,
-                "rotation");
+                "rotation",
+                limits,
+                totalKeyframes);
         bag = bag.addAll(pos.diagnostics).addAll(scale.diagnostics).addAll(rot.diagnostics);
         max = Math.max(max, Math.max(pos.maxTime, Math.max(scale.maxTime, rot.maxTime)));
         if (pos.channel == null && scale.channel == null && rot.rotation == null) continue;
@@ -382,7 +450,9 @@ public final class GeckoAnimationParser {
       ClipId clip,
       String bone,
       boolean rotation,
-      String component) {
+      String component,
+      AnimationParserLimits limits,
+      long[] totalKeyframes) {
     if (node == null || node.isNull())
       return new ChannelParse<>(null, null, 0, new DiagnosticBag());
     DiagnosticBag bag = new DiagnosticBag();
@@ -408,6 +478,47 @@ public final class GeckoAnimationParser {
                 if (!e.getKey().equals("lerp_mode")) frames.put(e.getKey(), e.getValue());
               });
     } else frames.put("0", node);
+    long declared = frames.size();
+    if (declared > limits.maxKeyframesPerChannel())
+      return new ChannelParse<>(
+          null,
+          null,
+          0,
+          new DiagnosticBag()
+              .add(
+                  diag(
+                      source,
+                      DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                      "Too many keyframes in channel",
+                      ptr,
+                      Map.of(
+                          "limitName",
+                          "maxKeyframesPerChannel",
+                          "limit",
+                          Integer.toString(limits.maxKeyframesPerChannel()),
+                          "observed",
+                          Long.toString(declared)))));
+    long next = totalKeyframes[0] + declared;
+    if (next > limits.maxTotalKeyframes())
+      return new ChannelParse<>(
+          null,
+          null,
+          0,
+          new DiagnosticBag()
+              .add(
+                  diag(
+                      source,
+                      DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                      "Too many total keyframes",
+                      ptr,
+                      Map.of(
+                          "limitName",
+                          "maxTotalKeyframes",
+                          "limit",
+                          Integer.toString(limits.maxTotalKeyframes()),
+                          "observed",
+                          Long.toString(next)))));
+    totalKeyframes[0] = next;
     List<Map.Entry<String, JsonNode>> ordered = new ArrayList<>(frames.entrySet());
     ordered.sort(
         Comparator.comparingDouble(
@@ -420,6 +531,18 @@ public final class GeckoAnimationParser {
             }));
     Set<Double> seenTimes = new HashSet<>();
     for (Map.Entry<String, JsonNode> e : ordered) {
+      if (e.getKey().length() > limits.maxStringLength()) {
+        bag =
+            bag.add(
+                limitDiag(
+                    source,
+                    ptr + "/" + esc(e.getKey()),
+                    "maxStringLength",
+                    limits.maxStringLength(),
+                    e.getKey().length(),
+                    "Timestamp exceeds configured string limit"));
+        continue;
+      }
       double time;
       try {
         time = Double.parseDouble(e.getKey());
@@ -461,7 +584,14 @@ public final class GeckoAnimationParser {
       if (val.isObject() && (val.has("easing") || val.has("easingArgs"))) {
         Result<EasingIR> ep =
             new GeckoEasingParser()
-                .parse(val, source, ptr + "/" + esc(e.getKey()), clip.value(), bone, component);
+                .parse(
+                    val,
+                    source,
+                    ptr + "/" + esc(e.getKey()),
+                    clip.value(),
+                    bone,
+                    component,
+                    limits);
         bag = bag.addAll(ep.diagnostics());
         if (ep.success()) easing = ep.value();
       }
@@ -486,7 +616,7 @@ public final class GeckoAnimationParser {
       if (chosen != null && chosen.isObject() && chosen.has("vector"))
         chosen = chosen.get("vector");
       VectorResult vr =
-          parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone, component);
+          parseVector(chosen, source, ptr + "/" + esc(e.getKey()), clip, bone, component, limits);
       Vec3d v = vr.value;
       bag = bag.addAll(vr.diagnostics);
       if (v == null) {
@@ -542,9 +672,28 @@ public final class GeckoAnimationParser {
   }
 
   private VectorResult parseVector(
-      JsonNode n, SourcePath s, String p, ClipId c, String b, String channel) {
+      JsonNode n,
+      SourcePath s,
+      String p,
+      ClipId c,
+      String b,
+      String channel,
+      AnimationParserLimits limits) {
     if (n == null || n.isNull()) return new VectorResult(null, null, new DiagnosticBag());
     if (n.isTextual()) {
+      if (n.textValue().length() > limits.maxMolangExpressionLength())
+        return new VectorResult(
+            null,
+            DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+            new DiagnosticBag()
+                .add(
+                    limitDiag(
+                        s,
+                        p,
+                        "maxMolangExpressionLength",
+                        limits.maxMolangExpressionLength(),
+                        n.textValue().length(),
+                        "Molang expression exceeds configured string limit")));
       Result<Double> r =
           new ConstantMolangEvaluator()
               .evaluate(
@@ -573,6 +722,19 @@ public final class GeckoAnimationParser {
       for (int i = 0; i < 3; i++) {
         JsonNode x = n.get(i);
         if (x.isTextual()) {
+          if (x.textValue().length() > limits.maxMolangExpressionLength())
+            return new VectorResult(
+                null,
+                DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                new DiagnosticBag()
+                    .add(
+                        limitDiag(
+                            s,
+                            p + "/" + i,
+                            "maxMolangExpressionLength",
+                            limits.maxMolangExpressionLength(),
+                            x.textValue().length(),
+                            "Molang expression exceeds configured string limit")));
           Result<Double> r =
               new ConstantMolangEvaluator()
                   .evaluate(
@@ -711,6 +873,18 @@ public final class GeckoAnimationParser {
   private static Diagnostic diag(
       SourcePath s, String code, String msg, String ptr, Map<String, String> ctx) {
     return diag(s, code, msg, ptr, ctx, Severity.ERROR);
+  }
+
+  private static Diagnostic limitDiag(
+      SourcePath source, String pointer, String name, long limit, long observed, String message) {
+    return diag(
+        source,
+        DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+        message,
+        pointer,
+        Map.of(
+            "limitName", name, "limit", Long.toString(limit), "observed", Long.toString(observed)),
+        Severity.ERROR);
   }
 
   private static Diagnostic diag(
