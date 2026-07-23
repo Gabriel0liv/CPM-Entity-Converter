@@ -6,14 +6,32 @@ import java.util.*;
 import java.util.zip.*;
 
 public final class CpmZipContainerReader {
-  public Result<CpmArtifactInventory> read(byte[] bytes, CpmArtifactLimits limits) {
-    if(bytes==null||bytes.length>limits.maxArtifactBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"<artifact>","artifact size limit exceeded"));
-    ArrayList<CpmArtifactEntry> out=new ArrayList<>(); Set<String> names=new HashSet<>(); long total=0;
-    try(ZipInputStream in=new ZipInputStream(new ByteArrayInputStream(bytes))){ ZipEntry e; int p=0; while((e=in.getNextEntry())!=null){ if(e.isDirectory()||!safe(e.getName(),limits.maxEntryNameLength())) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_UNSAFE,e.getName(),"unsafe entry")); if(!names.add(e.getName().toLowerCase(Locale.ROOT))) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_DUPLICATE,e.getName(),"duplicate entry")); ByteArrayOutputStream b=new ByteArrayOutputStream(); in.transferTo(b); total+=b.size(); if(b.size()>limits.maxEntryUncompressedBytes()||total>limits.maxTotalUncompressedBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,e.getName(),"uncompressed limit exceeded")); out.add(new CpmArtifactEntry(e.getName(),e.getMethod(),e.getTime(),e.getCompressedSize(),b.size(),e.getCrc(),false,p++)); } }
-    catch(IOException ex){ return Result.failure(error(DiagnosticCodes.CPM_CONTAINER_INVALID,"<artifact>","invalid ZIP")); }
-    if(names.stream().noneMatch("config.json"::equals)) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_MISSING,"<artifact>","config.json is required"));
-    return Result.success(new CpmArtifactInventory(out));
+  record CpmReadArtifact(CpmArtifactInventory inventory, Map<String, byte[]> entries) {
+    CpmReadArtifact { entries = Collections.unmodifiableMap(new LinkedHashMap<>(entries)); }
   }
-  private static boolean safe(String n,int max){return n!=null&&!n.isBlank()&&n.length()<=max&&!n.startsWith("/")&&!n.contains("\\")&&!n.contains("..")&&!n.endsWith("/");}
-  private static Diagnostic error(String code,String source,String message){return new Diagnostic(Severity.ERROR,DiagnosticCode.fromCatalog(code),SourceLocation.of(new SourcePath(source)),message,"repair the artifact",null,null,new TreeMap<>());}
+  public Result<CpmArtifactInventory> read(byte[] bytes, CpmArtifactLimits limits) { return readArtifact(bytes, limits).map(CpmReadArtifact::inventory); }
+  Result<CpmReadArtifact> readArtifact(byte[] bytes, CpmArtifactLimits limits) {
+    if (bytes == null || bytes.length == 0) return Result.failure(error(DiagnosticCodes.CPM_CONTAINER_INVALID, "<artifact>", "empty artifact"));
+    if (bytes.length > limits.maxArtifactBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, "<artifact>", "artifact size limit exceeded"));
+    var metadata = new ArrayList<CpmArtifactEntry>(); var entries = new LinkedHashMap<String, byte[]>(); var names = new HashSet<String>(); long total = 0;
+    try (var in = new ZipInputStream(new ByteArrayInputStream(bytes))) {
+      ZipEntry e; int position = 0;
+      while ((e = in.getNextEntry()) != null) {
+        if (position >= limits.maxEntries()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, "<artifact>", "entry count limit exceeded"));
+        String name = e.getName();
+        if (e.isDirectory() || !safe(name, limits.maxEntryNameLength())) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_UNSAFE, name == null ? "<artifact>" : name, "unsafe entry name"));
+        if (!names.add(name.toLowerCase(Locale.ROOT))) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_DUPLICATE, name, "duplicate entry"));
+        if (!(e.getMethod() == ZipEntry.STORED || e.getMethod() == ZipEntry.DEFLATED)) return Result.failure(error(DiagnosticCodes.CPM_CONTAINER_INVALID, name, "unsupported compression method"));
+        var out = new ByteArrayOutputStream(); byte[] buffer = new byte[8192]; int read; long observed = 0;
+        while ((read = in.read(buffer)) != -1) { observed += read; total += read; if (observed > limits.maxEntryUncompressedBytes() || total > limits.maxTotalUncompressedBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, name, "uncompressed limit exceeded")); out.write(buffer, 0, read); }
+        byte[] value = out.toByteArray(); entries.put(name, value); metadata.add(new CpmArtifactEntry(name, e.getMethod(), e.getTime(), e.getCompressedSize(), value.length, e.getCrc(), false, position++));
+      }
+    } catch (IOException ex) { return Result.failure(error(DiagnosticCodes.CPM_CONTAINER_INVALID, "<artifact>", "invalid ZIP container")); }
+    if (!entries.containsKey("config.json")) return Result.failure(error(DiagnosticCodes.CPM_ENTRY_MISSING, "<artifact>", "config.json is required"));
+    for (String name : entries.keySet()) if (!recognized(name)) return Result.failure(error(DiagnosticCodes.CPM_FEATURE_UNSUPPORTED, name, "unsupported artifact entry"));
+    return Result.success(new CpmReadArtifact(new CpmArtifactInventory(metadata), entries));
+  }
+  private static boolean recognized(String name) { return name.equals("config.json") || name.equals("skin.png") || (name.startsWith("animations/") && name.endsWith(".json") && !name.substring(11).contains("/")); }
+  private static boolean safe(String name, int max) { if (name == null || name.isBlank() || name.length() > max || name.indexOf('\0') >= 0 || name.startsWith("/") || name.startsWith("\\") || name.contains("\\") || name.endsWith("/")) return false; if (name.matches("^[A-Za-z]:.*")) return false; for (String segment : name.split("/", -1)) if (segment.isEmpty() || segment.equals("..")) return false; return true; }
+  private static Diagnostic error(String code, String source, String message) { return new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(code), SourceLocation.of(new SourcePath(source)), message, "repair the artifact", null, null, new TreeMap<>()); }
 }
