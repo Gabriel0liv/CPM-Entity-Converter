@@ -121,3 +121,5 @@ The phase-three projection boundary is isolated in `projection-cpm`: it consumes
 validated ModelIR and SemanticRigMap and produces an in-memory logical CPM V1
 graph. T301 adds immutable numeric store-ID assignments and resolved indexes;
 JSON/ZIP persistence remains deferred to T302.
+`writer-cpm` consumes the identified projection and returns an in-memory
+deterministic artifact; it has no CPM runtime dependency or publication logic.
