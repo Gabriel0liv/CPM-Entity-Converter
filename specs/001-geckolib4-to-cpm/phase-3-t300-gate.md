@@ -3,7 +3,8 @@
 Commit base: `3edfb6d9b4f894acea5708249466557984bddcd5`
 Integration branch: `integration/phase3`
 Implementation commit: `89cecbf41db6cea422cba7e44eb3749adb320b0e`
-Integrated HEAD: `ff44e60fa1e083ab80ad8dde7cdf72ee276f982b`
+Final evidence commit: `51a314f8e3a5ff61531a9fde1c2ae19c8cdb4176`
+Integrated HEAD: `f15f70c76835fe9eeadd964346340d5c0ce90249`
 
 Implemented evidence:
 
@@ -19,9 +20,15 @@ Implemented evidence:
 - skin/default/slim and deferred modelScale/verticalOffset preconditions;
 - logical validator and focused root/hierarchy tests;
 - local `clean check`, manifest, S004 audit and frozen oracle pass.
+- CPM-owned UV types now replace `UvIR` in the logical graph; box UV validates
+  integral coordinates and cube sizes, while per-face UV preserves signed
+  endpoints and canonical face order with UP/DOWN `ROT_180`.
+- Authored pivots are resolved recursively with memoization, independent of
+  ModelIR list order. Node origins retain source IDs and `SourceLocation`; final
+  projection indexes are rebuilt in ModelIR bone/cube order.
+- Focused UV and pivot-resolver tests pass.
 
-Windows workflow: run `29988754306`, HEAD
-`ff44e60fa1e083ab80ad8dde7cdf72ee276f982b`, job `89146467746`, PASS.
+Windows workflow: initial run `29988754306`, HEAD `ff44e60fa1e083ab80ad8dde7cdf72ee276f982b`, job `89146467746`, PASS. Final run `29990193595`, HEAD `f15f70c76835fe9eeadd964346340d5c0ce90249`, job `89151011633`, PASS.
 
 T300: **[~] in progress**
 
