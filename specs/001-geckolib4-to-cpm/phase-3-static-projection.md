@@ -16,6 +16,13 @@ by summing local translations without applying parent rotation or scale. Static
 quaternions are decomposed to ZYX Euler degrees. Box and per-face UV are carried
 to the logical graph with signed dimensions and mirror/inflate preserved.
 
+The graph now uses CPM-owned UV types (`CpmBoxUvV1`, `CpmPerFaceUvV1` and
+`CpmFaceUvV1`) rather than leaking `UvIR`. Box UV is integral-only; per-face
+endpoints preserve signed width/height and UP/DOWN use ROT_180. Missing faces
+remain missing. `AuthoredPivotResolver` memoizes parent resolution, so source
+list order cannot change authored pivots. `CpmNodeOrigin` carries source IDs and
+locations, and index maps are rebuilt in ModelIR bone/cube order.
+
 `CpmProjectionIndex` maps every BoneId and CubeId to logical targets and records
 helpers without assigning numeric store IDs. T301 will assign persisted IDs;
 T302 will write the project; T303 will validate the persisted artifact.

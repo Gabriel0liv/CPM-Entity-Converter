@@ -4,6 +4,30 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.*;
 import java.util.*;
 
 public final class CpmLogicalProjectionValidator {
+  public DiagnosticBag validate(
+      CpmStaticProjection projection,
+      Set<io.github.gabriel0liv.cpmconverter.ir.BoneId> expectedBones,
+      Set<io.github.gabriel0liv.cpmconverter.ir.CubeId> expectedCubes) {
+    DiagnosticBag bag = validate(projection);
+    if (projection != null) {
+      if (!projection.index().boneTargets().keySet().equals(expectedBones))
+        bag =
+            bag.add(
+                Diagnostic.of(
+                    Severity.ERROR,
+                    DiagnosticCode.fromCatalog(DiagnosticCodes.CPM_VALIDATION_FAILED),
+                    "bone target index does not match source"));
+      if (!projection.index().cubeTargets().keySet().equals(expectedCubes))
+        bag =
+            bag.add(
+                Diagnostic.of(
+                    Severity.ERROR,
+                    DiagnosticCode.fromCatalog(DiagnosticCodes.CPM_VALIDATION_FAILED),
+                    "cube target index does not match source"));
+    }
+    return bag;
+  }
+
   public DiagnosticBag validate(CpmStaticProjection projection) {
     DiagnosticBag bag = new DiagnosticBag();
     if (projection == null || projection.project() == null)

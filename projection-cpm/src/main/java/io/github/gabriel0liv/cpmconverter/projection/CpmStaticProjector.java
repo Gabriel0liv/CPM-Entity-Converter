@@ -59,6 +59,13 @@ public final class CpmStaticProjector {
                   Integer.toString(model.textures().size()),
                   "expected",
                   "1")));
+    CpmUvProjector uvProjector = new CpmUvProjector();
+    for (var sourceBone : model.bones()) {
+      for (var sourceCube : sourceBone.cubes()) {
+        Result<CpmUvV1> uv = uvProjector.project(sourceCube);
+        if (!uv.success()) return Result.failure(uv.diagnostics());
+      }
+    }
     String skin = mapping.skin() == null ? "default" : mapping.skin().toLowerCase(Locale.ROOT);
     if (!skin.equals("default") && !skin.equals("slim"))
       return Result.failure(
@@ -75,11 +82,10 @@ public final class CpmStaticProjector {
               Map.of("deferredTo", "T501")));
     Map<BoneId, BoneIR> byId = new LinkedHashMap<>();
     for (var b : model.bones()) byId.put(b.id(), b);
-    Map<BoneId, Vec3d> pivots = new LinkedHashMap<>();
-    pivots.put(anchor, anchorBone.bind().translation());
-    for (var b : model.bones())
-      if (!b.id().equals(anchor))
-        pivots.put(b.id(), pivots.getOrDefault(b.parent(), Vec3d.ZERO).add(b.bind().translation()));
+    Result<Map<BoneId, Vec3d>> pivotResult =
+        new AuthoredPivotResolver(model.bones(), anchor).resolve();
+    if (!pivotResult.success()) return Result.failure(pivotResult.diagnostics());
+    Map<BoneId, Vec3d> pivots = pivotResult.value();
     List<CpmLogicalRootV1> roots = new ArrayList<>();
     List<Diagnostic> projectionDiagnostics = new ArrayList<>();
     Map<BoneId, CpmTargetRef> boneTargets = new LinkedHashMap<>();
@@ -111,10 +117,35 @@ public final class CpmStaticProjector {
               false,
               children,
               root == CpmVanillaRoot.BODY
-                  ? CpmNodeOrigin.SOURCE_BONE
-                  : CpmNodeOrigin.SYNTHETIC_ROOT));
+                  ? CpmNodeOrigin.sourceBone(anchor, anchorBone.provenance())
+                  : CpmNodeOrigin.syntheticRoot(root)));
     }
     boneTargets.put(anchor, CpmTargetRef.root(CpmVanillaRoot.BODY));
+    Map<BoneId, CpmTargetRef> orderedBoneTargets = new LinkedHashMap<>();
+    Map<CubeId, CpmTargetRef> orderedCubeTargets = new LinkedHashMap<>();
+    Map<CubeId, CpmNodeKey> orderedHelperTargets = new LinkedHashMap<>();
+    for (var sourceBone : model.bones()) {
+      var target = boneTargets.get(sourceBone.id());
+      if (target == null)
+        return Result.failure(
+            error(
+                DiagnosticCodes.CPM_VALIDATION_FAILED,
+                "missing bone projection target",
+                Map.of("boneId", sourceBone.id().value())));
+      orderedBoneTargets.put(sourceBone.id(), target);
+      for (var sourceCube : sourceBone.cubes()) {
+        var cubeTarget = cubeTargets.get(sourceCube.id());
+        if (cubeTarget == null)
+          return Result.failure(
+              error(
+                  DiagnosticCodes.CPM_VALIDATION_FAILED,
+                  "missing cube projection target",
+                  Map.of("cubeId", sourceCube.id().value())));
+        orderedCubeTargets.put(sourceCube.id(), cubeTarget);
+        if (helperTargets.containsKey(sourceCube.id()))
+          orderedHelperTargets.put(sourceCube.id(), helperTargets.get(sourceCube.id()));
+      }
+    }
     var sourceTexture = model.textures().get(0);
     CpmLogicalProjectV1 project =
         new CpmLogicalProjectV1(
@@ -125,7 +156,8 @@ public final class CpmStaticProjector {
             roots);
     CpmStaticProjection out =
         new CpmStaticProjection(
-            project, new CpmProjectionIndex(boneTargets, cubeTargets, helperTargets));
+            project,
+            new CpmProjectionIndex(orderedBoneTargets, orderedCubeTargets, orderedHelperTargets));
     bag = bag.addAll(new DiagnosticBag(projectionDiagnostics));
     DiagnosticBag validation = new CpmLogicalProjectionValidator().validate(out);
     bag = bag.addAll(validation);
@@ -154,7 +186,7 @@ public final class CpmStaticProjector {
               new Vec3d(1, 1, 1),
               true,
               1,
-              c.uv(),
+              new CpmUvProjector().project(c).value(),
               "ffffff",
               c.mirror(),
               c.inflate(),
@@ -170,7 +202,7 @@ public final class CpmStaticProjector {
               new CpmTransformV1(Vec3d.ZERO, Vec3d.ZERO, new Vec3d(1, 1, 1)),
               cube,
               List.of(),
-              CpmNodeOrigin.SOURCE_CUBE);
+              CpmNodeOrigin.sourceCube(bone.id(), c.id(), c.provenance()));
       ct.put(c.id(), CpmTargetRef.element(ck));
       if (rotated) {
         CpmNodeKey hk = new CpmNodeKey("helper:" + c.id().value());
@@ -185,7 +217,7 @@ public final class CpmStaticProjector {
                     new Vec3d(1, 1, 1)),
                 null,
                 List.of(ce),
-                CpmNodeOrigin.SYNTHETIC_HELPER);
+                CpmNodeOrigin.syntheticHelper(bone.id(), c.id(), c.provenance()));
         ht.put(c.id(), hk);
         projectionDiagnostics.add(
             new Diagnostic(
@@ -218,7 +250,7 @@ public final class CpmStaticProjector {
               transform(b.bind()),
               null,
               children(b, pivots, byId, bt, ct, ht, projectionDiagnostics),
-              CpmNodeOrigin.SOURCE_BONE));
+              CpmNodeOrigin.sourceBone(b.id(), b.provenance())));
     }
     return List.copyOf(out);
   }
