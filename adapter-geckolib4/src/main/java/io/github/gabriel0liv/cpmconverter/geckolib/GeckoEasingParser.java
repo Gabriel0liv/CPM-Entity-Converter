@@ -8,6 +8,17 @@ import java.util.*;
 public final class GeckoEasingParser {
   public Result<EasingIR> parse(
       JsonNode node, SourcePath source, String pointer, String clip, String bone, String channel) {
+    return parse(node, source, pointer, clip, bone, channel, AnimationParserLimits.defaults());
+  }
+
+  public Result<EasingIR> parse(
+      JsonNode node,
+      SourcePath source,
+      String pointer,
+      String clip,
+      String bone,
+      String channel,
+      AnimationParserLimits limits) {
     if (node == null || !node.isObject()) return Result.success(EasingIR.linear());
     String name =
         node.has("easing")
@@ -23,6 +34,9 @@ public final class GeckoEasingParser {
     List<Double> args = new ArrayList<>();
     JsonNode a = node.get("easingArgs");
     if (a != null) {
+      if (a.isArray() && a.size() > limits.maxEasingArgs())
+        return Result.failure(
+            diag(source, DiagnosticCodes.INPUT_LIMIT_EXCEEDED, pointer + "/easingArgs"));
       if (a.isArray())
         for (int i = 0; i < a.size(); i++) {
           Double v = number(a.get(i));
