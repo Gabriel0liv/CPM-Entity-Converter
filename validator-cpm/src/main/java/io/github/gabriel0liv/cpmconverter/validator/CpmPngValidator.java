@@ -7,7 +7,9 @@ import java.util.zip.CRC32;
 public final class CpmPngValidator {
   private static final byte[] SIG={(byte)137,80,78,71,13,10,26,10};
   public Result<CpmPngMetadata> validate(byte[] bytes,CpmArtifactLimits limits){
-    if(bytes==null||bytes.length>limits.maxSkinBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"/","skin size limit exceeded"));
+    if (limits == null) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/","PNG limits are required"));
+    if (bytes == null) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/","PNG bytes are null"));
+    if(bytes.length>limits.maxSkinBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"/","skin size limit exceeded"));
     if(bytes.length<24||!Arrays.equals(Arrays.copyOf(bytes,8),SIG)) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/signature","invalid PNG signature"));
     int p=8,count=0,width=0,height=0,depth=0,color=0; boolean ihdr=false,idat=false,iend=false;
     while(p+12<=bytes.length){ if(++count>limits.maxPngChunks()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"/","PNG chunk limit exceeded")); int len=read(bytes,p); if(len<0||p+12L+len>bytes.length) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/chunk","truncated PNG chunk")); String type=new String(bytes,p+4,4,java.nio.charset.StandardCharsets.US_ASCII); long crc=readUnsigned(bytes,p+8+len); CRC32 c=new CRC32(); c.update(bytes,p+4,4+len); if(c.getValue()!=crc) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/"+type,"PNG CRC mismatch"));

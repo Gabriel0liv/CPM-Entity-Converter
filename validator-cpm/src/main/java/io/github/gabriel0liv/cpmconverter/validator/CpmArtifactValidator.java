@@ -33,11 +33,12 @@ public final class CpmArtifactValidator {
     JsonNode root = config.source();
     int width = 0, height = 0;
     DiagnosticBag bag = configResult.diagnostics();
+    CpmPngMetadata pngMetadata = null;
     if (data.entries().containsKey("skin.png")) {
       var png = new CpmPngValidator().validate(data.entries().get("skin.png"), request.limits());
-      if (!png.success()) bag = bag.addAll(png.diagnostics()); else { width = png.value().width(); height = png.value().height(); }
+      if (!png.success()) bag = bag.addAll(png.diagnostics()); else { pngMetadata = png.value(); width = png.value().width(); height = png.value().height(); }
     }
-    var project = new CpmPersistedProjectParser().parse(root, config.skinSize(), width, height, data.entries().containsKey("skin.png"));
+    var project = new CpmPersistedProjectParser().parse(root, config.skinSize(), pngMetadata, data.entries().containsKey("skin.png"));
     var graph = new CpmPersistedProjectValidator().validate(project, request.limits());
     if (graph.hasErrors()) { tracker.fail(CpmValidationLayer.PROJECT_GRAPH); return Result.failure(graph); }
     tracker.pass(CpmValidationLayer.PROJECT_GRAPH);
