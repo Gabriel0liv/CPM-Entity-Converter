@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.*;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import io.github.gabriel0liv.cpmconverter.projection.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 final class CpmConfigJsonWriter {
   private final ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +53,7 @@ final class CpmConfigJsonWriter {
   private ObjectNode faces(CpmPerFaceUvV1 pf) {
     var o = mapper.createObjectNode();
     for (var face : CpmCubeFace.values()) if (pf.faces().containsKey(face)) {
-      var f = pf.faces().get(face); var x = o.putObject(face.name().toLowerCase());
+      var f = pf.faces().get(face); var x = o.putObject(face.name().toLowerCase(Locale.ROOT));
       x.put("sx", f.sx()); x.put("sy", f.sy()); x.put("ex", f.ex()); x.put("ey", f.ey()); x.put("rot", f.rotation().name().substring(4)); x.put("autoUV", f.autoUv());
     }
     return o;

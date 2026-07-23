@@ -11,3 +11,8 @@ copiada byte a byte. JSON é UTF-8 compacto com LF final; entradas usam DEFLATED
 com timestamp fixo de 1980-01-01. Não há output path nem escrita em disco.
 Validação de artefato e ProjectIO são T303/T304; publicação é T601 e animações
 CPM permanecem posteriores.
+
+As faces usam `Locale.ROOT`; o timestamp é criado com `setTimeLocal` e os
+campos estendidos são normalizados para que o ZIP não dependa do timezone
+default. A evidência final ainda requer goldens/config manifests A/C e smoke
+estruturado B/D antes do fechamento do gate.
