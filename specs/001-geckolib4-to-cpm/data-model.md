@@ -191,3 +191,6 @@ T301 exposes `CpmIdentifiedProjectionV1`, `CpmStoreIdRegistry` and
 `CpmResolvedProjectionIndex`. These are immutable views over the T300 graph;
 they assign reserved root IDs and deterministic pre-order element IDs without
 introducing writer or ZIP responsibilities.
+T302 consumes these values through `CpmProjectWriteRequest` and returns a
+`CpmProjectArtifact` containing canonical `config.json` and byte-preserved
+`skin.png` in a deterministic ZIP; persisted-artifact validation is T303.

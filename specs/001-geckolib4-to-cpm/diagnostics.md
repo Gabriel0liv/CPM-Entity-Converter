@@ -62,6 +62,7 @@ versão, limites, seleção, hierarquia e meshes listados abaixo.
 | `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
 | `CPM_DANGLING_STORE_REF` | ERROR | target sem storeID compatível |
 | `CPM_INVALID_STORE_ID` | ERROR | storeID fora da política/range |
+| `CPM_WRITE_FAILED` | ERROR | falha ao gerar o artefato CPM |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
 | `CPM_VALIDATION_FAILED` | ERROR | falha agregada no output |
@@ -116,6 +117,7 @@ duplicados ou documentados fora do catálogo.
 `CPM_DANGLING_STORE_REF`
 `CPM_DUPLICATE_STORE_ID`
 `CPM_INVALID_STORE_ID`
+`CPM_WRITE_FAILED`
 `CPM_INVALID_ROOT`
 `CPM_VALIDATION_FAILED`
 `FEATURE_EXPLICITLY_IGNORED`
