@@ -23,6 +23,9 @@ jobs:
       - name: S004 fixture audit
         shell: pwsh
         run: python spikes/geckolib-animation-semantics/scripts/audit_fixtures.py
+      - name: Frozen Gecko oracle
+        shell: pwsh
+        run: python spikes/geckolib-animation-semantics/scripts/verify_frozen_oracle.py
       - name: Upload failure reports
         if: failure()
         uses: actions/upload-artifact@v4
