@@ -40,6 +40,11 @@ public final class CpmArtifactValidator {
     } catch (IOException ex) { bag=bag.add(error(DiagnosticCodes.CPM_CONTAINER_INVALID,"<artifact>",null,"invalid ZIP container","provide a readable ZIP artifact")); }
     statuses.put(CpmValidationLayer.CONTAINER, bag.hasErrors()?CpmValidationLayerStatus.FAIL:CpmValidationLayerStatus.PASS);
     if (!entries.containsKey("config.json")) bag=bag.add(error(DiagnosticCodes.CPM_ENTRY_MISSING,"<artifact>","/config.json","config.json is required","add config.json"));
+    for (String name : entries.keySet()) {
+      if (name.equals("config.json") || name.equals("skin.png")) continue;
+      if (!name.startsWith("animations/") || !name.endsWith(".json") || name.substring("animations/".length()).contains("/"))
+        bag=bag.add(error(DiagnosticCodes.CPM_FEATURE_UNSUPPORTED,"<artifact>",null,"unsupported artifact entry: "+name,"remove the unsupported entry"));
+    }
     JsonNode config=null; boolean canonical=true;
     if (entries.containsKey("config.json")) {
       try { config=mapper.readTree(entries.get("config.json")); if(config==null||!config.isObject()) throw new IOException("root must be object"); statuses.put(CpmValidationLayer.CONFIG_SYNTAX,CpmValidationLayerStatus.PASS); }
@@ -57,15 +62,21 @@ public final class CpmArtifactValidator {
     if(config!=null && config.path("elements").isArray()) {
       elements=config.path("elements").size(); Set<Long> ids=new HashSet<>();
       for(JsonNode n:config.path("elements")){ if(n.has("storeID")){ if(!n.path("storeID").canConvertToLong()||!n.path("storeID").isIntegralNumber()) bag=bag.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID,"config.json","/elements/storeID","invalid storeID","use a safe integer")); else if(!ids.add(n.path("storeID").longValue())) bag=bag.add(error(DiagnosticCodes.CPM_DUPLICATE_STORE_ID,"config.json","/elements/storeID","duplicate storeID","use unique storeIDs")); else storeIds++; } if(n.has("texture")) textured++; }
-      roots=(int)config.path("elements").findValues("root").stream().filter(JsonNode::isTextual).count();
+      Set<String> rootNames=Set.of("head","body","left_arm","right_arm","left_leg","right_leg");
+      roots=0; for(JsonNode n:config.path("elements")) if(rootNames.contains(n.path("id").asText())) roots++;
     }
     if(entries.containsKey("skin.png")){ byte[] png=entries.get("skin.png"); if(!isPng(png)) bag=bag.add(error(DiagnosticCodes.PNG_INVALID,"skin.png","/signature","invalid PNG","provide a PNG texture")); else { tw=readInt(png,16); th=readInt(png,20); } }
     statuses.put(CpmValidationLayer.PROJECT_GRAPH, bag.hasErrors()?CpmValidationLayerStatus.FAIL:CpmValidationLayerStatus.PASS);
     statuses.put(CpmValidationLayer.STORE_REFERENCES, bag.hasErrors()?CpmValidationLayerStatus.FAIL:CpmValidationLayerStatus.PASS);
     statuses.put(CpmValidationLayer.UV_TEXTURE, bag.hasErrors()?CpmValidationLayerStatus.FAIL:CpmValidationLayerStatus.PASS);
-    statuses.put(CpmValidationLayer.ANIMATIONS,CpmValidationLayerStatus.PASS); statuses.put(CpmValidationLayer.CANONICALITY,canonical?CpmValidationLayerStatus.PASS:CpmValidationLayerStatus.WARN);
+    int animationCount=0;
+    for (var entry: entries.entrySet()) if (entry.getKey().startsWith("animations/")) {
+      try { JsonNode animation=mapper.readTree(entry.getValue()); if(animation==null||!animation.isObject()) throw new IOException("root must be object"); animationCount++; }
+      catch(Exception ex){ bag=bag.add(error(DiagnosticCodes.CPM_ANIMATION_INVALID,entry.getKey(),null,"invalid animation JSON","provide a supported animation object")); }
+    }
+    statuses.put(CpmValidationLayer.ANIMATIONS,bag.hasErrors()?CpmValidationLayerStatus.FAIL:CpmValidationLayerStatus.PASS); statuses.put(CpmValidationLayer.CANONICALITY,canonical?CpmValidationLayerStatus.PASS:CpmValidationLayerStatus.WARN);
     if(bag.hasErrors()) return Result.failure(bag);
-    var summary=new CpmValidationSummary(statuses,canonical,roots,elements,storeIds,textured,0,0,0,entries.containsKey("skin.png"),tw,th);
+    var summary=new CpmValidationSummary(statuses,canonical,roots,elements,storeIds,textured,animationCount,0,0,entries.containsKey("skin.png"),tw,th);
     return Result.success(new CpmValidatedArtifactV1(new CpmPersistedProjectV1(config),List.of(),new CpmArtifactInventory(inventory),summary),bag);
   }
   private static boolean safe(String n,int max){ return n!=null&&!n.isBlank()&&n.length()<=max&&!n.contains("\\")&&!n.startsWith("/")&&!n.contains("\0")&&!Arrays.asList(n.split("/",-1)).contains("..")&&!n.matches("^[A-Za-z]:.*")&&!n.endsWith("/"); }
