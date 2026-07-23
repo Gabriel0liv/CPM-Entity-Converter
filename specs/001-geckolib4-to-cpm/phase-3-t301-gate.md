@@ -1,10 +1,13 @@
 # Fase 3 — Gate T301
 
-Status: **[~] em andamento**
+Status: **[x] PASS**
 
 Commit-base: `2c3cf0eead8d16f697660ffca5866796824f3ea3`
 
 Implementation branch: `feature/t301-deterministic-store-ids`
+
+Implementation commit: `26145d7`
+Integration HEAD: `4d07fe2b170622e630bef8f6a6556413e6fd0f10`
 
 Implementation evidence in this branch:
 
@@ -23,4 +26,9 @@ Implementation evidence in this branch:
 Deferred: T302 writer/JSON/ZIP, T303 persisted-artifact validation, T304
 ProjectIO/visual conformance, T400/T401/T402 animation projection.
 
-Windows CI: pending for the integrated T301 HEAD.
+Final Windows workflow: run `30011789122`, job `89221476369`, HEAD
+`4d07fe2b170622e630bef8f6a6556413e6fd0f10`, conclusion **PASS**.
+
+The manifest check, S004 audit, frozen Gecko oracle and `clean check` also
+passed locally. T302 (writer), T303 (persisted-artifact validator), T304
+(ProjectIO/visual conformance) and later animation projection remain deferred.
