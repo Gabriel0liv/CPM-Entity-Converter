@@ -60,7 +60,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 3
 
-- [ ] T300 projection roots/elements/helper nodes (FR-011/012).
+- [~] T300 projection roots/elements/helper nodes (FR-011/012) — logical projection module and single_anchor implementation in progress; gate pending tests and Windows CI.
 - [ ] T301 IDs determinísticos (FR-021).
 - [ ] T302 writer ZIP/JSON/PNG determinístico (FR-020).
 - [ ] T303 validator CPM em camadas (FR-022/028).

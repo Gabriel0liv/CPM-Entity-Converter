@@ -117,3 +117,6 @@ projeções futuras permanecem em módulos separados. Nesta fase os módulos de
 parser/writer/validator/CLI têm somente configuração Gradle, sem classes de
 produção, preservando o Gate B e evitando dependência acidental de CPM,
 Minecraft, Forge ou GeckoLib no core.
+The phase-three projection boundary is isolated in `projection-cpm`: it consumes
+validated ModelIR and SemanticRigMap and produces an in-memory logical CPM V1
+graph. Persistence and numeric store IDs remain in later modules.

@@ -75,3 +75,6 @@ IDs `TST-*` são testes planejados em `test-plan.md`.
 
 ## R7 scope adjudication
 T105 is limited to authorial fixtures, provenance/licensing, manifest/hashes, mapping smoke and retained S004 oracle evidence. Geometry→ModelIR is T200/T201; animation→ModelIR is T202; parser mutation/oracle limits are T204; converted output is later projection. These are deferred, not T105 failures.
+T300 is traced to the isolated `projection-cpm` module: single-anchor roots,
+static hierarchy, cube/helper projection, transforms, UV transport and logical
+projection indexing. Store IDs, writer and artifact validation remain deferred.
