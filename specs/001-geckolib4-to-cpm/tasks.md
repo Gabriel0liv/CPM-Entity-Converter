@@ -56,7 +56,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T201 parser UV/PNG e ModelIR estático — evidência integral concluída.
 - [x] T202 parser animation/playback/keyframes — parser, snapshots A/B, asserts C/D e Windows CI concluídos.
 - [x] T203 easing/Molang constante e diagnostics — IR, evaluator, Molang constante e Windows CI concluídos.
-- [~] T204 limites práticos, oracle congelado e regressão GeckoLib (NFR-005/012) — implementação local em validação; aguardando CI Windows.
+- [x] T204 limites práticos, oracle congelado e regressão GeckoLib (NFR-005/012) — concluído com clean check e Windows CI.
 
 ## Fase 3
 
