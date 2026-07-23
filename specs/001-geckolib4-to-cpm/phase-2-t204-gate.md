@@ -15,9 +15,10 @@ Evidence:
 
 Windows workflow: run `29968398114`, HEAD `a49810c63f69d3540c7fba44354fc870baec6c4d`, job `check` / `89084781404`, PASS.
 
-T204: **[x] PASS**
-Phase 2: **PASS**
-Next task: T300 — projection roots/elements/helper nodes.
+T204: **[~] incomplete**
+Phase 2: **not closed**
+Remaining concrete gaps: maxNestingDepth/maxKeyframes/maxTotalKeyframes/string/Molang/easing-args enforcement, preventive geometry limits, adapter parity matrix and one real GeckoLib oracle execution.
+T300 remains deferred until T204 is complete.
 
 Deferred: fuzzing/adversarial guarantees, sampling, lifecycle, pose mapping,
 CPM projection, writer and CLI remain outside T204.
