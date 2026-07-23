@@ -159,7 +159,7 @@ public final class CpmStaticProjector {
             project,
             new CpmProjectionIndex(orderedBoneTargets, orderedCubeTargets, orderedHelperTargets));
     bag = bag.addAll(new DiagnosticBag(projectionDiagnostics));
-    DiagnosticBag validation = new CpmLogicalProjectionValidator().validate(out);
+    DiagnosticBag validation = new CpmLogicalProjectionValidator().validate(out, model, anchor);
     bag = bag.addAll(validation);
     if (bag.hasErrors()) return Result.failure(bag);
     return Result.success(out, bag);

@@ -1,0 +1,608 @@
+{
+  "project" : {
+    "version" : 1,
+    "skinType" : "default",
+    "texture" : {
+      "logicalPath" : "texture.png",
+      "width" : 32,
+      "height" : 32,
+      "skinType" : "default",
+      "customGridSize" : false
+    },
+    "roots" : [ {
+      "root" : "head",
+      "reservedId" : 0,
+      "transform" : {
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SYNTHETIC_ROOT",
+        "root" : "head"
+      },
+      "children" : [ ]
+    }, {
+      "root" : "body",
+      "reservedId" : 1,
+      "transform" : {
+        "position" : [ -0.0, -0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SOURCE_BONE",
+        "boneId" : "cpm:c/bone/0",
+        "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+        "pointer" : "/minecraft:geometry/0/bones/0"
+      },
+      "children" : [ {
+        "key" : "cube:cpm:c/bone/0/cube/0",
+        "kind" : "CUBE",
+        "name" : "body_cube_0",
+        "transform" : {
+          "position" : [ 0.0, 0.0, 0.0 ],
+          "rotation" : [ 0.0, 0.0, 0.0 ],
+          "scale" : [ 1.0, 1.0, 1.0 ]
+        },
+        "origin" : {
+          "kind" : "SOURCE_CUBE",
+          "boneId" : "cpm:c/bone/0",
+          "cubeId" : "cpm:c/bone/0/cube/0",
+          "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+          "pointer" : "/minecraft:geometry/0/bones/0/cubes/0"
+        },
+        "cube" : {
+          "offset" : [ -2.0, -2.0, 0.0 ],
+          "size" : [ 2.0, 2.0, 2.0 ],
+          "renderScale" : [ 1.0, 1.0, 1.0 ],
+          "meshScale" : [ 1.0, 1.0, 1.0 ],
+          "texture" : true,
+          "textureSize" : 1,
+          "uv" : {
+            "type" : "box",
+            "u" : 0,
+            "v" : 0
+          },
+          "color" : "ffffff",
+          "mirror" : false,
+          "mcScale" : 0.0,
+          "show" : true,
+          "hidden" : false,
+          "glow" : false,
+          "recolor" : false
+        },
+        "children" : [ ]
+      }, {
+        "key" : "bone:cpm:c/bone/1",
+        "kind" : "BONE",
+        "name" : "spine",
+        "transform" : {
+          "position" : [ -0.0, -4.0, 0.0 ],
+          "rotation" : [ 0.0, 0.0, 0.0 ],
+          "scale" : [ 1.0, 1.0, 1.0 ]
+        },
+        "origin" : {
+          "kind" : "SOURCE_BONE",
+          "boneId" : "cpm:c/bone/1",
+          "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+          "pointer" : "/minecraft:geometry/0/bones/1"
+        },
+        "cube" : null,
+        "children" : [ {
+          "key" : "cube:cpm:c/bone/1/cube/0",
+          "kind" : "CUBE",
+          "name" : "spine_cube_0",
+          "transform" : {
+            "position" : [ 0.0, 0.0, 0.0 ],
+            "rotation" : [ 0.0, 0.0, 0.0 ],
+            "scale" : [ 1.0, 1.0, 1.0 ]
+          },
+          "origin" : {
+            "kind" : "SOURCE_CUBE",
+            "boneId" : "cpm:c/bone/1",
+            "cubeId" : "cpm:c/bone/1/cube/0",
+            "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+            "pointer" : "/minecraft:geometry/0/bones/1/cubes/0"
+          },
+          "cube" : {
+            "offset" : [ -3.0, 2.0, 0.0 ],
+            "size" : [ 2.0, 2.0, 2.0 ],
+            "renderScale" : [ 1.0, 1.0, 1.0 ],
+            "meshScale" : [ 1.0, 1.0, 1.0 ],
+            "texture" : true,
+            "textureSize" : 1,
+            "uv" : {
+              "type" : "box",
+              "u" : 1,
+              "v" : 1
+            },
+            "color" : "ffffff",
+            "mirror" : false,
+            "mcScale" : 0.0,
+            "show" : true,
+            "hidden" : false,
+            "glow" : false,
+            "recolor" : false
+          },
+          "children" : [ ]
+        }, {
+          "key" : "bone:cpm:c/bone/2",
+          "kind" : "BONE",
+          "name" : "chest",
+          "transform" : {
+            "position" : [ -0.0, -4.0, 0.0 ],
+            "rotation" : [ 0.0, 0.0, 0.0 ],
+            "scale" : [ 1.0, 1.0, 1.0 ]
+          },
+          "origin" : {
+            "kind" : "SOURCE_BONE",
+            "boneId" : "cpm:c/bone/2",
+            "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+            "pointer" : "/minecraft:geometry/0/bones/2"
+          },
+          "cube" : null,
+          "children" : [ {
+            "key" : "cube:cpm:c/bone/2/cube/0",
+            "kind" : "CUBE",
+            "name" : "chest_cube_0",
+            "transform" : {
+              "position" : [ 0.0, 0.0, 0.0 ],
+              "rotation" : [ 0.0, 0.0, 0.0 ],
+              "scale" : [ 1.0, 1.0, 1.0 ]
+            },
+            "origin" : {
+              "kind" : "SOURCE_CUBE",
+              "boneId" : "cpm:c/bone/2",
+              "cubeId" : "cpm:c/bone/2/cube/0",
+              "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+              "pointer" : "/minecraft:geometry/0/bones/2/cubes/0"
+            },
+            "cube" : {
+              "offset" : [ -4.0, 6.0, 0.0 ],
+              "size" : [ 2.0, 2.0, 2.0 ],
+              "renderScale" : [ 1.0, 1.0, 1.0 ],
+              "meshScale" : [ 1.0, 1.0, 1.0 ],
+              "texture" : true,
+              "textureSize" : 1,
+              "uv" : {
+                "type" : "box",
+                "u" : 2,
+                "v" : 2
+              },
+              "color" : "ffffff",
+              "mirror" : false,
+              "mcScale" : 0.0,
+              "show" : true,
+              "hidden" : false,
+              "glow" : false,
+              "recolor" : false
+            },
+            "children" : [ ]
+          }, {
+            "key" : "bone:cpm:c/bone/3",
+            "kind" : "BONE",
+            "name" : "neck",
+            "transform" : {
+              "position" : [ -0.0, -4.0, 0.0 ],
+              "rotation" : [ 0.0, 0.0, 0.0 ],
+              "scale" : [ 1.0, 1.0, 1.0 ]
+            },
+            "origin" : {
+              "kind" : "SOURCE_BONE",
+              "boneId" : "cpm:c/bone/3",
+              "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+              "pointer" : "/minecraft:geometry/0/bones/3"
+            },
+            "cube" : null,
+            "children" : [ {
+              "key" : "cube:cpm:c/bone/3/cube/0",
+              "kind" : "CUBE",
+              "name" : "neck_cube_0",
+              "transform" : {
+                "position" : [ 0.0, 0.0, 0.0 ],
+                "rotation" : [ 0.0, 0.0, 0.0 ],
+                "scale" : [ 1.0, 1.0, 1.0 ]
+              },
+              "origin" : {
+                "kind" : "SOURCE_CUBE",
+                "boneId" : "cpm:c/bone/3",
+                "cubeId" : "cpm:c/bone/3/cube/0",
+                "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                "pointer" : "/minecraft:geometry/0/bones/3/cubes/0"
+              },
+              "cube" : {
+                "offset" : [ -2.0, 10.0, 1.0 ],
+                "size" : [ 2.0, 2.0, 2.0 ],
+                "renderScale" : [ 1.0, 1.0, 1.0 ],
+                "meshScale" : [ 1.0, 1.0, 1.0 ],
+                "texture" : true,
+                "textureSize" : 1,
+                "uv" : {
+                  "type" : "box",
+                  "u" : 3,
+                  "v" : 3
+                },
+                "color" : "ffffff",
+                "mirror" : false,
+                "mcScale" : 0.0,
+                "show" : true,
+                "hidden" : false,
+                "glow" : false,
+                "recolor" : false
+              },
+              "children" : [ ]
+            }, {
+              "key" : "bone:cpm:c/bone/4",
+              "kind" : "BONE",
+              "name" : "head",
+              "transform" : {
+                "position" : [ -0.0, -2.0, 1.0 ],
+                "rotation" : [ 0.0, 0.0, 0.0 ],
+                "scale" : [ 1.0, 1.0, 1.0 ]
+              },
+              "origin" : {
+                "kind" : "SOURCE_BONE",
+                "boneId" : "cpm:c/bone/4",
+                "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                "pointer" : "/minecraft:geometry/0/bones/4"
+              },
+              "cube" : null,
+              "children" : [ {
+                "key" : "cube:cpm:c/bone/4/cube/0",
+                "kind" : "CUBE",
+                "name" : "head_cube_0",
+                "transform" : {
+                  "position" : [ 0.0, 0.0, 0.0 ],
+                  "rotation" : [ 0.0, 0.0, 0.0 ],
+                  "scale" : [ 1.0, 1.0, 1.0 ]
+                },
+                "origin" : {
+                  "kind" : "SOURCE_CUBE",
+                  "boneId" : "cpm:c/bone/4",
+                  "cubeId" : "cpm:c/bone/4/cube/0",
+                  "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                  "pointer" : "/minecraft:geometry/0/bones/4/cubes/0"
+                },
+                "cube" : {
+                  "offset" : [ -3.0, 12.0, 0.0 ],
+                  "size" : [ 2.0, 2.0, 2.0 ],
+                  "renderScale" : [ 1.0, 1.0, 1.0 ],
+                  "meshScale" : [ 1.0, 1.0, 1.0 ],
+                  "texture" : true,
+                  "textureSize" : 1,
+                  "uv" : {
+                    "type" : "box",
+                    "u" : 4,
+                    "v" : 4
+                  },
+                  "color" : "ffffff",
+                  "mirror" : false,
+                  "mcScale" : 0.0,
+                  "show" : true,
+                  "hidden" : false,
+                  "glow" : false,
+                  "recolor" : false
+                },
+                "children" : [ ]
+              }, {
+                "key" : "bone:cpm:c/bone/5",
+                "kind" : "BONE",
+                "name" : "jaw",
+                "transform" : {
+                  "position" : [ -0.0, 1.0, 1.0 ],
+                  "rotation" : [ 0.0, 0.0, 0.0 ],
+                  "scale" : [ 1.0, 1.0, 1.0 ]
+                },
+                "origin" : {
+                  "kind" : "SOURCE_BONE",
+                  "boneId" : "cpm:c/bone/5",
+                  "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                  "pointer" : "/minecraft:geometry/0/bones/5"
+                },
+                "cube" : null,
+                "children" : [ {
+                  "key" : "cube:cpm:c/bone/5/cube/0",
+                  "kind" : "CUBE",
+                  "name" : "jaw_cube_0",
+                  "transform" : {
+                    "position" : [ 0.0, 0.0, 0.0 ],
+                    "rotation" : [ 0.0, 0.0, 0.0 ],
+                    "scale" : [ 1.0, 1.0, 1.0 ]
+                  },
+                  "origin" : {
+                    "kind" : "SOURCE_CUBE",
+                    "boneId" : "cpm:c/bone/5",
+                    "cubeId" : "cpm:c/bone/5/cube/0",
+                    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                    "pointer" : "/minecraft:geometry/0/bones/5/cubes/0"
+                  },
+                  "cube" : {
+                    "offset" : [ -4.0, 11.0, -1.0 ],
+                    "size" : [ 2.0, 2.0, 2.0 ],
+                    "renderScale" : [ 1.0, 1.0, 1.0 ],
+                    "meshScale" : [ 1.0, 1.0, 1.0 ],
+                    "texture" : true,
+                    "textureSize" : 1,
+                    "uv" : {
+                      "type" : "box",
+                      "u" : 5,
+                      "v" : 5
+                    },
+                    "color" : "ffffff",
+                    "mirror" : false,
+                    "mcScale" : 0.0,
+                    "show" : true,
+                    "hidden" : false,
+                    "glow" : false,
+                    "recolor" : false
+                  },
+                  "children" : [ ]
+                } ]
+              }, {
+                "key" : "bone:cpm:c/bone/6",
+                "kind" : "BONE",
+                "name" : "accessory",
+                "transform" : {
+                  "position" : [ -2.0, -1.0, -1.0 ],
+                  "rotation" : [ 0.0, 0.0, 0.0 ],
+                  "scale" : [ 1.0, 1.0, 1.0 ]
+                },
+                "origin" : {
+                  "kind" : "SOURCE_BONE",
+                  "boneId" : "cpm:c/bone/6",
+                  "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                  "pointer" : "/minecraft:geometry/0/bones/6"
+                },
+                "cube" : null,
+                "children" : [ {
+                  "key" : "helper:cpm:c/bone/6/cube/0",
+                  "kind" : "CUBE_ROTATION_HELPER",
+                  "name" : "accessory_cube_0_pivot",
+                  "transform" : {
+                    "position" : [ 0.5, 12.5, 0.5 ],
+                    "rotation" : [ -12.000000000000002, 0.0, 27.0 ],
+                    "scale" : [ 1.0, 1.0, 1.0 ]
+                  },
+                  "origin" : {
+                    "kind" : "SYNTHETIC_HELPER",
+                    "boneId" : "cpm:c/bone/6",
+                    "cubeId" : "cpm:c/bone/6/cube/0",
+                    "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                    "pointer" : "/minecraft:geometry/0/bones/6/cubes/0"
+                  },
+                  "cube" : null,
+                  "children" : [ {
+                    "key" : "cube:cpm:c/bone/6/cube/0",
+                    "kind" : "CUBE",
+                    "name" : "accessory_cube_0",
+                    "transform" : {
+                      "position" : [ 0.0, 0.0, 0.0 ],
+                      "rotation" : [ 0.0, 0.0, 0.0 ],
+                      "scale" : [ 1.0, 1.0, 1.0 ]
+                    },
+                    "origin" : {
+                      "kind" : "SOURCE_CUBE",
+                      "boneId" : "cpm:c/bone/6",
+                      "cubeId" : "cpm:c/bone/6/cube/0",
+                      "source" : "../test-fixtures/fixture-c-deep-hierarchy/geometry.geo.json",
+                      "pointer" : "/minecraft:geometry/0/bones/6/cubes/0"
+                    },
+                    "cube" : {
+                      "offset" : [ -1.5, -0.5, 0.5 ],
+                      "size" : [ 2.0, 2.0, 2.0 ],
+                      "renderScale" : [ 1.0, 1.0, 1.0 ],
+                      "meshScale" : [ 1.0, 1.0, 1.0 ],
+                      "texture" : true,
+                      "textureSize" : 1,
+                      "uv" : {
+                        "type" : "per-face",
+                        "faces" : [ {
+                          "face" : "NORTH",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_0",
+                          "autoUv" : false
+                        }, {
+                          "face" : "SOUTH",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_0",
+                          "autoUv" : false
+                        }, {
+                          "face" : "EAST",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_0",
+                          "autoUv" : false
+                        }, {
+                          "face" : "WEST",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_0",
+                          "autoUv" : false
+                        }, {
+                          "face" : "UP",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_180",
+                          "autoUv" : false
+                        }, {
+                          "face" : "DOWN",
+                          "sx" : 0,
+                          "sy" : 0,
+                          "ex" : 2,
+                          "ey" : 2,
+                          "rotation" : "ROT_180",
+                          "autoUv" : false
+                        } ]
+                      },
+                      "color" : "ffffff",
+                      "mirror" : false,
+                      "mcScale" : 0.0,
+                      "show" : true,
+                      "hidden" : false,
+                      "glow" : false,
+                      "recolor" : false
+                    },
+                    "children" : [ ]
+                  } ]
+                } ]
+              } ]
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "root" : "left_arm",
+      "reservedId" : 2,
+      "transform" : {
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SYNTHETIC_ROOT",
+        "root" : "left_arm"
+      },
+      "children" : [ ]
+    }, {
+      "root" : "right_arm",
+      "reservedId" : 3,
+      "transform" : {
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SYNTHETIC_ROOT",
+        "root" : "right_arm"
+      },
+      "children" : [ ]
+    }, {
+      "root" : "left_leg",
+      "reservedId" : 4,
+      "transform" : {
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SYNTHETIC_ROOT",
+        "root" : "left_leg"
+      },
+      "children" : [ ]
+    }, {
+      "root" : "right_leg",
+      "reservedId" : 5,
+      "transform" : {
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ]
+      },
+      "show" : false,
+      "showInEditor" : true,
+      "locked" : false,
+      "disableVanillaAnim" : false,
+      "origin" : {
+        "kind" : "SYNTHETIC_ROOT",
+        "root" : "right_leg"
+      },
+      "children" : [ ]
+    } ]
+  },
+  "index" : {
+    "boneTargets" : [ {
+      "sourceId" : "BoneId[value=cpm:c/bone/0]",
+      "key" : "root:body",
+      "root" : true
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/1]",
+      "key" : "bone:cpm:c/bone/1",
+      "root" : false
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/2]",
+      "key" : "bone:cpm:c/bone/2",
+      "root" : false
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/3]",
+      "key" : "bone:cpm:c/bone/3",
+      "root" : false
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/4]",
+      "key" : "bone:cpm:c/bone/4",
+      "root" : false
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/5]",
+      "key" : "bone:cpm:c/bone/5",
+      "root" : false
+    }, {
+      "sourceId" : "BoneId[value=cpm:c/bone/6]",
+      "key" : "bone:cpm:c/bone/6",
+      "root" : false
+    } ],
+    "cubeTargets" : [ {
+      "sourceId" : "CubeId[value=cpm:c/bone/0/cube/0]",
+      "key" : "cube:cpm:c/bone/0/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/1/cube/0]",
+      "key" : "cube:cpm:c/bone/1/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/2/cube/0]",
+      "key" : "cube:cpm:c/bone/2/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/3/cube/0]",
+      "key" : "cube:cpm:c/bone/3/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/4/cube/0]",
+      "key" : "cube:cpm:c/bone/4/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/5/cube/0]",
+      "key" : "cube:cpm:c/bone/5/cube/0",
+      "root" : false
+    }, {
+      "sourceId" : "CubeId[value=cpm:c/bone/6/cube/0]",
+      "key" : "cube:cpm:c/bone/6/cube/0",
+      "root" : false
+    } ],
+    "helperTargets" : [ {
+      "sourceId" : "CubeId[value=cpm:c/bone/6/cube/0]",
+      "key" : "helper:cpm:c/bone/6/cube/0"
+    } ]
+  }
+}
