@@ -82,3 +82,7 @@ publicar MVP sem fixtures A–C automatizadas e visuais.
 
 ## Fase 1 boundary
 Fixture contracts do not duplicate production geometry or animation parsers. Those tests are assigned to T200/T201/T202/T204 by traceability.
+T300 tests cover canonical roots, single-anchor preconditions, hierarchy and
+child order, cube offsets/helpers, quaternion decomposition, UV transport,
+projection index completeness and fixture snapshots A/C with structured B/D
+smoke tests.

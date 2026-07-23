@@ -181,3 +181,8 @@ Diagnostics são dados imutáveis acumuláveis, com code estável e source locat
 Animation keyframes carry `easingFromPrevious` as an immutable `EasingIR`.
 Offline constant Molang is evaluated before channel conversion; dynamic
 expressions remain diagnostics and are not sampled here.
+### CPM projection stages
+
+T300 produces a logical graph with `CpmNodeKey`, `CpmTargetRef`, vanilla roots,
+bone/cube/helper nodes and projection provenance. T301 will add persisted numeric
+store IDs; T302 will serialize the project. The T300 graph is not a CPM artifact.
