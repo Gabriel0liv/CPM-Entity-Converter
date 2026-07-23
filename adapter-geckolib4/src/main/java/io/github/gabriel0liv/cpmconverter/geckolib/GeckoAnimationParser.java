@@ -25,6 +25,22 @@ public final class GeckoAnimationParser {
               Map.of()));
     }
     DiagnosticBag bag = new DiagnosticBag();
+    AnimationParserLimits limits =
+        request == null ? AnimationParserLimits.defaults() : request.limits();
+    if (inputs.size() > limits.maxFiles())
+      return Result.failure(
+          diag(
+              new SourcePath(model.source().path()),
+              DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+              "Too many animation files",
+              "/",
+              Map.of(
+                  "limitName",
+                  "maxFiles",
+                  "limit",
+                  Integer.toString(limits.maxFiles()),
+                  "observed",
+                  Integer.toString(inputs.size()))));
     Map<ClipId, AnimationClipIR> clips = new TreeMap<>(Comparator.comparing(ClipId::value));
     Map<String, ResolvedBone> bones = new LinkedHashMap<>();
     for (int i = 0; i < model.bones().size(); i++) {
@@ -32,6 +48,27 @@ public final class GeckoAnimationParser {
       bones.put(b.name(), new ResolvedBone(b.id(), i));
     }
     for (AnimationInput input : inputs) {
+      try {
+        if (Files.size(input.path()) > limits.maxBytesPerFile()) {
+          bag =
+              bag.add(
+                  diag(
+                      input.logicalSource(),
+                      DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                      "Animation file exceeds configured limit",
+                      "/",
+                      Map.of(
+                          "limitName",
+                          "maxBytesPerFile",
+                          "limit",
+                          Long.toString(limits.maxBytesPerFile()),
+                          "observed",
+                          Long.toString(Files.size(input.path())))));
+          continue;
+        }
+      } catch (IOException e) {
+        /* read path diagnostic below */
+      }
       JsonNode root;
       try {
         root = JSON.readTree(Files.readAllBytes(input.path()));
@@ -120,7 +157,24 @@ public final class GeckoAnimationParser {
                       Map.of("clipId", id.value())));
           continue;
         }
-        ParseClip parsed = parseClip(id, e.getValue(), input.logicalSource(), bones);
+        if (clips.size() >= limits.maxClips()) {
+          bag =
+              bag.add(
+                  diag(
+                      input.logicalSource(),
+                      DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                      "Too many clips",
+                      "/animations",
+                      Map.of(
+                          "limitName",
+                          "maxClips",
+                          "limit",
+                          Integer.toString(limits.maxClips()),
+                          "observed",
+                          Integer.toString(clips.size() + 1))));
+          continue;
+        }
+        ParseClip parsed = parseClip(id, e.getValue(), input.logicalSource(), bones, limits);
         bag = bag.addAll(parsed.diagnostics);
         if (parsed.clip != null) clips.put(id, parsed.clip);
       }
@@ -130,7 +184,11 @@ public final class GeckoAnimationParser {
   }
 
   private ParseClip parseClip(
-      ClipId id, JsonNode node, SourcePath source, Map<String, ResolvedBone> bones) {
+      ClipId id,
+      JsonNode node,
+      SourcePath source,
+      Map<String, ResolvedBone> bones,
+      AnimationParserLimits limits) {
     DiagnosticBag bag = new DiagnosticBag();
     String ptr = "/animations/" + esc(id.value());
     Playback playback = playback(node.get("loop"), source, ptr, id);
@@ -148,6 +206,21 @@ public final class GeckoAnimationParser {
                   ptr + "/bones",
                   Map.of("clipId", id.value())));
     } else if (bonesNode != null) {
+      if (bonesNode.size() > limits.maxBonesPerClip())
+        bag =
+            bag.add(
+                diag(
+                    source,
+                    DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                    "Too many bones in clip",
+                    ptr + "/bones",
+                    Map.of(
+                        "limitName",
+                        "maxBonesPerClip",
+                        "limit",
+                        Integer.toString(limits.maxBonesPerClip()),
+                        "observed",
+                        Integer.toString(bonesNode.size()))));
       for (Map.Entry<String, JsonNode> b : iterable(bonesNode.fields())) {
         ResolvedBone resolved = bones.get(b.getKey());
         BoneId bone = resolved == null ? null : resolved.id();
