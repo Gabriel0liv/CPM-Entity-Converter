@@ -1,24 +1,36 @@
 # Phase 2 T204 Gate
 
-Commit base: 5a188e79c88f96abb435d47c1f17152ad9e5b939
-Implementation commit: acc540b4b6dbbf6649e6289cd6c0ad025758d661
-Integrated HEAD: a49810c63f69d3540c7fba44354fc870baec6c4d
+Commit base: `efa74004b3692b294f92f7b4b719593a467cb8f7`
+Implementation commit: `cd8d4d49b8c08069ea0cc1d1fa68765028d68a08`
+Integrated HEAD: `e0c9c34973bb19df8e134cb22e520b2bcb097d9a`
+Gate record: this commit
 
 Evidence:
 
-- `AnimationParserLimits` and bounded file/count checks are active;
-- frozen oracle verifier passes 37 fixtures and 90/90 assertions at GeckoLib
-  pin `25a41d7375bb7eeda37dadc04b1e03fe486b33e5`;
-- geometry and PNG limits remain covered by the existing suites;
-- strict duplicate policy and practical local limits are documented;
-- clean check, manifest and S004 audit pass.
+- Geometry, PNG and animation parsers use injectable practical limits. The
+  animation limits cover bytes/files, nesting, clips, bones per clip,
+  keyframes per channel and in total, string/Molang expression length and
+  easing-argument count. Limit diagnostics include `limitName`, `limit`,
+  `observed`, logical pointers and no partial success.
+- `BoundedJsonReader` enforces duplicate-property rejection and nesting bounds
+  for both geometry and animation JSON.
+- `GeckoOracleParityTest` freezes the 37-input matrix as 28 MATCH, 7 STRICT and
+  2 DEFERRED cases.
+- The real GeckoLib oracle execution at pin
+  `25a41d7375bb7eeda37dadc04b1e03fe486b33e5` completed with 90/90 assertions,
+  33 PASS, 1 EXPECTED_REJECTION and 3 upstream-blocked fixtures, with zero
+  failed assertions. The checked-in frozen artifact remains pinned and passes
+  its verifier.
+- Local `clean check`, reproducible build, manifest check, S004 audit and
+  frozen-oracle verification pass.
 
-Windows workflow: run `29968398114`, HEAD `a49810c63f69d3540c7fba44354fc870baec6c4d`, job `check` / `89084781404`, PASS.
+Windows workflow: run `29982601875`, HEAD
+`e0c9c34973bb19df8e134cb22e520b2bcb097d9a`, job `check` /
+`89127543560`, PASS.
 
-T204: **[~] incomplete**
-Phase 2: **not closed**
-Remaining concrete gaps: maxNestingDepth/maxKeyframes/maxTotalKeyframes/string/Molang/easing-args enforcement, preventive geometry limits, adapter parity matrix and one real GeckoLib oracle execution.
-T300 remains deferred until T204 is complete.
+T204: **[x] PASS**
+Phase 2 practical-limits/oracle gate: **PASS**
+T300 remains deferred and not implemented.
 
 Deferred: fuzzing/adversarial guarantees, sampling, lifecycle, pose mapping,
 CPM projection, writer and CLI remain outside T204.
