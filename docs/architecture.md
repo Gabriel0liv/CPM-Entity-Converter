@@ -119,4 +119,5 @@ produção, preservando o Gate B e evitando dependência acidental de CPM,
 Minecraft, Forge ou GeckoLib no core.
 The phase-three projection boundary is isolated in `projection-cpm`: it consumes
 validated ModelIR and SemanticRigMap and produces an in-memory logical CPM V1
-graph. Persistence and numeric store IDs remain in later modules.
+graph. T301 adds immutable numeric store-ID assignments and resolved indexes;
+JSON/ZIP persistence remains deferred to T302.

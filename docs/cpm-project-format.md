@@ -148,6 +148,10 @@ Para `HEAD_ROTATION_YAW/PITCH`, `VanillaPose.getTime` produz um tempo dinâmico 
 
 ## Validação em camadas
 
+T301 supplies numeric identity to the in-memory graph without writing an
+artifact: vanilla roots use reserved IDs 0–5 and generated elements use the
+deterministic pre-order range beginning at 1000. Serialization remains T302.
+
 1. **Container:** ZIP legível, paths seguros, sem duplicidade/case collision, limites de tamanho.
 2. **Sintaxe:** UTF-8 JSON, PNG válido.
 3. **Schema:** version, tipos, ranges, roots e campos MVP.

@@ -60,6 +60,8 @@ versão, limites, seleção, hierarquia e meshes listados abaixo.
 | `MAP_CLIP_NOT_FOUND` | ERROR | clip mapping ausente |
 | `MAP_LOOK_OVERROTATION` | WARNING/ERROR | influences excedem política |
 | `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
+| `CPM_DANGLING_STORE_REF` | ERROR | target sem storeID compatível |
+| `CPM_INVALID_STORE_ID` | ERROR | storeID fora da política/range |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
 | `CPM_VALIDATION_FAILED` | ERROR | falha agregada no output |
@@ -111,7 +113,9 @@ duplicados ou documentados fora do catálogo.
 `CONFIG_SCHEMA_VERSION`
 `CONFIG_UNKNOWN_PROPERTY`
 `CPM_DANGLING_ANIMATION_REF`
+`CPM_DANGLING_STORE_REF`
 `CPM_DUPLICATE_STORE_ID`
+`CPM_INVALID_STORE_ID`
 `CPM_INVALID_ROOT`
 `CPM_VALIDATION_FAILED`
 `FEATURE_EXPLICITLY_IGNORED`

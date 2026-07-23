@@ -114,6 +114,8 @@ public final class DiagnosticCodes {
   public static final String MAP_CLIP_NOT_FOUND = "MAP_CLIP_NOT_FOUND";
   public static final String MAP_LOOK_OVERROTATION = "MAP_LOOK_OVERROTATION";
   public static final String CPM_DUPLICATE_STORE_ID = "CPM_DUPLICATE_STORE_ID";
+  public static final String CPM_INVALID_STORE_ID = "CPM_INVALID_STORE_ID";
+  public static final String CPM_DANGLING_STORE_REF = "CPM_DANGLING_STORE_REF";
   public static final String CPM_DANGLING_ANIMATION_REF = "CPM_DANGLING_ANIMATION_REF";
   public static final String CPM_INVALID_ROOT = "CPM_INVALID_ROOT";
   public static final String CPM_VALIDATION_FAILED = "CPM_VALIDATION_FAILED";

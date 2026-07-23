@@ -186,3 +186,8 @@ expressions remain diagnostics and are not sampled here.
 T300 produces a logical graph with `CpmNodeKey`, `CpmTargetRef`, vanilla roots,
 bone/cube/helper nodes and projection provenance. T301 will add persisted numeric
 store IDs; T302 will serialize the project. The T300 graph is not a CPM artifact.
+
+T301 exposes `CpmIdentifiedProjectionV1`, `CpmStoreIdRegistry` and
+`CpmResolvedProjectionIndex`. These are immutable views over the T300 graph;
+they assign reserved root IDs and deterministic pre-order element IDs without
+introducing writer or ZIP responsibilities.

@@ -78,3 +78,5 @@ T105 is limited to authorial fixtures, provenance/licensing, manifest/hashes, ma
 T300 is traced to the isolated `projection-cpm` module: single-anchor roots,
 static hierarchy, cube/helper projection, transforms, UV transport and logical
 projection indexing. Store IDs, writer and artifact validation remain deferred.
+T301 is implemented in the same module: reserved root IDs, pre-order generated
+element IDs, immutable registry and numeric resolution of the logical indexes.

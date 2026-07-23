@@ -61,7 +61,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 ## Fase 3
 
 - [x] T300 projection roots/elements/helper nodes — logical graph, CPM UV, complete validator, snapshots A/C, smoke B/D and Windows CI completed.
-- [ ] T301 IDs determinísticos (FR-021).
+- [~] T301 IDs determinísticos — reserved root IDs, generated pre-order storeIDs and numeric target resolution implemented; fixture/CI gate pending.
 - [ ] T302 writer ZIP/JSON/PNG determinístico (FR-020).
 - [ ] T303 validator CPM em camadas (FR-022/028).
 - [ ] T304 conformidade `ProjectIO` e visual estático (AC-001–005).

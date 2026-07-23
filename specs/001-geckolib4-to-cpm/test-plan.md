@@ -77,6 +77,10 @@ Registrar versão CPM, sistema, fixture, hash output e pass/fail por AC-020–02
 
 ## Gate
 
+T301 evidence covers policy bounds, reserved roots, pre-order contiguity,
+registry lookups, dangling references, resolved index order and immutability.
+Writer and persisted artifact checks remain T302/T303.
+
 Não iniciar Fase 1 antes de T007, S003, S001/S002, S004 e ADRs essenciais. Não
 publicar MVP sem fixtures A–C automatizadas e visuais.
 
