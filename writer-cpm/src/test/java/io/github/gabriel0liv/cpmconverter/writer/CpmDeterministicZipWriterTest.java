@@ -10,7 +10,7 @@ class CpmDeterministicZipWriterTest {
   @Test
   void entriesOrderMetadataAndBytesAreDeterministic() throws Exception {
     byte[] config = "{\"version\":1}\n".getBytes(java.nio.charset.StandardCharsets.UTF_8);
-    byte[] skin = {0, 1, 2, 3};
+    byte[] skin = {0x55, 0x54, 0x05, 0x00, 0x01, 3};
     var writer = new CpmDeterministicZipWriter();
     var first = writer.write(config, skin); var second = writer.write(config, skin);
     assertArrayEquals(first, second);
@@ -31,14 +31,11 @@ class CpmDeterministicZipWriterTest {
     try {
       var writer = new CpmDeterministicZipWriter(); byte[] config = {1}; byte[] skin = {2};
       TimeZone.setDefault(TimeZone.getTimeZone("UTC")); var utc = writer.write(config, skin);
+      TimeZone.setDefault(TimeZone.getTimeZone("Europe/Lisbon")); var lisbon = writer.write(config, skin);
       TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles")); var la = writer.write(config, skin);
-      assertFalse(utc.length == 0 || la.length == 0);
+      assertArrayEquals(utc, lisbon);
+      assertArrayEquals(utc, la);
     } finally { TimeZone.setDefault(previous); }
   }
 
-  @Test
-  void rejectsUnsafeEntryNames() {
-    // The production writer exposes only fixed safe names; this assertion documents the policy.
-    assertEquals(LocalDateTime.of(1980, 1, 1, 0, 0), CpmDeterministicZipWriter.FIXED_ENTRY_TIME);
-  }
 }

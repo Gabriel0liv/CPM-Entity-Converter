@@ -8,4 +8,7 @@ dependencies {
   testImplementation project(':adapter-geckolib4')
   testImplementation project(':converter-config')
 }
-tasks.named('test') { useJUnitPlatform() }
+tasks.named('test') {
+  useJUnitPlatform()
+  systemProperty 'generateWriterSnapshots', System.getProperty('generateWriterSnapshots', 'false')
+}

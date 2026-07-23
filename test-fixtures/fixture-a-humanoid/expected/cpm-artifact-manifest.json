@@ -1,0 +1,17 @@
+{
+  "artifactSha256" : "31fa2370af8586d2617dba955aadbfa4f52329dc61597f47609f1f6fda2b7d97",
+  "artifactSize" : 1056,
+  "entries" : [ {
+    "name" : "config.json",
+    "method" : "DEFLATED",
+    "time" : "1980-01-01T00:00:00",
+    "uncompressedSize" : 6536,
+    "sha256" : "21bf8f5083de7f6906ed738e241b293025c7adb9060f2140e35ba10b9c17606f"
+  }, {
+    "name" : "skin.png",
+    "method" : "DEFLATED",
+    "time" : "1980-01-01T00:00:00",
+    "uncompressedSize" : 229,
+    "sha256" : "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
+  } ]
+}

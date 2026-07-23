@@ -13,6 +13,8 @@ Validação de artefato e ProjectIO são T303/T304; publicação é T601 e anima
 CPM permanecem posteriores.
 
 As faces usam `Locale.ROOT`; o timestamp é criado com `setTimeLocal` e os
-campos estendidos são normalizados para que o ZIP não dependa do timezone
-default. A evidência final ainda requer goldens/config manifests A/C e smoke
-estruturado B/D antes do fechamento do gate.
+campos estendidos são normalizados estruturalmente (somente nos headers local e
+central) para que o ZIP não dependa do timezone default. A evidência P3.07
+inclui snapshots canônicos de configuração e manifest A/C, pipeline real e
+smoke B/D, paridade entre grafo/JSON e registry/storeID, preservação byte a
+byte da textura e inspeção defensiva do artefato.

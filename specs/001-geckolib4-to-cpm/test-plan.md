@@ -81,7 +81,8 @@ T301 evidence covers policy bounds, reserved roots, pre-order contiguity,
 registry lookups, dangling references, resolved index order and immutability.
 Writer and persisted artifact checks remain T302/T303.
 T302 covers canonical field order, root/element serialization, UV variants,
-defensive artifact bytes and fixed-metadata ZIP determinism. T303/T304 cover
+defensive artifact bytes, fixed-metadata ZIP determinism, timezone byte equality,
+fixture A/C golden manifests and real B/D smoke integration. T303/T304 cover
 independent artifact validation and ProjectIO.
 
 Não iniciar Fase 1 antes de T007, S003, S001/S002, S004 e ADRs essenciais. Não
