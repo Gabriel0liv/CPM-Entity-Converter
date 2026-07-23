@@ -64,6 +64,15 @@ versão, limites, seleção, hierarquia e meshes listados abaixo.
 | `CPM_INVALID_STORE_ID` | ERROR | storeID fora da política/range |
 | `CPM_WRITE_FAILED` | ERROR | falha ao gerar o artefato CPM |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
+| `CPM_CONTAINER_INVALID` | ERROR | container ZIP inválido |
+| `CPM_ENTRY_MISSING` | ERROR | entry obrigatória ausente |
+| `CPM_ENTRY_DUPLICATE` | ERROR | entry duplicada |
+| `CPM_ENTRY_UNSAFE` | ERROR | nome de entry inseguro |
+| `CPM_CONFIG_INVALID` | ERROR | config JSON inválido |
+| `CPM_UNSUPPORTED_VERSION` | ERROR | versão CPM não suportada |
+| `CPM_FEATURE_UNSUPPORTED` | ERROR | feature fora do perfil suportado |
+| `CPM_NON_CANONICAL` | WARNING | encoding semanticamente válido mas não canônico |
+| `CPM_ANIMATION_INVALID` | ERROR | animação persistida inválida |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
 | `CPM_VALIDATION_FAILED` | ERROR | falha agregada no output |
 | `FEATURE_EXPLICITLY_IGNORED` | WARNING | regra de ignore aplicada |
