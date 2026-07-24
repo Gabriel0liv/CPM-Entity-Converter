@@ -63,7 +63,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T300 projection roots/elements/helper nodes — logical graph, CPM UV, complete validator, snapshots A/C, smoke B/D and Windows CI completed.
 - [x] T301 IDs determinísticos — reserved root IDs, generated pre-order storeIDs, numeric target resolution, fixture evidence and Windows CI completed.
 - [x] T302 writer ZIP/JSON/PNG determinístico — writer, deterministic ZIP, A/C goldens, B/D fixture pipeline, artifact inspection and Windows CI completed.
-- [~] T303 validator CPM em camadas — correção final de canonicalidade, UV/grid, fixtures B/D e mutation evidence em andamento.
+- [x] T303 validator CPM em camadas — canonicalidade, UV/grid, fixtures A/C, smoke/evidence, mutation matrix e Windows CI concluídos.
 - [ ] T304 conformidade `ProjectIO` e visual estático (AC-001–005).
 
 ## Fase 4
