@@ -5,12 +5,10 @@ import java.util.*;
 
 final class CpmPersistedUvTextureValidator {
   DiagnosticBag validate(CpmPersistedProjectV1 project, boolean skinEntryPresent,
-      CpmPngMetadata pngMetadata, CpmArtifactLimits limits) {
+      CpmPngMetadata pngMetadata) {
     var bag = new DiagnosticBag();
-    boolean textured = false;
     for (var element : project.elements()) {
       if (!element.texture()) continue;
-      textured = true;
       if (!skinEntryPresent || pngMetadata == null) {
         bag = bag.add(error(DiagnosticCodes.PNG_DIMENSION_MISMATCH, element.pointer(),
             "textured element requires a valid skin.png"));
@@ -30,22 +28,25 @@ final class CpmPersistedUvTextureValidator {
   private DiagnosticBag validateUv(CpmPersistedElementV1 e, CpmPersistedSize2i grid,
       DiagnosticBag bag) {
     if (e.uv() instanceof CpmPersistedBoxUvV1 box) {
+      if (e.textureSize() <= 0) {
+        return bag.add(error(DiagnosticCodes.UV_INVALID, e.pointer() + "/textureSize", "textureSize must be positive"));
+      }
       if (box.u() < 0 || box.v() < 0) {
         return bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS, e.pointer() + "/uv",
             "box UV origin is negative"));
       }
-      double width = 2d * (e.size().x() + e.size().z());
-      double height = e.size().y() + e.size().z();
-      if (box.u() + width > grid.x() || box.v() + height > grid.y()) {
+      double width = 2d * (e.size().x() + e.size().z()) * e.textureSize();
+      double height = (e.size().y() + e.size().z()) * e.textureSize();
+      if (box.u() * e.textureSize() + width > grid.x() || box.v() * e.textureSize() + height > grid.y()) {
         return bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS, e.pointer() + "/uv",
             "box UV footprint exceeds logical grid"));
       }
     } else if (e.uv() instanceof CpmPersistedPerFaceUvV1 perFace) {
       for (var entry : perFace.faces().entrySet()) {
         var face = entry.getValue();
-        if (Math.min(face.sx(), face.ex()) < 0 || Math.min(face.sy(), face.ey()) < 0
-            || Math.max(face.sx(), face.ex()) > grid.x()
-            || Math.max(face.sy(), face.ey()) > grid.y()) {
+        if (e.textureSize() <= 0 || Math.min(face.sx(), face.ex()) * e.textureSize() < 0 || Math.min(face.sy(), face.ey()) * e.textureSize() < 0
+            || Math.max(face.sx(), face.ex()) * e.textureSize() > grid.x()
+            || Math.max(face.sy(), face.ey()) * e.textureSize() > grid.y()) {
           bag = bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS,
               e.pointer() + "/faceUV/" + entry.getKey().name().toLowerCase(Locale.ROOT),
               "face UV exceeds logical grid"));

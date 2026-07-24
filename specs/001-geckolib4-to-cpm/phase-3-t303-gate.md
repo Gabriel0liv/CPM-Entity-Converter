@@ -1,6 +1,6 @@
 # Gate T303
 
-Status: **[x] PASS**
+Status: **[~] correction in progress**
 
 Base: `8030b42e9250975214cc5a0a8a73819d13d7eb5a`.
 Integration HEAD: `1e74a9ca307b1af39f45447ecea30e00b5225f0c`.
