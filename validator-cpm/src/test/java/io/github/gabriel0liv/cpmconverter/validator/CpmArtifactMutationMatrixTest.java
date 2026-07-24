@@ -28,6 +28,7 @@ class CpmArtifactMutationMatrixTest {
         c("config-unknown", b -> replaceText(b, "config.json", "{\"elements\":", "{\"extra\":1,\"elements\":"), false, "CPM_FEATURE_UNSUPPORTED"),
         c("config-number", b -> replaceText(b, "config.json", "\"version\":1", "\"version\":1.0"), false, "CPM_CONFIG_INVALID"),
         c("config-order", b -> reorderJsonFields(b, "config.json"), true, "CPM_NON_CANONICAL"),
+        c("config-escaped-string", b -> replaceText(b, "config.json", "Spike Cube", "Spike\\u0020Cube"), true, "CPM_NON_CANONICAL", "config.json", "/", CpmValidationLayer.CANONICALITY),
         c("registry-reserved", b -> replaceText(b, "config.json", "\"storeID\":1000", "\"storeID\":6"), false, "CPM_INVALID_STORE_ID"),
         c("registry-collision", b -> duplicateElement(b), false, "CPM_INVALID_STORE_ID", "config.json", "/elements/0/children/1/storeID", CpmValidationLayer.PROJECT_GRAPH),
         c("uv-box", b -> replaceText(b, "config.json", "\"u\":0", "\"u\":1000"), false, "UV_OUT_OF_BOUNDS"),
@@ -44,8 +45,9 @@ class CpmArtifactMutationMatrixTest {
         c("animation-color", b -> replaceText(b, "animations/v_standing_minimal.json", "\"ffffff\"", "\"zzzzzz\""), false, "CPM_ANIMATION_INVALID"),
         c("animation-frame-limit", b -> replaceText(b, "animations/v_standing_minimal.json", "\"priority\":0", "\"priority\":0 "), false, "INPUT_LIMIT_EXCEEDED", "animations/v_standing_minimal.json", "/", CpmValidationLayer.ANIMATIONS, false, true),
         c("animation-dangling", b -> replaceText(b, "animations/v_standing_minimal.json", "\"storeID\":1000", "\"storeID\":9999"), false, "CPM_DANGLING_ANIMATION_REF"),
-        c("animation-order", b -> reorderJsonFields(b, "animations/v_standing_minimal.json"), true, "CPM_NON_CANONICAL"));
-    assertTrue(cases.size() >= 25);
+        c("animation-order", b -> reorderJsonFields(b, "animations/v_standing_minimal.json"), true, "CPM_NON_CANONICAL"),
+        c("animation-whitespace", b -> replaceText(b, "animations/v_standing_minimal.json", "\"duration\":1000", "\"duration\": 1000"), true, "CPM_NON_CANONICAL", "animations/v_standing_minimal.json", "/", CpmValidationLayer.CANONICALITY));
+    assertEquals(28, cases.size());
     var validator = new CpmArtifactValidator();
     for (var testCase : cases) {
       byte[] mutated = testCase.mutation().apply(base);
@@ -56,6 +58,11 @@ class CpmArtifactMutationMatrixTest {
       if (testCase.source() != null) assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.location() != null && d.location().source().value().equals(testCase.source())), testCase.id());
       if (testCase.pointer() != null) assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.location() != null && Objects.equals(d.location().jsonPointer(), testCase.pointer())), testCase.id());
       if (testCase.layer() != null && result.value() != null) assertNotEquals(CpmValidationLayerStatus.SKIPPED, result.value().summary().layers().get(testCase.layer()), testCase.id());
+      if (testCase.id().equals("config-escaped-string") || testCase.id().equals("animation-whitespace")) {
+        assertTrue(result.success(), testCase.id());
+        assertFalse(result.value().summary().canonical(), testCase.id());
+        assertEquals(CpmValidationLayerStatus.WARN, result.value().summary().layers().get(CpmValidationLayer.CANONICALITY), testCase.id());
+      }
     }
   }
 
