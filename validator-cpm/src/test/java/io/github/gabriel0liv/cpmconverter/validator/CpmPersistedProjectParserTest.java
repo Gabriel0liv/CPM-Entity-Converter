@@ -54,6 +54,37 @@ class CpmPersistedProjectParserTest {
     assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals("UV_FACE_UNKNOWN")));
   }
 
+  @Test
+  void duplicateAndCustomRootsPreservePersistedAndEffectiveIds() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"body\"},{\"id\":\"body\",\"dup\":true,\"storeID\":1001},{\"id\":\"hat\",\"customPart\":true,\"storeID\":1002}]}");
+    var result = parse(json, CpmArtifactLimits.defaults());
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    assertEquals(3, result.value().roots().size());
+    assertEquals(CpmPersistedRootKind.VANILLA, result.value().roots().get(0).kind());
+    assertEquals(CpmPersistedRootKind.DUPLICATE, result.value().roots().get(1).kind());
+    assertEquals(CpmPersistedRootKind.CUSTOM, result.value().roots().get(2).kind());
+    assertEquals(1001L, result.value().roots().get(1).persistedStoreId());
+    assertEquals(1002L, result.value().roots().get(2).effectiveStoreId());
+    assertTrue(result.value().effectiveTargets().containsKey(1001L));
+    assertTrue(result.value().effectiveTargets().containsKey(1002L));
+  }
+
+  @Test
+  void depthLimitProducesDiagnosticAtExceededChild() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"body\",\"children\":[{\"storeID\":1000,\"children\":[{\"storeID\":1001,\"children\":[{\"storeID\":1002}]}]}]}]}");
+    var result = parse(json, limits(10, 1));
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals("INPUT_LIMIT_EXCEEDED") && "/elements/0/children/0/children/0/children/0".equals(d.location().jsonPointer())));
+  }
+
+  @Test
+  void reservedRootStoreIdIsRejectedWithoutThrowing() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"body\",\"dup\":true,\"storeID\":6}]}");
+    var result = assertDoesNotThrow(() -> parse(json, CpmArtifactLimits.defaults()));
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals("CPM_INVALID_STORE_ID") && "/elements/0/storeID".equals(d.location().jsonPointer())));
+  }
+
   private static Result<CpmPersistedProjectV1> parse(com.fasterxml.jackson.databind.JsonNode json, CpmArtifactLimits limits) {
     var config = new CpmValidatedConfigV1(json, 1, "default", new CpmPersistedSize2i(64, 64), false, false);
     return new CpmPersistedProjectParser().parse(json, config, null, false, limits);

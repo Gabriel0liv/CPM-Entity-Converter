@@ -3,12 +3,20 @@ package io.github.gabriel0liv.cpmconverter.validator;
 import java.util.List;
 import java.util.Objects;
 
-public record CpmPersistedRootV1(String id, long effectiveStoreId, boolean show,
+public record CpmPersistedRootV1(String id, CpmPersistedRootKind kind, boolean customPart,
+    boolean duplicate, Long persistedStoreId, long effectiveStoreId, boolean show,
     boolean showInEditor, boolean locked, CpmPersistedVec3 position, CpmPersistedVec3 rotation,
-    boolean duplicate, boolean disableVanillaAnimation, String name, int nameColor,
+    boolean disableVanillaAnimation, String name, int nameColor,
     List<CpmPersistedElementV1> children, String pointer) {
   public CpmPersistedRootV1 {
     if (id == null || id.isBlank()) throw new IllegalArgumentException("id");
+    Objects.requireNonNull(kind, "kind");
+    if (kind == CpmPersistedRootKind.VANILLA && persistedStoreId != null) {
+      throw new IllegalArgumentException("vanilla root cannot have persisted storeID");
+    }
+    if (kind != CpmPersistedRootKind.VANILLA && persistedStoreId == null) {
+      throw new IllegalArgumentException("persisted storeID required");
+    }
     Objects.requireNonNull(children, "children");
     Objects.requireNonNull(position, "position");
     Objects.requireNonNull(rotation, "rotation");

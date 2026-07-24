@@ -39,7 +39,24 @@ public final class CpmArtifactValidator {
       if (!png.success()) bag = bag.addAll(png.diagnostics()); else { pngMetadata = png.value(); width = png.value().width(); height = png.value().height(); }
     }
     var parsedProject = new CpmPersistedProjectParser().parse(root, config, pngMetadata, data.entries().containsKey("skin.png"), request.limits());
-    if (!parsedProject.success()) { tracker.fail(CpmValidationLayer.PROJECT_GRAPH); return Result.failure(parsedProject.diagnostics()); }
+    if (!parsedProject.success()) {
+      bag = bag.addAll(parsedProject.diagnostics());
+      tracker.fail(CpmValidationLayer.PROJECT_GRAPH);
+      var syntaxDiagnostics = new DiagnosticBag();
+      int parsedAnimationEntries = 0;
+      for (var entry : data.entries().entrySet()) {
+        if (!entry.getKey().startsWith("animations/")) continue;
+        if (++parsedAnimationEntries > request.limits().maxAnimations()) {
+          syntaxDiagnostics = syntaxDiagnostics.add(new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(DiagnosticCodes.INPUT_LIMIT_EXCEEDED), new SourceLocation(new SourcePath(entry.getKey()), null, null, "/", null), "animation limit exceeded", "reduce animations", null, null, new TreeMap<>()));
+          break;
+        }
+        var animation = new CpmPersistedAnimationParser().parse(entry.getKey(), entry.getValue(), request.limits());
+        if (!animation.success()) syntaxDiagnostics = syntaxDiagnostics.addAll(animation.diagnostics());
+      }
+      bag = bag.addAll(syntaxDiagnostics);
+      if (syntaxDiagnostics.hasErrors()) tracker.fail(CpmValidationLayer.ANIMATIONS);
+      return Result.failure(bag);
+    }
     var project = parsedProject.value();
     var graph = new CpmPersistedProjectValidator().validate(project, request.limits());
     if (graph.hasErrors()) { tracker.fail(CpmValidationLayer.PROJECT_GRAPH); return Result.failure(graph); }
@@ -47,7 +64,8 @@ public final class CpmArtifactValidator {
 
     var refs = new CpmPersistedStoreReferenceValidator().validate(project);
     if (refs.hasErrors()) { tracker.fail(CpmValidationLayer.STORE_REFERENCES); return Result.failure(refs); }
-    tracker.pass(CpmValidationLayer.STORE_REFERENCES);
+    // No independent static reference relation exists in the current MVP.
+    // Keep STORE_REFERENCES as SKIPPED rather than reporting a fictitious PASS.
 
     var uv = new CpmPersistedUvTextureValidator().validate(root, config.skinSize());
     bag = bag.addAll(uv);
