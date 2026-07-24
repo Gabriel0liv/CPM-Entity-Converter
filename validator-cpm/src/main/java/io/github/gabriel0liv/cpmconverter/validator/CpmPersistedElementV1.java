@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.validator;
 
 import java.util.List;
+import java.util.Objects;
 
 public record CpmPersistedElementV1(String name, boolean show, boolean texture, int textureSize,
     CpmPersistedVec3 offset, CpmPersistedVec3 position, CpmPersistedVec3 rotation,
@@ -10,8 +11,18 @@ public record CpmPersistedElementV1(String name, boolean show, boolean texture, 
     int nameColor, long storeId, List<CpmPersistedElementV1> children, int preOrderIndex,
     int depth, String pointer) {
   public CpmPersistedElementV1 {
-    if (name == null) throw new IllegalArgumentException("name");
+    Objects.requireNonNull(name, "name");
+    Objects.requireNonNull(offset, "offset");
+    Objects.requireNonNull(position, "position");
+    Objects.requireNonNull(rotation, "rotation");
+    Objects.requireNonNull(size, "size");
+    Objects.requireNonNull(renderScale, "renderScale");
+    Objects.requireNonNull(scale, "scale");
+    Objects.requireNonNull(uv, "uv");
+    Objects.requireNonNull(color, "color");
+    Objects.requireNonNull(children, "children");
+    Objects.requireNonNull(pointer, "pointer");
     if (!Double.isFinite(mcScale)) throw new IllegalArgumentException("mcScale");
-    children = List.copyOf(children == null ? List.of() : children);
+    children = List.copyOf(children);
   }
 }

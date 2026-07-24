@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.validator;
 
 import java.util.List;
+import java.util.Objects;
 
 public record CpmPersistedRootV1(String id, long effectiveStoreId, boolean show,
     boolean showInEditor, boolean locked, CpmPersistedVec3 position, CpmPersistedVec3 rotation,
@@ -8,9 +9,11 @@ public record CpmPersistedRootV1(String id, long effectiveStoreId, boolean show,
     List<CpmPersistedElementV1> children, String pointer) {
   public CpmPersistedRootV1 {
     if (id == null || id.isBlank()) throw new IllegalArgumentException("id");
-    children = List.copyOf(children == null ? List.of() : children);
-    position = position == null ? new CpmPersistedVec3(0, 0, 0) : position;
-    rotation = rotation == null ? new CpmPersistedVec3(0, 0, 0) : rotation;
-    name = name == null ? "" : name;
+    Objects.requireNonNull(children, "children");
+    Objects.requireNonNull(position, "position");
+    Objects.requireNonNull(rotation, "rotation");
+    Objects.requireNonNull(name, "name");
+    Objects.requireNonNull(pointer, "pointer");
+    children = List.copyOf(children);
   }
 }
