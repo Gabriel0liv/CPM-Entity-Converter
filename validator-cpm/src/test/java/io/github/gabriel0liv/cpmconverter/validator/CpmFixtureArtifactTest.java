@@ -1,14 +1,29 @@
 package io.github.gabriel0liv.cpmconverter.validator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.zip.*;
+
+import java.security.MessageDigest;
+import java.util.*;
 import org.junit.jupiter.api.Test;
 
 class CpmFixtureArtifactTest {
-  private static byte[] artifact(String fixture) throws IOException {
-    Path root=Files.exists(Path.of("test-fixtures",fixture))?Path.of("test-fixtures",fixture):Path.of("..","test-fixtures",fixture); byte[] config=Files.readAllBytes(root.resolve("expected/cpm-config-v1.json")); byte[] skin=Files.readAllBytes(root.resolve("texture.png")); ByteArrayOutputStream out=new ByteArrayOutputStream(); try(ZipOutputStream z=new ZipOutputStream(out)){z.putNextEntry(new ZipEntry("config.json"));z.write(config);z.closeEntry();z.putNextEntry(new ZipEntry("skin.png"));z.write(skin);z.closeEntry();} return out.toByteArray();
+  @Test
+  void officialWriterArtifactsAAndCAreValidatedDeterministically() throws Exception {
+    for (String fixture : List.of("fixture-a-humanoid", "fixture-c-deep-hierarchy")) {
+      byte[] first = CpmOfficialFixtureFactory.write(fixture);
+      byte[] second = CpmOfficialFixtureFactory.write(fixture);
+      assertArrayEquals(first, second, fixture);
+      var result = new CpmArtifactValidator().validate(first);
+      assertTrue(result.success(), fixture + " " + result.diagnostics().all());
+      assertEquals(result.value().summary(), new CpmArtifactValidator().validate(second).value().summary());
+      assertTrue(sha(first).length() == 64);
+      assertTrue(result.value().summary().rootCount() > 0);
+      assertTrue(result.value().summary().elementCount() > 0);
+      assertTrue(result.value().summary().texturedElementCount() > 0);
+    }
   }
-  @Test void validatesAvailableT302GoldenArtifacts() throws Exception { var v=new CpmArtifactValidator(); for(String f:new String[]{"fixture-a-humanoid","fixture-c-deep-hierarchy"}) { var r=v.validate(artifact(f)); assertTrue(r.success(),f+" "+r.diagnostics().all()); assertEquals(2,r.value().inventory().entries().size()); assertTrue(r.value().summary().texturePresent()); assertEquals(r.value().summary(), v.validate(artifact(f)).value().summary()); } }
+
+  private static String sha(byte[] bytes) throws Exception {
+    return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
+  }
 }
