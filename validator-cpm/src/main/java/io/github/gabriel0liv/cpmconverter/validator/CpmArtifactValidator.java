@@ -81,17 +81,20 @@ public final class CpmArtifactValidator {
       if (!a.success()) animationDiagnostics = animationDiagnostics.addAll(a.diagnostics());
       else animations.add(a.value());
     }
-    if (!animationDiagnostics.hasErrors()) animationDiagnostics = animationDiagnostics.addAll(new CpmPersistedAnimationValidator().validate(animations, project));
+    animationDiagnostics = animationDiagnostics.addAll(new CpmPersistedAnimationValidator().validate(animations, project));
     bag = bag.addAll(animationDiagnostics);
     if (animationDiagnostics.hasErrors()) tracker.fail(CpmValidationLayer.ANIMATIONS); else tracker.pass(CpmValidationLayer.ANIMATIONS);
-    boolean canonical = isCanonical(data.entries().get("config.json"), data.inventory());
-    if (!canonical) { bag = bag.add(warning(DiagnosticCodes.CPM_NON_CANONICAL, "config.json", null, "artifact is valid but non-canonical", "use canonical writer output")); tracker.warn(CpmValidationLayer.CANONICALITY); }
-    else tracker.pass(CpmValidationLayer.CANONICALITY);
+    var canonicalDiagnostics = new CpmArtifactCanonicalityValidator().validate(data.entries(), data.inventory());
+    bag = bag.addAll(canonicalDiagnostics);
+    boolean canonical = !canonicalDiagnostics.warnings().isEmpty() ? false : true;
+    if (!canonical) tracker.warn(CpmValidationLayer.CANONICALITY); else tracker.pass(CpmValidationLayer.CANONICALITY);
     if (bag.hasErrors()) return Result.failure(bag);
     int roots = project.roots().size(), count = project.elements().size();
-    return Result.success(new CpmValidatedArtifactV1(project, animations, data.inventory(), new CpmValidationSummary(tracker.snapshot(), canonical, roots, count, project.generatedStoreIds().size(), 0, animations.size(), 0, 0, data.entries().containsKey("skin.png"), width, height)), bag);
+    int textured = (int) project.elements().stream().filter(CpmPersistedElementV1::texture).count();
+    int frames = animations.stream().mapToInt(a -> a.frames().size()).sum();
+    int references = animations.stream().flatMap(a -> a.frames().stream()).mapToInt(f -> f.components().size()).sum();
+    return Result.success(new CpmValidatedArtifactV1(project, animations, data.inventory(), new CpmValidationSummary(tracker.snapshot(), canonical, roots, count, project.persistedTargets().size(), textured, animations.size(), frames, references, data.entries().containsKey("skin.png"), width, height)), bag);
   }
-  private static boolean isCanonical(byte[] config, CpmArtifactInventory inventory) { String s = new String(config, StandardCharsets.UTF_8); return s.endsWith("\n") && !s.contains("\r") && inventory.entries().stream().allMatch(e -> e.method() == 8); }
   private static Diagnostic error(String code, String source, String pointer, String message, String suggestion) { return new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(code), new SourceLocation(new SourcePath(source), null, null, pointer, null), message, suggestion, null, null, new TreeMap<>()); }
   private static Diagnostic warning(String code, String source, String pointer, String message, String suggestion) { return new Diagnostic(Severity.WARNING, DiagnosticCode.fromCatalog(code), new SourceLocation(new SourcePath(source), null, null, pointer, null), message, suggestion, null, null, new TreeMap<>()); }
 }
