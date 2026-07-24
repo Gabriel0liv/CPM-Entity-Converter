@@ -68,9 +68,9 @@ public final class CpmArtifactValidator {
     // Keep STORE_REFERENCES as SKIPPED rather than reporting a fictitious PASS.
 
     var uv = new CpmPersistedUvTextureValidator().validate(project,
-        data.entries().containsKey("skin.png"), pngMetadata, request.limits());
+        data.entries().containsKey("skin.png"), pngMetadata);
     bag = bag.addAll(uv);
-    if (bag.hasErrors()) tracker.fail(CpmValidationLayer.UV_TEXTURE); else tracker.pass(CpmValidationLayer.UV_TEXTURE);
+    if (uv.hasErrors()) tracker.fail(CpmValidationLayer.UV_TEXTURE); else tracker.pass(CpmValidationLayer.UV_TEXTURE);
 
     var animations = new ArrayList<CpmPersistedAnimationV1>();
     var animationDiagnostics = new DiagnosticBag();
