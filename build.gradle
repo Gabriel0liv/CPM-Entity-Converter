@@ -1,5 +1,10 @@
 allprojects { group = 'io.github.gabriel0liv.cpmconverter'; version = '0.1.0-SNAPSHOT' }
 
+tasks.register('s003Evidence', Exec) {
+    workingDir projectDir
+    commandLine 'python', 'spikes/minimal-cpmproject/scripts/generate_and_verify.py'
+}
+
 subprojects {
     apply plugin: 'java-library'
     java {

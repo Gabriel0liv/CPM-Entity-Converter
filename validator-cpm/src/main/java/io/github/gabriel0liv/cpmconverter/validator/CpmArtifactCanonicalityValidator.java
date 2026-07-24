@@ -46,32 +46,31 @@ final class CpmArtifactCanonicalityValidator {
     try {
       JsonNode parsed = JSON.readTree(new String(bytes, StandardCharsets.UTF_8));
       if (parsed == null || !parsed.isObject()) return false;
-      ObjectNode canonical = (ObjectNode) canonicalObject(parsed, config ? CONFIG_FIELDS : ANIMATION_FIELDS);
+      ObjectNode canonical = (ObjectNode) (config ? canonicalConfig(parsed) : canonicalAnimation(parsed));
       byte[] expected = (JSON.writeValueAsString(canonical) + "\n").getBytes(StandardCharsets.UTF_8);
       return Arrays.equals(bytes, expected);
     } catch (Exception ex) {
       return false;
     }
   }
-  private static JsonNode canonicalObject(JsonNode node, List<String> rootOrder) {
-    if (node.isArray()) { var a = JSON.createArrayNode(); node.forEach(v -> a.add(canonicalObject(v, rootOrder))); return a; }
-    if (!node.isObject()) return node;
-    var out = JSON.createObjectNode(); var order = orderFor(node, rootOrder);
-    for (String field : order) if (node.has(field)) out.set(field, canonicalObject(node.get(field), rootOrder));
-    node.fieldNames().forEachRemaining(field -> { if (!out.has(field)) out.set(field, canonicalObject(node.get(field), rootOrder)); });
-    return out;
-  }
-  private static List<String> orderFor(JsonNode node, List<String> rootOrder) {
-    if (node.has("customGridSize") || node.has("anim")) return List.of("customGridSize", "anim");
-    if (node.has("skin")) return List.of("skin");
-    if (node.has("showInEditor") || node.has("disableVanillaAnim")) return List.of("id", "show", "showInEditor", "locked", "pos", "rotation", "dup", "disableVanillaAnim", "name", "nameColor", "children");
-    if (node.has("storeID") || node.has("faceUV") || node.has("textureSize")) return List.of("name", "show", "texture", "textureSize", "offset", "pos", "rotation", "size", "rscale", "scale", "u", "v", "faceUV", "color", "mirror", "mcScale", "glow", "recolor", "hidden", "singleTex", "extrude", "locked", "nameColor", "storeID", "children");
-    if (node.has("sx") || node.has("rot")) return List.of("sx", "sy", "ex", "ey", "rot", "autoUV");
-    if (node.has("x") || node.has("y") || node.has("z")) return List.of("x", "y", "z");
-    return rootOrder;
-  }
+  private static JsonNode canonicalConfig(JsonNode n) { var o = JSON.createObjectNode(); put(o, n, "version", Kind.GENERIC); put(o, n, "skinType", Kind.GENERIC); if (n.has("skinSize")) o.set("skinSize", canonicalVector(n.get("skinSize"))); if (n.has("textures")) o.set("textures", canonicalTextures(n.get("textures"))); if (n.has("elements")) { var a = JSON.createArrayNode(); n.get("elements").forEach(v -> a.add(canonicalRoot(v))); o.set("elements", a); } copyUnknown(o, n); return o; }
+  private static JsonNode canonicalTextures(JsonNode n) { var o = JSON.createObjectNode(); if (n.has("skin")) { var s = JSON.createObjectNode(); var skin = n.get("skin"); put(s, skin, "customGridSize", Kind.GENERIC); put(s, skin, "anim", Kind.GENERIC); copyUnknown(s, skin); o.set("skin", s); } copyUnknown(o, n); return o; }
+  private static JsonNode canonicalAnimation(JsonNode n) { var o = JSON.createObjectNode(); put(o,n,"additive",Kind.GENERIC); put(o,n,"duration",Kind.GENERIC); if(n.has("frames")){var a=JSON.createArrayNode(); n.get("frames").forEach(v->a.add(canonicalFrame(v))); o.set("frames",a);} put(o,n,"interpolator",Kind.GENERIC); put(o,n,"loop",Kind.GENERIC); put(o,n,"name",Kind.GENERIC); put(o,n,"priority",Kind.GENERIC); copyUnknown(o,n); return o; }
+  private static JsonNode canonicalFrame(JsonNode n){var o=JSON.createObjectNode(); if(n.has("components")){var a=JSON.createArrayNode();n.get("components").forEach(v->a.add(canonicalComponent(v)));o.set("components",a);} copyUnknown(o,n); return o;}
+  private static JsonNode canonicalComponent(JsonNode n){var o=JSON.createObjectNode(); put(o,n,"color",Kind.GENERIC); if(n.has("pos"))o.set("pos",canonicalVector(n.get("pos"))); if(n.has("rotation"))o.set("rotation",canonicalVector(n.get("rotation"))); if(n.has("scale"))o.set("scale",canonicalVector(n.get("scale"))); put(o,n,"show",Kind.GENERIC); put(o,n,"storeID",Kind.GENERIC); copyUnknown(o,n); return o;}
+  private static JsonNode canonicalRoot(JsonNode n){var o=JSON.createObjectNode(); for(String f:ROOT_FIELDS) if(n.has(f)) o.set(f, f.equals("pos")||f.equals("rotation")?canonicalVector(n.get(f)):f.equals("children")?canonicalChildren(n.get(f)):n.get(f)); copyUnknown(o,n); return o;}
+  private static JsonNode canonicalChildren(JsonNode n){var a=JSON.createArrayNode(); n.forEach(v->a.add(v.isObject()&&v.has("storeID")?canonicalElement(v):canonicalRoot(v))); return a;}
+  private static JsonNode canonicalElement(JsonNode n){var o=JSON.createObjectNode(); for(String f:ELEMENT_FIELDS) if(n.has(f)){JsonNode v=n.get(f); if(List.of("offset","pos","rotation","size","rscale","scale").contains(f))v=canonicalVector(v); else if(f.equals("faceUV"))v=canonicalFaceUv(v); else if(f.equals("children"))v=canonicalChildren(v); o.set(f,v);} copyUnknown(o,n); return o;}
+  private static JsonNode canonicalFaceUv(JsonNode n){var o=JSON.createObjectNode(); for(String f:List.of("north","south","east","west","up","down"))if(n.has(f)){var face=JSON.createObjectNode();for(String k:List.of("sx","sy","ex","ey","rot","autoUV"))put(face,n.get(f),k,Kind.GENERIC);o.set(f,face);}copyUnknown(o,n);return o;}
+  private static JsonNode canonicalVector(JsonNode n){var o=JSON.createObjectNode();put(o,n,"x",Kind.GENERIC);put(o,n,"y",Kind.GENERIC);put(o,n,"z",Kind.GENERIC);copyUnknown(o,n);return o;}
+  private enum Kind { GENERIC }
+  private static void put(ObjectNode out, JsonNode in, String field, Kind ignored){if(in.has(field))out.set(field,in.get(field));}
+  private static void copyUnknown(ObjectNode out, JsonNode in){in.fieldNames().forEachRemaining(f->{if(!out.has(f))out.set(f,in.get(f));});}
+  private static final List<String> ROOT_FIELDS=List.of("id","show","showInEditor","locked","pos","rotation","dup","disableVanillaAnim","name","nameColor","children");
+  private static final List<String> ELEMENT_FIELDS=List.of("name","show","texture","textureSize","offset","pos","rotation","size","rscale","scale","u","v","faceUV","color","mirror","mcScale","glow","recolor","hidden","singleTex","extrude","locked","nameColor","storeID","children");
   private static final List<String> CONFIG_FIELDS = List.of("version", "skinType", "skinSize", "textures", "elements");
   private static final List<String> ANIMATION_FIELDS = List.of("additive", "duration", "frames", "interpolator", "loop", "name", "priority");
   private static Diagnostic warning(String source, String message) { return warning(source, message, "reason", message, "observed"); }
   private static Diagnostic warning(String source, String message, String key, String expected, String observed) { var context = new TreeMap<String, String>(); context.put("canonicalReason", key); context.put("expected", expected); context.put("observed", observed); return new Diagnostic(Severity.WARNING, DiagnosticCode.fromCatalog(DiagnosticCodes.CPM_NON_CANONICAL), new SourceLocation(new SourcePath(source), null, null, "/", null), message, "regenerate with the canonical writer", null, null, context); }
 }
+

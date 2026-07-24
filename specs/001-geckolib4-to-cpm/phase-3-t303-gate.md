@@ -1,6 +1,6 @@
 # Gate T303
 
-Status: **[x] PASS**
+Status: **[~] correction in progress**
 
 Base: `45ec99b75f0ff29e3135ae4dc794576ac7eaa627`.
 Integration HEAD validated by CI: `fe827dfde241f01da0f096756820b088c1c2abdd`.
@@ -9,10 +9,10 @@ Feature correction: `c856105` (merged into integration).
 | Evidence | Command/test | Cases | Result | Commit/run |
 |---|---|---:|---|---|
 | Validator tests | `:validator-cpm:test` | 23 | PASS | `c856105` |
-| Mutation matrix | `CpmArtifactMutationMatrixTest` | 28 focused cases | PASS | `c856105` |
+| Mutation matrix | `CpmArtifactMutationMatrixTest` | prior labels under audit | INCOMPLETE | `c856105` |
 | Fixture A/C | `CpmFixtureArtifactTest` | 2 deterministic artifacts | PASS | `c856105` |
-| Fixture B/D smoke | `CpmFixtureSmokeTest` | 2 fixture corpora | PASS | `c856105` |
-| S003 | `CpmS003ArtifactTest` | M0–M5 harness coverage | PASS | `c856105` |
+| Fixture B/D smoke | `CpmFixtureSmokeTest` | source-only smoke under audit | INCOMPLETE | `c856105` |
+| S003 | `CpmS003ArtifactTest` | harness execution pending | INCOMPLETE | `c856105` |
 | Formatting | `spotlessCheck` | all configured modules | PASS | `fe827df` |
 | Full build | `clean check --no-daemon` | all modules | PASS | `fe827df` |
 | Windows CI | `check` | `e497a6b8b1ecad281b414e65b4a8f3f6fe8ab17d` | PASS | run `30113686363`, job `89549066450` |
