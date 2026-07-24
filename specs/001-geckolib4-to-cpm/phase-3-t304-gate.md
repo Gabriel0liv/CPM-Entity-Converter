@@ -17,6 +17,9 @@ CPM: `0.6.27`, commit `9272f4f9c36a2bbd6986e6da65bf7091369cb12b` (tree `3c2889a8
 | Round-trip | `CpmProjectIoRoundTripTest` | PASS where ProjectIO save/reopen is available |
 | Determinism | `CpmCrossPlatformGoldenTest` | PASS against pinned A/B/C/D SHA-256 values |
 | S003 | `s003Evidence` and M0–M5 in report | PASS with M0/M1 expected failures |
+| CI Windows | run `30134963686`, job `89616865949` | PASS on checkout `96dcb2ee969dcce543dc87d3a0871f7ebee36a35` |
+| CI Linux | run `30134963686`, job `89616865945` | PASS on checkout `96dcb2ee969dcce543dc87d3a0871f7ebee36a35` |
+| CI check | run `30134963686`, job `89616865950` | PASS on checkout `96dcb2ee969dcce543dc87d3a0871f7ebee36a35` |
 
 Pinned artifact hashes:
 
@@ -33,8 +36,9 @@ Outputs are reproducible under `build/t304/`:
 
 The verification-only module compiles CPM sources from the external checkout;
 no production module depends on CPM. It verifies the exact CPM commit before
-compiling. Cross-platform execution is a CI follow-up; the local Windows run
-is recorded here without claiming Linux execution.
+compiling. The final CI matrix executed the same integration checkout on
+Windows and Ubuntu; the local run remains reproducible with the pinned
+reference directory.
 
 Automated round-trip uses `ProjectIO.saveProject`/`ProjectFile.save` into a
 temporary file and reopens it. No original artifact is modified.
