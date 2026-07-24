@@ -5,6 +5,10 @@ tasks.register('s003Evidence', Exec) {
     commandLine 'python', 'spikes/minimal-cpmproject/scripts/generate_and_verify.py'
 }
 
+tasks.register('t304GenerateArtifacts') { dependsOn ':verification:projectio-conformance:t304GenerateArtifacts' }
+tasks.register('t304ProjectIoConformance') { dependsOn ':verification:projectio-conformance:t304ProjectIoConformance' }
+tasks.register('t304ManualEvidenceBundle') { dependsOn ':verification:projectio-conformance:t304ManualEvidenceBundle' }
+
 subprojects {
     apply plugin: 'java-library'
     java {

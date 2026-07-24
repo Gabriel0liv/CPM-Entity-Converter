@@ -64,7 +64,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T301 IDs determinísticos — reserved root IDs, generated pre-order storeIDs, numeric target resolution, fixture evidence and Windows CI completed.
 - [x] T302 writer ZIP/JSON/PNG determinístico — writer, deterministic ZIP, A/C goldens, B/D fixture pipeline, artifact inspection and Windows CI completed.
 - [x] T303 validator CPM em camadas — parser, registry, UV/PNG, canonicalidade, official A/C/B/D evidence, mutation matrix, S003 e Windows CI concluídos.
-- [ ] T304 conformidade `ProjectIO` e visual estático (AC-001–005).
+- [~] T304 conformidade `ProjectIO` e visual estático (AC-001–005) — ProjectIO automatizado e pacote de inspeção gerados; evidência visual humana pendente.
 
 ## Fase 4
 

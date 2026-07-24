@@ -25,7 +25,7 @@ import com.tom.cpm.shared.model.PlayerModelParts;
 import com.tom.cpm.shared.model.SkinType;
 
 public final class ProjectIoOracle {
-    private static void initializeHeadlessAccess() {
+    public static void initializeHeadlessAccess() {
         File config = new File(System.getProperty("java.io.tmpdir"), "cpm-s003-NON_PRODUCTION.json");
         com.tom.cpl.item.ItemStackHandler<Object> itemHandler = new com.tom.cpl.item.ItemStackHandler<>() {
             @Override public List<String> listTags(Object value) { return Collections.emptyList(); }
@@ -125,7 +125,7 @@ public final class ProjectIoOracle {
         }
     }
 
-    private static Editor initializedEditor() {
+    public static Editor initializedEditor() {
         Editor editor = new Editor();
         editor.ui = (com.tom.cpl.gui.UI) Proxy.newProxyInstance(
                 ProjectIoOracle.class.getClassLoader(),
@@ -144,6 +144,14 @@ public final class ProjectIoOracle {
         return editor;
     }
 
+    public static Editor loadEditor(File file) throws Exception {
+        ProjectFile project = new ProjectFile();
+        project.load(file).join();
+        Editor editor = initializedEditor();
+        ProjectIO.loadProject(editor, project);
+        return editor;
+    }
+
     public static void main(String[] args) {
         initializeHeadlessAccess();
         for (String arg : args) {
@@ -151,10 +159,7 @@ public final class ProjectIoOracle {
             result.addProperty("marker", "NON_PRODUCTION");
             result.addProperty("file", new File(arg).getName());
             try {
-                ProjectFile project = new ProjectFile();
-                project.load(new File(arg)).join();
-                Editor editor = initializedEditor();
-                ProjectIO.loadProject(editor, project);
+                Editor editor = loadEditor(new File(arg));
                 result.addProperty("projectIo", "PASS");
                 result.addProperty("rootCount", editor.elements.size());
                 result.addProperty("animationCount", editor.animations.size());
