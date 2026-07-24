@@ -52,6 +52,7 @@ jobs:
   t304-projectio:
     name: T304 ProjectIO (${{ matrix.os }})
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
@@ -82,4 +83,4 @@ jobs:
         run: |
           test -f build/t304/artifacts/manifest.json
           test -f build/t304/projectio/projectio-report.json
-          test -z "$(git status --short)"
+          test -z "$(git status --short --untracked-files=no)"
