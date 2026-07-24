@@ -16,4 +16,5 @@ class CpmArtifactValidatorTest {
   }
   @Test void rejectsMissingConfig() throws Exception { assertFalse(new CpmArtifactValidator().validate(new byte[]{1,2,3}).success()); }
   @Test void requestDefensivelyCopiesBytes() throws Exception { byte[] b=zip("{\"version\":1,\"elements\":[]}"); var q=new CpmArtifactValidationRequest(b,CpmArtifactLimits.defaults()); b[0]=0; assertNotEquals(0,q.artifactBytes()[0]); }
+  @Test void nonCanonicalJsonRemainsSuccessfulWithWarning() throws Exception { var r=new CpmArtifactValidator().validate(zip("{\"elements\":[],\"version\":1}\r\n")); assertTrue(r.success()); assertFalse(r.value().summary().canonical()); assertTrue(r.diagnostics().warnings().stream().anyMatch(d -> d.code().value().equals("CPM_NON_CANONICAL"))); }
 }

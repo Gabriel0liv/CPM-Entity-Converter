@@ -94,6 +94,23 @@ class CpmPersistedProjectParserTest {
     assertTrue(result.diagnostics().all().stream().anyMatch(d -> "/elements/0/dup".equals(d.location().jsonPointer())));
   }
 
+  @Test
+  void invalidPersistedRootDoesNotCreateSyntheticTarget() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"body\",\"dup\":true}]}");
+    var result = assertDoesNotThrow(() -> parse(json, CpmArtifactLimits.defaults()));
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> "/elements/0/storeID".equals(d.location().jsonPointer())));
+    assertFalse(result.success() && result.value().effectiveTargets().containsKey(7L));
+  }
+
+  @Test
+  void duplicateWithUnknownBaseIsRejected() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"unknown\",\"dup\":true,\"storeID\":1001}]}");
+    var result = parse(json, CpmArtifactLimits.defaults());
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.location().jsonPointer().equals("/elements/0/id")));
+  }
+
   private static Result<CpmPersistedProjectV1> parse(com.fasterxml.jackson.databind.JsonNode json, CpmArtifactLimits limits) {
     var config = new CpmValidatedConfigV1(json, 1, "default", new CpmPersistedSize2i(64, 64), false, false);
     return new CpmPersistedProjectParser().parse(json, config, null, false, limits);

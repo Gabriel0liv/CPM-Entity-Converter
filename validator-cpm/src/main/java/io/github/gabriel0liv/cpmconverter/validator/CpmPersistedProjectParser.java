@@ -32,30 +32,31 @@ final class CpmPersistedProjectParser {
       if (customPart) kind = CpmPersistedRootKind.CUSTOM;
       else if (duplicate) kind = CpmPersistedRootKind.DUPLICATE;
       else kind = CpmPersistedRootKind.VANILLA;
-      if (id == null || (kind == CpmPersistedRootKind.VANILLA && !ROOT_IDS.contains(id))) { diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/id", "unknown root id")); continue; }
+      boolean invalidIdentity = id == null;
+      if (kind != CpmPersistedRootKind.CUSTOM && id != null && !ROOT_IDS.contains(id)) {
+        diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/id", "unknown base root id"));
+        invalidIdentity = true;
+      }
+      if (customPart && duplicate) invalidIdentity = true;
       if (kind == CpmPersistedRootKind.VANILLA && !vanillaIds.add(id)) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/id", "duplicate vanilla root id"));
-      if (kind != CpmPersistedRootKind.VANILLA && persistedStoreId == null) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, pointer + "/storeID", "storeID required for duplicate or custom root"));
-      if (kind == CpmPersistedRootKind.VANILLA && persistedStoreId != null) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, pointer + "/storeID", "vanilla root must not declare storeID"));
+      if (kind != CpmPersistedRootKind.VANILLA && persistedStoreId == null) { diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, pointer + "/storeID", "storeID required for duplicate or custom root")); invalidIdentity = true; }
+      if (kind == CpmPersistedRootKind.VANILLA && persistedStoreId != null) { diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, pointer + "/storeID", "vanilla root must not declare storeID")); invalidIdentity = true; }
+      if (invalidIdentity) continue;
       JsonNode childrenNode = root.get("children"); if (childrenNode != null && !childrenNode.isArray()) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/children", "children must be an array"));
       var children = new ArrayList<CpmPersistedElementV1>();
       if (childrenNode == null || childrenNode.isArray()) if (childrenNode != null) for (int i = 0; i < childrenNode.size(); i++) { var child = parseElement(childrenNode.get(i), pointer + "/children/" + i, 0, preorder, elements, generated, diagnostics, limits); if (child != null) children.add(child); }
-      long effectiveId = kind == CpmPersistedRootKind.VANILLA ? rootId(id) : (persistedStoreId == null ? 0 : persistedStoreId);
-      boolean contradictoryFlags = customPart && duplicate;
-      CpmPersistedRootKind constructorKind = contradictoryFlags ? CpmPersistedRootKind.VANILLA : kind;
-      Long constructorStoreId = constructorKind == CpmPersistedRootKind.VANILLA ? null : (persistedStoreId == null ? 7L : persistedStoreId);
-      boolean constructorCustomPart = customPart && !duplicate;
-      boolean constructorDuplicate = duplicate && !customPart;
-      CpmPersistedRootV1 rootValue = new CpmPersistedRootV1(id, constructorKind, constructorCustomPart, constructorDuplicate, constructorStoreId, effectiveId, optionalBoolean(root, "show", false, pointer + "/show", diagnostics), optionalBoolean(root, "showInEditor", true, pointer + "/showInEditor", diagnostics), optionalBoolean(root, "locked", false, pointer + "/locked", diagnostics), strictVec(root, "pos", pointer + "/pos", new CpmPersistedVec3(0, 0, 0), diagnostics), strictVec(root, "rotation", pointer + "/rotation", new CpmPersistedVec3(0, 0, 0), diagnostics), optionalBoolean(root, "disableVanillaAnim", false, pointer + "/disableVanillaAnim", diagnostics), optionalText(root, "name", "", pointer + "/name", diagnostics), optionalInt(root, "nameColor", 0, pointer + "/nameColor", diagnostics), children, pointer);
+      long effectiveId = kind == CpmPersistedRootKind.VANILLA ? rootId(id) : persistedStoreId;
+      CpmPersistedRootV1 rootValue = new CpmPersistedRootV1(id, kind, customPart, duplicate, persistedStoreId, effectiveId, optionalBoolean(root, "show", false, pointer + "/show", diagnostics), optionalBoolean(root, "showInEditor", true, pointer + "/showInEditor", diagnostics), optionalBoolean(root, "locked", false, pointer + "/locked", diagnostics), strictVec(root, "pos", pointer + "/pos", new CpmPersistedVec3(0, 0, 0), diagnostics), strictVec(root, "rotation", pointer + "/rotation", new CpmPersistedVec3(0, 0, 0), diagnostics), optionalBoolean(root, "disableVanillaAnim", false, pointer + "/disableVanillaAnim", diagnostics), optionalText(root, "name", "", pointer + "/name", diagnostics), optionalInt(root, "nameColor", 0, pointer + "/nameColor", diagnostics), children, pointer);
       roots.add(rootValue);
       long rootTargetId = rootValue.effectiveStoreId();
       if (targets.containsKey(rootTargetId)) {
-        diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/id", "duplicate effective root target"));
+        diagnostics.add(collision(pointer + "/storeID", rootValue, targets.get(rootTargetId), rootTargetId));
       } else {
         targets.put(rootTargetId, new CpmPersistedRootTargetV1(rootValue));
       }
     }
     if (diagnostics.hasErrors()) return Result.failure(diagnostics.toBag());
-    for (var e : elements) { if (e.storeId() <= 6 || e.storeId() > 9_007_199_254_740_991L || targets.containsKey(e.storeId())) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, e.pointer() + "/storeID", "invalid or colliding storeID")); else { generated.put(e.storeId(), e); targets.put(e.storeId(), new CpmPersistedElementTargetV1(e)); } }
+    for (var e : elements) { if (e.storeId() <= 6 || e.storeId() > 9_007_199_254_740_991L) diagnostics.add(error(DiagnosticCodes.CPM_INVALID_STORE_ID, e.pointer() + "/storeID", "invalid or reserved storeID")); else if (targets.containsKey(e.storeId())) diagnostics.add(collision(e.pointer() + "/storeID", e, targets.get(e.storeId()), e.storeId())); else { generated.put(e.storeId(), e); targets.put(e.storeId(), new CpmPersistedElementTargetV1(e)); } }
     if (diagnostics.hasErrors()) return Result.failure(diagnostics.toBag());
     CpmPersistedTextureV1 texture = texturePresent && png != null ? new CpmPersistedTextureV1("skin.png", validated.skinSize(), validated.customGridSize(), png) : null;
     return Result.success(new CpmPersistedProjectV1(1, validated.skinType(), validated.skinSize(), roots, elements, generated, targets, texture), diagnostics.toBag());
@@ -94,5 +95,16 @@ final class CpmPersistedProjectParser {
   private static CpmPersistedVec3 strictVec(JsonNode n,String f,String p,CpmPersistedVec3 def,ParseDiagnostics d){if(!n.has(f))return def;JsonNode v=n.get(f);if(!v.isObject()){d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p,"vector object required"));return def;}var names=new HashSet<String>();v.fieldNames().forEachRemaining(names::add);if(!names.equals(Set.of("x","y","z"))){for(String x:names)if(!Set.of("x","y","z").contains(x))d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p+"/"+x,"unknown vector axis"));for(String x:Set.of("x","y","z"))if(!v.has(x))d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p+"/"+x,"missing vector axis"));return def;}double x=v.get("x").isNumber()?v.get("x").doubleValue():Double.NaN,y=v.get("y").isNumber()?v.get("y").doubleValue():Double.NaN,z=v.get("z").isNumber()?v.get("z").doubleValue():Double.NaN;if(!Double.isFinite(x))d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p+"/x","finite number required"));if(!Double.isFinite(y))d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p+"/y","finite number required"));if(!Double.isFinite(z))d.add(error(DiagnosticCodes.CPM_CONFIG_INVALID,p+"/z","finite number required"));return new CpmPersistedVec3(Double.isFinite(x)?x:0,Double.isFinite(y)?y:0,Double.isFinite(z)?z:0);}
   private static int rootId(String id){return switch(id){case "head"->0;case "body"->1;case "left_arm"->2;case "right_arm"->3;case "left_leg"->4;case "right_leg"->5;default->-1;};}
   private static Diagnostic error(String code,String pointer,String message){return new Diagnostic(Severity.ERROR,DiagnosticCode.fromCatalog(code),new SourceLocation(new SourcePath("config.json"),null,null,pointer,null),message,"repair persisted project",null,null,new TreeMap<>());}
+  private static Diagnostic collision(String pointer, Object newer, CpmPersistedTargetV1 existing, long id) {
+    var context = new TreeMap<String, String>();
+    context.put("storeID", Long.toString(id));
+    context.put("existingTargetKind", existing instanceof CpmPersistedRootTargetV1 ? "ROOT" : "ELEMENT");
+    context.put("existingTargetName", existing instanceof CpmPersistedRootTargetV1 r ? r.root().id() : ((CpmPersistedElementTargetV1) existing).element().name());
+    context.put("existingTargetPointer", existing instanceof CpmPersistedRootTargetV1 r ? r.root().pointer() : ((CpmPersistedElementTargetV1) existing).element().pointer());
+    context.put("newTargetKind", newer instanceof CpmPersistedRootV1 ? "ROOT" : "ELEMENT");
+    context.put("newTargetName", newer instanceof CpmPersistedRootV1 r ? r.id() : ((CpmPersistedElementV1) newer).name());
+    context.put("newTargetPointer", newer instanceof CpmPersistedRootV1 r ? r.pointer() : ((CpmPersistedElementV1) newer).pointer());
+    return new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(DiagnosticCodes.CPM_INVALID_STORE_ID), new SourceLocation(new SourcePath("config.json"), null, null, pointer, null), "target storeID collision", "choose a unique persisted storeID", null, null, context);
+  }
   private static final class ParseDiagnostics { private final List<Diagnostic> values=new ArrayList<>(); void add(Diagnostic d){values.add(d);} boolean hasErrors(){return values.stream().anyMatch(d->d.severity()==Severity.ERROR);} DiagnosticBag toBag(){return new DiagnosticBag(values);} }
 }
