@@ -1,10 +1,15 @@
 package io.github.gabriel0liv.cpmconverter.validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import java.util.*;
 
 /** Builds immutable persisted trees and registries from a validated JSON object. */
 final class CpmPersistedProjectParser {
+  Result<CpmPersistedProjectV1> parse(JsonNode config, CpmValidatedConfigV1 validatedConfig, CpmPngMetadata png, boolean texturePresent, CpmArtifactLimits limits) {
+    try { return Result.success(parse(config, validatedConfig.skinSize(), png, texturePresent)); }
+    catch (IllegalArgumentException ex) { return Result.failure(new io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic(io.github.gabriel0liv.cpmconverter.diagnostics.Severity.ERROR, io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCode.fromCatalog(io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes.CPM_CONFIG_INVALID), new io.github.gabriel0liv.cpmconverter.diagnostics.SourceLocation(new io.github.gabriel0liv.cpmconverter.diagnostics.SourcePath("config.json"),null,null,"/",null), ex.getMessage(), "repair persisted project", null, null, new java.util.TreeMap<>())); }
+  }
   private static final class Draft { final String name; final Long id; final String pointer; final int depth,index; final List<Draft> children=new ArrayList<>(); Draft(String n,Long i,String p,int d,int x){name=n;id=i;pointer=p;depth=d;index=x;} }
   CpmPersistedProjectV1 parse(JsonNode config, CpmPersistedSize2i validatedSize, CpmPngMetadata png, boolean texturePresent){
     var drafts=new ArrayList<Draft>(); var roots=new ArrayList<CpmPersistedRootV1>(); int[] next={0}; JsonNode elements=config.path("elements");
