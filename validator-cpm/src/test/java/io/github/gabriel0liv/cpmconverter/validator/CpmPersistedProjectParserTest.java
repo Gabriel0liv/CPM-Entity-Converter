@@ -85,6 +85,15 @@ class CpmPersistedProjectParserTest {
     assertTrue(result.diagnostics().all().stream().anyMatch(d -> d.code().value().equals("CPM_INVALID_STORE_ID") && "/elements/0/storeID".equals(d.location().jsonPointer())));
   }
 
+  @Test
+  void customAndDuplicateFlagsAreRejectedTogether() throws Exception {
+    var json = new ObjectMapper().readTree("{\"version\":1,\"elements\":[{\"id\":\"hat\",\"customPart\":true,\"dup\":true,\"storeID\":1001}]}");
+    var result = assertDoesNotThrow(() -> parse(json, CpmArtifactLimits.defaults()));
+    assertFalse(result.success());
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> "/elements/0/customPart".equals(d.location().jsonPointer())));
+    assertTrue(result.diagnostics().all().stream().anyMatch(d -> "/elements/0/dup".equals(d.location().jsonPointer())));
+  }
+
   private static Result<CpmPersistedProjectV1> parse(com.fasterxml.jackson.databind.JsonNode json, CpmArtifactLimits limits) {
     var config = new CpmValidatedConfigV1(json, 1, "default", new CpmPersistedSize2i(64, 64), false, false);
     return new CpmPersistedProjectParser().parse(json, config, null, false, limits);

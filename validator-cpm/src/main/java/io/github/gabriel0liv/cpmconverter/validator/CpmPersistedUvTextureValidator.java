@@ -1,13 +1,63 @@
 package io.github.gabriel0liv.cpmconverter.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.github.gabriel0liv.cpmconverter.diagnostics.*;
 import java.util.*;
 
 final class CpmPersistedUvTextureValidator {
-  DiagnosticBag validate(JsonNode config, CpmPersistedSize2i grid) {
-    var bag=new DiagnosticBag(); JsonNode roots=config.path("elements"); for(int r=0;r<roots.size();r++) bag=check(roots.get(r).path("children"),"/elements/"+r+"/children",grid,bag); return bag;
+  DiagnosticBag validate(CpmPersistedProjectV1 project, boolean skinEntryPresent,
+      CpmPngMetadata pngMetadata, CpmArtifactLimits limits) {
+    var bag = new DiagnosticBag();
+    boolean textured = false;
+    for (var element : project.elements()) {
+      if (!element.texture()) continue;
+      textured = true;
+      if (!skinEntryPresent || pngMetadata == null) {
+        bag = bag.add(error(DiagnosticCodes.PNG_DIMENSION_MISMATCH, element.pointer(),
+            "textured element requires a valid skin.png"));
+        continue;
+      }
+      bag = validateUv(element, project.skinSize(), bag);
+    }
+    if (skinEntryPresent && pngMetadata != null && !project.skinSize().equals(
+        new CpmPersistedSize2i(pngMetadata.width(), pngMetadata.height()))
+        && !project.texture().customGridSize()) {
+      bag = bag.add(error(DiagnosticCodes.PNG_DIMENSION_MISMATCH, "/skin.png",
+          "PNG dimensions do not match logical skin grid"));
+    }
+    return bag;
   }
-  private DiagnosticBag check(JsonNode nodes,String pointer,CpmPersistedSize2i grid,DiagnosticBag bag){ if(!nodes.isArray()) return bag; for(int i=0;i<nodes.size();i++){JsonNode n=nodes.get(i); String p=pointer+"/"+i; if(n.path("texture").asBoolean(false)){ if(n.has("faceUV")){JsonNode faces=n.get("faceUV"); if(!faces.isObject()||faces.size()==0) bag=bag.add(error(DiagnosticCodes.UV_INVALID,p+"/faceUV","faceUV must be a non-empty object")); else for(var it=faces.fields();it.hasNext();){var e=it.next(); if(!Set.of("north","south","east","west","up","down").contains(e.getKey())) bag=bag.add(error(DiagnosticCodes.UV_FACE_UNKNOWN,p+"/faceUV/"+e.getKey(),"unknown UV face")); else if(!e.getValue().isObject()) bag=bag.add(error(DiagnosticCodes.UV_INVALID,p+"/faceUV/"+e.getKey(),"face UV must be object")); } } else {JsonNode u=n.get("u"),v=n.get("v"); if(u==null||!u.isIntegralNumber()) bag=bag.add(error(DiagnosticCodes.UV_INVALID,p+"/u","u must be integer")); if(v==null||!v.isIntegralNumber()) bag=bag.add(error(DiagnosticCodes.UV_INVALID,p+"/v","v must be integer")); } } bag=check(n.path("children"),p+"/children",grid,bag); } return bag; }
-  private static Diagnostic error(String c,String p,String m){return new Diagnostic(Severity.ERROR,DiagnosticCode.fromCatalog(c),new SourceLocation(new SourcePath("config.json"),null,null,p,null),m,"repair the persisted UV",null,null,new TreeMap<>());}
+
+  private DiagnosticBag validateUv(CpmPersistedElementV1 e, CpmPersistedSize2i grid,
+      DiagnosticBag bag) {
+    if (e.uv() instanceof CpmPersistedBoxUvV1 box) {
+      if (box.u() < 0 || box.v() < 0) {
+        return bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS, e.pointer() + "/uv",
+            "box UV origin is negative"));
+      }
+      double width = 2d * (e.size().x() + e.size().z());
+      double height = e.size().y() + e.size().z();
+      if (box.u() + width > grid.x() || box.v() + height > grid.y()) {
+        return bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS, e.pointer() + "/uv",
+            "box UV footprint exceeds logical grid"));
+      }
+    } else if (e.uv() instanceof CpmPersistedPerFaceUvV1 perFace) {
+      for (var entry : perFace.faces().entrySet()) {
+        var face = entry.getValue();
+        if (Math.min(face.sx(), face.ex()) < 0 || Math.min(face.sy(), face.ey()) < 0
+            || Math.max(face.sx(), face.ex()) > grid.x()
+            || Math.max(face.sy(), face.ey()) > grid.y()) {
+          bag = bag.add(error(DiagnosticCodes.UV_OUT_OF_BOUNDS,
+              e.pointer() + "/faceUV/" + entry.getKey().name().toLowerCase(Locale.ROOT),
+              "face UV exceeds logical grid"));
+        }
+      }
+    }
+    return bag;
+  }
+
+  private static Diagnostic error(String code, String pointer, String message) {
+    return new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(code),
+        new SourceLocation(new SourcePath("config.json"), null, null, pointer, null), message,
+        "repair the persisted texture or UV", null, null, new TreeMap<>());
+  }
 }

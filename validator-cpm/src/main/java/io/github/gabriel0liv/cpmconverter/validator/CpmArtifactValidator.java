@@ -67,7 +67,8 @@ public final class CpmArtifactValidator {
     // No independent static reference relation exists in the current MVP.
     // Keep STORE_REFERENCES as SKIPPED rather than reporting a fictitious PASS.
 
-    var uv = new CpmPersistedUvTextureValidator().validate(root, config.skinSize());
+    var uv = new CpmPersistedUvTextureValidator().validate(project,
+        data.entries().containsKey("skin.png"), pngMetadata, request.limits());
     bag = bag.addAll(uv);
     if (bag.hasErrors()) tracker.fail(CpmValidationLayer.UV_TEXTURE); else tracker.pass(CpmValidationLayer.UV_TEXTURE);
 

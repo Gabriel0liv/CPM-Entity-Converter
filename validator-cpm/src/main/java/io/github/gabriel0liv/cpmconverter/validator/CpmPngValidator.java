@@ -3,6 +3,9 @@ package io.github.gabriel0liv.cpmconverter.validator;
 import io.github.gabriel0liv.cpmconverter.diagnostics.*;
 import java.util.*;
 import java.util.zip.CRC32;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
+import java.io.ByteArrayOutputStream;
 
 public final class CpmPngValidator {
   private static final byte[] SIG={(byte)137,80,78,71,13,10,26,10};
@@ -11,13 +14,28 @@ public final class CpmPngValidator {
     if (bytes == null) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/","PNG bytes are null"));
     if(bytes.length>limits.maxSkinBytes()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"/","skin size limit exceeded"));
     if(bytes.length<24||!Arrays.equals(Arrays.copyOf(bytes,8),SIG)) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/signature","invalid PNG signature"));
-    int p=8,count=0,width=0,height=0,depth=0,color=0; boolean ihdr=false,idat=false,iend=false;
+    int p=8,count=0,width=0,height=0,depth=0,color=0; boolean ihdr=false,idat=false,iend=false,idatEnded=false; var compressed = new ByteArrayOutputStream();
     while(p+12<=bytes.length){ if(++count>limits.maxPngChunks()) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED,"/","PNG chunk limit exceeded")); int len=read(bytes,p); if(len<0||p+12L+len>bytes.length) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/chunk","truncated PNG chunk")); String type=new String(bytes,p+4,4,java.nio.charset.StandardCharsets.US_ASCII); long crc=readUnsigned(bytes,p+8+len); CRC32 c=new CRC32(); c.update(bytes,p+4,4+len); if(c.getValue()!=crc) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/"+type,"PNG CRC mismatch"));
       if(type.equals("IHDR")){ if(ihdr||len!=13||p!=8) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IHDR","invalid IHDR")); ihdr=true;width=read(bytes,p+8);height=read(bytes,p+12); depth=bytes[p+16]&255;color=bytes[p+17]&255; if(width<=0||height<=0||!validDepth(depth,color)||bytes[p+18]!=0||bytes[p+19]!=0||(bytes[p+20]&255)>1) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IHDR","invalid PNG dimensions or format")); }
-      else if(type.equals("IDAT")){ if(!ihdr||iend) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IDAT","invalid IDAT position")); idat=true; } else if(type.equals("IEND")){ if(iend||len!=0||p+12!=bytes.length) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IEND","invalid IEND")); iend=true; }
+      else if(type.equals("IDAT")){ if(!ihdr||iend||idatEnded) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IDAT","invalid IDAT position")); idat=true; compressed.write(bytes,p+8,len); }
+      else if(type.equals("IEND")){ if(iend||len!=0||p+12!=bytes.length) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/IEND","invalid IEND")); iend=true; }
+      else { if (idat) idatEnded = true; if (isCritical(type)) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/"+type,"unknown critical chunk")); }
       p+=12+len; }
-    if(!ihdr||!idat||!iend) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/","PNG requires IHDR, IDAT and IEND")); return Result.success(new CpmPngMetadata(width,height,depth,color,count));
+    if(!ihdr||!idat||!iend) return Result.failure(error(DiagnosticCodes.PNG_INVALID,"/","PNG requires IHDR, IDAT and IEND"));
+    if (color != 6 || depth != 8) return Result.failure(error(DiagnosticCodes.PNG_INVALID, "/IHDR", "only RGBA8 PNG is supported"));
+    long expected = (long) height * (1L + (long) width * 4L);
+    if (expected > Integer.MAX_VALUE) return Result.failure(error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, "/IHDR", "decoded PNG budget exceeded"));
+    byte[] decoded = new byte[(int) expected];
+    var inflater = new Inflater(); inflater.setInput(compressed.toByteArray()); int offset = 0;
+    try { while (!inflater.finished() && offset < decoded.length) { int n = inflater.inflate(decoded, offset, decoded.length - offset); if (n == 0 && inflater.needsDictionary()) return Result.failure(error(DiagnosticCodes.PNG_INVALID, "/IDAT", "PNG zlib dictionary is not allowed")); if (n == 0 && inflater.needsInput()) break; offset += n; } }
+    catch (DataFormatException ex) { return Result.failure(error(DiagnosticCodes.PNG_INVALID, "/IDAT", "invalid PNG zlib stream")); }
+    finally { inflater.end(); }
+    if (offset != decoded.length || !inflaterFinished(compressed.toByteArray(), decoded.length)) return Result.failure(error(DiagnosticCodes.PNG_INVALID, "/IDAT", "PNG decoded stream length mismatch"));
+    for (int row = 0; row < height; row++) if ((decoded[row * (width * 4 + 1)] & 255) > 4) return Result.failure(error(DiagnosticCodes.PNG_INVALID, "/IDAT", "unsupported PNG filter byte"));
+    return Result.success(new CpmPngMetadata(width,height,depth,color,count));
   }
+  private static boolean inflaterFinished(byte[] input, int expected) { var i = new Inflater(); i.setInput(input); byte[] b = new byte[8192]; int total=0; try { while (!i.finished() && total <= expected) { int n=i.inflate(b); if(n==0&&i.needsInput()) break; total+=n; } return i.finished() && total==expected; } catch (DataFormatException e) { return false; } finally { i.end(); } }
+  private static boolean isCritical(String type) { return Character.isUpperCase(type.charAt(0)); }
   private static boolean validDepth(int d,int c){return c==0?d==1||d==2||d==4||d==8||d==16:c==2||c==4||c==6?d==8||d==16:c==3?d==1||d==2||d==4||d==8:false;}
   private static int read(byte[] b,int p){return (b[p]&255)<<24|(b[p+1]&255)<<16|(b[p+2]&255)<<8|(b[p+3]&255);}
   private static long readUnsigned(byte[] b,int p){return Integer.toUnsignedLong(read(b,p));}

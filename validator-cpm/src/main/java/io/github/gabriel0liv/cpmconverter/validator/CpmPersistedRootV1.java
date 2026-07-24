@@ -11,6 +11,16 @@ public record CpmPersistedRootV1(String id, CpmPersistedRootKind kind, boolean c
   public CpmPersistedRootV1 {
     if (id == null || id.isBlank()) throw new IllegalArgumentException("id");
     Objects.requireNonNull(kind, "kind");
+    if (customPart && duplicate) throw new IllegalArgumentException("root cannot be custom and duplicate");
+    if (kind == CpmPersistedRootKind.CUSTOM && (!customPart || duplicate)) {
+      throw new IllegalArgumentException("custom root flags are incoherent");
+    }
+    if (kind == CpmPersistedRootKind.DUPLICATE && (customPart || !duplicate)) {
+      throw new IllegalArgumentException("duplicate root flags are incoherent");
+    }
+    if (kind == CpmPersistedRootKind.VANILLA && (customPart || duplicate)) {
+      throw new IllegalArgumentException("vanilla root flags are incoherent");
+    }
     if (kind == CpmPersistedRootKind.VANILLA && persistedStoreId != null) {
       throw new IllegalArgumentException("vanilla root cannot have persisted storeID");
     }

@@ -23,6 +23,10 @@ final class CpmPersistedProjectParser {
       String id = requiredText(root, "id", pointer + "/id", diagnostics);
       boolean customPart = optionalBoolean(root, "customPart", false, pointer + "/customPart", diagnostics);
       boolean duplicate = optionalBoolean(root, "dup", false, pointer + "/dup", diagnostics);
+      if (customPart && duplicate) {
+        diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/customPart", "customPart and dup cannot both be true"));
+        diagnostics.add(error(DiagnosticCodes.CPM_INVALID_ROOT, pointer + "/dup", "customPart and dup cannot both be true"));
+      }
       Long persistedStoreId = optionalStoreId(root, pointer + "/storeID", diagnostics);
       CpmPersistedRootKind kind;
       if (customPart) kind = CpmPersistedRootKind.CUSTOM;
@@ -36,8 +40,12 @@ final class CpmPersistedProjectParser {
       var children = new ArrayList<CpmPersistedElementV1>();
       if (childrenNode == null || childrenNode.isArray()) if (childrenNode != null) for (int i = 0; i < childrenNode.size(); i++) { var child = parseElement(childrenNode.get(i), pointer + "/children/" + i, 0, preorder, elements, generated, diagnostics, limits); if (child != null) children.add(child); }
       long effectiveId = kind == CpmPersistedRootKind.VANILLA ? rootId(id) : (persistedStoreId == null ? 0 : persistedStoreId);
-      Long constructorStoreId = kind == CpmPersistedRootKind.VANILLA ? null : (persistedStoreId == null ? 7L : persistedStoreId);
-      CpmPersistedRootV1 rootValue = new CpmPersistedRootV1(id, kind, customPart, duplicate, constructorStoreId, effectiveId, optionalBoolean(root, "show", false, pointer + "/show", diagnostics), optionalBoolean(root, "showInEditor", true, pointer + "/showInEditor", diagnostics), optionalBoolean(root, "locked", false, pointer + "/locked", diagnostics), strictVec(root, "pos", pointer + "/pos", new CpmPersistedVec3(0, 0, 0), diagnostics), strictVec(root, "rotation", pointer + "/rotation", new CpmPersistedVec3(0, 0, 0), diagnostics), optionalBoolean(root, "disableVanillaAnim", false, pointer + "/disableVanillaAnim", diagnostics), optionalText(root, "name", "", pointer + "/name", diagnostics), optionalInt(root, "nameColor", 0, pointer + "/nameColor", diagnostics), children, pointer);
+      boolean contradictoryFlags = customPart && duplicate;
+      CpmPersistedRootKind constructorKind = contradictoryFlags ? CpmPersistedRootKind.VANILLA : kind;
+      Long constructorStoreId = constructorKind == CpmPersistedRootKind.VANILLA ? null : (persistedStoreId == null ? 7L : persistedStoreId);
+      boolean constructorCustomPart = customPart && !duplicate;
+      boolean constructorDuplicate = duplicate && !customPart;
+      CpmPersistedRootV1 rootValue = new CpmPersistedRootV1(id, constructorKind, constructorCustomPart, constructorDuplicate, constructorStoreId, effectiveId, optionalBoolean(root, "show", false, pointer + "/show", diagnostics), optionalBoolean(root, "showInEditor", true, pointer + "/showInEditor", diagnostics), optionalBoolean(root, "locked", false, pointer + "/locked", diagnostics), strictVec(root, "pos", pointer + "/pos", new CpmPersistedVec3(0, 0, 0), diagnostics), strictVec(root, "rotation", pointer + "/rotation", new CpmPersistedVec3(0, 0, 0), diagnostics), optionalBoolean(root, "disableVanillaAnim", false, pointer + "/disableVanillaAnim", diagnostics), optionalText(root, "name", "", pointer + "/name", diagnostics), optionalInt(root, "nameColor", 0, pointer + "/nameColor", diagnostics), children, pointer);
       roots.add(rootValue);
       long rootTargetId = rootValue.effectiveStoreId();
       if (targets.containsKey(rootTargetId)) {
