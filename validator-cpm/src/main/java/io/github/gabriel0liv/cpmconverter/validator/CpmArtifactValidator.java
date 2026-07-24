@@ -59,6 +59,8 @@ public final class CpmArtifactValidator {
       else animations.add(a.value());
     }
     bag = bag.addAll(animationDiagnostics);
+    if (!animationDiagnostics.hasErrors()) animationDiagnostics = new CpmPersistedAnimationValidator().validate(animations, project);
+    bag = bag.addAll(animationDiagnostics);
     if (animationDiagnostics.hasErrors()) tracker.fail(CpmValidationLayer.ANIMATIONS); else tracker.pass(CpmValidationLayer.ANIMATIONS);
     boolean canonical = isCanonical(data.entries().get("config.json"), data.inventory());
     if (!canonical) { bag = bag.add(warning(DiagnosticCodes.CPM_NON_CANONICAL, "config.json", null, "artifact is valid but non-canonical", "use canonical writer output")); tracker.warn(CpmValidationLayer.CANONICALITY); }
