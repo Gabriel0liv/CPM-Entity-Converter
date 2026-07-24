@@ -38,7 +38,9 @@ public final class CpmArtifactValidator {
       var png = new CpmPngValidator().validate(data.entries().get("skin.png"), request.limits());
       if (!png.success()) bag = bag.addAll(png.diagnostics()); else { pngMetadata = png.value(); width = png.value().width(); height = png.value().height(); }
     }
-    var project = new CpmPersistedProjectParser().parse(root, config.skinSize(), pngMetadata, data.entries().containsKey("skin.png"));
+    var parsedProject = new CpmPersistedProjectParser().parse(root, config, pngMetadata, data.entries().containsKey("skin.png"), request.limits());
+    if (!parsedProject.success()) { tracker.fail(CpmValidationLayer.PROJECT_GRAPH); return Result.failure(parsedProject.diagnostics()); }
+    var project = parsedProject.value();
     var graph = new CpmPersistedProjectValidator().validate(project, request.limits());
     if (graph.hasErrors()) { tracker.fail(CpmValidationLayer.PROJECT_GRAPH); return Result.failure(graph); }
     tracker.pass(CpmValidationLayer.PROJECT_GRAPH);

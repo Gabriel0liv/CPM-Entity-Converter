@@ -13,7 +13,4 @@ public record CpmPersistedRootV1(String id, long effectiveStoreId, boolean show,
     rotation = rotation == null ? new CpmPersistedVec3(0, 0, 0) : rotation;
     name = name == null ? "" : name;
   }
-  public CpmPersistedRootV1(String id, List<CpmPersistedElementV1> children) {
-    this(id, switch (id) { case "head" -> 0; case "body" -> 1; case "left_arm" -> 2; case "right_arm" -> 3; case "left_leg" -> 4; case "right_leg" -> 5; default -> -1; }, false, true, false, null, null, false, false, "", 0, children, null);
-  }
 }
