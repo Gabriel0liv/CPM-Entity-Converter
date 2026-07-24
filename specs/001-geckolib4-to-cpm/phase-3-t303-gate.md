@@ -1,6 +1,6 @@
 # Gate T303
 
-Status: **[x] PASS**
+Status: **[~] correction in progress**
 
 Base documental: `3e1c3cd3bc2fd493e1c8e73bf1084ad50fa6fa38`.
 Feature commits: `1b1b201`, `4b27b2c`.
@@ -25,4 +25,9 @@ PNG profile: RGBA8, non-interlaced, zlib scanlines with filter bytes 0–4;
 interlaced and other color profiles are rejected. Static STORE_REFERENCES is
 not applicable in the MVP. Visual validation was not run. T304 was not started.
 
-T300/T301/T302/T303: `[x]`; T304/T400–T403/T600–T601: `[ ]`.
+Reopened because the previous matrix had only four cases, B/D did not have
+dedicated smoke tests, S003 was not re-executed in the gate, JSON canonicality
+was incomplete, textureSize/customGrid were not fully represented in UV, and
+the gate contained stale CI IDs.
+
+T300/T301/T302: `[x]`; T303: `[~]`; T304/T400–T403/T600–T601: `[ ]`.
