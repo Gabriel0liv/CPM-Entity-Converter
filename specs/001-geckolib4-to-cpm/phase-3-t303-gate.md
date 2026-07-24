@@ -15,7 +15,7 @@ Feature correction: `c856105` (merged into integration).
 | S003 | `CpmS003ArtifactTest` | M0–M5 harness coverage | PASS | `c856105` |
 | Formatting | `spotlessCheck` | all configured modules | PASS | `fe827df` |
 | Full build | `clean check --no-daemon` | all modules | PASS | `fe827df` |
-| Windows CI | `check` | `fe827dfde241f01da0f096756820b088c1c2abdd` | PASS | run `30113435479`, job `89548238123` |
+| Windows CI | `check` | `e497a6b8b1ecad281b414e65b4a8f3f6fe8ab17d` | PASS | run `30113686363`, job `89549066450` |
 
 Canonicality contract observed from the writer: UTF-8 compact JSON with a final
 LF, writer field order and normalized numeric lexemes; config before skin and
