@@ -53,13 +53,14 @@ public final class CpmArtifactValidator {
 
     var animations = new ArrayList<CpmPersistedAnimationV1>();
     var animationDiagnostics = new DiagnosticBag();
+    int animationEntries = 0;
     for (var entry : data.entries().entrySet()) if (entry.getKey().startsWith("animations/")) {
+      if (++animationEntries > request.limits().maxAnimations()) { animationDiagnostics = animationDiagnostics.add(new Diagnostic(Severity.ERROR, DiagnosticCode.fromCatalog(DiagnosticCodes.INPUT_LIMIT_EXCEEDED), new SourceLocation(new SourcePath(entry.getKey()), null, null, "/", null), "animation limit exceeded", "reduce animations", null, null, new TreeMap<>())); break; }
       var a = new CpmPersistedAnimationParser().parse(entry.getKey(), entry.getValue(), request.limits());
       if (!a.success()) animationDiagnostics = animationDiagnostics.addAll(a.diagnostics());
       else animations.add(a.value());
     }
-    bag = bag.addAll(animationDiagnostics);
-    if (!animationDiagnostics.hasErrors()) animationDiagnostics = new CpmPersistedAnimationValidator().validate(animations, project);
+    if (!animationDiagnostics.hasErrors()) animationDiagnostics = animationDiagnostics.addAll(new CpmPersistedAnimationValidator().validate(animations, project));
     bag = bag.addAll(animationDiagnostics);
     if (animationDiagnostics.hasErrors()) tracker.fail(CpmValidationLayer.ANIMATIONS); else tracker.pass(CpmValidationLayer.ANIMATIONS);
     boolean canonical = isCanonical(data.entries().get("config.json"), data.inventory());
