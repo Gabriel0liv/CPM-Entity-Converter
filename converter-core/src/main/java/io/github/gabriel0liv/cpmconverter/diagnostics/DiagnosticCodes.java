@@ -118,6 +118,15 @@ public final class DiagnosticCodes {
   public static final String CPM_DANGLING_STORE_REF = "CPM_DANGLING_STORE_REF";
   public static final String CPM_WRITE_FAILED = "CPM_WRITE_FAILED";
   public static final String CPM_DANGLING_ANIMATION_REF = "CPM_DANGLING_ANIMATION_REF";
+  public static final String CPM_CONTAINER_INVALID = "CPM_CONTAINER_INVALID";
+  public static final String CPM_ENTRY_MISSING = "CPM_ENTRY_MISSING";
+  public static final String CPM_ENTRY_DUPLICATE = "CPM_ENTRY_DUPLICATE";
+  public static final String CPM_ENTRY_UNSAFE = "CPM_ENTRY_UNSAFE";
+  public static final String CPM_CONFIG_INVALID = "CPM_CONFIG_INVALID";
+  public static final String CPM_UNSUPPORTED_VERSION = "CPM_UNSUPPORTED_VERSION";
+  public static final String CPM_FEATURE_UNSUPPORTED = "CPM_FEATURE_UNSUPPORTED";
+  public static final String CPM_NON_CANONICAL = "CPM_NON_CANONICAL";
+  public static final String CPM_ANIMATION_INVALID = "CPM_ANIMATION_INVALID";
   public static final String CPM_INVALID_ROOT = "CPM_INVALID_ROOT";
   public static final String CPM_VALIDATION_FAILED = "CPM_VALIDATION_FAILED";
   public static final String FEATURE_EXPLICITLY_IGNORED = "FEATURE_EXPLICITLY_IGNORED";
