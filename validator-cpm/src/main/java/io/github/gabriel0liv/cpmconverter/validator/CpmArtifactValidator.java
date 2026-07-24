@@ -54,9 +54,9 @@ public final class CpmArtifactValidator {
     var animations = new ArrayList<CpmPersistedAnimationV1>();
     var animationDiagnostics = new DiagnosticBag();
     for (var entry : data.entries().entrySet()) if (entry.getKey().startsWith("animations/")) {
-      var a = parser.parse(entry.getValue(), entry.getKey(), DiagnosticCodes.CPM_ANIMATION_INVALID);
+      var a = new CpmPersistedAnimationParser().parse(entry.getKey(), entry.getValue(), request.limits());
       if (!a.success()) animationDiagnostics = animationDiagnostics.addAll(a.diagnostics());
-      else animations.add(new CpmPersistedAnimationV1(entry.getKey().substring(11), List.of()));
+      else animations.add(a.value());
     }
     bag = bag.addAll(animationDiagnostics);
     if (animationDiagnostics.hasErrors()) tracker.fail(CpmValidationLayer.ANIMATIONS); else tracker.pass(CpmValidationLayer.ANIMATIONS);
