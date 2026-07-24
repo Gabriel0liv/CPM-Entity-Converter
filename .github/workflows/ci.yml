@@ -48,3 +48,38 @@ jobs:
             Write-Error "Tracked files were modified by the build."
             exit 1
           }
+
+  t304-projectio:
+    name: T304 ProjectIO (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Checkout pinned CPM reference
+        shell: bash
+        run: |
+          git clone --no-checkout https://github.com/tom5454/CustomPlayerModels.git cpm-reference
+          git -C cpm-reference checkout 9272f4f9c36a2bbd6986e6da65bf7091369cb12b
+          test "$(git -C cpm-reference rev-parse HEAD)" = "9272f4f9c36a2bbd6986e6da65bf7091369cb12b"
+      - name: Generate and load ProjectIO artifacts (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat t304GenerateArtifacts t304ProjectIoConformance ":verification:projectio-conformance:test" "-PcpmReferenceDir=${{ github.workspace }}/cpm-reference" --no-daemon --stacktrace
+      - name: Generate and load ProjectIO artifacts (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: ./gradlew t304GenerateArtifacts t304ProjectIoConformance :verification:projectio-conformance:test "-PcpmReferenceDir=${{ github.workspace }}/cpm-reference" --no-daemon --stacktrace
+      - name: Verify T304 report and worktree
+        shell: bash
+        run: |
+          test -f build/t304/artifacts/manifest.json
+          test -f build/t304/projectio/projectio-report.json
+          test -z "$(git status --short)"

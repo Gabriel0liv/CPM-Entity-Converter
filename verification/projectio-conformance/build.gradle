@@ -1,0 +1,90 @@
+plugins { id 'application' }
+apply plugin: 'com.diffplug.spotless'
+
+spotless {
+  java {
+    target 'src/main/**/*.java', 'src/test/**/*.java'
+    googleJavaFormat('1.22.0').reorderImports(false)
+    removeUnusedImports()
+  }
+}
+
+def referenceProperty = providers.gradleProperty('cpmReferenceDir')
+def reference = referenceProperty.map { file(it) }
+def cpmRoot = reference.map { candidate ->
+  def nested = file("${candidate}/CustomPlayerModels")
+  nested.isDirectory() ? nested : candidate
+}
+def cpmSource = cpmRoot.orElse(layout.projectDirectory.dir('src/empty-cpm-reference'))
+
+def requireReference = tasks.register('requireCpmReference') {
+  onlyIf { referenceProperty.present }
+  doLast {
+    if (!referenceProperty.present) {
+      throw new GradleException('T304 requires -PcpmReferenceDir=<CPM checkout>')
+    }
+    def checkout = cpmRoot.get()
+    if (!file("${checkout}/src/shared/java/com/tom/cpm/shared/editor/project/ProjectIO.java").isFile()) {
+      throw new GradleException("Invalid CPM checkout: ${checkout}")
+    }
+    def expected = '9272f4f9c36a2bbd6986e6da65bf7091369cb12b'
+    def observed = new ByteArrayOutputStream()
+    exec { commandLine 'git', '-C', checkout.absolutePath, 'rev-parse', 'HEAD'; standardOutput = observed }
+    if (observed.toString().trim() != expected) {
+      throw new GradleException("CPM commit mismatch: expected ${expected}, observed ${observed.toString().trim()}")
+    }
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src/main/java'
+      srcDir "${rootDir}/spikes/minimal-cpmproject/scripts/oracle/src/main/java"
+      srcDir cpmSource.map { "${it}/src/shared/java" }
+    }
+    resources { srcDir cpmSource.map { "${it}/src/shared/resources" } }
+  }
+}
+
+dependencies {
+  implementation project(':converter-core')
+  implementation project(':converter-config')
+  implementation project(':adapter-geckolib4')
+  implementation project(':projection-cpm')
+  implementation project(':writer-cpm')
+  implementation 'com.google.code.gson:gson:2.8.5'
+  implementation 'com.google.guava:guava:21.0'
+  compileOnly 'com.mojang:brigadier:1.0.18'
+  compileOnly 'io.netty:netty-all:4.1.25.Final'
+}
+
+application { mainClass = 'io.github.gabriel0liv.cpmconverter.verification.T304ProjectIoConformance' }
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+
+tasks.named('compileJava') {
+  dependsOn requireReference
+  onlyIf { referenceProperty.present }
+}
+tasks.named('compileTestJava') { onlyIf { referenceProperty.present } }
+tasks.register('t304GenerateArtifacts', JavaExec) {
+  dependsOn tasks.named('classes')
+  classpath sourceSets.main.runtimeClasspath
+  mainClass = application.mainClass
+  args 'generate'
+}
+tasks.register('t304ProjectIoConformance', JavaExec) {
+  dependsOn tasks.named('classes')
+  classpath sourceSets.main.runtimeClasspath
+  mainClass = application.mainClass
+  args 'conformance'
+}
+tasks.register('t304ManualEvidenceBundle', JavaExec) {
+  dependsOn tasks.named('classes')
+  classpath sourceSets.main.runtimeClasspath
+  mainClass = application.mainClass
+  args 'bundle'
+}
+
+tasks.named('check') { onlyIf { referenceProperty.present } }
+if (referenceProperty.present) tasks.named('test') { dependsOn tasks.named('t304ProjectIoConformance') }

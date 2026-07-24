@@ -1,5 +1,6 @@
 pluginManagement { repositories { gradlePluginPortal(); mavenCentral() } }
 plugins { id 'com.diffplug.spotless' version '6.25.0' apply false }
-dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { mavenCentral() } }
+dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { mavenCentral(); maven { url = 'https://libraries.minecraft.net' } } }
 rootProject.name = 'cpm-entity-converter'
 include 'converter-core', 'converter-config', 'adapter-geckolib4', 'writer-cpm', 'validator-cpm', 'converter-cli', 'test-fixtures', 'projection-cpm'
+include ':verification:projectio-conformance'
