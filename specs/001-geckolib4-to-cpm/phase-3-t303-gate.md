@@ -1,24 +1,27 @@
 # Gate T303
 
-Status: **[~] correction in progress**
+Status: **[x] PASS**
 
-Base: `8030b42e9250975214cc5a0a8a73819d13d7eb5a`.
-Integration HEAD: `1e74a9ca307b1af39f45447ecea30e00b5225f0c`.
-Feature correction: `a0bd6c3`.
+Base: `45ec99b75f0ff29e3135ae4dc794576ac7eaa627`.
+Integration HEAD validated by CI: `fe827dfde241f01da0f096756820b088c1c2abdd`.
+Feature correction: `c856105` (merged into integration).
 
 | Evidence | Command/test | Cases | Result | Commit/run |
 |---|---|---:|---|---|
-| Validator tests | `:validator-cpm:test` | 21 | PASS | `4b27b2c` |
-| Mutation matrix | `CpmArtifactMutationMatrixTest` | 4 focused cases | PASS | `4b27b2c` |
-| Fixture A/C | `CpmFixtureArtifactTest` | 2 deterministic artifacts | PASS | `4b27b2c` |
-| S003 | `CpmS003ArtifactTest` | M0–M5 harness coverage | PASS | `45d1c35` |
-| Full build | `clean check --no-daemon` | all modules | PASS | `1e74a9c` |
-| Windows CI | `check` | integrated HEAD | PASS | run `30111152627`, job `89540712618` |
+| Validator tests | `:validator-cpm:test` | 23 | PASS | `c856105` |
+| Mutation matrix | `CpmArtifactMutationMatrixTest` | 28 focused cases | PASS | `c856105` |
+| Fixture A/C | `CpmFixtureArtifactTest` | 2 deterministic artifacts | PASS | `c856105` |
+| Fixture B/D smoke | `CpmFixtureSmokeTest` | 2 fixture corpora | PASS | `c856105` |
+| S003 | `CpmS003ArtifactTest` | M0–M5 harness coverage | PASS | `c856105` |
+| Formatting | `spotlessCheck` | all configured modules | PASS | `fe827df` |
+| Full build | `clean check --no-daemon` | all modules | PASS | `fe827df` |
+| Windows CI | `check` | `fe827dfde241f01da0f096756820b088c1c2abdd` | PASS | run `30113435479`, job `89548238123` |
 
-Canonicality contract: UTF-8 JSON, LF and final newline; config before skin;
-animation entries deterministic; DEFLATED entries; fixed writer epoch; no
-comments or unexpected entries. Non-canonical artifacts remain successful with
-`CPM_NON_CANONICAL` warnings.
+Canonicality contract observed from the writer: UTF-8 compact JSON with a final
+LF, writer field order and normalized numeric lexemes; config before skin and
+sorted animation entries; DEFLATED entries at the fixed 1980-01-01 epoch.
+Only metadata exposed by `CpmArtifactEntry` is asserted. Non-canonical artifacts
+remain successful with `CPM_NON_CANONICAL` warnings.
 
 UV uses the typed project model and validates logical-grid bounds. PNG support
 is RGBA8, non-interlaced, zlib scanlines with filters 0–4 and explicit decoded
