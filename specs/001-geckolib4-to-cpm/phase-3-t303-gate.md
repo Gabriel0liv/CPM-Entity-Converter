@@ -21,7 +21,8 @@ Feature correction: `9daa295` (merged into integration).
 | Formatting | `spotlessCheck` | all configured modules | PASS | `69966b1` |
 | Full build | `clean check --no-daemon` | all modules | PASS | `69966b1` |
 | Windows CI technical closure | `check` | checkout `7521804755e2e02a16680da851ebf9fbb57a1866` | PASS | run `30122133695`, job `89577060327` |
-| Windows CI hygiene | `check` | checkout `e4f7cbb2e95483e100cd80f229c04f303ac48ada` | PASS | run `30125213819`, job `89587000983` |
+| Windows CI hygiene technical | `check` | checkout `e4f7cbb2e95483e100cd80f229c04f303ac48ada` | PASS | run `30125213819`, job `89587000983` |
+| Windows CI hygiene final | `check` | checkout `2c866970d4f9c90ff3ed87f3f01e3f42f0d41d5a` | PASS | run `30125416328`, job `89587651810` |
 
 Canonicality contract observed from the writer: UTF-8 compact JSON with a final
 LF, writer field order and normalized numeric lexemes; config before skin and
