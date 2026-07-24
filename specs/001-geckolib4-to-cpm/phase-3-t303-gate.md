@@ -4,21 +4,24 @@ Status: **[x] PASS**
 
 Base: `8053f49a1fa4453dc6b688514f1d8fd58d3fd554`.
 Technical integration HEAD: `69966b15c9705b38f69731271141f2cb9679532c`.
-Documentation HEAD: `183a1db`.
+CI-validated gate checkout: `7521804755e2e02a16680da851ebf9fbb57a1866`.
+Gate closure commit: `183a1db5135fe41de9b248b0b6606b77f94b9882`.
+Metadata correction predecessor: `cbaf83b7a35bdd0c4ce105f9bfe56741d6af0643`.
 Feature correction: `9daa295` (merged into integration).
 
 | Evidence | Command/test | Cases | Result | Commit/run |
 |---|---|---:|---|---|
 | Validator tests | `:validator-cpm:test` | 23 | PASS | `9daa295` |
-| Mutation matrix | `CpmArtifactMutationMatrixTest` | 28 executable mutators | PASS | `9daa295` |
-| Fixture A | `CpmFixtureArtifactTest` | writer + validator, SHA `31fa2370...` | PASS | `9daa295` |
-| Fixture C | `CpmFixtureArtifactTest` | writer + validator, SHA `177d2f33...` | PASS | `9daa295` |
-| Fixture B smoke | `CpmFixtureSmokeTest` | writer + validator, SHA `4390f540...` | PASS | `9daa295` |
-| Fixture D smoke | `CpmFixtureSmokeTest` | writer + validator, SHA `82384684...` | PASS | `9daa295` |
+| Mutation matrix | `CpmArtifactMutationMatrixTest` | 28 executable mutators | PASS | `872def8` |
+| Fixture A | `CpmFixtureArtifactTest` | writer + validator, SHA `31fa2370af8586d2617dba955aadbfa4f52329dc61597f47609f1f6fda2b7d97` | PASS | `872def8` |
+| Fixture C | `CpmFixtureArtifactTest` | writer + validator, SHA `177d2f339e3877d18fa000b7ed122080e4f9af4598886ff908ca82e1c36336e3` | PASS | `872def8` |
+| Fixture B smoke | `CpmFixtureSmokeTest` | writer + validator, SHA `4390f540b001bc81f338984875b74f384f6bb0ad26f7f8972c31df4df4245da9` | PASS | `872def8` |
+| Fixture D smoke | `CpmFixtureSmokeTest` | writer + validator, SHA `82384684919efc06c4305115734a23ece90b612feae1dacb3a058fa164113695` | PASS | `872def8` |
 | S003 | `s003Evidence` + `CpmS003ArtifactTest` | M0–M5 regenerated and validated | PASS | `9daa295` |
 | Formatting | `spotlessCheck` | all configured modules | PASS | `69966b1` |
 | Full build | `clean check --no-daemon` | all modules | PASS | `69966b1` |
-| Windows CI final | `check` | checkout `7521804755e2e02a16680da851ebf9fbb57a1866` | PASS | run `30122133695`, job `89577060327` |
+| Windows CI technical closure | `check` | checkout `7521804755e2e02a16680da851ebf9fbb57a1866` | PASS | run `30122133695`, job `89577060327` |
+| Windows CI hygiene | `check` | checkout `e4f7cbb2e95483e100cd80f229c04f303ac48ada` | PASS | run `30125213819`, job `89587000983` |
 
 Canonicality contract observed from the writer: UTF-8 compact JSON with a final
 LF, writer field order and normalized numeric lexemes; config before skin and
@@ -33,6 +36,5 @@ validation was not run. T304 was not started.
 
 T300/T301/T302/T303: `[x]`; T304/T400–T403/T600–T601: `[ ]`.
 
-The final CI run `30122133695` (job `89577060327`) validated checkout
-`7521804755e2e02a16680da851ebf9fbb57a1866`; the documentation merge is
-identified separately from the technical integration commit.
+Commits documentais posteriores podem corrigir metadados sem substituir o
+SHA técnico ou o checkout validado pelo gate.
