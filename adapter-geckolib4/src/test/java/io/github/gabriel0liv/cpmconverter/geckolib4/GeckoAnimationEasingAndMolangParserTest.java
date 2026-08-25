@@ -153,7 +153,7 @@ class GeckoAnimationEasingAndMolangParserTest {
     assertTrue(result.success(), () -> result.diagnostics().all().toString());
     var frames = result.value().get(0).tracks().get(0).rotation().keyframes();
     assertEquals("LINEAR", frames.get(0).interpolationAfter().name());
-    assertTrue(frames.get(0).easingArgs().isEmpty());
+    assertTrue(frames.get(0).easingArgsAfter().isEmpty());
     assertTrue(
         result.diagnostics().all().stream()
             .anyMatch(d -> d.code().value().equals("ANIM_PRE_POST_COLLAPSED_449")));
