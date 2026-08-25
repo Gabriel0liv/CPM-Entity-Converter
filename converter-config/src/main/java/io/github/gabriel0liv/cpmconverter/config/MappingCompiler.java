@@ -14,7 +14,8 @@ public final class MappingCompiler {
     if (index == null) {
       return Result.failure(
           diagnostics.add(
-              Diagnostic.of(Severity.ERROR, DiagnosticCodes.INTERNAL_ERROR, "model index is null")));
+              Diagnostic.of(
+                  Severity.ERROR, DiagnosticCodes.INTERNAL_ERROR, "model index is null")));
     }
 
     var bones = new LinkedHashMap<String, BoneId>();
