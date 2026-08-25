@@ -3,6 +3,7 @@ package io.github.gabriel0liv.cpmconverter.geckolib4;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticBag;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
@@ -54,13 +55,14 @@ public final class GeckoAnimationParser {
       Map<String, BoneId> bonesByName = new LinkedHashMap<>();
       model.bones().forEach(bone -> bonesByName.put(bone.name(), bone.id()));
 
+      List<Diagnostic> diagnostics = new ArrayList<>();
       List<AnimationClipIR> clips = new ArrayList<>();
       Iterator<Map.Entry<String, JsonNode>> fields = animations.fields();
       while (fields.hasNext()) {
         Map.Entry<String, JsonNode> field = fields.next();
-        clips.add(parseClip(path, field.getKey(), field.getValue(), bonesByName));
+        clips.add(parseClip(path, field.getKey(), field.getValue(), bonesByName, diagnostics));
       }
-      return Result.success(List.copyOf(clips));
+      return Result.success(List.copyOf(clips), new DiagnosticBag(diagnostics));
     } catch (AnimationParseException exception) {
       return failure(exception.code(), exception.getMessage());
     } catch (Exception exception) {
@@ -71,7 +73,11 @@ public final class GeckoAnimationParser {
   }
 
   private AnimationClipIR parseClip(
-      Path path, String clipName, JsonNode node, Map<String, BoneId> bonesByName)
+      Path path,
+      String clipName,
+      JsonNode node,
+      Map<String, BoneId> bonesByName,
+      List<Diagnostic> diagnostics)
       throws AnimationParseException {
     if (clipName == null || clipName.isBlank() || node == null || !node.isObject()) {
       throw error("ANIM_INVALID_VALUE", "animation clip must be a named object");
@@ -120,7 +126,8 @@ public final class GeckoAnimationParser {
                   clipName,
                   boneField.getKey(),
                   rotationNode,
-                  bonePointer + "/rotation");
+                  bonePointer + "/rotation",
+                  diagnostics);
           derivedDuration = Math.max(derivedDuration, maxRotationTime(rotation));
         }
 
@@ -182,7 +189,12 @@ public final class GeckoAnimationParser {
   }
 
   private SourceRotationChannelIR parseRotationChannel(
-      Path path, String clip, String bone, JsonNode node, String pointer)
+      Path path,
+      String clip,
+      String bone,
+      JsonNode node,
+      String pointer,
+      List<Diagnostic> diagnostics)
       throws AnimationParseException {
     List<SourceRotationKeyframeIR> keyframes = new ArrayList<>();
     if (node.isNumber() || node.isArray()) {
@@ -193,8 +205,9 @@ public final class GeckoAnimationParser {
       while (fields.hasNext()) {
         Map.Entry<String, JsonNode> field = fields.next();
         double time = timestamp(field.getKey(), pointer);
-        Vec3d value = vector(field.getValue(), Vec3d.ZERO, pointer + "/" + field.getKey());
-        keyframes.add(rotationKeyframe(path, pointer + "/" + field.getKey(), time, value));
+        String keyframePointer = pointer + "/" + field.getKey();
+        Vec3d value = effectiveGecko449KeyframeValue(field.getValue(), Vec3d.ZERO, keyframePointer, diagnostics);
+        keyframes.add(rotationKeyframe(path, keyframePointer, time, value));
       }
       keyframes.sort(Comparator.comparingDouble(SourceRotationKeyframeIR::timeSeconds));
     } else {
@@ -204,6 +217,36 @@ public final class GeckoAnimationParser {
     }
     if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", "rotation channel is empty");
     return new SourceRotationChannelIR(keyframes, RotationOrder.ZYX);
+  }
+
+  private Vec3d effectiveGecko449KeyframeValue(
+      JsonNode node, Vec3d defaults, String pointer, List<Diagnostic> diagnostics)
+      throws AnimationParseException {
+    if (node == null || node.isNull()) {
+      throw error("ANIM_INVALID_VALUE", "missing keyframe value at " + pointer);
+    }
+    if (!node.isObject()) return vector(node, defaults, pointer);
+
+    JsonNode pre = node.get("pre");
+    JsonNode post = node.get("post");
+    boolean hasPre = pre != null && !pre.isNull();
+    boolean hasPost = post != null && !post.isNull();
+    if (!hasPre && !hasPost) {
+      throw error("ANIM_INVALID_VALUE", "keyframe object has neither pre nor post at " + pointer);
+    }
+
+    Vec3d selected = vector(hasPre ? pre : post, defaults, pointer + (hasPre ? "/pre" : "/post"));
+    if (hasPre && hasPost) {
+      Vec3d postValue = vector(post, defaults, pointer + "/post");
+      if (!selected.equals(postValue)) {
+        diagnostics.add(
+            Diagnostic.of(
+                Severity.WARNING,
+                DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449,
+                "GeckoLib 4.4.9 uses pre and discards the differing post value at " + pointer));
+      }
+    }
+    return selected;
   }
 
   private SourceRotationKeyframeIR rotationKeyframe(
