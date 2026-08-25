@@ -82,26 +82,28 @@ public final class GeckoAnimationParser {
       List<Diagnostic> diagnostics)
       throws AnimationParseException {
     if (clipName == null || clipName.isBlank() || node == null || !node.isObject()) {
-      throw error("ANIM_INVALID_VALUE", "animation clip must be a named object");
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "animation clip must be a named object");
     }
 
     List<BoneTrackIR> tracks = new ArrayList<>();
     double derivedDuration = 0;
     JsonNode bones = node.get("bones");
     if (bones != null && !bones.isNull()) {
-      if (!bones.isObject()) throw error("ANIM_INVALID_VALUE", "clip bones must be an object");
+      if (!bones.isObject()) {
+        throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "clip bones must be an object");
+      }
       Iterator<Map.Entry<String, JsonNode>> boneFields = bones.fields();
       while (boneFields.hasNext()) {
         Map.Entry<String, JsonNode> boneField = boneFields.next();
         BoneId boneId = bonesByName.get(boneField.getKey());
         if (boneId == null) {
           throw error(
-              "ANIM_BONE_MISSING",
+              DiagnosticCodes.ANIM_BONE_NOT_FOUND,
               "animation " + clipName + " references unknown bone " + boneField.getKey());
         }
         JsonNode boneNode = boneField.getValue();
         if (boneNode == null || !boneNode.isObject()) {
-          throw error("ANIM_INVALID_VALUE", "animated bone must be an object");
+          throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "animated bone must be an object");
         }
 
         String bonePointer = "/animations/" + clipName + "/bones/" + boneField.getKey();
@@ -194,9 +196,13 @@ public final class GeckoAnimationParser {
       }
       keyframes.sort(Comparator.comparingDouble(KeyframeIR<Vec3d>::time));
     } else {
-      throw error("ANIM_INVALID_VALUE", component + " channel must be numeric at " + pointer);
+      throw error(
+          DiagnosticCodes.INPUT_PARSE_ERROR,
+          component + " channel must be numeric at " + pointer);
     }
-    if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", component + " channel is empty");
+    if (keyframes.isEmpty()) {
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, component + " channel is empty");
+    }
     return new ChannelIR<>(component, mode, TransformSpace.LOCAL, keyframes);
   }
 
@@ -231,10 +237,12 @@ public final class GeckoAnimationParser {
       keyframes.sort(Comparator.comparingDouble(SourceRotationKeyframeIR::timeSeconds));
     } else {
       throw error(
-          "ANIM_INVALID_VALUE",
+          DiagnosticCodes.INPUT_PARSE_ERROR,
           "rotation channel must be numeric at " + clip + "/" + bone + ": " + pointer);
     }
-    if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", "rotation channel is empty");
+    if (keyframes.isEmpty()) {
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "rotation channel is empty");
+    }
     return new SourceRotationChannelIR(keyframes, RotationOrder.ZYX);
   }
 
@@ -253,7 +261,7 @@ public final class GeckoAnimationParser {
       JsonNode node, Vec3d defaults, String pointer, List<Diagnostic> diagnostics)
       throws AnimationParseException {
     if (node == null || node.isNull()) {
-      throw error("ANIM_INVALID_VALUE", "missing keyframe value at " + pointer);
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "missing keyframe value at " + pointer);
     }
     if (!node.isObject()) return vector(node, defaults, pointer);
 
@@ -267,7 +275,9 @@ public final class GeckoAnimationParser {
     boolean hasPre = pre != null && !pre.isNull();
     boolean hasPost = post != null && !post.isNull();
     if (!hasPre && !hasPost) {
-      throw error("ANIM_INVALID_VALUE", "keyframe object has neither vector, pre nor post at " + pointer);
+      throw error(
+          DiagnosticCodes.INPUT_PARSE_ERROR,
+          "keyframe object has neither vector, pre nor post at " + pointer);
     }
 
     Vec3d selected =
@@ -306,7 +316,7 @@ public final class GeckoAnimationParser {
     JsonNode eventNode = clipNode.get(category);
     if (eventNode == null || eventNode.isNull()) return;
     if (!eventNode.isObject()) {
-      throw error("ANIM_INVALID_VALUE", category + " must be an object");
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, category + " must be an object");
     }
 
     Iterator<Map.Entry<String, JsonNode>> fields = eventNode.fields();
@@ -333,13 +343,17 @@ public final class GeckoAnimationParser {
 
   private Vec3d vector(JsonNode node, Vec3d defaults, String pointer)
       throws AnimationParseException {
-    if (node == null || node.isNull()) throw error("ANIM_INVALID_VALUE", "missing vector at " + pointer);
+    if (node == null || node.isNull()) {
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "missing vector at " + pointer);
+    }
     if (node.isNumber()) {
       double value = finiteNumber(node, pointer);
       return new Vec3d(value, value, value);
     }
     if (!node.isArray() || node.size() != 3) {
-      throw error("ANIM_INVALID_VALUE", "expected scalar or three numeric values at " + pointer);
+      throw error(
+          DiagnosticCodes.INPUT_PARSE_ERROR,
+          "expected scalar or three numeric values at " + pointer);
     }
     return new Vec3d(
         finiteNumber(node.get(0), pointer),
@@ -349,7 +363,7 @@ public final class GeckoAnimationParser {
 
   private double finiteNumber(JsonNode node, String pointer) throws AnimationParseException {
     if (node == null || !node.isNumber() || !Double.isFinite(node.doubleValue())) {
-      throw error("ANIM_INVALID_VALUE", "expected finite number at " + pointer);
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "expected finite number at " + pointer);
     }
     return node.doubleValue();
   }
@@ -360,7 +374,9 @@ public final class GeckoAnimationParser {
       if (!Double.isFinite(timestamp) || timestamp < 0) throw new NumberFormatException();
       return timestamp;
     } catch (NumberFormatException exception) {
-      throw error("ANIM_INVALID_VALUE", "invalid animation timestamp " + value + " at " + pointer);
+      throw error(
+          DiagnosticCodes.INPUT_PARSE_ERROR,
+          "invalid animation timestamp " + value + " at " + pointer);
     }
   }
 
@@ -379,12 +395,15 @@ public final class GeckoAnimationParser {
       throws AnimationParseException {
     if (node != null && !node.isNull()) {
       double duration = finiteNumber(node, "/animations/" + clip + "/animation_length");
-      if (duration <= 0) throw error("ANIM_INVALID_VALUE", "animation_length must be positive");
+      if (duration <= 0) {
+        throw error(
+            DiagnosticCodes.ANIM_ZERO_DURATION_INVALID, "animation_length must be positive");
+      }
       return duration;
     }
     if (derived > 0 && Double.isFinite(derived)) return derived;
     throw error(
-        "ANIM_IMPLICIT_LENGTH_UNBOUNDED",
+        DiagnosticCodes.ANIM_IMPLICIT_LENGTH_UNBOUNDED,
         "animation " + clip + " has no finite implicit duration");
   }
 
@@ -394,7 +413,7 @@ public final class GeckoAnimationParser {
       return new Playback(node.booleanValue() ? PlaybackMode.LOOP : PlaybackMode.PLAY_ONCE, null);
     }
     if (!node.isTextual()) {
-      throw error("ANIM_INVALID_VALUE", "loop must be boolean or string");
+      throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "loop must be boolean or string");
     }
     String value = node.textValue();
     return switch (value) {
