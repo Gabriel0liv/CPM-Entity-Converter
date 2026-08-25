@@ -9,8 +9,7 @@ class RotationContinuityTest {
   @Test
   void windingIsIndependentOfQuaternion() {
     RotationContinuity continuity =
-        new RotationContinuity(
-            new Vec3d(350, 0, 0), new Vec3i(1, 0, 0), Optional.empty());
+        new RotationContinuity(new Vec3d(350, 0, 0), new Vec3i(1, 0, 0), Optional.empty());
     assertEquals(1, continuity.winding().x());
     assertEquals(350, continuity.sourceEulerHint().x());
   }
@@ -18,7 +17,10 @@ class RotationContinuityTest {
   @Test
   void crossingMinus179Chooses181NearPrevious179() {
     RotationContinuity continuity =
-        new RotationContinuity(new Vec3d(179, 0, 0), new Vec3i(0, 0, 0), Optional.of(new Vec3d(179, 0, 0)));
+        new RotationContinuity(
+            new Vec3d(179, 0, 0),
+            new Vec3i(0, 0, 0),
+            Optional.of(new Vec3d(179, 0, 0)));
 
     Vec3d resolved = continuity.resolveDegrees(new Vec3d(-179, 0, 0));
 
