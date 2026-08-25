@@ -82,7 +82,8 @@ class HierarchyGoldenTest {
             List.of());
 
     assertTrue(
-        new ModelIrValidator().validate(model).errors().stream()
-            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.IR_CUBE_BONE_MISMATCH)));
+        new ModelIrValidator()
+            .validate(model).errors().stream()
+                .anyMatch(d -> d.code().value().equals(DiagnosticCodes.IR_CUBE_BONE_MISMATCH)));
   }
 }
