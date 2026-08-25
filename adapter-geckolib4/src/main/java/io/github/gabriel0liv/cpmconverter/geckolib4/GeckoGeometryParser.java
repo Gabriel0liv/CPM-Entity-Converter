@@ -162,7 +162,7 @@ public final class GeckoGeometryParser {
       TextureGrid grid = textureGrid(selection.geometry());
       return base.flatMap(
           model ->
-              new GeckoTextureLoader()
+              new GeckoTextureLoader(limits)
                   .load(texturePath, grid.width(), grid.height())
                   .map(
                       texture ->
