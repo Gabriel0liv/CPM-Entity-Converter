@@ -35,16 +35,26 @@ public final class MappingValidator {
     }
     if (document.look() != null) {
       MappingDocumentV1.Look look = document.look();
-      if (look.neckInfluence() != null && !Double.isFinite(look.neckInfluence())
-          || look.headInfluence() != null && !Double.isFinite(look.headInfluence())) {
+      if ((look.neckInfluence() != null && !Double.isFinite(look.neckInfluence()))
+          || (look.headInfluence() != null && !Double.isFinite(look.headInfluence()))) {
         diagnostics =
             diagnostics.add(error(DiagnosticCodes.CONFIG_NON_FINITE, "influence must be finite"));
       }
-      if (look.neckInfluence() != null && look.neckInfluence() < 0
-          || look.headInfluence() != null && look.headInfluence() < 0) {
+      if ((look.neckInfluence() != null && look.neckInfluence() < 0)
+          || (look.headInfluence() != null && look.headInfluence() < 0)) {
         diagnostics =
             diagnostics.add(
                 error(DiagnosticCodes.CONFIG_INFLUENCE_RANGE, "influence must not be negative"));
+      }
+      for (var entry : look.limits().entrySet()) {
+        Double value = entry.getValue();
+        if (value == null || !Double.isFinite(value) || value < 0) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.CONFIG_LOOK_LIMIT,
+                      "look limit '" + entry.getKey() + "' must be finite and non-negative"));
+        }
       }
       if ("inherited_split".equals(look.composition())
           && look.neckInfluence() != null
