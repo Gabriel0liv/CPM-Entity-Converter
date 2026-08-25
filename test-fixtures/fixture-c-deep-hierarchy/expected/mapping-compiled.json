@@ -12,6 +12,15 @@
     "warningsAsErrors": false
   },
   "ignoreRules": [],
+  "look": {
+    "allowOverrotation": false,
+    "composition": "inherited_split",
+    "headId": "fixture-c-deep-hierarchy:head",
+    "headInfluence": 0.5,
+    "limits": {},
+    "neckId": "fixture-c-deep-hierarchy:neck",
+    "neckInfluence": 0.5
+  },
   "mappingPath": "mapping.yaml",
   "rootRoles": {
     "body": "fixture-c-deep-hierarchy:body"
