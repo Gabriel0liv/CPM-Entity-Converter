@@ -43,31 +43,31 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 1
 
-- [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows verdes no run 29861585146).
-- [~] T101 revisão da API de diagnostics e Result.
-- [~] T102 completar matemática e golden tests.
-  - [ ] T102-A golden +90° X/Y/Z e rotações não comutativas.
-  - [ ] T102-B decomposição affine representável `matrix -> TRS -> matrix` com escala não uniforme.
-  - [ ] T102-C rejeição explícita de singular/shear/non-TRS.
-  - [ ] T102-D golden de reparenting preservando world transform.
-  - [ ] T102-E extração Euler ZYX contínua com `+179° -> -179°`, gimbal e source hint.
-  - [ ] T102-F provar que source-authored winding `0° -> 360° -> 720°` não é apagado antes do sampling.
-- [~] T103 alinhar ModelIR e validator ao contrato.
-  - [ ] T103-A rejeitar cube listado em bone A cujo `cube.bone()` aponta para bone B (`IR_CUBE_BONE_MISMATCH`).
-  - [ ] T103-B manter hierarchy/ownership/provenance determinísticos após a nova validação.
-- [~] T104 completar schema, loader e compilação semântica.
-  - [ ] T104-A preservar `look.limits` de schema/DTO até `CompiledLookConfig`.
-  - [ ] T104-B validar limits finitos/não negativos e influences/overrotation semanticamente.
-  - [ ] T104-C ampliar testes nested schema: unknown fields, fps boundaries, state clip, rootStrategy, empty names e look limits.
-  - [ ] T104-D garantir que o pipeline chama validação semântica antes de compilar mapping.
-- [~] T105 reconstruir fixtures A–D.
-  - [ ] T105-A fixture B inclui neck/head influence e expected look limits.
-  - [ ] T105-B fixture C cobre parent torso/neck rotacionado e deep hierarchy até jaw/accessory.
-  - [ ] T105-C expected outputs distinguem structural/animation/semantic correctness.
+- [x] T100 revisão de reprodutibilidade e namespace (wrapper, locks, verificação, Spotless e CI Ubuntu/Windows; gate final revalidado no run 32845604811).
+- [x] T101 revisão da API de diagnostics e Result.
+- [x] T102 completar matemática e golden tests.
+  - [x] T102-A golden +90° X/Y/Z e rotações não comutativas.
+  - [x] T102-B decomposição affine representável `matrix -> TRS -> matrix` com escala não uniforme.
+  - [x] T102-C rejeição explícita de singular/shear/non-TRS.
+  - [x] T102-D golden de reparenting preservando world transform.
+  - [x] T102-E extração Euler ZYX contínua com `+179° -> -179°`, gimbal e source hint.
+  - [x] T102-F provar que source-authored winding `0° -> 360° -> 720°` não é apagado antes do sampling.
+- [x] T103 alinhar ModelIR e validator ao contrato.
+  - [x] T103-A rejeitar cube listado em bone A cujo `cube.bone()` aponta para bone B (`IR_CUBE_BONE_MISMATCH`).
+  - [x] T103-B manter hierarchy/ownership/provenance determinísticos após a nova validação.
+- [x] T104 completar schema, loader e compilação semântica.
+  - [x] T104-A preservar `look.limits` de schema/DTO até `CompiledLookConfig`.
+  - [x] T104-B validar limits finitos/não negativos e influences/overrotation semanticamente.
+  - [x] T104-C ampliar testes nested schema: unknown fields, fps boundaries, state clip, rootStrategy, empty names e look limits.
+  - [x] T104-D garantir que o pipeline chama validação semântica antes de compilar mapping.
+- [x] T105 reconstruir fixtures A–D.
+  - [x] T105-A fixture B inclui neck/head influence e expected look limits.
+  - [x] T105-B fixture C cobre parent torso/neck rotacionado e deep hierarchy até jaw/accessory.
+  - [x] T105-C expected outputs distinguem structural/animation/semantic correctness.
 
 ## Fase 2
 
-- [!] T200 parser geometry/bones/cubes — bloqueada pela revisão da Fase 1.
+- [~] T200 parser geometry/bones/cubes — liberada pelo Gate final da Fase 1; implementação em TDD.
 - [ ] T201 parser UV/PNG (FR-004/008).
 - [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
@@ -92,7 +92,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 5
 
-- [!] T500 implementar head/neck retarget (arquitetura definida; implementação depende de T102/T104 e aceite final ainda depende de S001/S002 visual).
+- [!] T500 implementar head/neck retarget (arquitetura definida; implementação depende das fases de pose/sampling/projection e aceite final ainda depende de S001/S002 visual).
   - [ ] T500-A compor look sobre base pose sem substituir head/neck autoral.
   - [ ] T500-B aplicar limits antes de distribuir influence.
   - [ ] T500-C idle/walk/run/jump/attack + yaw/pitch sem double rotation.
