@@ -18,7 +18,6 @@ public record CompiledLookConfig(
     head = head == null ? Optional.empty() : head;
     neck = neck == null ? Optional.empty() : neck;
     composition = composition == null ? "independent" : composition;
-    limits =
-        Collections.unmodifiableMap(new TreeMap<>(limits == null ? Map.of() : limits));
+    limits = Collections.unmodifiableMap(new TreeMap<>(limits == null ? Map.of() : limits));
   }
 }
