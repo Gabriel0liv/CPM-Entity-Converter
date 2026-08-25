@@ -3,6 +3,7 @@ package io.github.gabriel0liv.cpmconverter.geckolib4;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.ir.PlaybackMode;
 import io.github.gabriel0liv.cpmconverter.ir.TransformMode;
 import io.github.gabriel0liv.cpmconverter.ir.TransformSpace;
@@ -115,6 +116,43 @@ class GeckoAnimationParserTest {
 
     assertEquals(
         new Vec3d(720, 0, 0), track.rotation().keyframes().get(0).incomingValue());
+  }
+
+  @Test
+  void reproducesGecko449PreWinsAndReportsCollapsedPost() throws Exception {
+    Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
+    var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
+    assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
+
+    Path animation =
+        animation(
+            """
+            {
+              "format_version":"1.8.0",
+              "animations":{
+                "pre_post":{
+                  "animation_length":1.0,
+                  "bones":{"body":{"rotation":{
+                    "0.0":{"pre":[1,2,3],"post":[4,5,6]},
+                    "0.5":{"post":[7,8,9]}
+                  }}}
+                }
+              }
+            }
+            """);
+
+    var result = new GeckoAnimationParser().parse(animation, geometry.value());
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    var keyframes = result.value().get(0).tracks().get(0).rotation().keyframes();
+    assertEquals(new Vec3d(1, 2, 3), keyframes.get(0).incomingValue());
+    assertEquals(new Vec3d(1, 2, 3), keyframes.get(0).outgoingValue());
+    assertEquals(new Vec3d(7, 8, 9), keyframes.get(1).incomingValue());
+    assertTrue(
+        result.diagnostics().warnings().stream()
+            .anyMatch(
+                diagnostic ->
+                    diagnostic.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449)));
   }
 
   private static Path animation(String json) throws Exception {
