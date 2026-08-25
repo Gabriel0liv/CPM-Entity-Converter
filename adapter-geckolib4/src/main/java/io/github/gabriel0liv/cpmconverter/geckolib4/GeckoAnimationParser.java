@@ -9,8 +9,10 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
 import io.github.gabriel0liv.cpmconverter.ir.AnimationClipIR;
 import io.github.gabriel0liv.cpmconverter.ir.BoneId;
 import io.github.gabriel0liv.cpmconverter.ir.BoneTrackIR;
+import io.github.gabriel0liv.cpmconverter.ir.ChannelIR;
 import io.github.gabriel0liv.cpmconverter.ir.ClipId;
 import io.github.gabriel0liv.cpmconverter.ir.InterpolationIR;
+import io.github.gabriel0liv.cpmconverter.ir.KeyframeIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import io.github.gabriel0liv.cpmconverter.ir.PlaybackMode;
 import io.github.gabriel0liv.cpmconverter.ir.RotationOrder;
@@ -30,6 +32,9 @@ import java.util.Map;
 
 /** Offline parser for the numeric GeckoLib 4.4.9 animation syntax used by the MVP fixtures. */
 public final class GeckoAnimationParser {
+  private static final Vec3d POSITION_DEFAULT = Vec3d.ZERO;
+  private static final Vec3d SCALE_DEFAULT = new Vec3d(1, 1, 1);
+
   private final ObjectMapper json = new ObjectMapper();
 
   public Result<List<AnimationClipIR>> parse(Path path, ModelIR model) {
@@ -91,6 +96,21 @@ public final class GeckoAnimationParser {
           throw error("ANIM_INVALID_VALUE", "animated bone must be an object");
         }
 
+        String bonePointer = "/animations/" + clipName + "/bones/" + boneField.getKey();
+
+        ChannelIR<Vec3d> position = null;
+        JsonNode positionNode = boneNode.get("position");
+        if (positionNode != null && !positionNode.isNull()) {
+          position =
+              parseVectorChannel(
+                  "position",
+                  positionNode,
+                  POSITION_DEFAULT,
+                  TransformMode.ADDITIVE,
+                  bonePointer + "/position");
+          derivedDuration = Math.max(derivedDuration, maxChannelTime(position));
+        }
+
         SourceRotationChannelIR rotation = null;
         JsonNode rotationNode = boneNode.get("rotation");
         if (rotationNode != null && !rotationNode.isNull()) {
@@ -100,16 +120,29 @@ public final class GeckoAnimationParser {
                   clipName,
                   boneField.getKey(),
                   rotationNode,
-                  "/animations/" + clipName + "/bones/" + boneField.getKey() + "/rotation");
+                  bonePointer + "/rotation");
           derivedDuration = Math.max(derivedDuration, maxRotationTime(rotation));
+        }
+
+        ChannelIR<Vec3d> scale = null;
+        JsonNode scaleNode = boneNode.get("scale");
+        if (scaleNode != null && !scaleNode.isNull()) {
+          scale =
+              parseVectorChannel(
+                  "scale",
+                  scaleNode,
+                  SCALE_DEFAULT,
+                  TransformMode.ABSOLUTE,
+                  bonePointer + "/scale");
+          derivedDuration = Math.max(derivedDuration, maxChannelTime(scale));
         }
 
         tracks.add(
             new BoneTrackIR(
                 boneId,
-                null,
+                position,
                 rotation,
-                null,
+                scale,
                 TransformMode.ADDITIVE,
                 TransformSpace.LOCAL));
       }
@@ -119,6 +152,33 @@ public final class GeckoAnimationParser {
     Playback playback = playback(node.get("loop"));
     return new AnimationClipIR(
         new ClipId(clipName), duration, playback.mode(), playback.customLoop(), tracks, List.of());
+  }
+
+  private ChannelIR<Vec3d> parseVectorChannel(
+      String component,
+      JsonNode node,
+      Vec3d defaults,
+      TransformMode mode,
+      String pointer)
+      throws AnimationParseException {
+    List<KeyframeIR<Vec3d>> keyframes = new ArrayList<>();
+    if (node.isNumber() || node.isArray()) {
+      Vec3d value = vector(node, defaults, pointer);
+      keyframes.add(new KeyframeIR<>(0, value, value, InterpolationIR.LINEAR));
+    } else if (node.isObject()) {
+      Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+      while (fields.hasNext()) {
+        Map.Entry<String, JsonNode> field = fields.next();
+        double time = timestamp(field.getKey(), pointer);
+        Vec3d value = vector(field.getValue(), defaults, pointer + "/" + field.getKey());
+        keyframes.add(new KeyframeIR<>(time, value, value, InterpolationIR.LINEAR));
+      }
+      keyframes.sort(Comparator.comparingDouble(KeyframeIR<Vec3d>::time));
+    } else {
+      throw error("ANIM_INVALID_VALUE", component + " channel must be numeric at " + pointer);
+    }
+    if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", component + " channel is empty");
+    return new ChannelIR<>(component, mode, TransformSpace.LOCAL, keyframes);
   }
 
   private SourceRotationChannelIR parseRotationChannel(
@@ -187,6 +247,10 @@ public final class GeckoAnimationParser {
     } catch (NumberFormatException exception) {
       throw error("ANIM_INVALID_VALUE", "invalid animation timestamp " + value + " at " + pointer);
     }
+  }
+
+  private double maxChannelTime(ChannelIR<?> channel) {
+    return channel.keyframes().stream().mapToDouble(KeyframeIR::time).max().orElse(0);
   }
 
   private double maxRotationTime(SourceRotationChannelIR channel) {
