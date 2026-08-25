@@ -30,11 +30,27 @@ for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('f
  if set(compiled.get('boneIds',{})) != {bone['name'] for bone in bones}: raise SystemExit(f'{d.name}: compiled mapping contract mismatch')
  invariants=json.loads((d/'expected/invariants.json').read_text())
  if invariants.get('thirdPartyAssets') is not False: raise SystemExit(f'{d.name}: provenance invariant mismatch')
+ for level in ('structuralCorrectness','animationCorrectness','semanticCorrectness'):
+  if not isinstance(invariants.get(level),bool): raise SystemExit(f'{d.name}: missing correctness level {level}')
+ if d.name.endswith('quadruped'):
+  if invariants.get('semanticCorrectness') is not False: raise SystemExit('fixture D must expose semantic limitation')
+ elif not all(invariants.get(level) is True for level in ('structuralCorrectness','animationCorrectness','semanticCorrectness')):
+  raise SystemExit(f'{d.name}: expected correctness contract incomplete')
  if not all(b.get('cubes') for b in bones): raise SystemExit(f'{d.name}: cube missing')
+ if d.name.endswith('neck'):
+  look=compiled.get('look',{})
+  expected_limits={'pitch':45.0,'yaw':70.0}
+  if look.get('headId') != f'{d.name}:head' or look.get('neckId') != f'{d.name}:neck': raise SystemExit('fixture B requires compiled head/neck look IDs')
+  if look.get('neckInfluence') != 0.35 or look.get('headInfluence') != 0.65: raise SystemExit('fixture B requires 35/65 look split')
+  if look.get('limits') != expected_limits: raise SystemExit('fixture B requires expected look limits')
  if d.name.endswith('deep-hierarchy') and not isinstance(next(b for b in bones if b['name']=='accessory')['cubes'][0]['uv'],dict): raise SystemExit('fixture C requires per-face UV')
  if d.name.endswith('deep-hierarchy'):
   accessory=next(b for b in bones if b['name']=='accessory')['cubes'][0]
   if accessory.get('pivot') != [1.5,2.5,0.5] or accessory.get('rotation') != [12,0,27]: raise SystemExit('fixture C requires non-trivial cube pivot/rotation')
+  by_name={bone['name']:bone for bone in bones}
+  if by_name['jaw'].get('parent') != 'head' or by_name['accessory'].get('parent') != 'head': raise SystemExit('fixture C requires deep head descendants')
+  look=compiled.get('look',{})
+  if look.get('headId') != f'{d.name}:head' or look.get('neckId') != f'{d.name}:neck': raise SystemExit('fixture C requires compiled head/neck look IDs')
  if d.name.endswith('quadruped') and not {'leg_fl','leg_fr','leg_bl','leg_br','tail'}.issubset({b['name'] for b in bones}): raise SystemExit('fixture D limb inventory')
  animations=json.loads((d/'animations.animation.json').read_text())['animations']
  if d.name.endswith('humanoid'):
@@ -43,6 +59,9 @@ for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('f
  if d.name.endswith('deep-hierarchy'):
   animated=animations.get('idle',{}).get('bones',{})
   if not {'chest','neck','head','jaw','accessory'}.issubset(animated): raise SystemExit('fixture C hierarchy animation incomplete')
+  for parent in ('chest','neck'):
+   rotations=animated[parent].get('rotation',{})
+   if not any(any(value != 0 for value in frame) for frame in rotations.values()): raise SystemExit(f'fixture C requires rotated animated parent {parent}')
  for bone in bones:
   for cube in bone['cubes']:
    uv=cube.get('uv')
