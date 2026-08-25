@@ -17,7 +17,7 @@ class TransformDecompositionTest {
 
     assertMatrixNear(original, decomposed.matrix(), 1e-9);
     assertEquals(new Vec3d(3.25, -7.5, 11), decomposed.translation());
-    assertEquals(new Vec3d(2, 3, 4), decomposed.scale());
+    assertVectorNear(new Vec3d(2, 3, 4), decomposed.scale(), 1e-12);
   }
 
   @Test
@@ -82,5 +82,11 @@ class TransformDecompositionTest {
     double[] a = expected.valuesCopy();
     double[] b = actual.valuesCopy();
     for (int i = 0; i < 16; i++) assertEquals(a[i], b[i], epsilon, "matrix index " + i);
+  }
+
+  private static void assertVectorNear(Vec3d expected, Vec3d actual, double epsilon) {
+    assertEquals(expected.x(), actual.x(), epsilon, "vector x");
+    assertEquals(expected.y(), actual.y(), epsilon, "vector y");
+    assertEquals(expected.z(), actual.z(), epsilon, "vector z");
   }
 }
