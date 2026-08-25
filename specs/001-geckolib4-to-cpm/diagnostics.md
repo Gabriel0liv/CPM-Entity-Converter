@@ -21,13 +21,17 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 
 | Código | Default | Quando |
 |---|---|---|
+| `INPUT_PARSE_ERROR` | ERROR | JSON/arquivo de geometry não pode ser lido ou decodificado |
 | `INPUT_UNSUPPORTED_VERSION` | ERROR | geometry/Gecko fora do baseline |
 | `INPUT_LIMIT_EXCEEDED` | ERROR | tamanho/profundidade/contagem |
 | `GEO_MULTIPLE_MODELS` | ERROR | sem geometry_id inequívoco |
+| `GEO_MODEL_NOT_FOUND` | ERROR | geometry solicitado ausente ou arquivo sem geometry |
 | `GEO_PARENT_NOT_FOUND` | ERROR | parent inválido |
 | `GEO_HIERARCHY_CYCLE` | ERROR | ciclo |
 | `GEO_DUPLICATE_BONE_NAME` | ERROR | refs ambíguas |
 | `GEO_MESH_UNSUPPORTED` | ERROR | poly_mesh causaria perda |
+| `GEO_UV_UNSUPPORTED` | ERROR | forma de UV válida ainda fora da fase implementada |
+| `GEO_INVALID_VALUE` | ERROR | campo geometry malformado, não finito ou fora do domínio |
 | `GEO_CUBE_HELPER_SYNTHESIZED` | INFO | cube pivot/rotation vira helper |
 | `UV_OUT_OF_BOUNDS` | WARNING | face fora do grid |
 | `PNG_INVALID` | ERROR | PNG ilegível/dimensão inválida |
@@ -64,6 +68,7 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `INTERNAL_ERROR` | ERROR | bug; inclui correlation id |
 
 Nenhum `catch` pode converter erro em warning sem code/policy explícitos.
+
 # Catálogo normativo de códigos
 
 Os códigos abaixo são a fonte normativa compartilhada por `DiagnosticCodes`.
@@ -79,6 +84,19 @@ Optional state clips use `ANIM_OPTIONAL_CLIP_MISSING` at INFO severity.
 
 `CONFIG_LOOK_LIMIT` é ERROR quando qualquer limite de look não é finito ou é negativo;
 esses valores nunca podem chegar ao retargeter compilado.
+
+## Parser Gecko geometry
+
+`INPUT_PARSE_ERROR`, `INPUT_UNSUPPORTED_VERSION`, `GEO_MULTIPLE_MODELS`,
+`GEO_MODEL_NOT_FOUND`, `GEO_DUPLICATE_BONE_NAME`, `GEO_PARENT_NOT_FOUND`,
+`GEO_HIERARCHY_CYCLE`, `GEO_MESH_UNSUPPORTED`, `GEO_UV_UNSUPPORTED`,
+`GEO_INVALID_VALUE`.
+
+`GEO_MODEL_NOT_FOUND` diferencia ausência/seleção inválida de um arquivo com múltiplas
+geometries (`GEO_MULTIPLE_MODELS`). `GEO_UV_UNSUPPORTED` deve ser usado apenas quando
+a estrutura de UV é reconhecidamente válida para GeckoLib, mas ainda pertence a uma
+fase posterior; dados malformados usam `GEO_INVALID_VALUE`. Nenhum desses casos pode
+ser silenciosamente descartado durante a construção do `ModelIR`.
 
 ## ModelIR
 
@@ -97,6 +115,6 @@ e transform-space ambíguo durante reparenting/rebake.
 
 ## Spike e integração futura
 
-Os códigos de parser/animação, CPM, IO e limitações permanecem definidos nas
+Os códigos de animação, CPM, IO e limitações permanecem definidos nas
 seções de suas respectivas fases e não são usados pelo core nesta rodada.
 `INTERNAL_ERROR` é reservado para falhas internas sem stack trace no domínio.
