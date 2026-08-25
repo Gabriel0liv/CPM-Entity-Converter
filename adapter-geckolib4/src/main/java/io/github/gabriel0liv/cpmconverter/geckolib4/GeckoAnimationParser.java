@@ -1,7 +1,6 @@
 package io.github.gabriel0liv.cpmconverter.geckolib4;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticBag;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
@@ -24,7 +23,6 @@ import io.github.gabriel0liv.cpmconverter.ir.TransformSpace;
 import io.github.gabriel0liv.cpmconverter.ir.UnsupportedEventIR;
 import io.github.gabriel0liv.cpmconverter.math.CoordinateBoundary;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /** Offline parser for GeckoLib 4.4.9 animation syntax supported by the MVP. */
 public final class GeckoAnimationParser {
@@ -41,14 +40,24 @@ public final class GeckoAnimationParser {
   private static final EasingMetadata LINEAR_EASING =
       new EasingMetadata(InterpolationIR.LINEAR, List.of());
 
-  private final ObjectMapper json = new ObjectMapper();
+  private final GeckoInputLimits limits;
+  private final GeckoJsonReader json;
+
+  public GeckoAnimationParser() {
+    this(GeckoInputLimits.defaults());
+  }
+
+  public GeckoAnimationParser(GeckoInputLimits limits) {
+    this.limits = Objects.requireNonNull(limits, "limits");
+    this.json = new GeckoJsonReader(limits);
+  }
 
   public Result<List<AnimationClipIR>> parse(Path path, ModelIR model) {
     try {
       if (path == null) return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "animation path is null");
       if (model == null) return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "model is null");
 
-      JsonNode root = json.readTree(Files.readString(path));
+      JsonNode root = json.read(path);
       if (root == null || !root.isObject()) {
         return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "animation root must be an object");
       }
@@ -56,6 +65,7 @@ public final class GeckoAnimationParser {
       if (animations == null || !animations.isObject()) {
         return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "animations object is missing");
       }
+      validateKeyframeLimit(animations);
 
       Map<String, BoneId> bonesByName = new LinkedHashMap<>();
       model.bones().forEach(bone -> bonesByName.put(bone.name(), bone.id()));
@@ -68,6 +78,8 @@ public final class GeckoAnimationParser {
         clips.add(parseClip(path, field.getKey(), field.getValue(), bonesByName, diagnostics));
       }
       return Result.success(List.copyOf(clips), new DiagnosticBag(diagnostics));
+    } catch (GeckoJsonReader.InputLimitException exception) {
+      return failure(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, exception.getMessage());
     } catch (AnimationParseException exception) {
       return failure(exception.code(), exception.getMessage());
     } catch (Exception exception) {
@@ -75,6 +87,45 @@ public final class GeckoAnimationParser {
           DiagnosticCodes.INPUT_PARSE_ERROR,
           exception.getMessage() == null ? "cannot parse animations" : exception.getMessage());
     }
+  }
+
+  private void validateKeyframeLimit(JsonNode animations) throws AnimationParseException {
+    long total = 0;
+    Iterator<Map.Entry<String, JsonNode>> clips = animations.fields();
+    while (clips.hasNext()) {
+      JsonNode clip = clips.next().getValue();
+      if (clip == null || !clip.isObject()) continue;
+      JsonNode bones = clip.get("bones");
+      if (bones == null || !bones.isObject()) continue;
+      Iterator<Map.Entry<String, JsonNode>> boneFields = bones.fields();
+      while (boneFields.hasNext()) {
+        JsonNode bone = boneFields.next().getValue();
+        if (bone == null || !bone.isObject()) continue;
+        total += sourceKeyframeCount(bone.get("position"));
+        total += sourceKeyframeCount(bone.get("rotation"));
+        total += sourceKeyframeCount(bone.get("scale"));
+        if (total > limits.maxKeyframes()) {
+          throw error(
+              DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+              "animations contain more than " + limits.maxKeyframes() + " transform keyframes");
+        }
+      }
+    }
+  }
+
+  private long sourceKeyframeCount(JsonNode channel) {
+    if (channel == null || channel.isNull()) return 0;
+    if (!channel.isObject()) return 1;
+
+    long count = 0;
+    Iterator<String> fields = channel.fieldNames();
+    while (fields.hasNext()) {
+      String field = fields.next();
+      if (!"easing".equals(field) && !"easingArgs".equals(field) && !"lerp_mode".equals(field)) {
+        count++;
+      }
+    }
+    return count;
   }
 
   private AnimationClipIR parseClip(
