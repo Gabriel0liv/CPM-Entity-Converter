@@ -52,4 +52,16 @@ class Gecko449EasingEvaluatorTest {
         Gecko449EasingEvaluator.apply(InterpolationIR.EASE_OUT_BOUNCE, List.of(), 0.5),
         EPSILON);
   }
+
+  @Test
+  void reproducesCatmullRomRegistrationSemantics() {
+    assertEquals(
+        1.25,
+        Gecko449EasingEvaluator.apply(InterpolationIR.CATMULLROM, List.of(), 0.25),
+        EPSILON);
+    assertEquals(
+        -0.5,
+        Gecko449EasingEvaluator.apply(InterpolationIR.CATMULLROM, List.of(), 0.5),
+        EPSILON);
+  }
 }
