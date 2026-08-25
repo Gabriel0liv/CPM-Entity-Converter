@@ -24,19 +24,30 @@ public record RotationContinuity(
   }
 
   /**
-   * Resolves a principal ZYX Euler representation to the equivalent branch nearest the previous
-   * emitted value, or the source-authored hint on the first sample.
+   * Resolves a principal ZYX Euler representation to the equivalent branch nearest the authored
+   * source Euler (including explicit winding). Previous output is only a tie-breaker so continuity
+   * cannot erase an authored 360/720-degree turn.
    */
   public Vec3d resolveDegrees(Vec3d principal) {
     if (principal == null) throw new IllegalArgumentException("principal");
-    Vec3d reference = previousOutputEuler.orElse(sourceEulerHint);
+    Vec3d reference = authoredReference();
     Vec3d direct = unwrapAxesNear(principal, reference);
     Vec3d alternate =
         unwrapAxesNear(
             new Vec3d(principal.x() + 180, 180 - principal.y(), principal.z() + 180), reference);
-    return distanceSquared(direct, reference) <= distanceSquared(alternate, reference)
-        ? direct
-        : alternate;
+
+    double directSourceDistance = distanceSquared(direct, reference);
+    double alternateSourceDistance = distanceSquared(alternate, reference);
+    if (directSourceDistance < alternateSourceDistance) return direct;
+    if (alternateSourceDistance < directSourceDistance) return alternate;
+
+    if (previousOutputEuler.isPresent()) {
+      Vec3d previous = previousOutputEuler.get();
+      return distanceSquared(direct, previous) <= distanceSquared(alternate, previous)
+          ? direct
+          : alternate;
+    }
+    return direct;
   }
 
   public RotationContinuity withOutput(Vec3d output) {
@@ -48,6 +59,13 @@ public record RotationContinuity(
             (int) Math.round((output.y() - sourceEulerHint.y()) / 360),
             (int) Math.round((output.z() - sourceEulerHint.z()) / 360)),
         Optional.of(output));
+  }
+
+  private Vec3d authoredReference() {
+    return new Vec3d(
+        sourceEulerHint.x() + 360.0 * winding.x(),
+        sourceEulerHint.y() + 360.0 * winding.y(),
+        sourceEulerHint.z() + 360.0 * winding.z());
   }
 
   private static Vec3d unwrapAxesNear(Vec3d value, Vec3d reference) {
