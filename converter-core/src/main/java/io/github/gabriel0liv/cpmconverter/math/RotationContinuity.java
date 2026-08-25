@@ -33,8 +33,7 @@ public record RotationContinuity(
     Vec3d direct = unwrapAxesNear(principal, reference);
     Vec3d alternate =
         unwrapAxesNear(
-            new Vec3d(principal.x() + 180, 180 - principal.y(), principal.z() + 180),
-            reference);
+            new Vec3d(principal.x() + 180, 180 - principal.y(), principal.z() + 180), reference);
     return distanceSquared(direct, reference) <= distanceSquared(alternate, reference)
         ? direct
         : alternate;
