@@ -1,7 +1,10 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-public record BoxUvIR(int u, int v) implements UvIR {
+/** Gecko box-UV origin. Fractional coordinates are preserved exactly through the IR. */
+public record BoxUvIR(double u, double v) implements UvIR {
   public BoxUvIR {
-    if (u < 0 || v < 0) throw new IllegalArgumentException("UV");
+    if (!Double.isFinite(u) || !Double.isFinite(v)) {
+      throw new IllegalArgumentException("UV values must be finite");
+    }
   }
 }
