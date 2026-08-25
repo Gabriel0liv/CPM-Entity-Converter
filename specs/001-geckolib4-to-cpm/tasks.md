@@ -69,7 +69,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 - [x] T200 parser geometry/bones/cubes — TDD fechado e gate CI Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32851100034.
 - [x] T201 parser UV/PNG (FR-004/008) — box/per-face UV preserva `double` e `uv_size` assinado; PNG é validado sem reencode e anexado pelo grid declarado; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32855996404.
-- [ ] T202 parser animation/playback/keyframes (FR-003/014/016).
+- [x] T202 parser animation/playback/keyframes (FR-003/014/016) — clips/IDs, position/rotation/scale, playback, pre/post 4.4.9, `lerp_mode`, events fora de escopo e diagnostics normativos; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32870492103.
 - [ ] T203 easing/Molang constante e diagnostics (FR-015/025).
 - [ ] T204 testes oracle Gecko e limits (NFR-005/012).
 
