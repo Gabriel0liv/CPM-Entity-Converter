@@ -257,12 +257,17 @@ public final class GeckoAnimationParser {
     }
     if (!node.isObject()) return vector(node, defaults, pointer);
 
+    JsonNode vectorNode = node.get("vector");
+    if (vectorNode != null && !vectorNode.isNull()) {
+      return vector(vectorNode, defaults, pointer + "/vector");
+    }
+
     JsonNode pre = node.get("pre");
     JsonNode post = node.get("post");
     boolean hasPre = pre != null && !pre.isNull();
     boolean hasPost = post != null && !post.isNull();
     if (!hasPre && !hasPost) {
-      throw error("ANIM_INVALID_VALUE", "keyframe object has neither pre nor post at " + pointer);
+      throw error("ANIM_INVALID_VALUE", "keyframe object has neither vector, pre nor post at " + pointer);
     }
 
     Vec3d selected =
