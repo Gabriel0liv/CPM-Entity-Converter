@@ -132,6 +132,42 @@ public final class GeckoGeometryParser {
     }
   }
 
+  /** Parses geometry and attaches a losslessly loaded PNG using the selected geometry's grid. */
+  public Result<ModelIR> parse(Path path, String requestedGeometryId, Path texturePath) {
+    Result<ModelIR> base = parse(path, requestedGeometryId);
+    if (!base.success()) return base;
+
+    try {
+      JsonNode root = json.readTree(Files.readString(path));
+      JsonNode geometries = root.get("minecraft:geometry");
+      Selection selection = selectGeometry(geometries, requestedGeometryId);
+      TextureGrid grid = textureGrid(selection.geometry());
+      return base.flatMap(
+          model ->
+              new GeckoTextureLoader()
+                  .load(texturePath, grid.width(), grid.height())
+                  .map(
+                      texture ->
+                          new ModelIR(
+                              model.source(),
+                              model.geometryId(),
+                              model.bones(),
+                              model.roots(),
+                              model.clips(),
+                              List.of(texture),
+                              model.unsupportedFeatures())));
+    } catch (GeometryParseException exception) {
+      return Result.failure(
+          base.diagnostics()
+              .add(Diagnostic.of(Severity.ERROR, exception.code(), exception.getMessage())));
+    } catch (Exception exception) {
+      String message = exception.getMessage() == null ? "cannot read texture grid" : exception.getMessage();
+      return Result.failure(
+          base.diagnostics()
+              .add(Diagnostic.of(Severity.ERROR, DiagnosticCodes.INPUT_PARSE_ERROR, message)));
+    }
+  }
+
   private Selection selectGeometry(JsonNode geometries, String requestedId)
       throws GeometryParseException {
     if (requestedId == null || requestedId.isBlank()) {
@@ -173,6 +209,24 @@ public final class GeckoGeometryParser {
       throw error(DiagnosticCodes.GEO_INVALID_VALUE, "geometry identifier is required");
     }
     return identifier.textValue();
+  }
+
+  private TextureGrid textureGrid(JsonNode geometry) throws GeometryParseException {
+    JsonNode description = geometry == null ? null : geometry.get("description");
+    if (description == null || !description.isObject()) {
+      throw error(DiagnosticCodes.GEO_INVALID_VALUE, "geometry description is required");
+    }
+    int width = requiredPositiveInt(description.get("texture_width"), "/description/texture_width");
+    int height =
+        requiredPositiveInt(description.get("texture_height"), "/description/texture_height");
+    return new TextureGrid(width, height);
+  }
+
+  private int requiredPositiveInt(JsonNode node, String pointer) throws GeometryParseException {
+    if (node == null || !node.isIntegralNumber() || !node.canConvertToInt() || node.intValue() <= 0) {
+      throw error(DiagnosticCodes.GEO_INVALID_VALUE, "expected positive integer at " + pointer);
+    }
+    return node.intValue();
   }
 
   private List<RawBone> readBones(JsonNode bonesNode) throws GeometryParseException {
@@ -342,14 +396,17 @@ public final class GeckoGeometryParser {
   private double[] vec2(JsonNode node, String pointer, String label)
       throws GeometryParseException {
     if (node == null || !node.isArray() || node.size() != 2) {
-      throw error(DiagnosticCodes.GEO_INVALID_VALUE, label + " must contain two numbers at " + pointer);
+      throw error(
+          DiagnosticCodes.GEO_INVALID_VALUE,
+          label + " must contain two numbers at " + pointer);
     }
     double[] result = new double[2];
     for (int index = 0; index < 2; index++) {
       JsonNode value = node.get(index);
       if (value == null || !value.isNumber() || !Double.isFinite(value.doubleValue())) {
         throw error(
-            DiagnosticCodes.GEO_INVALID_VALUE, label + " must contain finite numbers at " + pointer);
+            DiagnosticCodes.GEO_INVALID_VALUE,
+            label + " must contain finite numbers at " + pointer);
       }
       result[index] = value.doubleValue();
     }
@@ -445,6 +502,8 @@ public final class GeckoGeometryParser {
   }
 
   private record Selection(JsonNode geometry, String identifier) {}
+
+  private record TextureGrid(int width, int height) {}
 
   private record RawBone(
       String name,
