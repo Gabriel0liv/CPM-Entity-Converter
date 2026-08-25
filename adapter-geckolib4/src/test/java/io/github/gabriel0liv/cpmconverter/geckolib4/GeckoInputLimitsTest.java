@@ -98,6 +98,28 @@ class GeckoInputLimitsTest {
   }
 
   @Test
+  void rejectsExplicitAndDerivedAnimationDurationBeyondConfiguredCeiling() throws Exception {
+    var limits = new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 2.0, 1_000_000, 1_000_000);
+
+    Path explicit =
+        animation(
+            """
+            {"animations":{"a":{"animation_length":3.0,"bones":{"body":{"rotation":[0,0,0]}}}}}
+            """);
+    assertLimitFailure(new GeckoAnimationParser(limits).parse(explicit, geometryModel()));
+
+    Path derived =
+        animation(
+            """
+            {"animations":{"a":{"bones":{"body":{"rotation":{
+              "0.0":[0,0,0],
+              "3.0":[1,2,3]
+            }}}}}}
+            """);
+    assertLimitFailure(new GeckoAnimationParser(limits).parse(derived, geometryModel()));
+  }
+
+  @Test
   void defaultLimitsKeepNormalFixtureWithinSupportedEnvelope() {
     var result = new GeckoGeometryParser().parse(fixtureGeometry());
 
