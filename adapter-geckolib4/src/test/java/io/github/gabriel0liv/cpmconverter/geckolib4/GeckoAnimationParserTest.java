@@ -144,6 +144,51 @@ class GeckoAnimationParserTest {
   }
 
   @Test
+  void appliesPrePostToPositionAndScaleWithPositionBoundary() throws Exception {
+    Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
+    var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
+    assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
+
+    Path animation =
+        animation(
+            """
+            {
+              "animations":{
+                "pre_post_vectors":{
+                  "animation_length":1.0,
+                  "bones":{"body":{
+                    "position":{
+                      "0.0":{"pre":[1,2,3],"post":[4,5,6]},
+                      "0.5":{"post":[7,8,9]}
+                    },
+                    "scale":{
+                      "0.0":{"pre":[1,2,3],"post":[4,5,6]},
+                      "0.5":{"post":[7,8,9]}
+                    }
+                  }}
+                }
+              }
+            }
+            """);
+
+    var result = new GeckoAnimationParser().parse(animation, geometry.value());
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    var track = result.value().get(0).tracks().get(0);
+    assertEquals(new Vec3d(-1, -2, 3), track.position().keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(-7, -8, 9), track.position().keyframes().get(1).incomingValue());
+    assertEquals(new Vec3d(1, 2, 3), track.scale().keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(7, 8, 9), track.scale().keyframes().get(1).incomingValue());
+    assertEquals(
+        2,
+        result.diagnostics().warnings().stream()
+            .filter(
+                diagnostic ->
+                    diagnostic.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449))
+            .count());
+  }
+
+  @Test
   void reproducesGecko449PreWinsAndReportsCollapsedPost() throws Exception {
     Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
     var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
