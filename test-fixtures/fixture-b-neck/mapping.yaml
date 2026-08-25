@@ -1,4 +1,10 @@
 schemaVersion: 1
 bones: {body: body, neck: neck, head: head, horn: horn}
 clips: {idle: idle, walk: walk}
-look: {composition: inherited_split, neckInfluence: 0.35, headInfluence: 0.65}
+look:
+  head: head
+  neck: neck
+  composition: inherited_split
+  neckInfluence: 0.35
+  headInfluence: 0.65
+  limits: {yaw: 70, pitch: 45}
