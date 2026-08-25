@@ -1,7 +1,6 @@
 package io.github.gabriel0liv.cpmconverter.geckolib4;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Diagnostic;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticBag;
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
@@ -23,7 +22,6 @@ import io.github.gabriel0liv.cpmconverter.math.CoordinateBoundary;
 import io.github.gabriel0liv.cpmconverter.math.Quatd;
 import io.github.gabriel0liv.cpmconverter.math.Transform;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,6 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -41,7 +40,17 @@ public final class GeckoGeometryParser {
   private static final Set<String> FACE_NAMES =
       Set.of("west", "east", "north", "south", "up", "down");
 
-  private final ObjectMapper json = new ObjectMapper();
+  private final GeckoInputLimits limits;
+  private final GeckoJsonReader json;
+
+  public GeckoGeometryParser() {
+    this(GeckoInputLimits.defaults());
+  }
+
+  public GeckoGeometryParser(GeckoInputLimits limits) {
+    this.limits = Objects.requireNonNull(limits, "limits");
+    this.json = new GeckoJsonReader(limits);
+  }
 
   public Result<ModelIR> parse(Path path) {
     return parse(path, null);
@@ -50,7 +59,7 @@ public final class GeckoGeometryParser {
   public Result<ModelIR> parse(Path path, String requestedGeometryId) {
     try {
       if (path == null) return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "geometry path is null");
-      JsonNode root = json.readTree(Files.readString(path));
+      JsonNode root = json.read(path);
       if (root == null || !root.isObject()) {
         return failure(DiagnosticCodes.INPUT_PARSE_ERROR, "geometry root must be an object");
       }
@@ -74,6 +83,13 @@ public final class GeckoGeometryParser {
       JsonNode bonesNode = geometry.get("bones");
       if (bonesNode == null || !bonesNode.isArray()) {
         return failure(DiagnosticCodes.GEO_INVALID_VALUE, "geometry bones must be an array");
+      }
+      if (bonesNode.size() > limits.maxBones()) {
+        throw limit(
+            "geometry contains "
+                + bonesNode.size()
+                + " bones, exceeding limit "
+                + limits.maxBones());
       }
 
       List<RawBone> rawBones = readBones(bonesNode);
@@ -123,6 +139,8 @@ public final class GeckoGeometryParser {
       DiagnosticBag irDiagnostics = new ModelIrValidator().validate(model);
       if (irDiagnostics.hasErrors()) return Result.failure(irDiagnostics);
       return Result.success(model, irDiagnostics);
+    } catch (GeckoJsonReader.InputLimitException exception) {
+      return failure(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, exception.getMessage());
     } catch (GeometryParseException exception) {
       return failure(exception.code(), exception.getMessage());
     } catch (Exception exception) {
@@ -138,7 +156,7 @@ public final class GeckoGeometryParser {
     if (!base.success()) return base;
 
     try {
-      JsonNode root = json.readTree(Files.readString(path));
+      JsonNode root = json.read(path);
       JsonNode geometries = root.get("minecraft:geometry");
       Selection selection = selectGeometry(geometries, requestedGeometryId);
       TextureGrid grid = textureGrid(selection.geometry());
@@ -156,6 +174,12 @@ public final class GeckoGeometryParser {
                               model.clips(),
                               List.of(texture),
                               model.unsupportedFeatures())));
+    } catch (GeckoJsonReader.InputLimitException exception) {
+      return Result.failure(
+          base.diagnostics()
+              .add(
+                  Diagnostic.of(
+                      Severity.ERROR, DiagnosticCodes.INPUT_LIMIT_EXCEEDED, exception.getMessage())));
     } catch (GeometryParseException exception) {
       return Result.failure(
           base.diagnostics()
@@ -231,6 +255,7 @@ public final class GeckoGeometryParser {
 
   private List<RawBone> readBones(JsonNode bonesNode) throws GeometryParseException {
     List<RawBone> bones = new ArrayList<>();
+    int totalCubes = 0;
     for (int index = 0; index < bonesNode.size(); index++) {
       JsonNode node = bonesNode.get(index);
       if (node == null || !node.isObject()) {
@@ -245,7 +270,15 @@ public final class GeckoGeometryParser {
       if (node.has("poly_mesh") && !node.get("poly_mesh").isNull()) {
         throw error(DiagnosticCodes.GEO_MESH_UNSUPPORTED, "poly_mesh is outside the MVP subset");
       }
-      bones.add(new RawBone(name, parent, pivot, rotation, inflate, node.get("cubes"), pointer));
+      JsonNode cubes = node.get("cubes");
+      if (cubes != null && cubes.isArray()) {
+        totalCubes += cubes.size();
+        if (totalCubes > limits.maxCubes()) {
+          throw limit(
+              "geometry contains more than " + limits.maxCubes() + " cubes across all bones");
+        }
+      }
+      bones.add(new RawBone(name, parent, pivot, rotation, inflate, cubes, pointer));
     }
     return List.copyOf(bones);
   }
@@ -495,6 +528,10 @@ public final class GeckoGeometryParser {
 
   private GeometryParseException error(String code, String message) {
     return new GeometryParseException(code, message);
+  }
+
+  private GeometryParseException limit(String message) {
+    return error(DiagnosticCodes.INPUT_LIMIT_EXCEEDED, message);
   }
 
   private <T> Result<T> failure(String code, String message) {
