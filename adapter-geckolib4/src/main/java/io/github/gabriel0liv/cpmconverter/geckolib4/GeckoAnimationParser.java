@@ -184,9 +184,12 @@ public final class GeckoAnimationParser {
         Map.Entry<String, JsonNode> field = fields.next();
         if (skipGecko449ChannelMetadata(field.getKey(), pointer, diagnostics)) continue;
         double time = timestamp(field.getKey(), pointer);
+        String keyframePointer = pointer + "/" + field.getKey();
         Vec3d value =
             channelValue(
-                component, vector(field.getValue(), defaults, pointer + "/" + field.getKey()));
+                component,
+                effectiveGecko449KeyframeValue(
+                    field.getValue(), defaults, keyframePointer, diagnostics));
         keyframes.add(new KeyframeIR<>(time, value, value, InterpolationIR.LINEAR));
       }
       keyframes.sort(Comparator.comparingDouble(KeyframeIR<Vec3d>::time));
