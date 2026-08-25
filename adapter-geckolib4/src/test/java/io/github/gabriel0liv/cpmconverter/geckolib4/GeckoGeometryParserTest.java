@@ -9,7 +9,6 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.ir.BoneIR;
 import io.github.gabriel0liv.cpmconverter.ir.BoxUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
-import io.github.gabriel0liv.cpmconverter.math.CoordinateBoundary;
 import io.github.gabriel0liv.cpmconverter.math.Quatd;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import java.nio.file.Files;
@@ -70,8 +69,7 @@ class GeckoGeometryParserTest {
     assertEquals(body.id(), head.parent());
     assertVec(new Vec3d(-1, -2, 3), body.bind().translation());
     assertVec(new Vec3d(-2, -3, 4), head.bind().translation());
-    assertRotation(
-        quaternionFromCpmDegrees(new Vec3d(-10, 20, 30)), head.bind().rotation());
+    assertRotation(quaternionFromDegrees(new Vec3d(-10, 20, 30)), head.bind().rotation());
 
     assertEquals(1, body.cubes().size());
     var cube = body.cubes().get(0);
@@ -117,8 +115,7 @@ class GeckoGeometryParserTest {
     var cube = result.value().bones().get(0).cubes().get(0);
     assertVec(new Vec3d(-1, -1, 1), cube.pivot());
     assertVec(new Vec3d(0, 1, -4), cube.origin());
-    assertRotation(
-        quaternionFromCpmDegrees(new Vec3d(-10, -20, 30)), cube.rotation());
+    assertRotation(quaternionFromDegrees(new Vec3d(-10, -20, 30)), cube.rotation());
   }
 
   @Test
@@ -225,13 +222,11 @@ class GeckoGeometryParserTest {
     return path;
   }
 
-  private static Quatd quaternionFromCpmDegrees(Vec3d degrees) {
-    Vec3d converted = CoordinateBoundary.geckoToCpmRotationDegrees(
-        CoordinateBoundary.geckoToCpmRotationDegrees(degrees));
+  private static Quatd quaternionFromDegrees(Vec3d degrees) {
     return Quatd.fromEulerZYX(
-        Math.toRadians(converted.x()),
-        Math.toRadians(converted.y()),
-        Math.toRadians(converted.z()));
+        Math.toRadians(degrees.x()),
+        Math.toRadians(degrees.y()),
+        Math.toRadians(degrees.z()));
   }
 
   private static void assertRotation(Quatd expected, Quatd actual) {
