@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
@@ -37,7 +38,7 @@ class GeckoTextureLoaderTest {
     var result = new GeckoTextureLoader().load(png, 4, 2);
 
     assertFalse(result.success());
-    assertHasCode(result, "PNG_INVALID");
+    assertHasCode(result, DiagnosticCodes.PNG_INVALID);
   }
 
   @Test
@@ -48,7 +49,33 @@ class GeckoTextureLoaderTest {
     var result = new GeckoTextureLoader().load(png, 2, 2);
 
     assertFalse(result.success());
-    assertHasCode(result, "PNG_INVALID");
+    assertHasCode(result, DiagnosticCodes.PNG_INVALID);
+  }
+
+  @Test
+  void rejectsPngBeforeReadingBytesWhenCompressedFileExceedsLimit() throws Exception {
+    Path png = Files.createTempFile("cpm-converter-texture-bytes-", ".png");
+    Files.write(png, PNG_2X2);
+    var limits =
+        new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 16, 1_000_000);
+
+    var result = new GeckoTextureLoader(limits).load(png, 2, 2);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.INPUT_LIMIT_EXCEEDED);
+  }
+
+  @Test
+  void rejectsActualPngPixelCountBeforeFullDecode() throws Exception {
+    Path png = Files.createTempFile("cpm-converter-texture-pixels-", ".png");
+    Files.write(png, PNG_2X2);
+    var limits =
+        new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 1_000_000, 1);
+
+    var result = new GeckoTextureLoader(limits).load(png, 1, 1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.INPUT_LIMIT_EXCEEDED);
   }
 
   private static void assertHasCode(
