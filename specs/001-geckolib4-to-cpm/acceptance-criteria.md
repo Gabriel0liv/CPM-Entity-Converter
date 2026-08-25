@@ -1,11 +1,15 @@
 # Critérios de aceitação
 
+## Regra de sucesso
+
+`ProjectIO` aceitar o arquivo é necessário, mas não suficiente. Uma conversão só é correta quando passa structural correctness, animation correctness e semantic correctness conforme `requirements.md` e ADR-005.
+
 ## Estruturais automatizados
 
 - **AC-001 (FR-020/022):** output é ZIP legível, contém `config.json`, inclui `skin.png` quando a projeção usa textura, e carrega no harness `ProjectIO` fixado.
 - **AC-002 (FR-021):** todos os IDs persistidos são positivos, únicos, ≤ `2^53-1`; toda referência resolve exatamente uma vez.
 - **AC-003 (FR-008):** UV golden A/B coincide por face/box com expected JSON e textura é carregada.
-- **AC-004 (FR-006/010):** parent/child do IR e CPM graph coincidem com a estratégia aprovada; world transforms de bind ficam dentro das tolerâncias.
+- **AC-004 (FR-006/010/011):** parent/child do IR e CPM graph coincidem com a estratégia aprovada; single-anchor contém `BODY -> entity_root -> Gecko roots`; world transforms de bind ficam dentro das tolerâncias.
 - **AC-005 (FR-020/NFR-003):** os mesmos bytes de entrada e configuração produzem `.cpmproject` com o mesmo SHA-256 byte a byte em plataformas suportadas; diferença de encoder PNG não é exceção permitida e deve ser eliminada ou falhar no gate de release.
 - **AC-006 (FR-023/025):** cada feature fora de escopo presente gera diagnostic; ignore explícito ainda aparece no relatório.
 - **AC-007 (FR-024/027):** config inválida retorna exit 2, mensagem acionável e não cria/substitui output final.
@@ -20,6 +24,10 @@
 - **AC-013 (FR-014):** canais/timestamps distintos produzem grid comum correto; canal ausente mantém identidade/bind.
 - **AC-014 (FR-013):** filenames CPM são reconhecidos como poses corretas pelo `AnimationsLoaderV1`.
 - **AC-015 (FR-018/019):** head neutral + idle + look obedece composição aprovada e filhos mantêm transform relativo.
+- **AC-016 (FR-018):** idle, walk, run, jump e attack/custom são testados simultaneamente com yaw/pitch; look não apaga a rotação autoral de head/neck e não duplica rotação vanilla.
+- **AC-017 (FR-018/NFR-022):** crossing `+179° -> -179°` segue a branch curta sem spin longo; um canal autoral `0° -> 360° -> 720°` conserva winding durante evaluation/sampling enquanto o source hint existe.
+- **AC-018 (FR-019):** `look.limits` sobrevive schema→DTO→compiled mapping, é finito/não negativo e limita o delta antes do split neck/head; influences configurados produzem a distribuição esperada.
+- **AC-019 (FR-018/NFR-021):** look sobre torso/neck previamente rotacionado e em hierarquia profunda conserva o world transform esperado; matrix com shear/non-TRS produz diagnostic/falha explícita em vez de aproximação silenciosa.
 
 ## Visuais no editor CPM
 
@@ -27,11 +35,12 @@
 - **AC-021:** pose neutra permanece idêntica antes/depois de tocar animações.
 - **AC-022:** pivôs não orbitam; limbs não se separam; pés ficam no ground definido.
 - **AC-023:** walk fecha loop sem salto visível e não fixa head.
-- **AC-024:** yaw/pitch movem head, não body; horn/jaw/accessories acompanham head.
+- **AC-024:** yaw/pitch movem os bones de look configurados, não o body inteiro; horn/jaw/accessories acompanham head.
 - **AC-025:** neck segue exatamente a influência configurada dentro da tolerância visual/matemática.
-- **AC-026:** walk, yaw e pitch funcionam simultaneamente sem dupla rotação.
-- **AC-027:** após 100 loops não há drift ou transformação acumulada.
+- **AC-026:** idle/walk/run/jump/attack, yaw e pitch funcionam simultaneamente sem dupla rotação, snapping ou perda da animação base.
+- **AC-027:** após 100 loops/resets/layers não há drift ou transformação acumulada.
 - **AC-028:** fixture D abre ou falha conforme regra documentada, sempre com diagnóstico de limitações quadrúpedes.
+- **AC-029:** durante look em extremos e crossings laterais não existe seam visível neck/head nem orientação invertida causada pelo espaço do parent.
 
 ## CLI, segurança e determinismo
 
