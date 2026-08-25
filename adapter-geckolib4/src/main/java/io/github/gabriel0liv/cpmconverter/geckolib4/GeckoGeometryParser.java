@@ -12,9 +12,11 @@ import io.github.gabriel0liv.cpmconverter.ir.BoneId;
 import io.github.gabriel0liv.cpmconverter.ir.BoxUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.CubeIR;
 import io.github.gabriel0liv.cpmconverter.ir.CubeId;
+import io.github.gabriel0liv.cpmconverter.ir.FaceUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.GeometryId;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIrValidator;
+import io.github.gabriel0liv.cpmconverter.ir.PerFaceUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.SourceDescriptor;
 import io.github.gabriel0liv.cpmconverter.ir.UvIR;
 import io.github.gabriel0liv.cpmconverter.math.CoordinateBoundary;
@@ -25,15 +27,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /** Strict offline parser for the supported GeckoLib 4.4.9 geometry 1.12.0 subset. */
 public final class GeckoGeometryParser {
   private static final String SUPPORTED_FORMAT = "1.12.0";
   private static final Vec3d ONE = new Vec3d(1, 1, 1);
+  private static final Set<String> FACE_NAMES =
+      Set.of("west", "east", "north", "south", "up", "down");
 
   private final ObjectMapper json = new ObjectMapper();
 
@@ -129,7 +135,7 @@ public final class GeckoGeometryParser {
   private Selection selectGeometry(JsonNode geometries, String requestedId)
       throws GeometryParseException {
     if (requestedId == null || requestedId.isBlank()) {
-      if (geometries.size() == 0) {
+      if (geometries.isEmpty()) {
         throw error(DiagnosticCodes.GEO_MODEL_NOT_FOUND, "geometry file contains no models");
       }
       if (geometries.size() != 1) {
@@ -232,7 +238,8 @@ public final class GeckoGeometryParser {
     JsonNode cubesNode = bone.cubes();
     if (cubesNode == null || cubesNode.isNull()) return List.of();
     if (!cubesNode.isArray()) {
-      throw error(DiagnosticCodes.GEO_INVALID_VALUE, "cubes must be an array for bone " + bone.name());
+      throw error(
+          DiagnosticCodes.GEO_INVALID_VALUE, "cubes must be an array for bone " + bone.name());
     }
 
     List<CubeIR> cubes = new ArrayList<>();
@@ -245,7 +252,8 @@ public final class GeckoGeometryParser {
       Vec3d origin = requiredVec3(cube.get("origin"), pointer + "/origin");
       Vec3d size = requiredVec3(cube.get("size"), pointer + "/size");
       if (size.x() < 0 || size.y() < 0 || size.z() < 0) {
-        throw error(DiagnosticCodes.GEO_INVALID_VALUE, "cube size must not be negative at " + pointer);
+        throw error(
+            DiagnosticCodes.GEO_INVALID_VALUE, "cube size must not be negative at " + pointer);
       }
       boolean hasPivot = cube.has("pivot") && !cube.get("pivot").isNull();
       Vec3d effectivePivot =
@@ -262,7 +270,8 @@ public final class GeckoGeometryParser {
       Vec3d rotationDegrees =
           optionalVec3(cube.get("rotation"), Vec3d.ZERO, pointer + "/rotation");
       Double cubeInflate = optionalDouble(cube.get("inflate"), pointer + "/inflate");
-      double inflate = cubeInflate != null ? cubeInflate : bone.inflate() == null ? 0 : bone.inflate();
+      double inflate =
+          cubeInflate != null ? cubeInflate : bone.inflate() == null ? 0 : bone.inflate();
       boolean mirror = optionalBoolean(cube.get("mirror"), false, pointer + "/mirror");
       UvIR uv = readUv(cube.get("uv"), pointer + "/uv");
       cubes.add(
@@ -286,22 +295,65 @@ public final class GeckoGeometryParser {
       throw error(DiagnosticCodes.GEO_INVALID_VALUE, "cube uv is required at " + pointer);
     }
     if (uv.isArray()) {
-      if (uv.size() != 2 || !uv.get(0).isIntegralNumber() || !uv.get(1).isIntegralNumber()) {
-        throw error(DiagnosticCodes.GEO_INVALID_VALUE, "box uv must contain two integers at " + pointer);
-      }
-      int u = uv.get(0).intValue();
-      int v = uv.get(1).intValue();
-      if (u < 0 || v < 0) {
-        throw error(DiagnosticCodes.GEO_INVALID_VALUE, "box uv must not be negative at " + pointer);
-      }
-      return new BoxUvIR(u, v);
+      double[] pair = vec2(uv, pointer, "box uv");
+      return new BoxUvIR(pair[0], pair[1]);
     }
-    if (uv.isObject()) {
-      throw error(
-          DiagnosticCodes.GEO_UV_UNSUPPORTED,
-          "per-face UV parsing is deferred to T201 at " + pointer);
+    if (!uv.isObject()) {
+      throw error(DiagnosticCodes.GEO_INVALID_VALUE, "invalid cube uv at " + pointer);
     }
-    throw error(DiagnosticCodes.GEO_INVALID_VALUE, "invalid cube uv at " + pointer);
+
+    TreeMap<String, FaceUvIR> faces = new TreeMap<>();
+    Iterator<Map.Entry<String, JsonNode>> fields = uv.fields();
+    while (fields.hasNext()) {
+      Map.Entry<String, JsonNode> field = fields.next();
+      String faceName = field.getKey();
+      JsonNode face = field.getValue();
+      if (!FACE_NAMES.contains(faceName)) {
+        throw error(
+            DiagnosticCodes.GEO_INVALID_VALUE,
+            "unknown per-face UV direction " + faceName + " at " + pointer);
+      }
+      if (face == null || face.isNull()) continue;
+      if (!face.isObject()) {
+        throw error(
+            DiagnosticCodes.GEO_INVALID_VALUE,
+            "per-face UV must be an object at " + pointer + "/" + faceName);
+      }
+      JsonNode material = face.get("material_instance");
+      if (material != null && !material.isNull()) {
+        throw error(
+            DiagnosticCodes.GEO_UV_UNSUPPORTED,
+            "material_instance is not representable by the CPM UV contract at "
+                + pointer
+                + "/"
+                + faceName);
+      }
+      double[] coords = vec2(face.get("uv"), pointer + "/" + faceName + "/uv", "face uv");
+      double[] size =
+          vec2(face.get("uv_size"), pointer + "/" + faceName + "/uv_size", "face uv_size");
+      faces.put(faceName, new FaceUvIR(coords[0], coords[1], size[0], size[1]));
+    }
+    if (faces.isEmpty()) {
+      throw error(DiagnosticCodes.GEO_INVALID_VALUE, "per-face UV contains no faces at " + pointer);
+    }
+    return new PerFaceUvIR(faces);
+  }
+
+  private double[] vec2(JsonNode node, String pointer, String label)
+      throws GeometryParseException {
+    if (node == null || !node.isArray() || node.size() != 2) {
+      throw error(DiagnosticCodes.GEO_INVALID_VALUE, label + " must contain two numbers at " + pointer);
+    }
+    double[] result = new double[2];
+    for (int index = 0; index < 2; index++) {
+      JsonNode value = node.get(index);
+      if (value == null || !value.isNumber() || !Double.isFinite(value.doubleValue())) {
+        throw error(
+            DiagnosticCodes.GEO_INVALID_VALUE, label + " must contain finite numbers at " + pointer);
+      }
+      result[index] = value.doubleValue();
+    }
+    return result;
   }
 
   private Quatd rotation(Vec3d geckoDegrees) {
@@ -351,7 +403,7 @@ public final class GeckoGeometryParser {
     for (int index = 0; index < 3; index++) {
       JsonNode value = node.get(index);
       if (value == null || !value.isNumber() || !Double.isFinite(value.doubleValue())) {
-        throw error(DiagnosticCodes.GEO_INVALID_VALUE, "expected finite number at " + pointer);
+        throw error(DiagnosticCodes.GEO_INVALID_VALUE, "expected finite numbers at " + pointer);
       }
       values[index] = value.doubleValue();
     }
@@ -404,6 +456,8 @@ public final class GeckoGeometryParser {
       String pointer) {}
 
   private static final class GeometryParseException extends Exception {
+    private static final long serialVersionUID = 1L;
+
     private final String code;
 
     private GeometryParseException(String code, String message) {
