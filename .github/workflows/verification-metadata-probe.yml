@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
       - name: Generate missing SHA-256 verification metadata
-        run: ./gradlew --write-verification-metadata sha256 :converter-config:compileJava
+        run: bash ./gradlew --write-verification-metadata sha256 :converter-config:compileJava
       - name: Show generated verification diff
         run: git diff -- gradle/verification-metadata.xml
       - name: Commit generated metadata when changed
