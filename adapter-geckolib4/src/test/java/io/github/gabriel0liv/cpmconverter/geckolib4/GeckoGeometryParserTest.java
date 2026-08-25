@@ -6,6 +6,7 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.ir.BoxUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import io.github.gabriel0liv.cpmconverter.ir.PerFaceUvIR;
+import io.github.gabriel0liv.cpmconverter.math.EulerAnglesZYX;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,7 +26,8 @@ class GeckoGeometryParserTest {
     assertEquals(
         List.of("body", "head", "left_arm", "right_arm", "left_leg", "right_leg"),
         model.bones().stream().map(bone -> bone.name()).toList());
-    assertEquals(List.of("body"), model.roots().stream().map(id -> boneName(model, id.value())).toList());
+    assertEquals(
+        List.of("body"), model.roots().stream().map(id -> boneName(model, id.value())).toList());
 
     var body = model.bones().get(0);
     var head = model.bones().get(1);
@@ -52,19 +54,23 @@ class GeckoGeometryParserTest {
 
     assertTrue(result.success(), () -> result.diagnostics().all().toString());
     ModelIR model = result.value();
-    var head = model.bones().stream().filter(bone -> bone.name().equals("head")).findFirst().orElseThrow();
-    var jaw = model.bones().stream().filter(bone -> bone.name().equals("jaw")).findFirst().orElseThrow();
+    var head =
+        model.bones().stream().filter(bone -> bone.name().equals("head")).findFirst().orElseThrow();
+    var jaw =
+        model.bones().stream().filter(bone -> bone.name().equals("jaw")).findFirst().orElseThrow();
     var accessory =
-        model.bones().stream().filter(bone -> bone.name().equals("accessory")).findFirst().orElseThrow();
+        model.bones().stream()
+            .filter(bone -> bone.name().equals("accessory"))
+            .findFirst()
+            .orElseThrow();
 
     assertEquals(head.id(), jaw.parent());
     assertEquals(head.id(), accessory.parent());
     assertEquals(1, accessory.cubes().size());
     var cube = accessory.cubes().get(0);
     assertEquals(new Vec3d(-1.5, -2.5, 0.5), cube.pivot());
-    assertEquals(
-        new Vec3d(-12, 0, 27),
-        cube.rotation().toEulerZYX().toDegrees(new Vec3d(-12, 0, 27)));
+    assertVectorNear(
+        new Vec3d(-12, 0, 27), EulerAnglesZYX.fromQuaternion(cube.rotation()).toDegrees(), 1e-9);
     assertInstanceOf(PerFaceUvIR.class, cube.uv());
   }
 
@@ -128,7 +134,10 @@ class GeckoGeometryParserTest {
 
   private static Path fixture(String name) {
     Path working = Path.of("").toAbsolutePath().normalize();
-    Path root = working.getFileName().toString().equals("adapter-geckolib4") ? working.getParent() : working;
+    Path root =
+        working.getFileName().toString().equals("adapter-geckolib4")
+            ? working.getParent()
+            : working;
     return root.resolve("test-fixtures").resolve(name).resolve("geometry.geo.json");
   }
 
@@ -153,6 +162,12 @@ class GeckoGeometryParserTest {
         .findFirst()
         .orElseThrow()
         .name();
+  }
+
+  private static void assertVectorNear(Vec3d expected, Vec3d actual, double epsilon) {
+    assertEquals(expected.x(), actual.x(), epsilon);
+    assertEquals(expected.y(), actual.y(), epsilon);
+    assertEquals(expected.z(), actual.z(), epsilon);
   }
 
   private static void assertDiagnostic(
