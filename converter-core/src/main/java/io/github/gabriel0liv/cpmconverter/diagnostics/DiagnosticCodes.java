@@ -9,6 +9,7 @@ public final class DiagnosticCodes {
   public static final String CONFIG_NON_FINITE = "CONFIG_NON_FINITE";
   public static final String CONFIG_OVERROTATION = "CONFIG_OVERROTATION";
   public static final String CONFIG_INFLUENCE_RANGE = "CONFIG_INFLUENCE_RANGE";
+  public static final String CONFIG_LOOK_LIMIT = "CONFIG_LOOK_LIMIT";
   public static final String CONFIG_UNKNOWN_PROPERTY = "CONFIG_UNKNOWN_PROPERTY";
   public static final String CONFIG_PARSE_ERROR = "CONFIG_PARSE_ERROR";
   public static final String CONFIG_SCHEMA_INVALID = "CONFIG_SCHEMA_INVALID";
