@@ -31,12 +31,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-/** Offline parser for the numeric GeckoLib 4.4.9 animation syntax used by the MVP fixtures. */
+/** Offline parser for GeckoLib 4.4.9 animation syntax supported by the MVP. */
 public final class GeckoAnimationParser {
   private static final Vec3d POSITION_DEFAULT = Vec3d.ZERO;
   private static final Vec3d SCALE_DEFAULT = new Vec3d(1, 1, 1);
+  private static final EasingMetadata LINEAR_EASING =
+      new EasingMetadata(InterpolationIR.LINEAR, List.of());
 
   private final ObjectMapper json = new ObjectMapper();
 
@@ -176,10 +179,10 @@ public final class GeckoAnimationParser {
       String pointer,
       List<Diagnostic> diagnostics)
       throws AnimationParseException {
-    List<KeyframeIR<Vec3d>> keyframes = new ArrayList<>();
-    if (node.isNumber() || node.isArray()) {
+    List<SourceVectorKeyframe> sourceFrames = new ArrayList<>();
+    if (node.isNumber() || node.isTextual() || node.isArray()) {
       Vec3d value = channelValue(component, vector(node, defaults, pointer));
-      keyframes.add(new KeyframeIR<>(0, value, value, InterpolationIR.LINEAR));
+      sourceFrames.add(new SourceVectorKeyframe(0, value, LINEAR_EASING));
     } else if (node.isObject()) {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
       while (fields.hasNext()) {
@@ -192,16 +195,32 @@ public final class GeckoAnimationParser {
                 component,
                 effectiveGecko449KeyframeValue(
                     field.getValue(), defaults, keyframePointer, diagnostics));
-        keyframes.add(new KeyframeIR<>(time, value, value, InterpolationIR.LINEAR));
+        sourceFrames.add(
+            new SourceVectorKeyframe(
+                time, value, targetEasingMetadata(field.getValue(), keyframePointer)));
       }
-      keyframes.sort(Comparator.comparingDouble(KeyframeIR<Vec3d>::time));
+      sourceFrames.sort(Comparator.comparingDouble(SourceVectorKeyframe::time));
     } else {
       throw error(
           DiagnosticCodes.INPUT_PARSE_ERROR,
           component + " channel must be numeric at " + pointer);
     }
-    if (keyframes.isEmpty()) {
+    if (sourceFrames.isEmpty()) {
       throw error(DiagnosticCodes.INPUT_PARSE_ERROR, component + " channel is empty");
+    }
+
+    List<KeyframeIR<Vec3d>> keyframes = new ArrayList<>(sourceFrames.size());
+    for (int i = 0; i < sourceFrames.size(); i++) {
+      SourceVectorKeyframe current = sourceFrames.get(i);
+      EasingMetadata after =
+          i + 1 < sourceFrames.size() ? sourceFrames.get(i + 1).targetEasing() : LINEAR_EASING;
+      keyframes.add(
+          new KeyframeIR<>(
+              current.time(),
+              current.value(),
+              current.value(),
+              after.interpolation(),
+              after.args()));
     }
     return new ChannelIR<>(component, mode, TransformSpace.LOCAL, keyframes);
   }
@@ -218,10 +237,12 @@ public final class GeckoAnimationParser {
       String pointer,
       List<Diagnostic> diagnostics)
       throws AnimationParseException {
-    List<SourceRotationKeyframeIR> keyframes = new ArrayList<>();
-    if (node.isNumber() || node.isArray()) {
+    List<SourceRotationFrame> sourceFrames = new ArrayList<>();
+    if (node.isNumber() || node.isTextual() || node.isArray()) {
       Vec3d value = vector(node, Vec3d.ZERO, pointer);
-      keyframes.add(rotationKeyframe(path, pointer, 0, value));
+      sourceFrames.add(
+          new SourceRotationFrame(
+              0, value, LINEAR_EASING, sourcePath(path) + "#" + pointer));
     } else if (node.isObject()) {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
       while (fields.hasNext()) {
@@ -232,22 +253,43 @@ public final class GeckoAnimationParser {
         Vec3d value =
             effectiveGecko449KeyframeValue(
                 field.getValue(), Vec3d.ZERO, keyframePointer, diagnostics);
-        keyframes.add(rotationKeyframe(path, keyframePointer, time, value));
+        sourceFrames.add(
+            new SourceRotationFrame(
+                time,
+                value,
+                targetEasingMetadata(field.getValue(), keyframePointer),
+                sourcePath(path) + "#" + keyframePointer));
       }
-      keyframes.sort(Comparator.comparingDouble(SourceRotationKeyframeIR::timeSeconds));
+      sourceFrames.sort(Comparator.comparingDouble(SourceRotationFrame::time));
     } else {
       throw error(
           DiagnosticCodes.INPUT_PARSE_ERROR,
           "rotation channel must be numeric at " + clip + "/" + bone + ": " + pointer);
     }
-    if (keyframes.isEmpty()) {
+    if (sourceFrames.isEmpty()) {
       throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "rotation channel is empty");
+    }
+
+    List<SourceRotationKeyframeIR> keyframes = new ArrayList<>(sourceFrames.size());
+    for (int i = 0; i < sourceFrames.size(); i++) {
+      SourceRotationFrame current = sourceFrames.get(i);
+      EasingMetadata after =
+          i + 1 < sourceFrames.size() ? sourceFrames.get(i + 1).targetEasing() : LINEAR_EASING;
+      keyframes.add(
+          new SourceRotationKeyframeIR(
+              current.time(),
+              current.value(),
+              current.value(),
+              after.interpolation(),
+              after.args(),
+              current.source()));
     }
     return new SourceRotationChannelIR(keyframes, RotationOrder.ZYX);
   }
 
   private boolean skipGecko449ChannelMetadata(
       String key, String pointer, List<Diagnostic> diagnostics) {
+    if ("easing".equals(key) || "easingArgs".equals(key)) return true;
     if (!"lerp_mode".equals(key)) return false;
     diagnostics.add(
         Diagnostic.of(
@@ -255,6 +297,91 @@ public final class GeckoAnimationParser {
             DiagnosticCodes.ANIM_LERP_MODE_IGNORED_449,
             "GeckoLib 4.4.9 ignores channel lerp_mode at " + pointer + "/lerp_mode"));
     return true;
+  }
+
+  private EasingMetadata targetEasingMetadata(JsonNode node, String pointer)
+      throws AnimationParseException {
+    if (node == null || !node.isObject() || !node.has("vector")) return LINEAR_EASING;
+
+    InterpolationIR interpolation = InterpolationIR.LINEAR;
+    JsonNode easingNode = node.get("easing");
+    if (easingNode != null && !easingNode.isNull()) {
+      if (easingNode.isTextual()) {
+        interpolation = easing(easingNode.textValue(), pointer + "/easing");
+      }
+    }
+
+    List<Double> args = List.of();
+    JsonNode argsNode = node.get("easingArgs");
+    if (argsNode != null && !argsNode.isNull()) {
+      if (!argsNode.isArray()) {
+        throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "easingArgs must be an array at " + pointer);
+      }
+      List<Double> parsed = new ArrayList<>(argsNode.size());
+      for (int i = 0; i < argsNode.size(); i++) {
+        parsed.add(easingArgument(argsNode.get(i), pointer + "/easingArgs/" + i));
+      }
+      args = List.copyOf(parsed);
+    }
+    return new EasingMetadata(interpolation, args);
+  }
+
+  private InterpolationIR easing(String name, String pointer) throws AnimationParseException {
+    String normalized = name.toLowerCase(Locale.ROOT);
+    return switch (normalized) {
+      case "linear", "none" -> InterpolationIR.LINEAR;
+      case "step" -> InterpolationIR.STEP;
+      case "easeinsine" -> InterpolationIR.EASE_IN_SINE;
+      case "easeoutsine" -> InterpolationIR.EASE_OUT_SINE;
+      case "easeinoutsine" -> InterpolationIR.EASE_IN_OUT_SINE;
+      case "easeinquad" -> InterpolationIR.EASE_IN_QUAD;
+      case "easeoutquad" -> InterpolationIR.EASE_OUT_QUAD;
+      case "easeinoutquad" -> InterpolationIR.EASE_IN_OUT_QUAD;
+      case "easeincubic" -> InterpolationIR.EASE_IN_CUBIC;
+      case "easeoutcubic" -> InterpolationIR.EASE_OUT_CUBIC;
+      case "easeinoutcubic" -> InterpolationIR.EASE_IN_OUT_CUBIC;
+      case "easeinquart" -> InterpolationIR.EASE_IN_QUART;
+      case "easeoutquart" -> InterpolationIR.EASE_OUT_QUART;
+      case "easeinoutquart" -> InterpolationIR.EASE_IN_OUT_QUART;
+      case "easeinquint" -> InterpolationIR.EASE_IN_QUINT;
+      case "easeoutquint" -> InterpolationIR.EASE_OUT_QUINT;
+      case "easeinoutquint" -> InterpolationIR.EASE_IN_OUT_QUINT;
+      case "easeinexpo" -> InterpolationIR.EASE_IN_EXPO;
+      case "easeoutexpo" -> InterpolationIR.EASE_OUT_EXPO;
+      case "easeinoutexpo" -> InterpolationIR.EASE_IN_OUT_EXPO;
+      case "easeincirc" -> InterpolationIR.EASE_IN_CIRC;
+      case "easeoutcirc" -> InterpolationIR.EASE_OUT_CIRC;
+      case "easeinoutcirc" -> InterpolationIR.EASE_IN_OUT_CIRC;
+      case "easeinback" -> InterpolationIR.EASE_IN_BACK;
+      case "easeoutback" -> InterpolationIR.EASE_OUT_BACK;
+      case "easeinoutback" -> InterpolationIR.EASE_IN_OUT_BACK;
+      case "easeinelastic" -> InterpolationIR.EASE_IN_ELASTIC;
+      case "easeoutelastic" -> InterpolationIR.EASE_OUT_ELASTIC;
+      case "easeinoutelastic" -> InterpolationIR.EASE_IN_OUT_ELASTIC;
+      case "easeinbounce" -> InterpolationIR.EASE_IN_BOUNCE;
+      case "easeoutbounce" -> InterpolationIR.EASE_OUT_BOUNCE;
+      case "easeinoutbounce" -> InterpolationIR.EASE_IN_OUT_BOUNCE;
+      case "catmullrom" -> InterpolationIR.CATMULLROM;
+      default ->
+          throw error(
+              DiagnosticCodes.ANIM_CUSTOM_EASING_UNSUPPORTED,
+              "unknown or runtime-registered easing '" + name + "' at " + pointer);
+    };
+  }
+
+  private double easingArgument(JsonNode node, String pointer) throws AnimationParseException {
+    if (node != null && node.isNumber() && Double.isFinite(node.doubleValue())) {
+      return node.doubleValue();
+    }
+    if (node != null && node.isTextual()) {
+      try {
+        double value = Double.parseDouble(node.textValue());
+        if (Double.isFinite(value)) return value;
+      } catch (NumberFormatException ignored) {
+        // Fall through to the stable parse diagnostic below.
+      }
+    }
+    throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "invalid easing argument at " + pointer);
   }
 
   private Vec3d effectiveGecko449KeyframeValue(
@@ -335,19 +462,13 @@ public final class GeckoAnimationParser {
     }
   }
 
-  private SourceRotationKeyframeIR rotationKeyframe(
-      Path path, String pointer, double time, Vec3d value) {
-    return new SourceRotationKeyframeIR(
-        time, value, value, InterpolationIR.LINEAR, sourcePath(path) + "#" + pointer);
-  }
-
   private Vec3d vector(JsonNode node, Vec3d defaults, String pointer)
       throws AnimationParseException {
     if (node == null || node.isNull()) {
       throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "missing vector at " + pointer);
     }
-    if (node.isNumber()) {
-      double value = finiteNumber(node, pointer);
+    if (node.isNumber() || node.isTextual()) {
+      double value = numericValue(node, pointer);
       return new Vec3d(value, value, value);
     }
     if (!node.isArray() || node.size() != 3) {
@@ -356,9 +477,27 @@ public final class GeckoAnimationParser {
           "expected scalar or three numeric values at " + pointer);
     }
     return new Vec3d(
-        finiteNumber(node.get(0), pointer),
-        finiteNumber(node.get(1), pointer),
-        finiteNumber(node.get(2), pointer));
+        numericValue(node.get(0), pointer + "/0"),
+        numericValue(node.get(1), pointer + "/1"),
+        numericValue(node.get(2), pointer + "/2"));
+  }
+
+  private double numericValue(JsonNode node, String pointer) throws AnimationParseException {
+    if (node != null && node.isNumber() && Double.isFinite(node.doubleValue())) {
+      return node.doubleValue();
+    }
+    if (node != null && node.isTextual()) {
+      try {
+        return ConstantMolangEvaluator.evaluate(node.textValue());
+      } catch (ConstantMolangEvaluator.MolangEvaluationException exception) {
+        throw error(
+            exception.dynamic()
+                ? DiagnosticCodes.ANIM_DYNAMIC_MOLANG_UNSUPPORTED
+                : DiagnosticCodes.INPUT_PARSE_ERROR,
+            exception.getMessage() + " at " + pointer);
+      }
+    }
+    throw error(DiagnosticCodes.INPUT_PARSE_ERROR, "expected finite number at " + pointer);
   }
 
   private double finiteNumber(JsonNode node, String pointer) throws AnimationParseException {
@@ -438,6 +577,17 @@ public final class GeckoAnimationParser {
   }
 
   private record Playback(PlaybackMode mode, String customLoop) {}
+
+  private record EasingMetadata(InterpolationIR interpolation, List<Double> args) {
+    private EasingMetadata {
+      args = List.copyOf(args);
+    }
+  }
+
+  private record SourceVectorKeyframe(double time, Vec3d value, EasingMetadata targetEasing) {}
+
+  private record SourceRotationFrame(
+      double time, Vec3d value, EasingMetadata targetEasing, String source) {}
 
   private static final class AnimationParseException extends Exception {
     private static final long serialVersionUID = 1L;
