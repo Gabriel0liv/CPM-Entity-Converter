@@ -111,7 +111,7 @@ public final class GeckoAnimationParser {
                 rotation,
                 null,
                 TransformMode.ADDITIVE,
-                TransformSpace.GEO_FILE));
+                TransformSpace.LOCAL));
       }
     }
 
