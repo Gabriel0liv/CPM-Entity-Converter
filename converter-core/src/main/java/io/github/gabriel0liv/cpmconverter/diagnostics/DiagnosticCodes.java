@@ -17,8 +17,11 @@ public final class DiagnosticCodes {
   public static final String CONFIG_BONE_AMBIGUOUS = "CONFIG_BONE_AMBIGUOUS";
   public static final String CONFIG_CLIP_MISSING = "CONFIG_CLIP_MISSING";
   public static final String ANIM_OPTIONAL_CLIP_MISSING = "ANIM_OPTIONAL_CLIP_MISSING";
+  public static final String ANIM_BONE_NOT_FOUND = "ANIM_BONE_NOT_FOUND";
   public static final String ANIM_LERP_MODE_IGNORED_449 = "ANIM_LERP_MODE_IGNORED_449";
   public static final String ANIM_PRE_POST_COLLAPSED_449 = "ANIM_PRE_POST_COLLAPSED_449";
+  public static final String ANIM_IMPLICIT_LENGTH_UNBOUNDED = "ANIM_IMPLICIT_LENGTH_UNBOUNDED";
+  public static final String ANIM_ZERO_DURATION_INVALID = "ANIM_ZERO_DURATION_INVALID";
   public static final String ANIM_EVENT_IGNORED_BY_SCOPE = "ANIM_EVENT_IGNORED_BY_SCOPE";
   public static final String INPUT_PARSE_ERROR = "INPUT_PARSE_ERROR";
   public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
