@@ -56,6 +56,16 @@ class TransformDecompositionTest {
   }
 
   @Test
+  void rejectsSingularScaleInsteadOfProducingUndefinedRotation() {
+    Mat4d singular = Mat4d.trs(Vec3d.ZERO, Quatd.IDENTITY, new Vec3d(1, 0, 1));
+
+    IllegalStateException error =
+        assertThrows(IllegalStateException.class, () -> singular.decomposeTrs(1e-10));
+
+    assertTrue(error.getMessage().toLowerCase().contains("singular"));
+  }
+
+  @Test
   void handlesReflectionWithoutChangingTheMatrix() {
     Mat4d original =
         Mat4d.trs(
