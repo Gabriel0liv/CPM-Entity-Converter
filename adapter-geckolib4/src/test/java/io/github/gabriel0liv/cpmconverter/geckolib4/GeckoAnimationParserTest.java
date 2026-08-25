@@ -155,6 +155,70 @@ class GeckoAnimationParserTest {
                     diagnostic.code().value().equals(DiagnosticCodes.ANIM_PRE_POST_COLLAPSED_449)));
   }
 
+  @Test
+  void recognizesIgnoredChannelLerpModeInsteadOfParsingItAsTimestamp() {
+    Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
+    var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
+    assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
+
+    Path animation =
+        Path.of(
+                "..",
+                "spikes",
+                "geckolib-animation-semantics",
+                "fixtures",
+                "LERP-001.json")
+            .normalize();
+    var result = new GeckoAnimationParser().parse(animation, geometry.value());
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    var rotation = result.value().get(0).tracks().get(0).rotation();
+    assertEquals(2, rotation.keyframes().size());
+    assertEquals(new Vec3d(0, 0, 0), rotation.keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(1, 1, 1), rotation.keyframes().get(1).incomingValue());
+    assertTrue(
+        result.diagnostics().warnings().stream()
+            .anyMatch(
+                diagnostic ->
+                    diagnostic.code().value().equals(DiagnosticCodes.ANIM_LERP_MODE_IGNORED_449)));
+  }
+
+  @Test
+  void recordsOutOfScopeEventsInIrAndDiagnostics() throws Exception {
+    Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
+    var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
+    assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
+
+    Path animation =
+        animation(
+            """
+            {
+              "format_version":"1.8.0",
+              "animations":{
+                "events":{
+                  "animation_length":1.0,
+                  "bones":{"body":{"rotation":[0,0,0]}},
+                  "sound_effects":{"0.0":{"effect":"step"}},
+                  "particle_effects":{"0.25":{"effect":"dust","locator":"body"}},
+                  "timeline":{"0.5":"instruction"}
+                }
+              }
+            }
+            """);
+
+    var result = new GeckoAnimationParser().parse(animation, geometry.value());
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+    var clip = result.value().get(0);
+    assertEquals(3, clip.events().size());
+    assertTrue(
+        clip.events().stream()
+            .allMatch(event -> event.code().equals(DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE)));
+    assertEquals(3, result.diagnostics().warnings().stream()
+        .filter(diagnostic -> diagnostic.code().value().equals(DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE))
+        .count());
+  }
+
   private static Path animation(String json) throws Exception {
     Path path = Files.createTempFile("cpm-converter-animation-", ".animation.json");
     Files.writeString(path, json);
