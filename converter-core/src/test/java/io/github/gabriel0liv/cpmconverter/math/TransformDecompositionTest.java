@@ -67,21 +67,13 @@ class TransformDecompositionTest {
 
     assertMatrixNear(original, decomposed.matrix(), 1e-9);
     assertTrue(
-        decomposed.scale().x() < 0
-            || decomposed.scale().y() < 0
-            || decomposed.scale().z() < 0);
+        decomposed.scale().x() < 0 || decomposed.scale().y() < 0 || decomposed.scale().z() < 0);
   }
 
   @Test
   void rejectsNonAffineBottomRow() {
     Mat4d perspectiveLike =
-        new Mat4d(
-            new double[] {
-              1, 0, 0, 0,
-              0, 1, 0, 0,
-              0, 0, 1, 0,
-              0.01, 0, 0, 1
-            });
+        new Mat4d(new double[] {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0.01, 0, 0, 1});
 
     assertThrows(IllegalStateException.class, () -> perspectiveLike.decomposeTrs(1e-10));
   }
