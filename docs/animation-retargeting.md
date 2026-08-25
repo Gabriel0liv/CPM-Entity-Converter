@@ -1,6 +1,16 @@
 # Retargeting e composição de animações
 
-Status: proposta; os pontos marcados **SPIKE** não estão aprovados como comportamento final.
+Status: contrato de arquitetura aprovado para implementação; o gate visual de ADR-005 ainda é obrigatório antes do aceite final.
+
+## Definição de conversão correta
+
+A conversão não é considerada correta apenas porque o `.cpmproject` abre. O resultado deve satisfazer simultaneamente:
+
+1. **structural correctness** — hierarquia, pivôs, cubes, UV, textura e bind world-space equivalentes;
+2. **animation correctness** — a pose emitida em cada sample é equivalente à pose Gecko dentro das tolerâncias;
+3. **semantic correctness** — estados do jogador e inputs dinâmicos, especialmente yaw/pitch, combinam com a animação convertida sem double transform, snapping, perda da animação autoral ou deformação da hierarquia.
+
+Animação reamostrada é tratada como **bounded-equivalent**, não como matematicamente lossless.
 
 ## Princípio
 
@@ -13,55 +23,82 @@ M_base_local(b,t) = M_bind_local(b) × M_source_delta_local(b,t)
 M_final_local     = compose(M_base_local, M_semantic_layers)
 ```
 
-A multiplicação é conceitual; a ordem real depende da convenção matricial escolhida e será coberta por golden tests. Não somar Euler para compor hierarquia.
+A ordem de matriz é normativa conforme `docs/coordinate-systems.md`. Não somar Euler para resolver hierarquia/reparenting.
+
+## Single-anchor e entity_root
+
+O MVP usa single-anchor e cria um `entity_root` sintético sem geometria sob o anchor CPM geral:
+
+```text
+CPM BODY
+└── entity_root
+    └── hierarquia Gecko original
+```
+
+O `entity_root` concentra somente transformação global de projeção: diferença de anchor CPM, `modelScale` e `verticalOffset`. A hierarquia Gecko permanece intacta abaixo dele salvo operação semântica que exija rebake world-space preservando a pose.
+
+Isso impede misturar a fórmula de root-space CPM com deltas locais Gecko e reduz o número de transforms que precisam ser decompostos/rebakeados.
 
 ## Base clips
 
-- `standing`, `walking`, `running`, `jumping`, `falling`, `hurt`, `dying` mapeiam para `VanillaPose` homônima.
-- clips locomotores são avaliados localmente e preservam movimentos sutis de head/neck.
-- canais ausentes usam identidade/bind.
+- `standing`, `walking`, `running`, `jumping`, `falling`, `hurt`, `dying` mapeiam para `VanillaPose` homônima quando configurados.
+- clips locomotores são avaliados localmente e preservam movimentos sutis de head/neck;
+- canais ausentes usam identidade/bind;
 - `mode: additive|absolute` é obrigatório por mapping ou inferido apenas quando a regra for inequívoca; inferência gera info no relatório.
 
-## Look da cabeça
+## Look da cabeça — contrato normativo
 
 Camadas conceituais:
 
 1. bind/pose neutra local;
-2. clip base local (idle/walk/etc.);
+2. clip base local (idle/walk/run/jump/attack/custom);
 3. yaw e pitch dinâmicos;
 4. herança do corpo/ancestrais.
 
-Proposta para spike:
+O look **não substitui** o canal autoral de head/neck. Para cada pose:
 
-- yaw/pitch como clips CPM `HEAD_ROTATION_YAW/PITCH`, aditivos e com prioridade superior aos clips base;
-- progress 0 e 1 representam limites configurados; neutral ocorre em 0.5;
-- default de limites: `[-90°, +90°]`, coerente com `VanillaPose`, mas configurável dentro de `[-180,180]` após validação visual;
-- `head_yaw_influence`/`head_pitch_influence` e neck equivalents multiplicam o delta de look, não a animação base;
-- sem neck, aplicar somente ao head e emitir nenhuma advertência se neck não foi configurado;
-- neck configurado e ausente é erro;
-- evitar dupla rotação: ou o bone herda look vanilla do root CPM, ou recebe clip dinâmico explícito, nunca ambos.
+1. avaliar a pose base Gecko/reamostrada;
+2. calcular world matrices do rig animado;
+3. obter yaw/pitch do jogador;
+4. aplicar `limits`, salvo `allowOverrotation` explícito;
+5. distribuir o delta entre neck/head conforme mapping;
+6. compor o delta no espaço correto do bone já animado;
+7. quando houver mudança de parent/space, resolver `M_local_new = inverse(M_world_parent) × M_world_target`;
+8. decompor somente transforms representáveis como TRS CPM; shear é diagnosticado e nunca aproximado silenciosamente;
+9. extrair Euler ZYX pela branch contínua mais próxima do source hint/previous output.
 
-O runtime CPM confirma que rotação aditiva é soma por eixo em radianos após o reset da pose. Isso torna a prioridade decisiva quando uma camada absoluta e uma aditiva atingem o mesmo bone; não transforma soma de Euler em composição quaternion geral.
+O mecanismo de saída pode usar clips CPM `HEAD_ROTATION_YAW/PITCH` aditivos em prioridade superior à base, desde que a equivalência acima seja preservada. A implementação não pode depender de somar Euler em um espaço incorreto só porque o caso neutro parece funcionar.
 
-S001/S002 observaram no runtime CPM que base absoluta seguida de look aditivo
-preserva a base e soma look; inverter a ordem apaga look. O contrato usa base
-priority 0 e look priority 1 e não depende do desempate em prioridade igual.
-Reset + aplicação por 100 ciclos não acumulou drift. Combinação visual com câmera,
-sinais finais e pivôs ainda depende do checklist manual; por isso ADR-005 continua
-provisório.
+- base: priority 0;
+- look: priority 1;
+- nunca depender do desempate entre priorities iguais;
+- nunca permitir look vanilla herdado e look explícito no mesmo caminho do rig;
+- sem neck configurado, aplicar look apenas ao head;
+- neck configurado e inexistente é erro.
+
+S001/S002 observaram no runtime CPM que base absoluta seguida de look aditivo preserva a base e que reset + aplicação por 100 ciclos não acumula drift. O checklist visual continua necessário para sinais finais, câmera, pivôs e seam.
 
 ## Distribuição neck/head
 
 Se neck recebe `n` e head recebe `h`, a interpretação depende da topologia:
 
-- cadeia neck→head: rotação total visual da head é aproximadamente `n+h`; para total 1.0, sugerir `h=1-n`;
-- branches independentes/roots CPM: head não herda neck; `h` pode ser 1.0.
+- cadeia neck→head: a head herda neck; em `inherited_split`, o total pretendido é distribuído pela cadeia;
+- branches independentes/roots CPM: head não herda neck; `independent` trata cada branch separadamente.
 
-O experimento comparativo favorece single-anchor: ele preserva body→neck→head→horn
-e transformações posteriores do body. Root partition iguala o neutral por rebake,
-mas exige proxy ou rebake por sample para reproduzir herança do body/neck.
+O schema exige `look.composition: inherited_split|independent`. `inherited_split` valida `0≤n,h≤1` e, por default, `n+h≤1` dentro da tolerância; excedente requer `allowOverrotation: true`.
 
-O schema exige `look.composition: inherited_split|independent` para remover ambiguidade. `inherited_split` valida `0≤n,h≤1` e, por default, `n+h=1` (tolerância 1e-6). Configuração fora disso requer `allow_overrotation: true` e warning.
+`look.limits` é dado semântico normativo. Loader/compiler não podem descartá-lo. Limites devem ser finitos, não negativos e aplicados antes da distribuição de influence.
+
+## Continuidade angular
+
+A rotação autoral é preservada como Euler contínuo até o ponto de sampling. Não normalizar keyframes para `[-180,180]` antes de avaliar, pois isso destruiria animações intencionais como `0°→360°→720°`.
+
+Depois da composição matricial/quaternion, a saída Euler ZYX deve escolher uma representação equivalente contínua:
+
+- crossing `+179° → -179°` deve seguir ~2°, não uma volta longa;
+- source hint e previous output determinam a branch;
+- matrix/quaternion sozinhos não recuperam winding já perdido, então o IR conserva a informação autoral;
+- singularidades de pitch/gimbal usam a solução equivalente mais próxima da continuidade existente.
 
 ## Reamostragem e easing
 
@@ -71,23 +108,33 @@ O schema exige `look.composition: inherited_split|independent` para remover ambi
 - Euler autoral não é normalizado nem convertido a quaternion antes do sample; o unwrap de saída escolhe a branch CPM contínua após composição;
 - step usa hold anterior; easings Gecko são avaliados antes de converter para frames lineares CPM;
 - `pre/post`, catmullrom e custom easing têm testes próprios ou diagnóstico de aproximação/erro;
-- redução de frames fica desativada no MVP por default. Quando ativada futuramente, limites por canal devem ser explícitos.
+- redução de frames fica desativada no MVP por default.
 
-O relatório registra `requestedFps`, `frameCount`, `frameDensity`,
-`effectiveIntervalRate`, `frameInterval` e `maxTemporalGridError` (máximo de
-`|t_i - i/requestedFps|` na grade emitida). “effectiveFps” é evitado por ser
-ambíguo entre densidade de frames e quantidade de intervalos temporais.
-Duração×FPS não inteira é um caso obrigatório, não edge case.
+O relatório registra `requestedFps`, `frameCount`, `frameDensity`, `effectiveIntervalRate`, `frameInterval` e `maxTemporalGridError`. O termo ambíguo `effectiveFps` não é usado normativamente.
 
 ## Calibração do domínio yaw/pitch
 
-Para look no domínio CPM 0..1000, duração 1001 ms evita o módulo no instante
-1000. Valores crus `[-L,+L]` atingem `L×1999/1001`; a alternativa compensada
-usa segundo frame `L×501/500` para atingir exatamente neutro em 500 e o limite
-em 1000. A grade de três frames e os erros float32 permanecem comparados no
-spike NON_PRODUCTION; isso requer validação visual antes de fixar o writer.
+Para look no domínio CPM 0..1000, duração 1001 ms evita o módulo no instante 1000. Valores crus `[-L,+L]` atingem `L×1999/1001`; a alternativa compensada usa segundo frame `L×501/500` para atingir exatamente neutro em 500 e o limite em 1000. A grade de três frames e erros float32 continuam cobertos pelo spike NON_PRODUCTION até o gate visual fixar o writer.
 
-## Continuidade
+## Matriz obrigatória de look
+
+A aceitação deve exercitar pelo menos:
+
+- idle + yaw/pitch;
+- walk + yaw/pitch;
+- run + yaw/pitch;
+- jump + yaw/pitch;
+- attack/custom + yaw/pitch;
+- torso/neck parent já rotacionado + look;
+- deep hierarchy body→spine→chest→neck→head→jaw/accessory;
+- extremos de limits;
+- influence split neck/head;
+- `+179° → -179°` sem spin longo;
+- 100 ciclos de reset/layer sem drift.
+
+É falha se look apagar a rotação do clip, dobrar look vanilla, girar no espaço errado, causar snap, separar neck/head ou quebrar filhos como horn/jaw.
+
+## Continuidade de loop
 
 Para clip declarado loop, comparar pose em `t=0` com limite em `t=duration`. Thresholds por posição/rotação/escala. Se exceder:
 
