@@ -27,6 +27,7 @@ public final class DiagnosticCodes {
   public static final String ANIM_EVENT_IGNORED_BY_SCOPE = "ANIM_EVENT_IGNORED_BY_SCOPE";
   public static final String INPUT_PARSE_ERROR = "INPUT_PARSE_ERROR";
   public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
+  public static final String INPUT_LIMIT_EXCEEDED = "INPUT_LIMIT_EXCEEDED";
   public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";
   public static final String GEO_MODEL_NOT_FOUND = "GEO_MODEL_NOT_FOUND";
   public static final String GEO_DUPLICATE_BONE_NAME = "GEO_DUPLICATE_BONE_NAME";
