@@ -20,7 +20,8 @@ class MappingSchemaTest {
 
   @Test
   void requiresClipInsideStateMapping() throws Exception {
-    var result = load("{\"schemaVersion\":1,\"stateMappings\":{\"walking\":{\"mode\":\"absolute\"}}}");
+    var result =
+        load("{\"schemaVersion\":1,\"stateMappings\":{\"walking\":{\"mode\":\"absolute\"}}}");
 
     assertFalse(result.success());
     assertHasSchemaError(result);
@@ -38,14 +39,16 @@ class MappingSchemaTest {
   void rejectsUnknownRootStrategyAndEmptyNames() throws Exception {
     assertFalse(load("{\"schemaVersion\":1,\"rootStrategy\":\"magic\"}").success());
     assertFalse(load("{\"schemaVersion\":1,\"bones\":{\"head\":\"\"}}").success());
-    assertFalse(load("{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"\"}}}").success());
+    assertFalse(
+        load("{\"schemaVersion\":1,\"stateMappings\":{\"idle\":{\"clip\":\"\"}}}").success());
   }
 
   @Test
   void rejectsUnsupportedSchemaVersionAndNegativeLookLimit() throws Exception {
     assertFalse(load("{\"schemaVersion\":2}").success());
     assertFalse(load("{\"schemaVersion\":1,\"look\":{\"limits\":{\"yaw\":-1}}}").success());
-    assertTrue(load("{\"schemaVersion\":1,\"look\":{\"limits\":{\"yaw\":0,\"pitch\":45}}}").success());
+    assertTrue(
+        load("{\"schemaVersion\":1,\"look\":{\"limits\":{\"yaw\":0,\"pitch\":45}}}").success());
   }
 
   private io.github.gabriel0liv.cpmconverter.diagnostics.Result<MappingDocumentV1> load(String json)
