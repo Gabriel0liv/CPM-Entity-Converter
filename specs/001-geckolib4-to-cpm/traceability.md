@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade
 
-Status em 2026-07-21. T100–T105 têm implementação e testes executados nesta
+Status em 2026-08-25. T100–T204 têm implementação e testes executados nesta
 rodada; `specified` continua significando apenas contrato para tarefas futuras.
 IDs `TST-*` são testes planejados em `test-plan.md`.
 
@@ -53,7 +53,7 @@ IDs `TST-*` são testes planejados em `test-plan.md`.
 | NFR-009 | ADR-002 | T103 | API compatibility test | AC-034 | specified |
 | NFR-010 | ADR-002 | T102 | TST-PRECISION | AC-004, AC-010 | specified |
 | NFR-011 | coordinate docs | T102 | documentation/golden review | AC-004 | specified |
-| NFR-012 | limits policy | T200–T203 | TST-HOSTILE | AC-032 | specified |
+| NFR-012 | limits policy | T200–T204 | TST-HOSTILE | AC-032 | implemented/tested |
 | NFR-013 | atomic publication | T601 | TST-ATOMIC | AC-030 | specified |
 | NFR-014 | cross-platform | T700 | Windows/Linux CI | AC-033 | specified |
 | NFR-015 | logging policy | T600 | TST-CONSOLE-PRIVACY | AC-036, AC-037 | specified |
@@ -70,5 +70,5 @@ IDs `TST-*` são testes planejados em `test-plan.md`.
 | CON-001 | compatibility matrix | T200 | version matrix test | AC-034 | normative |
 | CON-002 | scope/diagnostics | T203 | fixtures unsupported | AC-006 | normative |
 | CON-003 | ADR-005 | T500 | S001/S002 | AC-015, AC-026 | blocked by visual evidence |
-| CON-004 | licensing | T105 | provenance audit | AC-042 | normative |
+| CON-004 | licensing | T105 | fixture provenance audit | AC-042 | normative |
 | CON-005 | implementation plan | T007/S001–S004 | gate review | AC-042 | in progress |
