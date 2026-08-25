@@ -17,8 +17,7 @@ public record KeyframeIR<T>(
     easingArgs = List.copyOf(easingArgs);
   }
 
-  public KeyframeIR(
-      double time, T incomingValue, T outgoingValue, InterpolationIR interpolation) {
+  public KeyframeIR(double time, T incomingValue, T outgoingValue, InterpolationIR interpolation) {
     this(time, incomingValue, outgoingValue, interpolation, List.of());
   }
 }
