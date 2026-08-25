@@ -27,6 +27,7 @@ public final class DiagnosticCodes {
   public static final String GEO_MESH_UNSUPPORTED = "GEO_MESH_UNSUPPORTED";
   public static final String GEO_UV_UNSUPPORTED = "GEO_UV_UNSUPPORTED";
   public static final String GEO_INVALID_VALUE = "GEO_INVALID_VALUE";
+  public static final String PNG_INVALID = "PNG_INVALID";
   public static final String IR_DUPLICATE_BONE_ID = "IR_DUPLICATE_BONE_ID";
   public static final String IR_DUPLICATE_CUBE_ID = "IR_DUPLICATE_CUBE_ID";
   public static final String IR_DUPLICATE_CLIP_ID = "IR_DUPLICATE_CLIP_ID";
