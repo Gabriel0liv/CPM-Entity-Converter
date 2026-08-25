@@ -46,8 +46,9 @@ class Gecko449EasingEvaluatorTest {
         Gecko449EasingEvaluator.apply(
             InterpolationIR.EASE_IN_ELASTIC, List.of(1.2, 0.35), 0.5),
         EPSILON);
+    // GeckoLib 4.4.9 computes 6f / 11f in float before promoting to double.
     assertEquals(
-        0.46875,
+        0.4687499776482542,
         Gecko449EasingEvaluator.apply(InterpolationIR.EASE_OUT_BOUNCE, List.of(), 0.5),
         EPSILON);
   }
