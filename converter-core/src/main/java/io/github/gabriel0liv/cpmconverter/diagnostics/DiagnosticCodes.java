@@ -17,6 +17,7 @@ public final class DiagnosticCodes {
   public static final String CONFIG_BONE_AMBIGUOUS = "CONFIG_BONE_AMBIGUOUS";
   public static final String CONFIG_CLIP_MISSING = "CONFIG_CLIP_MISSING";
   public static final String ANIM_OPTIONAL_CLIP_MISSING = "ANIM_OPTIONAL_CLIP_MISSING";
+  public static final String ANIM_PRE_POST_COLLAPSED_449 = "ANIM_PRE_POST_COLLAPSED_449";
   public static final String INPUT_PARSE_ERROR = "INPUT_PARSE_ERROR";
   public static final String INPUT_UNSUPPORTED_VERSION = "INPUT_UNSUPPORTED_VERSION";
   public static final String GEO_MULTIPLE_MODELS = "GEO_MULTIPLE_MODELS";
