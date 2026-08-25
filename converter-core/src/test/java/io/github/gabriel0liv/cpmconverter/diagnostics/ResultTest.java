@@ -37,9 +37,7 @@ class ResultTest {
 
     Result<Integer> result =
         Result.success("value", new DiagnosticBag().add(first))
-            .flatMap(
-                value ->
-                    Result.success(value.length(), new DiagnosticBag().add(second)));
+            .flatMap(value -> Result.success(value.length(), new DiagnosticBag().add(second)));
 
     assertTrue(result.success());
     assertEquals(5, result.value());

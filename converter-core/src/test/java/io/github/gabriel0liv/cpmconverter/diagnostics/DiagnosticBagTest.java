@@ -11,8 +11,7 @@ class DiagnosticBagTest {
   @Test
   void completeOrderingIsDeterministic() {
     Diagnostic info = diagnostic(Severity.INFO, "Z_INFO", "b.json", 1, 1, "/z", Map.of());
-    Diagnostic warning =
-        diagnostic(Severity.WARNING, "A_WARNING", "a.json", 2, 1, "/a", Map.of());
+    Diagnostic warning = diagnostic(Severity.WARNING, "A_WARNING", "a.json", 2, 1, "/a", Map.of());
     Diagnostic errorLaterLocation =
         diagnostic(Severity.ERROR, "B_ERROR", "a.json", 2, 1, "/b", Map.of());
     Diagnostic errorEarlierLocation =
@@ -35,8 +34,7 @@ class DiagnosticBagTest {
     reversed.put("z", "last");
     reversed.put("a", "first");
 
-    Diagnostic diagnostic =
-        diagnostic(Severity.WARNING, "CTX", "a.json", 1, 1, "/a", reversed);
+    Diagnostic diagnostic = diagnostic(Severity.WARNING, "CTX", "a.json", 1, 1, "/a", reversed);
 
     assertEquals(List.of("a", "z"), diagnostic.context().keySet().stream().toList());
   }

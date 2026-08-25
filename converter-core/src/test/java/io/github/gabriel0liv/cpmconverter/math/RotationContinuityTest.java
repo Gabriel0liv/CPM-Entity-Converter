@@ -39,8 +39,7 @@ class RotationContinuityTest {
     Optional<Vec3d> previous = Optional.empty();
     for (double authored : new double[] {0, 360, 720}) {
       RotationContinuity continuity =
-          new RotationContinuity(
-              new Vec3d(authored, 0, 0), new Vec3i(0, 0, 0), previous);
+          new RotationContinuity(new Vec3d(authored, 0, 0), new Vec3i(0, 0, 0), previous);
       Vec3d resolved = continuity.resolveDegrees(new Vec3d(0, 0, 0));
 
       assertEquals(authored, resolved.x(), 1e-9);

@@ -63,8 +63,11 @@ class HierarchyGoldenTest {
             List.of());
 
     assertFalse(new ModelIrValidator().validate(model).hasErrors());
-    assertEquals(List.of("cube-z", "cube-a"), body.cubes().stream().map(cube -> cube.id().value()).toList());
-    assertEquals(List.of("source:cube-z", "source:cube-a"), body.cubes().stream().map(CubeIR::provenance).toList());
+    assertEquals(
+        List.of("cube-z", "cube-a"), body.cubes().stream().map(cube -> cube.id().value()).toList());
+    assertEquals(
+        List.of("source:cube-z", "source:cube-a"),
+        body.cubes().stream().map(CubeIR::provenance).toList());
     assertTrue(body.cubes().stream().allMatch(cube -> cube.bone().equals(body.id())));
   }
 
