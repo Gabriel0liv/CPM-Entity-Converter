@@ -30,6 +30,7 @@ public final class DiagnosticCodes {
   public static final String IR_PARENT_CHILD_MISMATCH = "IR_PARENT_CHILD_MISMATCH";
   public static final String IR_UNREACHABLE_BONE = "IR_UNREACHABLE_BONE";
   public static final String IR_CUBE_BONE_MISSING = "IR_CUBE_BONE_MISSING";
+  public static final String IR_CUBE_BONE_MISMATCH = "IR_CUBE_BONE_MISMATCH";
   public static final String IR_TRACK_BONE_MISSING = "IR_TRACK_BONE_MISSING";
   public static final String IR_DURATION_INVALID = "IR_DURATION_INVALID";
   public static final String IR_KEYFRAME_ORDER = "IR_KEYFRAME_ORDER";
