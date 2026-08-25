@@ -18,6 +18,8 @@ public final class DiagnosticCodes {
   public static final String CONFIG_CLIP_MISSING = "CONFIG_CLIP_MISSING";
   public static final String ANIM_OPTIONAL_CLIP_MISSING = "ANIM_OPTIONAL_CLIP_MISSING";
   public static final String ANIM_BONE_NOT_FOUND = "ANIM_BONE_NOT_FOUND";
+  public static final String ANIM_DYNAMIC_MOLANG_UNSUPPORTED = "ANIM_DYNAMIC_MOLANG_UNSUPPORTED";
+  public static final String ANIM_CUSTOM_EASING_UNSUPPORTED = "ANIM_CUSTOM_EASING_UNSUPPORTED";
   public static final String ANIM_LERP_MODE_IGNORED_449 = "ANIM_LERP_MODE_IGNORED_449";
   public static final String ANIM_PRE_POST_COLLAPSED_449 = "ANIM_PRE_POST_COLLAPSED_449";
   public static final String ANIM_IMPLICIT_LENGTH_UNBOUNDED = "ANIM_IMPLICIT_LENGTH_UNBOUNDED";
