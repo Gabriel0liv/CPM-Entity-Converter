@@ -22,6 +22,7 @@ import io.github.gabriel0liv.cpmconverter.ir.SourceRotationKeyframeIR;
 import io.github.gabriel0liv.cpmconverter.ir.TransformMode;
 import io.github.gabriel0liv.cpmconverter.ir.TransformSpace;
 import io.github.gabriel0liv.cpmconverter.ir.UnsupportedEventIR;
+import io.github.gabriel0liv.cpmconverter.math.CoordinateBoundary;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -175,7 +176,7 @@ public final class GeckoAnimationParser {
       throws AnimationParseException {
     List<KeyframeIR<Vec3d>> keyframes = new ArrayList<>();
     if (node.isNumber() || node.isArray()) {
-      Vec3d value = vector(node, defaults, pointer);
+      Vec3d value = channelValue(component, vector(node, defaults, pointer));
       keyframes.add(new KeyframeIR<>(0, value, value, InterpolationIR.LINEAR));
     } else if (node.isObject()) {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
@@ -183,7 +184,9 @@ public final class GeckoAnimationParser {
         Map.Entry<String, JsonNode> field = fields.next();
         if (skipGecko449ChannelMetadata(field.getKey(), pointer, diagnostics)) continue;
         double time = timestamp(field.getKey(), pointer);
-        Vec3d value = vector(field.getValue(), defaults, pointer + "/" + field.getKey());
+        Vec3d value =
+            channelValue(
+                component, vector(field.getValue(), defaults, pointer + "/" + field.getKey()));
         keyframes.add(new KeyframeIR<>(time, value, value, InterpolationIR.LINEAR));
       }
       keyframes.sort(Comparator.comparingDouble(KeyframeIR<Vec3d>::time));
@@ -192,6 +195,10 @@ public final class GeckoAnimationParser {
     }
     if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", component + " channel is empty");
     return new ChannelIR<>(component, mode, TransformSpace.LOCAL, keyframes);
+  }
+
+  private Vec3d channelValue(String component, Vec3d value) {
+    return "position".equals(component) ? CoordinateBoundary.geckoToCpmPosition(value) : value;
   }
 
   private SourceRotationChannelIR parseRotationChannel(
@@ -299,8 +306,7 @@ public final class GeckoAnimationParser {
       Map.Entry<String, JsonNode> field = fields.next();
       double time = timestamp(field.getKey(), "/animations/" + clip + "/" + category);
       String pointer = "/animations/" + clip + "/" + category + "/" + field.getKey();
-      String message =
-          category + " event at " + time + "s is outside the MVP conversion scope";
+      String message = category + " event at " + time + "s is outside the MVP conversion scope";
       events.add(
           new UnsupportedEventIR(
               DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE,
@@ -324,17 +330,13 @@ public final class GeckoAnimationParser {
       double value = finiteNumber(node, pointer);
       return new Vec3d(value, value, value);
     }
-    if (!node.isArray() || node.isEmpty() || node.size() > 3) {
-      throw error("ANIM_INVALID_VALUE", "expected one to three numeric values at " + pointer);
+    if (!node.isArray() || node.size() != 3) {
+      throw error("ANIM_INVALID_VALUE", "expected scalar or three numeric values at " + pointer);
     }
-    if (node.size() == 1) {
-      double value = finiteNumber(node.get(0), pointer);
-      return new Vec3d(value, value, value);
-    }
-    double x = finiteNumber(node.get(0), pointer);
-    double y = finiteNumber(node.get(1), pointer);
-    double z = node.size() == 3 ? finiteNumber(node.get(2), pointer) : defaults.z();
-    return new Vec3d(x, y, z);
+    return new Vec3d(
+        finiteNumber(node.get(0), pointer),
+        finiteNumber(node.get(1), pointer),
+        finiteNumber(node.get(2), pointer));
   }
 
   private double finiteNumber(JsonNode node, String pointer) throws AnimationParseException {
