@@ -107,8 +107,8 @@ public final class Mat4d {
   }
 
   /**
-   * Decomposes an affine {@code T × R × S} matrix when it is exactly representable by CPM-style
-   * TRS within {@code tolerance}. Shear and singular scale are rejected rather than approximated.
+   * Decomposes an affine {@code T × R × S} matrix when it is exactly representable by CPM-style TRS
+   * within {@code tolerance}. Shear and singular scale are rejected rather than approximated.
    */
   public Transform decomposeTrs(double tolerance) {
     if (!Double.isFinite(tolerance) || tolerance <= 0)
@@ -148,10 +148,8 @@ public final class Mat4d {
     Mat4d rotationMatrix =
         new Mat4d(
             new double[] {
-              axisX.x(), axisY.x(), axisZ.x(), 0,
-              axisX.y(), axisY.y(), axisZ.y(), 0,
-              axisX.z(), axisY.z(), axisZ.z(), 0,
-              0, 0, 0, 1
+              axisX.x(), axisY.x(), axisZ.x(), 0, axisX.y(), axisY.y(), axisZ.y(), 0, axisX.z(),
+              axisY.z(), axisZ.z(), 0, 0, 0, 0, 1
             });
     Quatd rotation = Quatd.fromRotationMatrix(rotationMatrix);
     Vec3d translation = new Vec3d(values[3], values[7], values[11]);
