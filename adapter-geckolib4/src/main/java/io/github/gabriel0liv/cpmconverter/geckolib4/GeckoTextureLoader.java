@@ -46,12 +46,7 @@ public final class GeckoTextureLoader {
 
       return Result.success(
           new TextureIR(
-              sourcePath(path),
-              bytes,
-              declaredWidth,
-              declaredHeight,
-              sourcePath(path)),
-          java.util.List.of());
+              sourcePath(path), bytes, declaredWidth, declaredHeight, sourcePath(path)));
     } catch (Exception exception) {
       String detail = exception.getMessage();
       return failure(detail == null ? "PNG cannot be read" : "PNG cannot be read: " + detail);
