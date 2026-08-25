@@ -66,7 +66,10 @@ class TransformDecompositionTest {
     Transform decomposed = original.decomposeTrs(1e-10);
 
     assertMatrixNear(original, decomposed.matrix(), 1e-9);
-    assertTrue(decomposed.scale().x() < 0 || decomposed.scale().y() < 0 || decomposed.scale().z() < 0);
+    assertTrue(
+        decomposed.scale().x() < 0
+            || decomposed.scale().y() < 0
+            || decomposed.scale().z() < 0);
   }
 
   @Test
