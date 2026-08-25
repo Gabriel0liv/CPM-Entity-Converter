@@ -62,11 +62,13 @@ class ConfigTest {
     MappingDocumentV1 nonFinite = documentWithLookLimits(Map.of("yaw", Double.NaN));
 
     assertTrue(
-        new MappingValidator().validate(negative).errors().stream()
-            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.CONFIG_LOOK_LIMIT)));
+        new MappingValidator()
+            .validate(negative).errors().stream()
+                .anyMatch(d -> d.code().value().equals(DiagnosticCodes.CONFIG_LOOK_LIMIT)));
     assertTrue(
-        new MappingValidator().validate(nonFinite).errors().stream()
-            .anyMatch(d -> d.code().value().equals(DiagnosticCodes.CONFIG_LOOK_LIMIT)));
+        new MappingValidator()
+            .validate(nonFinite).errors().stream()
+                .anyMatch(d -> d.code().value().equals(DiagnosticCodes.CONFIG_LOOK_LIMIT)));
   }
 
   @Test
