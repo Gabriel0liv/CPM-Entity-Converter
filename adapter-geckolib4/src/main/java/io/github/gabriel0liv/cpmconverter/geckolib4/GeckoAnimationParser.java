@@ -21,6 +21,7 @@ import io.github.gabriel0liv.cpmconverter.ir.SourceRotationChannelIR;
 import io.github.gabriel0liv.cpmconverter.ir.SourceRotationKeyframeIR;
 import io.github.gabriel0liv.cpmconverter.ir.TransformMode;
 import io.github.gabriel0liv.cpmconverter.ir.TransformSpace;
+import io.github.gabriel0liv.cpmconverter.ir.UnsupportedEventIR;
 import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -113,7 +114,8 @@ public final class GeckoAnimationParser {
                   positionNode,
                   POSITION_DEFAULT,
                   TransformMode.ADDITIVE,
-                  bonePointer + "/position");
+                  bonePointer + "/position",
+                  diagnostics);
           derivedDuration = Math.max(derivedDuration, maxChannelTime(position));
         }
 
@@ -140,7 +142,8 @@ public final class GeckoAnimationParser {
                   scaleNode,
                   SCALE_DEFAULT,
                   TransformMode.ABSOLUTE,
-                  bonePointer + "/scale");
+                  bonePointer + "/scale",
+                  diagnostics);
           derivedDuration = Math.max(derivedDuration, maxChannelTime(scale));
         }
 
@@ -157,8 +160,9 @@ public final class GeckoAnimationParser {
 
     double duration = explicitDuration(node.get("animation_length"), derivedDuration, clipName);
     Playback playback = playback(node.get("loop"));
+    List<UnsupportedEventIR> events = parseUnsupportedEvents(path, clipName, node, diagnostics);
     return new AnimationClipIR(
-        new ClipId(clipName), duration, playback.mode(), playback.customLoop(), tracks, List.of());
+        new ClipId(clipName), duration, playback.mode(), playback.customLoop(), tracks, events);
   }
 
   private ChannelIR<Vec3d> parseVectorChannel(
@@ -166,7 +170,8 @@ public final class GeckoAnimationParser {
       JsonNode node,
       Vec3d defaults,
       TransformMode mode,
-      String pointer)
+      String pointer,
+      List<Diagnostic> diagnostics)
       throws AnimationParseException {
     List<KeyframeIR<Vec3d>> keyframes = new ArrayList<>();
     if (node.isNumber() || node.isArray()) {
@@ -176,6 +181,7 @@ public final class GeckoAnimationParser {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
       while (fields.hasNext()) {
         Map.Entry<String, JsonNode> field = fields.next();
+        if (skipGecko449ChannelMetadata(field.getKey(), pointer, diagnostics)) continue;
         double time = timestamp(field.getKey(), pointer);
         Vec3d value = vector(field.getValue(), defaults, pointer + "/" + field.getKey());
         keyframes.add(new KeyframeIR<>(time, value, value, InterpolationIR.LINEAR));
@@ -204,9 +210,12 @@ public final class GeckoAnimationParser {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
       while (fields.hasNext()) {
         Map.Entry<String, JsonNode> field = fields.next();
+        if (skipGecko449ChannelMetadata(field.getKey(), pointer, diagnostics)) continue;
         double time = timestamp(field.getKey(), pointer);
         String keyframePointer = pointer + "/" + field.getKey();
-        Vec3d value = effectiveGecko449KeyframeValue(field.getValue(), Vec3d.ZERO, keyframePointer, diagnostics);
+        Vec3d value =
+            effectiveGecko449KeyframeValue(
+                field.getValue(), Vec3d.ZERO, keyframePointer, diagnostics);
         keyframes.add(rotationKeyframe(path, keyframePointer, time, value));
       }
       keyframes.sort(Comparator.comparingDouble(SourceRotationKeyframeIR::timeSeconds));
@@ -217,6 +226,17 @@ public final class GeckoAnimationParser {
     }
     if (keyframes.isEmpty()) throw error("ANIM_INVALID_VALUE", "rotation channel is empty");
     return new SourceRotationChannelIR(keyframes, RotationOrder.ZYX);
+  }
+
+  private boolean skipGecko449ChannelMetadata(
+      String key, String pointer, List<Diagnostic> diagnostics) {
+    if (!"lerp_mode".equals(key)) return false;
+    diagnostics.add(
+        Diagnostic.of(
+            Severity.WARNING,
+            DiagnosticCodes.ANIM_LERP_MODE_IGNORED_449,
+            "GeckoLib 4.4.9 ignores channel lerp_mode at " + pointer + "/lerp_mode"));
+    return true;
   }
 
   private Vec3d effectiveGecko449KeyframeValue(
@@ -235,7 +255,8 @@ public final class GeckoAnimationParser {
       throw error("ANIM_INVALID_VALUE", "keyframe object has neither pre nor post at " + pointer);
     }
 
-    Vec3d selected = vector(hasPre ? pre : post, defaults, pointer + (hasPre ? "/pre" : "/post"));
+    Vec3d selected =
+        vector(hasPre ? pre : post, defaults, pointer + (hasPre ? "/pre" : "/post"));
     if (hasPre && hasPost) {
       Vec3d postValue = vector(post, defaults, pointer + "/post");
       if (!selected.equals(postValue)) {
@@ -247,6 +268,47 @@ public final class GeckoAnimationParser {
       }
     }
     return selected;
+  }
+
+  private List<UnsupportedEventIR> parseUnsupportedEvents(
+      Path path, String clip, JsonNode clipNode, List<Diagnostic> diagnostics)
+      throws AnimationParseException {
+    List<UnsupportedEventIR> events = new ArrayList<>();
+    parseUnsupportedEventCategory(path, clip, clipNode, "sound_effects", events, diagnostics);
+    parseUnsupportedEventCategory(path, clip, clipNode, "particle_effects", events, diagnostics);
+    parseUnsupportedEventCategory(path, clip, clipNode, "timeline", events, diagnostics);
+    return List.copyOf(events);
+  }
+
+  private void parseUnsupportedEventCategory(
+      Path path,
+      String clip,
+      JsonNode clipNode,
+      String category,
+      List<UnsupportedEventIR> events,
+      List<Diagnostic> diagnostics)
+      throws AnimationParseException {
+    JsonNode eventNode = clipNode.get(category);
+    if (eventNode == null || eventNode.isNull()) return;
+    if (!eventNode.isObject()) {
+      throw error("ANIM_INVALID_VALUE", category + " must be an object");
+    }
+
+    Iterator<Map.Entry<String, JsonNode>> fields = eventNode.fields();
+    while (fields.hasNext()) {
+      Map.Entry<String, JsonNode> field = fields.next();
+      double time = timestamp(field.getKey(), "/animations/" + clip + "/" + category);
+      String pointer = "/animations/" + clip + "/" + category + "/" + field.getKey();
+      String message =
+          category + " event at " + time + "s is outside the MVP conversion scope";
+      events.add(
+          new UnsupportedEventIR(
+              DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE,
+              message,
+              sourcePath(path) + "#" + pointer));
+      diagnostics.add(
+          Diagnostic.of(Severity.WARNING, DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE, message));
+    }
   }
 
   private SourceRotationKeyframeIR rotationKeyframe(
