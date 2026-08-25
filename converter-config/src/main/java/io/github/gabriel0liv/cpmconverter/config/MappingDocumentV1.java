@@ -63,8 +63,7 @@ public record MappingDocumentV1(
       Boolean allowOverrotation,
       Map<String, Double> limits) {
     public Look {
-      limits =
-          Collections.unmodifiableMap(new TreeMap<>(limits == null ? Map.of() : limits));
+      limits = Collections.unmodifiableMap(new TreeMap<>(limits == null ? Map.of() : limits));
     }
 
     public Look(
