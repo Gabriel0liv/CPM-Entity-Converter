@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.geckolib4;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
@@ -68,9 +69,9 @@ class GeckoAnimationParserTest {
                   "animation_length":1.0,
                   "loop":false,
                   "bones":{"body":{
-                    "position":[2,3],
+                    "position":[2,3,4],
                     "rotation":[720,0,0],
-                    "scale":[2,3]
+                    "scale":[2,3,4]
                   }}
                 },
                 "once_string":{
@@ -108,14 +109,38 @@ class GeckoAnimationParserTest {
 
     assertEquals(TransformMode.ADDITIVE, track.position().mode());
     assertEquals(TransformSpace.LOCAL, track.position().space());
-    assertEquals(new Vec3d(2, 3, 0), track.position().keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(-2, -3, 4), track.position().keyframes().get(0).incomingValue());
 
     assertEquals(TransformMode.ABSOLUTE, track.scale().mode());
     assertEquals(TransformSpace.LOCAL, track.scale().space());
-    assertEquals(new Vec3d(2, 3, 1), track.scale().keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(2, 3, 4), track.scale().keyframes().get(0).incomingValue());
 
     assertEquals(
         new Vec3d(720, 0, 0), track.rotation().keyframes().get(0).incomingValue());
+  }
+
+  @Test
+  void rejectsPartialAnimationVectorsLikeGecko449() throws Exception {
+    Path fixture = Path.of("..", "test-fixtures", "fixture-a-humanoid").normalize();
+    var geometry = new GeckoGeometryParser().parse(fixture.resolve("geometry.geo.json"));
+    assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
+
+    Path animation =
+        animation(
+            """
+            {
+              "animations":{
+                "partial":{
+                  "animation_length":1.0,
+                  "bones":{"body":{"position":[1,2]}}
+                }
+              }
+            }
+            """);
+
+    var result = new GeckoAnimationParser().parse(animation, geometry.value());
+
+    assertFalse(result.success());
   }
 
   @Test
@@ -214,9 +239,13 @@ class GeckoAnimationParserTest {
     assertTrue(
         clip.events().stream()
             .allMatch(event -> event.code().equals(DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE)));
-    assertEquals(3, result.diagnostics().warnings().stream()
-        .filter(diagnostic -> diagnostic.code().value().equals(DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE))
-        .count());
+    assertEquals(
+        3,
+        result.diagnostics().warnings().stream()
+            .filter(
+                diagnostic ->
+                    diagnostic.code().value().equals(DiagnosticCodes.ANIM_EVENT_IGNORED_BY_SCOPE))
+            .count());
   }
 
   private static Path animation(String json) throws Exception {
