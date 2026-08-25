@@ -18,9 +18,7 @@ class RotationContinuityTest {
   void crossingMinus179Chooses181NearPrevious179() {
     RotationContinuity continuity =
         new RotationContinuity(
-            new Vec3d(179, 0, 0),
-            new Vec3i(0, 0, 0),
-            Optional.of(new Vec3d(179, 0, 0)));
+            new Vec3d(179, 0, 0), new Vec3i(0, 0, 0), Optional.of(new Vec3d(179, 0, 0)));
 
     Vec3d resolved = continuity.resolveDegrees(new Vec3d(-179, 0, 0));
 
