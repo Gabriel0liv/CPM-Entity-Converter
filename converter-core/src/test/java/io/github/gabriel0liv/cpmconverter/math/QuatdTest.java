@@ -16,12 +16,9 @@ class QuatdTest {
 
   @Test
   void positiveNinetyDegreeAxesMatchColumnVectorZyxConvention() {
-    assertVecNear(
-        Vec3d.Z, Quatd.fromEulerZYX(Math.PI / 2, 0, 0).rotate(Vec3d.Y), 1e-9);
-    assertVecNear(
-        Vec3d.X, Quatd.fromEulerZYX(0, Math.PI / 2, 0).rotate(Vec3d.Z), 1e-9);
-    assertVecNear(
-        Vec3d.Y, Quatd.fromEulerZYX(0, 0, Math.PI / 2).rotate(Vec3d.X), 1e-9);
+    assertVecNear(Vec3d.Z, Quatd.fromEulerZYX(Math.PI / 2, 0, 0).rotate(Vec3d.Y), 1e-9);
+    assertVecNear(Vec3d.X, Quatd.fromEulerZYX(0, Math.PI / 2, 0).rotate(Vec3d.Z), 1e-9);
+    assertVecNear(Vec3d.Y, Quatd.fromEulerZYX(0, 0, Math.PI / 2).rotate(Vec3d.X), 1e-9);
   }
 
   @Test
@@ -30,15 +27,13 @@ class QuatdTest {
     assertVecNear(Vec3d.X, zyx.rotate(Vec3d.Y), 1e-9);
 
     Quatd reversed =
-        Quatd.fromEulerZYX(Math.PI / 2, 0, 0)
-            .multiply(Quatd.fromEulerZYX(0, Math.PI / 2, 0));
+        Quatd.fromEulerZYX(Math.PI / 2, 0, 0).multiply(Quatd.fromEulerZYX(0, Math.PI / 2, 0));
     assertFalse(near(zyx.rotate(Vec3d.Y), reversed.rotate(Vec3d.Y), 1e-9));
   }
 
   @Test
   void rotationMatrixRoundTripKeepsOrientation() {
-    Quatd source =
-        Quatd.fromEulerZYX(Math.toRadians(33), Math.toRadians(-41), Math.toRadians(79));
+    Quatd source = Quatd.fromEulerZYX(Math.toRadians(33), Math.toRadians(-41), Math.toRadians(79));
     Quatd restored = Quatd.fromRotationMatrix(source.toMatrix());
 
     assertVecNear(source.rotate(Vec3d.X), restored.rotate(Vec3d.X), 1e-9);
@@ -48,8 +43,7 @@ class QuatdTest {
 
   @Test
   void eulerExtractionRoundTripSurvivesGimbalLock() {
-    Quatd source =
-        Quatd.fromEulerZYX(Math.toRadians(20), Math.toRadians(90), Math.toRadians(30));
+    Quatd source = Quatd.fromEulerZYX(Math.toRadians(20), Math.toRadians(90), Math.toRadians(30));
     EulerAnglesZYX extracted = EulerAnglesZYX.fromQuaternion(source);
     Quatd restored = extracted.toQuaternion();
 
