@@ -589,12 +589,27 @@ public final class GeckoAnimationParser {
         throw error(
             DiagnosticCodes.ANIM_ZERO_DURATION_INVALID, "animation_length must be positive");
       }
-      return duration;
+      return boundedDuration(duration, clip);
     }
-    if (derived > 0 && Double.isFinite(derived)) return derived;
+    if (derived > 0 && Double.isFinite(derived)) return boundedDuration(derived, clip);
     throw error(
         DiagnosticCodes.ANIM_IMPLICIT_LENGTH_UNBOUNDED,
         "animation " + clip + " has no finite implicit duration");
+  }
+
+  private double boundedDuration(double duration, String clip) throws AnimationParseException {
+    if (duration > limits.maxAnimationDurationSeconds()) {
+      throw error(
+          DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+          "animation "
+              + clip
+              + " duration "
+              + duration
+              + "s exceeds limit "
+              + limits.maxAnimationDurationSeconds()
+              + "s");
+    }
+    return duration;
   }
 
   private Playback playback(JsonNode node) throws AnimationParseException {
