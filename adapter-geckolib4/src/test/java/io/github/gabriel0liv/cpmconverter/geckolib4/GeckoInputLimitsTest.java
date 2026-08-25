@@ -8,9 +8,15 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import org.junit.jupiter.api.Test;
 
 class GeckoInputLimitsTest {
+  private static final byte[] PNG_2X2 =
+      Base64.getDecoder()
+          .decode(
+              "iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVR4nGP8z8Dwn4GBgYGJAQoAHxcCAk+Uzr4AAAAASUVORK5CYII=");
+
   @Test
   void rejectsGeometryBeforeReadingJsonWhenFileExceedsByteLimit() throws Exception {
     Path input =
@@ -117,6 +123,25 @@ class GeckoInputLimitsTest {
             }}}}}}
             """);
     assertLimitFailure(new GeckoAnimationParser(limits).parse(derived, geometryModel()));
+  }
+
+  @Test
+  void geometryTextureLoadPropagatesConfiguredPngLimits() throws Exception {
+    Path input =
+        geometry(
+            """
+            {"format_version":"1.12.0","minecraft:geometry":[{
+              "description":{"identifier":"demo:texture-limits","texture_width":2,"texture_height":2},
+              "bones":[{"name":"body","pivot":[0,0,0]}]
+            }]}
+            """);
+    Path png = Files.createTempFile("cpm-converter-limit-", ".png");
+    Files.write(png, PNG_2X2);
+    var limits = new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 16, 1_000_000);
+
+    var result = new GeckoGeometryParser(limits).parse(input, null, png);
+
+    assertLimitFailure(result);
   }
 
   @Test
