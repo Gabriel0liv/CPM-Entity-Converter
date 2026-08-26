@@ -62,12 +62,13 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `CPM_PROJECTION_MODEL_SCALE` | ERROR | `modelScale` ficaria abaixo do piso exato do renderer CPM 0.6.27 |
 | `CPM_STORE_ID_RANGE` | ERROR | `storeID` persistido não é positivo ou excede `2^53-1` |
 | `CPM_UV_UNREPRESENTABLE` | ERROR | UV do IR não cabe no schema CPM V1 sem perda |
-| `CPM_ZIP_INVALID` | ERROR | `.cpmproject` não é ZIP legível, tem entry duplicada ou path inseguro |
+| `CPM_ZIP_INVALID` | ERROR | `.cpmproject` não é ZIP legível, tem entry duplicada/case-collision ou path inseguro |
 | `CPM_CONFIG_INVALID` | ERROR | `config.json` ausente, JSON inválido ou estrutura V1 obrigatória ausente/malformada |
 | `CPM_DUPLICATE_STORE_ID` | ERROR | `storeID` persistido aparece mais de uma vez |
 | `CPM_INVALID_ROOT` | ERROR | root vanilla desconhecido ou declaração vanilla não duplicada repetida |
 | `CPM_UV_INVALID` | ERROR | `u/v` ou `faceUV` do projeto CPM V1 não usa inteiros/estrutura representável pelo loader |
-| `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
+| `CPM_DANGLING_ANIMATION_REF` | ERROR | componente de frame refere `storeID` não reservado e inexistente no projeto |
+| `CPM_FRAME_INVALID` | ERROR | animação CPM reconhecida possui header/frame/componente malformado ou política GENERATED incoerente |
 | `CPM_VALIDATION_FAILED` | ERROR | projeto gerado viola invariantes determinísticos do conversor |
 | `FEATURE_EXPLICITLY_IGNORED` | WARNING | regra de ignore aplicada |
 | `QUADRUPED_LIMITATION` | WARNING | fixture/rig não humanoide |
@@ -125,7 +126,7 @@ e transform-space ambíguo durante reparenting/rebake.
 `CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`, `CPM_STORE_ID_RANGE`,
 `CPM_UV_UNREPRESENTABLE`, `CPM_ZIP_INVALID`, `CPM_CONFIG_INVALID`,
 `CPM_DUPLICATE_STORE_ID`, `CPM_INVALID_ROOT`, `CPM_UV_INVALID`,
-`CPM_VALIDATION_FAILED`.
+`CPM_DANGLING_ANIMATION_REF`, `CPM_FRAME_INVALID`, `CPM_VALIDATION_FAILED`.
 
 `CPM_PROJECTION_INVALID_SETTING` rejeita configurações não finitas antes de construir o graph.
 `CPM_PROJECTION_MODEL_SCALE` rejeita `modelScale < 0.01`, pois o renderer CPM 0.6.27
@@ -134,7 +135,9 @@ faz clamp para `0.01`; aceitar esses valores alteraria silenciosamente a escala 
 canônico de output começa em `1000` e mantém `0–6` reservados aos `PlayerModelParts` CPM.
 `CPM_DUPLICATE_STORE_ID` rejeita colisões entre qualquer root persistente e seus descendentes.
 No perfil `GENERATED_V1`, `CPM_VALIDATION_FAILED` também rejeita desvio do preorder canônico
-`1000..N`; `EXISTING_V1` aceita IDs não sequenciais desde que positivos, seguros e únicos.
+`1000..N`, ausência/desordem dos seis roots vanilla emitidos pelo writer, ZIP não-`STORED`,
+timestamp diferente de `1980-01-01T00:00`, ordem de entries não lexical e JSON diferente da
+serialização canônica byte-a-byte. `EXISTING_V1` não impõe essas convenções do conversor.
 `CPM_INVALID_ROOT` valida somente o namespace vanilla para roots comuns. `customPart=true` e
 `dup=true` seguem as rotas próprias do `ElementsLoaderV1` e não são confundidos com uma
 segunda declaração vanilla normal.
@@ -142,10 +145,15 @@ segunda declaração vanilla normal.
 para um `.cpmproject` já serializado: `u/v` e `sx/sy/ex/ey` devem ser inteiros `int`, faces devem
 usar nomes CPM conhecidos e `rot`, quando presente, deve ser `0/90/180/270`.
 `CPM_ZIP_INVALID` cobre o container antes de qualquer parse semântico: assinatura ZIP,
-entries duplicadas e paths absolutos/`..` são recusados.
+entries duplicadas/case-colliding e paths absolutos/`..` são recusados.
 `CPM_CONFIG_INVALID` cobre o contrato estrutural obrigatório observado no ProjectIO V1:
 `config.json` deve ser objeto JSON, conter `version` inteiro e `elements` como array.
 Versões CPM diferentes de 1 usam `INPUT_UNSUPPORTED_VERSION`.
+`CPM_DANGLING_ANIMATION_REF` rejeita refs de frame que não sejam os roots reservados `0..6`
+nem um `storeID` persistido na árvore. `CPM_FRAME_INVALID` cobre o shape de animações que o
+`AnimationsLoaderV1` reconhece: header, `frames`, `components`, refs, cor/visibilidade e vetores
+finitos. No perfil `EXISTING_V1`, `loop` e `interpolator` permanecem independentes como no loader
+CPM 0.6.27; no perfil `GENERATED_V1`, o conversor exige o par coerente e o interpolador canônico.
 
 ## Spike e integração futura
 
