@@ -68,7 +68,8 @@ class CpmProjectAnimationValidatorTest {
 
   @Test
   void rejectsNonPositiveAnimationDuration() throws Exception {
-    String animation = animation(1000, true, "linear_loop").replace("\"duration\":1000", "\"duration\":0");
+    String animation =
+        animation(1000, true, "linear_loop").replace("\"duration\":1000", "\"duration\":0");
 
     Result<CpmValidationReport> result =
         validator.validate(existingArchive(animation), EXISTING_V1);
