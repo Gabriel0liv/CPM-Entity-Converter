@@ -31,8 +31,7 @@ class CpmStaticProjectorTest {
     BoneId bodyId = new BoneId("body");
     BoneId headId = new BoneId("head");
     BoneId jawId = new BoneId("jaw");
-    BoneIR body =
-        bone(bodyId, null, List.of(headId), new Vec3d(0, -24, 0), List.of(), true);
+    BoneIR body = bone(bodyId, null, List.of(headId), new Vec3d(0, -24, 0), List.of(), true);
     BoneIR head = bone(headId, bodyId, List.of(jawId), new Vec3d(0, 8, 0), List.of(), true);
     BoneIR jaw = bone(jawId, headId, List.of(), new Vec3d(0, 2, 0), List.of(), true);
 
@@ -81,8 +80,7 @@ class CpmStaticProjectorTest {
   @Test
   void keepsModelScaleAndVerticalOffsetOnEntityRootOnly() {
     BoneId rootId = new BoneId("root");
-    BoneIR sourceRoot =
-        bone(rootId, null, List.of(), new Vec3d(1, -24, 3), List.of(), true);
+    BoneIR sourceRoot = bone(rootId, null, List.of(), new Vec3d(1, -24, 3), List.of(), true);
     ModelIR model = model(List.of(sourceRoot), List.of(rootId));
 
     var result = new CpmStaticProjector().project(model, settings(2.5, 7));
@@ -136,8 +134,7 @@ class CpmStaticProjectorTest {
             0.5,
             false,
             new BoxUvIR(7, 9));
-    BoneIR body =
-        bone(boneId, null, List.of(), Vec3d.ZERO, List.of(direct, rotated), true);
+    BoneIR body = bone(boneId, null, List.of(), Vec3d.ZERO, List.of(direct, rotated), true);
 
     var result =
         new CpmStaticProjector().project(model(List.of(body), List.of(boneId)), settings(1, 0));
@@ -230,10 +227,8 @@ class CpmStaticProjectorTest {
             0,
             false,
             new BoxUvIR(0, 0));
-    BoneIR parent =
-        bone(parentId, null, List.of(childId), Vec3d.ZERO, List.of(parentCube), false);
-    BoneIR child =
-        bone(childId, parentId, List.of(), Vec3d.ZERO, List.of(childCube), true);
+    BoneIR parent = bone(parentId, null, List.of(childId), Vec3d.ZERO, List.of(parentCube), false);
+    BoneIR child = bone(childId, parentId, List.of(), Vec3d.ZERO, List.of(childCube), true);
 
     var result =
         new CpmStaticProjector()
@@ -257,16 +252,7 @@ class CpmStaticProjectorTest {
   void projectionIsDeterministicAndLogicalTargetIterationFollowsPreorder() {
     BoneId rootId = new BoneId("root");
     CubeIR firstCube =
-        cube(
-            "a",
-            rootId,
-            Vec3d.ZERO,
-            ONE,
-            Vec3d.ZERO,
-            Quatd.IDENTITY,
-            0,
-            false,
-            new BoxUvIR(0, 0));
+        cube("a", rootId, Vec3d.ZERO, ONE, Vec3d.ZERO, Quatd.IDENTITY, 0, false, new BoxUvIR(0, 0));
     CubeIR secondCube =
         cube(
             "b",
@@ -278,8 +264,7 @@ class CpmStaticProjectorTest {
             0,
             false,
             new BoxUvIR(1, 0));
-    BoneIR root =
-        bone(rootId, null, List.of(), Vec3d.ZERO, List.of(firstCube, secondCube), true);
+    BoneIR root = bone(rootId, null, List.of(), Vec3d.ZERO, List.of(firstCube, secondCube), true);
     ModelIR model = model(List.of(root), List.of(rootId));
     CpmProjectionSettings settings = settings(1, 0);
 
