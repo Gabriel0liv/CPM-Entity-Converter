@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.junit.jupiter.api.Test;
@@ -56,8 +55,7 @@ class CpmProjectWriterV1Test {
     assertTrue(config.indexOf("\"skinType\"") < config.indexOf("\"textures\""));
     assertTrue(config.indexOf("\"textures\"") < config.indexOf("\"version\""));
     assertTrue(config.contains("\"skinSize\":{\"x\":64,\"y\":64}"));
-    assertTrue(
-        config.contains("\"textures\":{\"skin\":{\"anim\":[],\"customGridSize\":false}}"));
+    assertTrue(config.contains("\"textures\":{\"skin\":{\"anim\":[],\"customGridSize\":false}}"));
     assertTrue(config.contains("\"storeID\":1000"));
     assertTrue(config.contains("\"storeID\":1001"));
     assertTrue(config.contains("\"mcScale\":0.25"));
@@ -161,7 +159,8 @@ class CpmProjectWriterV1Test {
       ZipEntry entry;
       while ((entry = input.getNextEntry()) != null) {
         entries.put(
-            entry.getName(), new ZipPayload(input.readAllBytes(), entry.getMethod(), entry.getTimeLocal()));
+            entry.getName(),
+            new ZipPayload(input.readAllBytes(), entry.getMethod(), entry.getTimeLocal()));
       }
     }
     return entries;
