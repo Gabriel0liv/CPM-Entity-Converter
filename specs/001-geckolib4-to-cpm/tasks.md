@@ -86,8 +86,8 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
   - [x] T300-C structural nodes zero-size permanecem `show=true/hidden=false`; `modelScale < 0.01` é rejeitado porque CPM 0.6.27 o clamparia silenciosamente.
   - [x] T300-D UV `double`/assinado permanece lossless no graph; quantização/representabilidade CPM V1 fica para T302/T303, sem truncamento em T300.
 - [x] T301 IDs determinísticos (FR-021) — roots vanilla preservam IDs reservados; elementos recebem `storeID` sequencial a partir de 1000 em preorder canônico, independente da ordem de mapas auxiliares, com limite exato `2^53-1`; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32917979133.
-- [~] T302 writer ZIP/JSON/PNG determinístico (FR-020).
-- [ ] T303 validator CPM em camadas (FR-022/028).
+- [x] T302 writer ZIP/JSON/PNG determinístico (FR-020) — `config.json` canônico + newline LF, ZIP `STORED` com ordem/timestamp fixos, `skin.png` byte-identical, `storeID` T301 serializado sem renumeração, box/per-face UV inteiro exato e `CPM_UV_UNREPRESENTABLE` para quantização necessária; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32931517560.
+- [~] T303 validator CPM em camadas (FR-022/028).
 - [ ] T304 conformidade `ProjectIO` e visual estático (AC-001–005).
 
 ## Fase 4
