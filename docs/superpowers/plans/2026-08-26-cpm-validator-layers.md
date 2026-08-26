@@ -18,6 +18,8 @@
 - Generated-output validation must reject duplicate IDs, dangling animation refs, noncanonical generated `storeID` preorder, fractional/invalid UV, malformed frames, nondeterministic entry order/timestamp/method, and noncanonical JSON.
 - IDs must be positive and `<= 2^53-1`; reserved vanilla animation refs `0..6` remain legal.
 - Diagnostics are stable and documented; no recognized invalid feature disappears silently.
+- `validator-cpm` must be included in the root Spotless/check gate.
+- Jackson 2.17.2 must be dependency-locked in `validator-cpm/gradle.lockfile`.
 - `master` remains untouched; implementation stays on `agent/correct-look-retargeting-phase1`.
 
 ---
@@ -25,7 +27,9 @@
 ### Task 1: Container/schema validator and public API
 
 **Files:**
+- Modify: `build.gradle`
 - Modify: `validator-cpm/build.gradle`
+- Modify: `validator-cpm/gradle.lockfile`
 - Create: `validator-cpm/src/main/java/io/github/gabriel0liv/cpmconverter/cpm/validation/CpmValidationProfile.java`
 - Create: `validator-cpm/src/main/java/io/github/gabriel0liv/cpmconverter/cpm/validation/CpmValidationReport.java`
 - Create: `validator-cpm/src/main/java/io/github/gabriel0liv/cpmconverter/cpm/validation/CpmProjectValidator.java`
@@ -49,7 +53,7 @@ assertHasCode(validator.validate(zipOf("config.json", "{\"version\":2,\"elements
 ```
 
 - [ ] **Step 2: Run CI and verify RED is missing validator API/codes, not formatting.**
-- [ ] **Step 3: Implement ZIP parsing, duplicate/path traversal rejection, strict JSON parse, version/elements checks, and report counts.**
+- [ ] **Step 3: Add `validator-cpm` to the root Spotless list, lock Jackson 2.17.2, then implement ZIP parsing, duplicate/path traversal rejection, strict JSON parse, version/elements checks, and report counts.**
 - [ ] **Step 4: Run CI until Task 1 tests are GREEN on Ubuntu/Windows.**
 
 ### Task 2: Graph, storeID and UV layers
