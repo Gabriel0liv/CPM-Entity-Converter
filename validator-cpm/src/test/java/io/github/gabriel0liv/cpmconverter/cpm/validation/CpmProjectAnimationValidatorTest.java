@@ -67,9 +67,39 @@ class CpmProjectAnimationValidatorTest {
   }
 
   @Test
+  void rejectsNonPositiveAnimationDuration() throws Exception {
+    String animation = animation(1000, true, "linear_loop").replace("\"duration\":1000", "\"duration\":0");
+
+    Result<CpmValidationReport> result =
+        validator.validate(existingArchive(animation), EXISTING_V1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.CPM_FRAME_INVALID);
+  }
+
+  @Test
   void existingProfileAllowsLoopInterpolatorCombinationLoadedIndependentlyByCpm() throws Exception {
     Result<CpmValidationReport> result =
         validator.validate(existingArchive(animation(1000, false, "linear_loop")), EXISTING_V1);
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+  }
+
+  @Test
+  void generatedProfileRejectsLoopInterpolatorMismatch() throws Exception {
+    Result<CpmValidationReport> result =
+        validator.validate(
+            generatedAnimationArchive(animation(3, false, "linear_loop")), GENERATED_V1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.CPM_FRAME_INVALID);
+  }
+
+  @Test
+  void generatedProfileAcceptsCanonicalAnimation() throws Exception {
+    Result<CpmValidationReport> result =
+        validator.validate(
+            generatedAnimationArchive(animation(3, true, "linear_loop")), GENERATED_V1);
 
     assertTrue(result.success(), () -> result.diagnostics().all().toString());
   }
@@ -88,9 +118,7 @@ class CpmProjectAnimationValidatorTest {
   @Test
   void generatedProfileRejectsNonCanonicalJsonEvenInStoredArchive() throws Exception {
     LinkedHashMap<String, byte[]> entries = generatedEntries();
-    entries.put(
-        "config.json",
-        "{\"version\":1,\"elements\":[]}".getBytes(StandardCharsets.UTF_8));
+    entries.put("config.json", nonCanonicalGeneratedConfig());
     byte[] archive = zip(entries, true, true);
 
     Result<CpmValidationReport> result = validator.validate(archive, GENERATED_V1);
@@ -103,7 +131,7 @@ class CpmProjectAnimationValidatorTest {
   void generatedProfileRejectsNonLexicalZipEntryOrder() throws Exception {
     LinkedHashMap<String, byte[]> entries = new LinkedHashMap<>();
     entries.put("skin.png", new byte[] {1, 2, 3});
-    entries.put("config.json", canonicalEmptyGeneratedConfig());
+    entries.put("config.json", canonicalGeneratedConfig());
     byte[] archive = zip(entries, true, true);
 
     Result<CpmValidationReport> result = validator.validate(archive, GENERATED_V1);
@@ -127,6 +155,15 @@ class CpmProjectAnimationValidatorTest {
     return zip(entries, false, false);
   }
 
+  private static byte[] generatedAnimationArchive(String animation) throws IOException {
+    LinkedHashMap<String, byte[]> entries = new LinkedHashMap<>();
+    entries.put(
+        "animations/g_gesture.json", (animation + "\n").getBytes(StandardCharsets.UTF_8));
+    entries.put("config.json", canonicalGeneratedConfig());
+    entries.put("skin.png", new byte[] {1, 2, 3});
+    return zip(entries, true, true);
+  }
+
   private static String existingConfig() {
     return "{\"version\":1,\"elements\":[{\"id\":\"body\",\"show\":false,"
         + "\"children\":[{\"name\":\"cube\",\"storeID\":1000,\"u\":0,\"v\":0}]}]}";
@@ -147,13 +184,22 @@ class CpmProjectAnimationValidatorTest {
 
   private static LinkedHashMap<String, byte[]> generatedEntries() {
     LinkedHashMap<String, byte[]> entries = new LinkedHashMap<>();
-    entries.put("config.json", canonicalEmptyGeneratedConfig());
+    entries.put("config.json", canonicalGeneratedConfig());
     entries.put("skin.png", new byte[] {1, 2, 3});
     return entries;
   }
 
-  private static byte[] canonicalEmptyGeneratedConfig() {
-    return "{\"elements\":[],\"version\":1}\n".getBytes(StandardCharsets.UTF_8);
+  private static byte[] canonicalGeneratedConfig() {
+    return ("{\"elements\":[{\"id\":\"head\"},{\"id\":\"body\"},{\"id\":\"left_arm\"},"
+            + "{\"id\":\"right_arm\"},{\"id\":\"left_leg\"},{\"id\":\"right_leg\"}],\"version\":1}\n")
+        .getBytes(StandardCharsets.UTF_8);
+  }
+
+  private static byte[] nonCanonicalGeneratedConfig() {
+    return ("{\"version\":1,\"elements\":[{\"id\":\"head\"},{\"id\":\"body\"},"
+            + "{\"id\":\"left_arm\"},{\"id\":\"right_arm\"},{\"id\":\"left_leg\"},"
+            + "{\"id\":\"right_leg\"}]}")
+        .getBytes(StandardCharsets.UTF_8);
   }
 
   private static byte[] zip(
