@@ -69,6 +69,8 @@ public final class DiagnosticCodes {
   public static final String CPM_DUPLICATE_STORE_ID = "CPM_DUPLICATE_STORE_ID";
   public static final String CPM_INVALID_ROOT = "CPM_INVALID_ROOT";
   public static final String CPM_UV_INVALID = "CPM_UV_INVALID";
+  public static final String CPM_DANGLING_ANIMATION_REF = "CPM_DANGLING_ANIMATION_REF";
+  public static final String CPM_FRAME_INVALID = "CPM_FRAME_INVALID";
   public static final String CPM_VALIDATION_FAILED = "CPM_VALIDATION_FAILED";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }
