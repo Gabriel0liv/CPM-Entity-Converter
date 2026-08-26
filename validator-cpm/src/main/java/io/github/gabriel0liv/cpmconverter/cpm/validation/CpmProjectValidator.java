@@ -9,7 +9,10 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
@@ -19,6 +22,12 @@ import java.util.zip.ZipInputStream;
 public final class CpmProjectValidator {
   private static final ObjectMapper JSON =
       new ObjectMapper().enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+  private static final BigInteger MAX_SAFE_STORE_ID = BigInteger.valueOf(9_007_199_254_740_991L);
+  private static final Set<String> VANILLA_ROOT_IDS =
+      Set.of("head", "body", "left_arm", "right_arm", "left_leg", "right_leg");
+  private static final Set<String> FACE_NAMES =
+      Set.of("up", "down", "north", "south", "east", "west");
+  private static final Set<String> FACE_ROTATIONS = Set.of("0", "90", "180", "270");
 
   public Result<CpmValidationReport> validate(byte[] archive, CpmValidationProfile profile) {
     if (archive == null || !hasZipSignature(archive)) {
@@ -70,6 +79,9 @@ public final class CpmProjectValidator {
       return failure(DiagnosticCodes.CPM_CONFIG_INVALID, "config.json elements must be an array");
     }
 
+    Diagnostic graphDiagnostic = validateGraph(elements, profile);
+    if (graphDiagnostic != null) return Result.failure(graphDiagnostic);
+
     int elementCount = countElements(elements);
     int storeIdCount = countStoreIds(elements);
     int animationCount =
@@ -79,6 +91,168 @@ public final class CpmProjectValidator {
                 .count();
     return Result.success(
         new CpmValidationReport(entries.size(), elementCount, animationCount, storeIdCount));
+  }
+
+  private Diagnostic validateGraph(JsonNode roots, CpmValidationProfile profile) {
+    Set<String> seenVanillaRoots = new HashSet<>();
+    Set<Long> seenStoreIds = new HashSet<>();
+    StoreIdCursor generatedIds = new StoreIdCursor();
+
+    for (JsonNode root : roots) {
+      if (!root.isObject()) {
+        return error(DiagnosticCodes.CPM_CONFIG_INVALID, "each CPM root must be an object");
+      }
+
+      boolean customPart = root.path("customPart").asBoolean(false);
+      boolean duplicated = root.path("dup").asBoolean(false);
+      JsonNode idNode = root.get("id");
+      if (idNode == null || !idNode.isTextual() || idNode.textValue().isBlank()) {
+        return error(DiagnosticCodes.CPM_INVALID_ROOT, "CPM root id must be a non-empty string");
+      }
+      String id = idNode.textValue().toLowerCase(Locale.ROOT);
+      if (!customPart && !duplicated) {
+        if (!VANILLA_ROOT_IDS.contains(id)) {
+          return error(DiagnosticCodes.CPM_INVALID_ROOT, "unknown vanilla CPM root: " + id);
+        }
+        if (!seenVanillaRoots.add(id)) {
+          return error(DiagnosticCodes.CPM_INVALID_ROOT, "duplicate vanilla CPM root: " + id);
+        }
+      }
+
+      if (root.has("storeID")) {
+        Diagnostic storeIdDiagnostic =
+            validateStoreId(root.get("storeID"), seenStoreIds, null, "root " + id);
+        if (storeIdDiagnostic != null) return storeIdDiagnostic;
+        if (profile == CpmValidationProfile.GENERATED_V1) {
+          return error(
+              DiagnosticCodes.CPM_VALIDATION_FAILED,
+              "converter-generated vanilla roots must not persist storeID fields");
+        }
+      }
+
+      JsonNode children = root.get("children");
+      if (children != null) {
+        if (!children.isArray()) {
+          return error(DiagnosticCodes.CPM_CONFIG_INVALID, "root children must be an array");
+        }
+        Diagnostic childDiagnostic =
+            validateChildren(children, profile, seenStoreIds, generatedIds);
+        if (childDiagnostic != null) return childDiagnostic;
+      }
+    }
+    return null;
+  }
+
+  private Diagnostic validateChildren(
+      JsonNode children,
+      CpmValidationProfile profile,
+      Set<Long> seenStoreIds,
+      StoreIdCursor generatedIds) {
+    for (JsonNode child : children) {
+      if (!child.isObject()) {
+        return error(DiagnosticCodes.CPM_CONFIG_INVALID, "each CPM child must be an object");
+      }
+      JsonNode storeId = child.get("storeID");
+      if (storeId == null) {
+        return error(DiagnosticCodes.CPM_CONFIG_INVALID, "CPM child storeID is required");
+      }
+      Long expected =
+          profile == CpmValidationProfile.GENERATED_V1 ? generatedIds.take() : null;
+      Diagnostic storeIdDiagnostic =
+          validateStoreId(storeId, seenStoreIds, expected, "child element");
+      if (storeIdDiagnostic != null) return storeIdDiagnostic;
+
+      Diagnostic uvDiagnostic = validateUv(child);
+      if (uvDiagnostic != null) return uvDiagnostic;
+
+      JsonNode nested = child.get("children");
+      if (nested != null) {
+        if (!nested.isArray()) {
+          return error(DiagnosticCodes.CPM_CONFIG_INVALID, "child children must be an array");
+        }
+        Diagnostic nestedDiagnostic =
+            validateChildren(nested, profile, seenStoreIds, generatedIds);
+        if (nestedDiagnostic != null) return nestedDiagnostic;
+      }
+    }
+    return null;
+  }
+
+  private Diagnostic validateStoreId(
+      JsonNode node, Set<Long> seenStoreIds, Long expected, String context) {
+    if (!node.isIntegralNumber()) {
+      return error(DiagnosticCodes.CPM_STORE_ID_RANGE, context + " storeID must be an integer");
+    }
+    BigInteger value = node.bigIntegerValue();
+    if (value.signum() <= 0 || value.compareTo(MAX_SAFE_STORE_ID) > 0) {
+      return error(
+          DiagnosticCodes.CPM_STORE_ID_RANGE,
+          context + " storeID must be positive and <= 2^53-1");
+    }
+    long storeId = value.longValueExact();
+    if (!seenStoreIds.add(storeId)) {
+      return error(DiagnosticCodes.CPM_DUPLICATE_STORE_ID, "duplicate CPM storeID " + storeId);
+    }
+    if (expected != null && storeId != expected.longValue()) {
+      return error(
+          DiagnosticCodes.CPM_VALIDATION_FAILED,
+          "generated CPM storeID preorder expected " + expected + " but found " + storeId);
+    }
+    return null;
+  }
+
+  private Diagnostic validateUv(JsonNode child) {
+    Diagnostic uDiagnostic = validateOptionalUvInt(child.get("u"), "u");
+    if (uDiagnostic != null) return uDiagnostic;
+    Diagnostic vDiagnostic = validateOptionalUvInt(child.get("v"), "v");
+    if (vDiagnostic != null) return vDiagnostic;
+
+    JsonNode faceUv = child.get("faceUV");
+    if (faceUv == null) return null;
+    if (!faceUv.isObject()) {
+      return error(DiagnosticCodes.CPM_UV_INVALID, "faceUV must be an object");
+    }
+    var fields = faceUv.fields();
+    while (fields.hasNext()) {
+      var entry = fields.next();
+      if (!FACE_NAMES.contains(entry.getKey())) {
+        return error(DiagnosticCodes.CPM_UV_INVALID, "unknown CPM faceUV face " + entry.getKey());
+      }
+      JsonNode face = entry.getValue();
+      if (!face.isObject()) {
+        return error(DiagnosticCodes.CPM_UV_INVALID, "faceUV face must be an object");
+      }
+      for (String coordinate : new String[] {"sx", "sy", "ex", "ey"}) {
+        JsonNode coordinateNode = face.get(coordinate);
+        if (coordinateNode == null) {
+          return error(
+              DiagnosticCodes.CPM_UV_INVALID,
+              "faceUV " + entry.getKey() + " requires " + coordinate);
+        }
+        Diagnostic coordinateDiagnostic =
+            validateUvInt(coordinateNode, entry.getKey() + "." + coordinate);
+        if (coordinateDiagnostic != null) return coordinateDiagnostic;
+      }
+      JsonNode rotation = face.get("rot");
+      if (rotation != null
+          && (!rotation.isTextual() || !FACE_ROTATIONS.contains(rotation.textValue()))) {
+        return error(DiagnosticCodes.CPM_UV_INVALID, "invalid faceUV rotation");
+      }
+    }
+    return null;
+  }
+
+  private Diagnostic validateOptionalUvInt(JsonNode node, String field) {
+    if (node == null) return null;
+    return validateUvInt(node, field);
+  }
+
+  private Diagnostic validateUvInt(JsonNode node, String field) {
+    if (!node.isIntegralNumber() || !node.canConvertToInt()) {
+      return error(
+          DiagnosticCodes.CPM_UV_INVALID, field + " must be exactly representable as CPM V1 int");
+    }
+    return null;
   }
 
   private LinkedHashMap<String, byte[]> readEntries(byte[] archive) throws IOException {
@@ -147,7 +321,19 @@ public final class CpmProjectValidator {
         || (third == 7 && fourth == 8);
   }
 
+  private Diagnostic error(String code, String message) {
+    return Diagnostic.of(Severity.ERROR, code, message);
+  }
+
   private <T> Result<T> failure(String code, String message) {
-    return Result.failure(Diagnostic.of(Severity.ERROR, code, message));
+    return Result.failure(error(code, message));
+  }
+
+  private static final class StoreIdCursor {
+    private long next = 1000;
+
+    private long take() {
+      return next++;
+    }
   }
 }
