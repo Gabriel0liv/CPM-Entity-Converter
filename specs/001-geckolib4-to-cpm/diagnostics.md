@@ -60,6 +60,7 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `MAP_LOOK_OVERROTATION` | WARNING/ERROR | influences excedem política |
 | `CPM_PROJECTION_INVALID_SETTING` | ERROR | configuração de projeção não é finita/representável |
 | `CPM_PROJECTION_MODEL_SCALE` | ERROR | `modelScale` ficaria abaixo do piso exato do renderer CPM 0.6.27 |
+| `CPM_STORE_ID_RANGE` | ERROR | `storeID` gerado excederia `2^53-1`, limite inteiro exato exigido pelo contrato JSON/JS |
 | `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
@@ -117,11 +118,14 @@ e transform-space ambíguo durante reparenting/rebake.
 
 ## Projeção CPM estática
 
-`CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`.
+`CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`, `CPM_STORE_ID_RANGE`.
 
 `CPM_PROJECTION_INVALID_SETTING` rejeita configurações não finitas antes de construir o graph.
 `CPM_PROJECTION_MODEL_SCALE` rejeita `modelScale < 0.01`, pois o renderer CPM 0.6.27
 faz clamp para `0.01`; aceitar esses valores alteraria silenciosamente a escala solicitada.
+`CPM_STORE_ID_RANGE` rejeita uma alocação que sairia do intervalo positivo reservado aos
+elementos gerados ou ultrapassaria `2^53-1`; o allocator canônico começa em `1000` e
+mantém `0–6` reservados aos `PlayerModelParts` CPM.
 
 ## Spike e integração futura
 
