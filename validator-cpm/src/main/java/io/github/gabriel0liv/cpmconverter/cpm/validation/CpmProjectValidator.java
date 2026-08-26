@@ -463,8 +463,7 @@ public final class CpmProjectValidator {
     JsonNode loop = animation.get("loop");
     if (loop != null && !loop.isBoolean()) {
       return error(
-          DiagnosticCodes.CPM_FRAME_INVALID,
-          "animation " + entryName + " loop must be boolean");
+          DiagnosticCodes.CPM_FRAME_INVALID, "animation " + entryName + " loop must be boolean");
     }
 
     JsonNode interpolator = animation.get("interpolator");
@@ -507,7 +506,8 @@ public final class CpmProjectValidator {
 
     JsonNode storeIdNode = component.get("storeID");
     if (storeIdNode == null || !storeIdNode.isIntegralNumber()) {
-      return error(DiagnosticCodes.CPM_FRAME_INVALID, "animation component storeID must be an integer");
+      return error(
+          DiagnosticCodes.CPM_FRAME_INVALID, "animation component storeID must be an integer");
     }
     BigInteger storeIdValue = storeIdNode.bigIntegerValue();
     if (storeIdValue.signum() < 0 || storeIdValue.compareTo(MAX_SAFE_STORE_ID) > 0) {
@@ -555,8 +555,7 @@ public final class CpmProjectValidator {
       JsonNode value = vector.get(axis);
       if (value == null || !value.isNumber() || !Double.isFinite(value.doubleValue())) {
         return error(
-            DiagnosticCodes.CPM_FRAME_INVALID,
-            field + "." + axis + " must be a finite number");
+            DiagnosticCodes.CPM_FRAME_INVALID, field + "." + axis + " must be a finite number");
       }
     }
     return null;

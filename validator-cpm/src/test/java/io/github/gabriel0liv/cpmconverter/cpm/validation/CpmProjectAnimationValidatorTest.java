@@ -55,9 +55,9 @@ class CpmProjectAnimationValidatorTest {
   @Test
   void rejectsMalformedFrameComponentTransform() throws Exception {
     String animation =
-        animation(1000, true, "linear_loop").replace(
-            "\"pos\":{\"x\":0,\"y\":0,\"z\":0}",
-            "\"pos\":{\"x\":\"bad\",\"y\":0,\"z\":0}");
+        animation(1000, true, "linear_loop")
+            .replace(
+                "\"pos\":{\"x\":0,\"y\":0,\"z\":0}", "\"pos\":{\"x\":\"bad\",\"y\":0,\"z\":0}");
 
     Result<CpmValidationReport> result =
         validator.validate(existingArchive(animation), EXISTING_V1);
@@ -179,8 +179,7 @@ class CpmProjectAnimationValidatorTest {
 
   private static byte[] generatedAnimationArchive(String animation) throws IOException {
     LinkedHashMap<String, byte[]> entries = new LinkedHashMap<>();
-    entries.put(
-        "animations/g_gesture.json", (animation + "\n").getBytes(StandardCharsets.UTF_8));
+    entries.put("animations/g_gesture.json", (animation + "\n").getBytes(StandardCharsets.UTF_8));
     entries.put("config.json", canonicalGeneratedConfig());
     entries.put("skin.png", new byte[] {1, 2, 3});
     return zip(entries, true, true);
