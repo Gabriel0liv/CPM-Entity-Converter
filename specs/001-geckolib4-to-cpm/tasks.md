@@ -80,12 +80,12 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 
 ## Fase 3
 
-- [~] T300 projection roots/elements/helper nodes (FR-011/012) — TDD em implementação após RED real no run 32915987568; arquitetura A single-anchor preserva a hierarchy Gecko sob BODY/entity_root.
-  - [~] T300-A single-anchor cria `BODY -> entity_root -> Gecko roots` e isola anchor/modelScale/verticalOffset.
-  - [ ] T300-B qualquer rebake usa `inverse(parentWorld) × targetWorld` e só serializa TRS representável; o caminho single-anchor padrão não requer rebake.
-  - [~] T300-C structural nodes zero-size permanecem `show=true/hidden=false`; `modelScale < 0.01` é rejeitado porque CPM 0.6.27 o clamp aria silenciosamente.
-  - [~] T300-D UV `double`/assinado permanece lossless no graph; quantização/representabilidade CPM V1 é gate de T302/T303, sem truncamento em T300.
-- [ ] T301 IDs determinísticos (FR-021).
+- [x] T300 projection roots/elements/helper nodes (FR-011/012) — graph CPM V1 estático, single-anchor e helpers concluídos por TDD; gate final Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32916638853.
+  - [x] T300-A single-anchor cria `BODY -> entity_root -> Gecko roots` e isola anchor/modelScale/verticalOffset.
+  - [x] T300-B caminho single-anchor padrão preserva parentage e não requer rebake; a regra normativa `inverse(parentWorld) × targetWorld` e rejeição non-TRS permanece coberta pela matemática T102 para qualquer reparenting futuro.
+  - [x] T300-C structural nodes zero-size permanecem `show=true/hidden=false`; `modelScale < 0.01` é rejeitado porque CPM 0.6.27 o clamparia silenciosamente.
+  - [x] T300-D UV `double`/assinado permanece lossless no graph; quantização/representabilidade CPM V1 fica para T302/T303, sem truncamento em T300.
+- [~] T301 IDs determinísticos (FR-021).
 - [ ] T302 writer ZIP/JSON/PNG determinístico (FR-020).
 - [ ] T303 validator CPM em camadas (FR-022/028).
 - [ ] T304 conformidade `ProjectIO` e visual estático (AC-001–005).
