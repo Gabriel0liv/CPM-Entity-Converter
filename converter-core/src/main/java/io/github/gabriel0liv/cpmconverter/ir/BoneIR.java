@@ -10,12 +10,25 @@ public record BoneIR(
     List<BoneId> children,
     Transform bind,
     List<CubeIR> cubes,
+    boolean renderOwnCubes,
     String provenance) {
   public BoneIR {
     if (id == null || name == null || bind == null) throw new IllegalArgumentException("bone");
     children = List.copyOf(children == null ? List.of() : children);
     cubes = List.copyOf(cubes == null ? List.of() : cubes);
     if (provenance == null) throw new IllegalArgumentException("provenance");
+  }
+
+  /** Backward-compatible constructor for bones whose own cubes render normally. */
+  public BoneIR(
+      BoneId id,
+      String name,
+      BoneId parent,
+      List<BoneId> children,
+      Transform bind,
+      List<CubeIR> cubes,
+      String provenance) {
+    this(id, name, parent, children, bind, cubes, true, provenance);
   }
 
   public BoneIR(
@@ -25,6 +38,6 @@ public record BoneIR(
       List<BoneId> children,
       Transform bind,
       List<CubeIR> cubes) {
-    this(id, name, parent, children, bind, cubes, "");
+    this(id, name, parent, children, bind, cubes, true, "");
   }
 }
