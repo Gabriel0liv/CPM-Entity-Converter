@@ -6,7 +6,6 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIrValidator;
-import io.github.gabriel0liv.cpmconverter.math.Vec3d;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,8 +20,7 @@ public final class CpmStaticProjector {
         || !Double.isFinite(settings.modelScale())
         || !Double.isFinite(settings.verticalOffset())) {
       return failure(
-          DiagnosticCodes.CPM_PROJECTION_INVALID_SETTING,
-          "CPM projection settings must be finite");
+          DiagnosticCodes.CPM_PROJECTION_INVALID_SETTING, "CPM projection settings must be finite");
     }
     if (settings.modelScale() < CPM_MIN_SCALE) {
       return failure(
@@ -43,13 +41,14 @@ public final class CpmStaticProjector {
       return Result.success(new CpmStaticProjectV1(roots, model.textures(), logicalTargets));
     } catch (IllegalArgumentException | IllegalStateException exception) {
       String message =
-          exception.getMessage() == null ? "invalid static projection value" : exception.getMessage();
+          exception.getMessage() == null
+              ? "invalid static projection value"
+              : exception.getMessage();
       return failure(DiagnosticCodes.IR_INVALID_VALUE, message);
     }
   }
 
-  private List<CpmRootV1> vanillaRoots(
-      CpmElementV1 entityRoot, CpmProjectionSettings settings) {
+  private List<CpmRootV1> vanillaRoots(CpmElementV1 entityRoot, CpmProjectionSettings settings) {
     List<CpmRootV1> roots = new ArrayList<>();
     for (CpmVanillaPart part : CpmVanillaPart.values()) {
       roots.add(
