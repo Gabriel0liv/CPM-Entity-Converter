@@ -60,14 +60,15 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `MAP_LOOK_OVERROTATION` | WARNING/ERROR | influences excedem política |
 | `CPM_PROJECTION_INVALID_SETTING` | ERROR | configuração de projeção não é finita/representável |
 | `CPM_PROJECTION_MODEL_SCALE` | ERROR | `modelScale` ficaria abaixo do piso exato do renderer CPM 0.6.27 |
-| `CPM_STORE_ID_RANGE` | ERROR | `storeID` gerado excederia `2^53-1`, limite inteiro exato exigido pelo contrato JSON/JS |
-| `CPM_UV_UNREPRESENTABLE` | ERROR | UV box/per-face não é inteiro exato ou extrapola `int`, portanto não cabe no schema CPM V1 sem perda |
+| `CPM_STORE_ID_RANGE` | ERROR | `storeID` persistido não é positivo ou excede `2^53-1` |
+| `CPM_UV_UNREPRESENTABLE` | ERROR | UV do IR não cabe no schema CPM V1 sem perda |
 | `CPM_ZIP_INVALID` | ERROR | `.cpmproject` não é ZIP legível, tem entry duplicada ou path inseguro |
 | `CPM_CONFIG_INVALID` | ERROR | `config.json` ausente, JSON inválido ou estrutura V1 obrigatória ausente/malformada |
-| `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
+| `CPM_DUPLICATE_STORE_ID` | ERROR | `storeID` persistido aparece mais de uma vez |
+| `CPM_INVALID_ROOT` | ERROR | root vanilla desconhecido ou declaração vanilla não duplicada repetida |
+| `CPM_UV_INVALID` | ERROR | `u/v` ou `faceUV` do projeto CPM V1 não usa inteiros/estrutura representável pelo loader |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
-| `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
-| `CPM_VALIDATION_FAILED` | ERROR | falha agregada no output |
+| `CPM_VALIDATION_FAILED` | ERROR | projeto gerado viola invariantes determinísticos do conversor |
 | `FEATURE_EXPLICITLY_IGNORED` | WARNING | regra de ignore aplicada |
 | `QUADRUPED_LIMITATION` | WARNING | fixture/rig não humanoide |
 | `IO_OUTPUT_EXISTS` | ERROR | faltou overwrite |
@@ -122,17 +123,24 @@ e transform-space ambíguo durante reparenting/rebake.
 ## Projeção, writer e validator CPM V1
 
 `CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`, `CPM_STORE_ID_RANGE`,
-`CPM_UV_UNREPRESENTABLE`, `CPM_ZIP_INVALID`, `CPM_CONFIG_INVALID`.
+`CPM_UV_UNREPRESENTABLE`, `CPM_ZIP_INVALID`, `CPM_CONFIG_INVALID`,
+`CPM_DUPLICATE_STORE_ID`, `CPM_INVALID_ROOT`, `CPM_UV_INVALID`,
+`CPM_VALIDATION_FAILED`.
 
 `CPM_PROJECTION_INVALID_SETTING` rejeita configurações não finitas antes de construir o graph.
 `CPM_PROJECTION_MODEL_SCALE` rejeita `modelScale < 0.01`, pois o renderer CPM 0.6.27
 faz clamp para `0.01`; aceitar esses valores alteraria silenciosamente a escala solicitada.
-`CPM_STORE_ID_RANGE` rejeita uma alocação que sairia do intervalo positivo reservado aos
-elementos gerados ou ultrapassaria `2^53-1`; o allocator canônico começa em `1000` e
-mantém `0–6` reservados aos `PlayerModelParts` CPM.
-`CPM_UV_UNREPRESENTABLE` rejeita UV fracionário ou fora do intervalo `int` no boundary do
-writer. O CPM V1 representa box UV como `u/v` inteiros e per-face UV como
-`sx/sy/ex/ey` inteiros; truncar os `double` preservados no IR seria perda silenciosa.
+`CPM_STORE_ID_RANGE` rejeita IDs persistidos não positivos ou acima de `2^53-1`; o allocator
+canônico de output começa em `1000` e mantém `0–6` reservados aos `PlayerModelParts` CPM.
+`CPM_DUPLICATE_STORE_ID` rejeita colisões entre qualquer root persistente e seus descendentes.
+No perfil `GENERATED_V1`, `CPM_VALIDATION_FAILED` também rejeita desvio do preorder canônico
+`1000..N`; `EXISTING_V1` aceita IDs não sequenciais desde que positivos, seguros e únicos.
+`CPM_INVALID_ROOT` valida somente o namespace vanilla para roots comuns. `customPart=true` e
+`dup=true` seguem as rotas próprias do `ElementsLoaderV1` e não são confundidos com uma
+segunda declaração vanilla normal.
+`CPM_UV_UNREPRESENTABLE` é o erro no boundary IR→writer. `CPM_UV_INVALID` é o correspondente
+para um `.cpmproject` já serializado: `u/v` e `sx/sy/ex/ey` devem ser inteiros `int`, faces devem
+usar nomes CPM conhecidos e `rot`, quando presente, deve ser `0/90/180/270`.
 `CPM_ZIP_INVALID` cobre o container antes de qualquer parse semântico: assinatura ZIP,
 entries duplicadas e paths absolutos/`..` são recusados.
 `CPM_CONFIG_INVALID` cobre o contrato estrutural obrigatório observado no ProjectIO V1:
