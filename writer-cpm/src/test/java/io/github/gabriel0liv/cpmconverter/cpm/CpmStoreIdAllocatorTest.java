@@ -24,7 +24,8 @@ class CpmStoreIdAllocatorTest {
     CpmElementV1 first = structural(firstKey, "first", List.of(nested));
     CpmElementV1 second = structural(secondKey, "second", List.of());
     CpmElementV1 entityRoot = structural(entityKey, "entity_root", List.of(first, second));
-    CpmStaticProjectV1 project = project(entityRoot, reverseTargets(entityRoot, first, nested, second));
+    CpmStaticProjectV1 project =
+        project(entityRoot, reverseTargets(entityRoot, first, nested, second));
 
     var result = new CpmStoreIdAllocator().allocate(project);
 
@@ -38,7 +39,9 @@ class CpmStoreIdAllocatorTest {
     assertEquals(1002L, ids.elementId(nestedKey));
     assertEquals(1003L, ids.elementId(secondKey));
     assertEquals(List.of(1000L, 1001L, 1002L, 1003L), ids.elementIds().values().stream().toList());
-    assertTrue(ids.elementIds().values().stream().allMatch(id -> id > 6 && id <= CpmStoreIdAllocator.MAX_SAFE_ID));
+    assertTrue(
+        ids.elementIds().values().stream()
+            .allMatch(id -> id > 6 && id <= CpmStoreIdAllocator.MAX_SAFE_ID));
   }
 
   @Test
@@ -72,14 +75,17 @@ class CpmStoreIdAllocatorTest {
     ProjectionKey childKey = new ProjectionKey("BONE:child");
     CpmElementV1 child = structural(childKey, "child", List.of());
     CpmElementV1 entityRoot = structural(entityKey, "entity_root", List.of(child));
-    CpmStaticProjectV1 project = project(entityRoot, Map.of(entityKey, entityRoot, childKey, child));
+    CpmStaticProjectV1 project =
+        project(entityRoot, Map.of(entityKey, entityRoot, childKey, child));
 
     var result = new CpmStoreIdAllocator(CpmStoreIdAllocator.MAX_SAFE_ID).allocate(project);
 
     assertFalse(result.success());
     assertTrue(
         result.diagnostics().errors().stream()
-            .anyMatch(diagnostic -> diagnostic.code().value().equals(DiagnosticCodes.CPM_STORE_ID_RANGE)));
+            .anyMatch(
+                diagnostic ->
+                    diagnostic.code().value().equals(DiagnosticCodes.CPM_STORE_ID_RANGE)));
   }
 
   private static CpmStaticProjectV1 project(
@@ -101,10 +107,7 @@ class CpmStoreIdAllocatorTest {
   }
 
   private static LinkedHashMap<ProjectionKey, CpmElementV1> reverseTargets(
-      CpmElementV1 entityRoot,
-      CpmElementV1 first,
-      CpmElementV1 nested,
-      CpmElementV1 second) {
+      CpmElementV1 entityRoot, CpmElementV1 first, CpmElementV1 nested, CpmElementV1 second) {
     LinkedHashMap<ProjectionKey, CpmElementV1> targets = new LinkedHashMap<>();
     targets.put(second.key(), second);
     targets.put(nested.key(), nested);
