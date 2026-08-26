@@ -72,19 +72,19 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T202 parser animation/playback/keyframes (FR-003/014/016) — clips/IDs, position/rotation/scale, playback, pre/post 4.4.9, `lerp_mode`, events fora de escopo e diagnostics normativos; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32870492103.
 - [x] T203 easing/Molang constante e diagnostics (FR-015/025) — built-ins 4.4.9 e `easingArgs` preservados, evaluator reproduz quirks upstream, Molang constante avaliada offline, dinâmica/custom recusadas com diagnostics estáveis; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32874562461. Reamostragem FPS permanece T400 e aplicação/report das regras de ignore permanece T403.
 - [x] T204 testes oracle Gecko e limits (NFR-005/012) — adapter de produção ligado às fixtures S004 e limits configuráveis para bytes/depth JSON, bones/cubes/keyframes, duração de animação e PNG bytes/pixels; `INPUT_LIMIT_EXCEEDED` é emitido de forma estável e a policy é propagada geometry→texture; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32908342145.
-- [~] T205 hardening de features reconhecidas da geometry Gecko 4.4.9 (NFR-007) — revisão pré-T300 encontrou metadata raw de bone/model ainda não representada nem recusada explicitamente.
-  - [ ] T205-A auditar `bind_pose_rotation`, `debug`, `locators`, bone `mirror`, `neverRender`, `render_group_id`, `reset`, `texture_meshes` e ModelProperties reconhecidas no commit Gecko fixado.
-  - [ ] T205-B para cada feature, provar por fonte/oracle se afeta geometry/pose/runtime; representar apenas quando houver semântica CPM demonstrável, caso contrário emitir diagnostic estável de unsupported/ignored explícito.
-  - [ ] T205-C garantir em teste que nenhum campo reconhecido pelo raw parser Gecko do subset desaparece silenciosamente; `neverRender` não pode ser mapeado ingenuamente para CPM `hidden` por diferença de recursão.
-  - [ ] T205-D revalidar fixtures/oracle e CI Ubuntu/Windows antes de liberar T300.
+- [x] T205 hardening de features reconhecidas da geometry Gecko 4.4.9 (NFR-007) — `neverRender` preservado como visibilidade apenas dos cubes próprios; metadata reconhecida deixa ocorrência explícita; `texture_meshes`/mesh fora do subset é recusado; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32915193062.
+  - [x] T205-A auditar `bind_pose_rotation`, `debug`, `locators`, bone `mirror`, `neverRender`, `render_group_id`, `reset`, `texture_meshes` e ModelProperties reconhecidas no commit Gecko fixado.
+  - [x] T205-B para cada feature, provar por fonte/oracle se afeta geometry/pose/runtime; representar apenas quando houver semântica CPM demonstrável, caso contrário registrar explicitamente ou recusar.
+  - [x] T205-C garantir em teste que nenhum campo reconhecido pelo raw parser Gecko do subset desaparece silenciosamente; `neverRender` não é mapeado para CPM `hidden` no parent.
+  - [x] T205-D revalidar fixtures/oracle e CI Ubuntu/Windows antes de liberar T300.
 
 ## Fase 3
 
-- [!] T300 projection roots/elements/helper nodes (FR-011/012) — arquitetura A single-anchor aprovada e revisada contra CPM/Gecko fixados; implementação aguarda T205 para não consumir `ModelIR` produzido com metadata reconhecida silenciosamente descartada.
-  - [ ] T300-A single-anchor cria `BODY -> entity_root -> Gecko roots` e isola anchor/modelScale/verticalOffset.
-  - [ ] T300-B qualquer rebake usa `inverse(parentWorld) × targetWorld` e só serializa TRS representável.
-  - [ ] T300-C structural nodes zero-size permanecem `show=true/hidden=false`; `modelScale < 0.01` é rejeitado porque CPM 0.6.27 o clamp aria silenciosamente.
-  - [ ] T300-D UV `double`/assinado permanece lossless no graph; quantização/representabilidade CPM V1 é gate de T302/T303, sem truncamento em T300.
+- [~] T300 projection roots/elements/helper nodes (FR-011/012) — TDD em implementação após RED real no run 32915987568; arquitetura A single-anchor preserva a hierarchy Gecko sob BODY/entity_root.
+  - [~] T300-A single-anchor cria `BODY -> entity_root -> Gecko roots` e isola anchor/modelScale/verticalOffset.
+  - [ ] T300-B qualquer rebake usa `inverse(parentWorld) × targetWorld` e só serializa TRS representável; o caminho single-anchor padrão não requer rebake.
+  - [~] T300-C structural nodes zero-size permanecem `show=true/hidden=false`; `modelScale < 0.01` é rejeitado porque CPM 0.6.27 o clamp aria silenciosamente.
+  - [~] T300-D UV `double`/assinado permanece lossless no graph; quantização/representabilidade CPM V1 é gate de T302/T303, sem truncamento em T300.
 - [ ] T301 IDs determinísticos (FR-021).
 - [ ] T302 writer ZIP/JSON/PNG determinístico (FR-020).
 - [ ] T303 validator CPM em camadas (FR-022/028).
