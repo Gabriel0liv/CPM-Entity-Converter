@@ -12,6 +12,7 @@ import io.github.gabriel0liv.cpmconverter.ir.BoxUvIR;
 import io.github.gabriel0liv.cpmconverter.ir.CubeIR;
 import io.github.gabriel0liv.cpmconverter.ir.CubeId;
 import io.github.gabriel0liv.cpmconverter.ir.FaceUvIR;
+import io.github.gabriel0liv.cpmconverter.ir.FeatureOccurrence;
 import io.github.gabriel0liv.cpmconverter.ir.GeometryId;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIR;
 import io.github.gabriel0liv.cpmconverter.ir.ModelIrValidator;
@@ -39,6 +40,25 @@ public final class GeckoGeometryParser {
   private static final Vec3d ONE = new Vec3d(1, 1, 1);
   private static final Set<String> FACE_NAMES =
       Set.of("west", "east", "north", "south", "up", "down");
+  private static final List<String> MODEL_METADATA_FIELDS =
+      List.of(
+          "animationArmsDown",
+          "animationArmsOutFront",
+          "animationDontShowArmor",
+          "animationInvertedCrouch",
+          "animationNoHeadBob",
+          "animationSingleArmAnimation",
+          "animationSingleLegAnimation",
+          "animationStationaryLegs",
+          "animationStatueOfLibertyArms",
+          "animationUpsideDown",
+          "preserve_model_pose",
+          "visible_bounds_height",
+          "visible_bounds_offset",
+          "visible_bounds_width");
+  private static final List<String> BONE_METADATA_FIELDS =
+      List.of(
+          "bind_pose_rotation", "debug", "locators", "mirror", "render_group_id", "reset");
 
   private final GeckoInputLimits limits;
   private final GeckoJsonReader json;
@@ -92,7 +112,9 @@ public final class GeckoGeometryParser {
                 + limits.maxBones());
       }
 
-      List<RawBone> rawBones = readBones(bonesNode);
+      List<FeatureOccurrence> sourceFeatures = new ArrayList<>();
+      collectModelMetadata(path, geometry, sourceFeatures);
+      List<RawBone> rawBones = readBones(path, bonesNode, sourceFeatures);
       Map<String, RawBone> bonesByName = indexBones(rawBones);
       validateParents(rawBones, bonesByName);
       validateAcyclic(rawBones, bonesByName);
@@ -124,6 +146,7 @@ public final class GeckoGeometryParser {
                 children.get(bone.name()),
                 bind,
                 cubes,
+                !bone.neverRender(),
                 provenance(path, bone.pointer())));
       }
 
@@ -135,7 +158,7 @@ public final class GeckoGeometryParser {
               roots,
               List.of(),
               List.of(),
-              List.of());
+              sourceFeatures);
       DiagnosticBag irDiagnostics = new ModelIrValidator().validate(model);
       if (irDiagnostics.hasErrors()) return Result.failure(irDiagnostics);
       return Result.success(model, irDiagnostics);
@@ -253,7 +276,23 @@ public final class GeckoGeometryParser {
     return node.intValue();
   }
 
-  private List<RawBone> readBones(JsonNode bonesNode) throws GeometryParseException {
+  private void collectModelMetadata(
+      Path path, JsonNode geometry, List<FeatureOccurrence> sourceFeatures) {
+    JsonNode description = geometry == null ? null : geometry.get("description");
+    if (description == null || !description.isObject()) return;
+    for (String field : MODEL_METADATA_FIELDS) {
+      JsonNode value = description.get(field);
+      if (value != null && !value.isNull()) {
+        sourceFeatures.add(
+            new FeatureOccurrence(
+                "gecko.model." + field, provenance(path, "/description/" + field)));
+      }
+    }
+  }
+
+  private List<RawBone> readBones(
+      Path path, JsonNode bonesNode, List<FeatureOccurrence> sourceFeatures)
+      throws GeometryParseException {
     List<RawBone> bones = new ArrayList<>();
     int totalCubes = 0;
     for (int index = 0; index < bonesNode.size(); index++) {
@@ -267,9 +306,16 @@ public final class GeckoGeometryParser {
       Vec3d pivot = optionalVec3(node.get("pivot"), Vec3d.ZERO, pointer + "/pivot");
       Vec3d rotation = optionalVec3(node.get("rotation"), Vec3d.ZERO, pointer + "/rotation");
       Double inflate = optionalDouble(node.get("inflate"), pointer + "/inflate");
+      boolean neverRender =
+          optionalBoolean(node.get("neverRender"), false, pointer + "/neverRender");
       if (node.has("poly_mesh") && !node.get("poly_mesh").isNull()) {
         throw error(DiagnosticCodes.GEO_MESH_UNSUPPORTED, "poly_mesh is outside the MVP subset");
       }
+      if (node.has("texture_meshes") && !node.get("texture_meshes").isNull()) {
+        throw error(
+            DiagnosticCodes.GEO_MESH_UNSUPPORTED, "texture_meshes is outside the MVP subset");
+      }
+      collectBoneMetadata(path, node, pointer, sourceFeatures);
       JsonNode cubes = node.get("cubes");
       if (cubes != null && cubes.isArray()) {
         totalCubes += cubes.size();
@@ -278,9 +324,25 @@ public final class GeckoGeometryParser {
               "geometry contains more than " + limits.maxCubes() + " cubes across all bones");
         }
       }
-      bones.add(new RawBone(name, parent, pivot, rotation, inflate, cubes, pointer));
+      bones.add(
+          new RawBone(name, parent, pivot, rotation, inflate, neverRender, cubes, pointer));
     }
     return List.copyOf(bones);
+  }
+
+  private void collectBoneMetadata(
+      Path path,
+      JsonNode node,
+      String pointer,
+      List<FeatureOccurrence> sourceFeatures) {
+    for (String field : BONE_METADATA_FIELDS) {
+      JsonNode value = node.get(field);
+      if (value != null && !value.isNull()) {
+        sourceFeatures.add(
+            new FeatureOccurrence(
+                "gecko.bone." + field, provenance(path, pointer + "/" + field)));
+      }
+    }
   }
 
   private Map<String, RawBone> indexBones(List<RawBone> bones) throws GeometryParseException {
@@ -548,6 +610,7 @@ public final class GeckoGeometryParser {
       Vec3d pivot,
       Vec3d rotationDegrees,
       Double inflate,
+      boolean neverRender,
       JsonNode cubes,
       String pointer) {}
 
