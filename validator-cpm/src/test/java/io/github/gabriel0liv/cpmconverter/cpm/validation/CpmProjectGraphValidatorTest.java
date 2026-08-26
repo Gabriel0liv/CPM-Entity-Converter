@@ -92,7 +92,38 @@ class CpmProjectGraphValidatorTest {
   @Test
   void generatedProfileRejectsNonCanonicalPreorderStoreIds() throws Exception {
     String config =
-        project("body", child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
+        generatedProject(child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
+
+    Result<CpmValidationReport> result = validate(config, GENERATED_V1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.CPM_VALIDATION_FAILED);
+  }
+
+  @Test
+  void generatedProfileRejectsMissingCanonicalRoots() throws Exception {
+    Result<CpmValidationReport> result = validate(project("body", ""), GENERATED_V1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.CPM_VALIDATION_FAILED);
+  }
+
+  @Test
+  void generatedProfileRejectsNonCanonicalRootOrder() throws Exception {
+    String config =
+        "{\"version\":1,\"elements\":["
+            + root("body", "")
+            + ","
+            + root("head", "")
+            + ","
+            + root("left_arm", "")
+            + ","
+            + root("right_arm", "")
+            + ","
+            + root("left_leg", "")
+            + ","
+            + root("right_leg", "")
+            + "]}";
 
     Result<CpmValidationReport> result = validate(config, GENERATED_V1);
 
@@ -107,6 +138,22 @@ class CpmProjectGraphValidatorTest {
 
   private static String project(String rootId, String children) {
     return "{\"version\":1,\"elements\":[" + root(rootId, children) + "]}";
+  }
+
+  private static String generatedProject(String bodyChildren) {
+    return "{\"version\":1,\"elements\":["
+        + root("head", "")
+        + ","
+        + root("body", bodyChildren)
+        + ","
+        + root("left_arm", "")
+        + ","
+        + root("right_arm", "")
+        + ","
+        + root("left_leg", "")
+        + ","
+        + root("right_leg", "")
+        + "]}";
   }
 
   private static String root(String id, String children) {
