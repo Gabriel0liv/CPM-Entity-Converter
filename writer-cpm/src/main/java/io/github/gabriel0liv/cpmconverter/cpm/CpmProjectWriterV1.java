@@ -57,8 +57,7 @@ public final class CpmProjectWriterV1 {
     return config;
   }
 
-  private List<Map<String, Object>> rootMaps(
-      CpmStaticProjectV1 project, CpmStoreIdPlan storeIds) {
+  private List<Map<String, Object>> rootMaps(CpmStaticProjectV1 project, CpmStoreIdPlan storeIds) {
     EnumMap<CpmVanillaPart, CpmRootV1> roots = new EnumMap<>(CpmVanillaPart.class);
     for (CpmRootV1 root : project.roots()) {
       if (roots.putIfAbsent(root.vanillaPart(), root) != null) {
@@ -123,7 +122,8 @@ public final class CpmProjectWriterV1 {
     value.put("nameColor", 0);
     value.put("storeID", storeIds.elementId(element.key()));
     addUv(value, element.uv());
-    if (!element.children().isEmpty()) value.put("children", elementMaps(element.children(), storeIds));
+    if (!element.children().isEmpty())
+      value.put("children", elementMaps(element.children(), storeIds));
     return value;
   }
 
