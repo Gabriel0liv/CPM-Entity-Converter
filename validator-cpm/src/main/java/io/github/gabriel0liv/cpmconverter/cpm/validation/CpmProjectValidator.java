@@ -156,8 +156,7 @@ public final class CpmProjectValidator {
       if (storeId == null) {
         return error(DiagnosticCodes.CPM_CONFIG_INVALID, "CPM child storeID is required");
       }
-      Long expected =
-          profile == CpmValidationProfile.GENERATED_V1 ? generatedIds.take() : null;
+      Long expected = profile == CpmValidationProfile.GENERATED_V1 ? generatedIds.take() : null;
       Diagnostic storeIdDiagnostic =
           validateStoreId(storeId, seenStoreIds, expected, "child element");
       if (storeIdDiagnostic != null) return storeIdDiagnostic;
@@ -170,8 +169,7 @@ public final class CpmProjectValidator {
         if (!nested.isArray()) {
           return error(DiagnosticCodes.CPM_CONFIG_INVALID, "child children must be an array");
         }
-        Diagnostic nestedDiagnostic =
-            validateChildren(nested, profile, seenStoreIds, generatedIds);
+        Diagnostic nestedDiagnostic = validateChildren(nested, profile, seenStoreIds, generatedIds);
         if (nestedDiagnostic != null) return nestedDiagnostic;
       }
     }
@@ -186,8 +184,7 @@ public final class CpmProjectValidator {
     BigInteger value = node.bigIntegerValue();
     if (value.signum() <= 0 || value.compareTo(MAX_SAFE_STORE_ID) > 0) {
       return error(
-          DiagnosticCodes.CPM_STORE_ID_RANGE,
-          context + " storeID must be positive and <= 2^53-1");
+          DiagnosticCodes.CPM_STORE_ID_RANGE, context + " storeID must be positive and <= 2^53-1");
     }
     long storeId = value.longValueExact();
     if (!seenStoreIds.add(storeId)) {
