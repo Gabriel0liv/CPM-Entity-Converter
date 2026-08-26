@@ -64,5 +64,7 @@ public final class DiagnosticCodes {
   public static final String CPM_PROJECTION_MODEL_SCALE = "CPM_PROJECTION_MODEL_SCALE";
   public static final String CPM_STORE_ID_RANGE = "CPM_STORE_ID_RANGE";
   public static final String CPM_UV_UNREPRESENTABLE = "CPM_UV_UNREPRESENTABLE";
+  public static final String CPM_ZIP_INVALID = "CPM_ZIP_INVALID";
+  public static final String CPM_CONFIG_INVALID = "CPM_CONFIG_INVALID";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }
