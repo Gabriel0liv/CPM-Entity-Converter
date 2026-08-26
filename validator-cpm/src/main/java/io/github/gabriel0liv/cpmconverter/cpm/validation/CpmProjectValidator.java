@@ -196,7 +196,7 @@ public final class CpmProjectValidator {
       JsonNode roots, CpmValidationProfile profile, Set<Long> seenStoreIds) {
     Set<String> seenVanillaRoots = new HashSet<>();
     StoreIdCursor generatedIds = new StoreIdCursor();
-    int generatedRootOrder = -1;
+    int generatedRootIndex = 0;
 
     for (JsonNode root : roots) {
       if (!root.isObject()) {
@@ -209,7 +209,8 @@ public final class CpmProjectValidator {
       if (idNode == null || !idNode.isTextual() || idNode.textValue().isBlank()) {
         return error(DiagnosticCodes.CPM_INVALID_ROOT, "CPM root id must be a non-empty string");
       }
-      String id = idNode.textValue().toLowerCase(Locale.ROOT);
+      String rawId = idNode.textValue();
+      String id = rawId.toLowerCase(Locale.ROOT);
       if (!customPart && !duplicated) {
         if (!VANILLA_ROOT_IDS.contains(id)) {
           return error(DiagnosticCodes.CPM_INVALID_ROOT, "unknown vanilla CPM root: " + id);
@@ -220,18 +221,18 @@ public final class CpmProjectValidator {
       }
 
       if (profile == CpmValidationProfile.GENERATED_V1) {
-        if (customPart || duplicated || !VANILLA_ROOT_IDS.contains(id)) {
+        if (customPart || duplicated || !rawId.equals(id)) {
           return error(
               DiagnosticCodes.CPM_VALIDATION_FAILED,
-              "converter-generated CPM roots must use the canonical vanilla root set");
+              "converter-generated CPM roots must use lowercase canonical vanilla roots");
         }
-        int rootOrder = GENERATED_ROOT_ORDER.indexOf(id);
-        if (rootOrder <= generatedRootOrder) {
+        if (generatedRootIndex >= GENERATED_ROOT_ORDER.size()
+            || !id.equals(GENERATED_ROOT_ORDER.get(generatedRootIndex))) {
           return error(
               DiagnosticCodes.CPM_VALIDATION_FAILED,
               "converter-generated CPM roots are not in canonical order");
         }
-        generatedRootOrder = rootOrder;
+        generatedRootIndex++;
       }
 
       if (root.has("storeID")) {
@@ -254,6 +255,13 @@ public final class CpmProjectValidator {
             validateChildren(children, profile, seenStoreIds, generatedIds);
         if (childDiagnostic != null) return childDiagnostic;
       }
+    }
+
+    if (profile == CpmValidationProfile.GENERATED_V1
+        && generatedRootIndex != GENERATED_ROOT_ORDER.size()) {
+      return error(
+          DiagnosticCodes.CPM_VALIDATION_FAILED,
+          "converter-generated CPM must contain all six canonical vanilla roots");
     }
     return null;
   }
@@ -372,7 +380,16 @@ public final class CpmProjectValidator {
       Set<Long> persistedStoreIds,
       CpmValidationProfile profile) {
     for (var entry : entries.entrySet()) {
-      if (!isRecognizedAnimationEntry(entry.getKey())) continue;
+      if (!isAnimationJsonEntry(entry.getKey())) continue;
+      if (!isRecognizedAnimationEntry(entry.getKey())) {
+        if (profile == CpmValidationProfile.GENERATED_V1) {
+          return error(
+              DiagnosticCodes.CPM_VALIDATION_FAILED,
+              "converter-generated animation filename is not recognized by CPM V1: "
+                  + entry.getKey());
+        }
+        continue;
+      }
 
       JsonNode animation;
       try {
@@ -463,11 +480,12 @@ public final class CpmProjectValidator {
             DiagnosticCodes.CPM_FRAME_INVALID,
             "generated animation requires loop and interpolator fields");
       }
-      String value = interpolator.textValue().toLowerCase(Locale.ROOT);
-      if (!GENERATED_INTERPOLATORS.contains(value)) {
+      String rawInterpolator = interpolator.textValue();
+      String value = rawInterpolator.toLowerCase(Locale.ROOT);
+      if (!rawInterpolator.equals(value) || !GENERATED_INTERPOLATORS.contains(value)) {
         return error(
             DiagnosticCodes.CPM_FRAME_INVALID,
-            "generated animation uses unknown interpolator " + value);
+            "generated animation uses noncanonical interpolator " + rawInterpolator);
       }
       if (!value.equals("no_interpolate")) {
         boolean loopInterpolator = value.endsWith("_loop");
@@ -558,14 +576,18 @@ public final class CpmProjectValidator {
     return storeId >= 0 && storeId <= 6;
   }
 
-  private boolean isRecognizedAnimationEntry(String name) {
+  private boolean isAnimationJsonEntry(String name) {
     if (name == null || !name.startsWith("animations/") || !name.endsWith(".json")) return false;
     String fileName = name.substring("animations/".length());
-    if (fileName.isEmpty() || fileName.indexOf('/') >= 0) return false;
-    String lower = fileName.toLowerCase(Locale.ROOT);
-    if (lower.startsWith("g_") || lower.startsWith("c_")) return true;
-    if (!lower.startsWith("v_")) return false;
-    String poseName = lower.substring(2, lower.length() - ".json".length());
+    return !fileName.isEmpty() && fileName.indexOf('/') < 0;
+  }
+
+  private boolean isRecognizedAnimationEntry(String name) {
+    if (!isAnimationJsonEntry(name)) return false;
+    String fileName = name.substring("animations/".length());
+    if (fileName.startsWith("g_") || fileName.startsWith("c_")) return true;
+    if (!fileName.startsWith("v_")) return false;
+    String poseName = fileName.substring(2, fileName.length() - ".json".length());
     return VANILLA_POSE_PREFIXES.stream().anyMatch(poseName::startsWith);
   }
 
@@ -616,7 +638,15 @@ public final class CpmProjectValidator {
             DiagnosticCodes.CPM_VALIDATION_FAILED,
             "generated JSON entry is invalid: " + entry.getKey());
       }
-      if (json == null || !Arrays.equals(entry.getValue(), canonicalJson(json))) {
+      byte[] canonical;
+      try {
+        canonical = canonicalJson(json);
+      } catch (IllegalArgumentException exception) {
+        return error(
+            DiagnosticCodes.CPM_VALIDATION_FAILED,
+            "generated JSON entry cannot be canonicalized: " + entry.getKey());
+      }
+      if (json == null || !Arrays.equals(entry.getValue(), canonical)) {
         return error(
             DiagnosticCodes.CPM_VALIDATION_FAILED,
             "generated JSON entry is not canonical: " + entry.getKey());
@@ -626,6 +656,7 @@ public final class CpmProjectValidator {
   }
 
   private byte[] canonicalJson(JsonNode value) {
+    if (value == null) throw new IllegalArgumentException("generated JSON root is null");
     StringBuilder builder = new StringBuilder();
     appendCanonicalJson(builder, value);
     builder.append('\n');
