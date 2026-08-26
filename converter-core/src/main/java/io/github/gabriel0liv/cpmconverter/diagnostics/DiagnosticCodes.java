@@ -44,8 +44,6 @@ public final class DiagnosticCodes {
   public static final String IR_TIMESTAMP_INVALID = "IR_TIMESTAMP_INVALID";
   public static final String IR_ROOT_MISSING = "IR_ROOT_MISSING";
   public static final String IR_ROOT_PARENT = "IR_ROOT_PARENT";
-  public static final String IR_ROOT_DUPLICATE = "IR_ROOT_DUPLICATE";
-  public static final String IR_PARENT_MISSING = "IR_PARENT_MISSING";
   public static final String IR_CHILD_MISSING = "IR_CHILD_MISSING";
   public static final String IR_CHILD_DUPLICATE = "IR_CHILD_DUPLICATE";
   public static final String IR_PARENT_CHILD_MISMATCH = "IR_PARENT_CHILD_MISMATCH";
@@ -63,5 +61,6 @@ public final class DiagnosticCodes {
   public static final String CPM_PROJECTION_INVALID_SETTING = "CPM_PROJECTION_INVALID_SETTING";
   public static final String CPM_PROJECTION_MODEL_SCALE = "CPM_PROJECTION_MODEL_SCALE";
   public static final String CPM_STORE_ID_RANGE = "CPM_STORE_ID_RANGE";
+  public static final String CPM_UV_UNREPRESENTABLE = "CPM_UV_UNREPRESENTABLE";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }
