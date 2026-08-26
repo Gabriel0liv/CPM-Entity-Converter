@@ -44,6 +44,8 @@ public final class DiagnosticCodes {
   public static final String IR_TIMESTAMP_INVALID = "IR_TIMESTAMP_INVALID";
   public static final String IR_ROOT_MISSING = "IR_ROOT_MISSING";
   public static final String IR_ROOT_PARENT = "IR_ROOT_PARENT";
+  public static final String IR_ROOT_DUPLICATE = "IR_ROOT_DUPLICATE";
+  public static final String IR_PARENT_MISSING = "IR_PARENT_MISSING";
   public static final String IR_CHILD_MISSING = "IR_CHILD_MISSING";
   public static final String IR_CHILD_DUPLICATE = "IR_CHILD_DUPLICATE";
   public static final String IR_PARENT_CHILD_MISMATCH = "IR_PARENT_CHILD_MISMATCH";
