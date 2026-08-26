@@ -23,6 +23,7 @@ configure([
     project(':converter-config'),
     project(':adapter-geckolib4'),
     project(':writer-cpm'),
+    project(':validator-cpm'),
     project(':test-fixtures')
 ]) {
     apply plugin: 'com.diffplug.spotless'
