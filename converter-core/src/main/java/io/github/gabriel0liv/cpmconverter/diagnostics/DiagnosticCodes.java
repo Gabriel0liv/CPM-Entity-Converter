@@ -66,5 +66,9 @@ public final class DiagnosticCodes {
   public static final String CPM_UV_UNREPRESENTABLE = "CPM_UV_UNREPRESENTABLE";
   public static final String CPM_ZIP_INVALID = "CPM_ZIP_INVALID";
   public static final String CPM_CONFIG_INVALID = "CPM_CONFIG_INVALID";
+  public static final String CPM_DUPLICATE_STORE_ID = "CPM_DUPLICATE_STORE_ID";
+  public static final String CPM_INVALID_ROOT = "CPM_INVALID_ROOT";
+  public static final String CPM_UV_INVALID = "CPM_UV_INVALID";
+  public static final String CPM_VALIDATION_FAILED = "CPM_VALIDATION_FAILED";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }
