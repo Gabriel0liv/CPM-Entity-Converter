@@ -79,6 +79,23 @@ class CpmProjectAnimationValidatorTest {
   }
 
   @Test
+  void existingProfileParsesIgnoredAnimationBeforeFilenameDispatch() throws Exception {
+    Result<CpmValidationReport> result =
+        validator.validate(existingArchive("ignored.json", "{not-json"), EXISTING_V1);
+
+    assertFalse(result.success());
+    assertHasCode(result, DiagnosticCodes.CPM_FRAME_INVALID);
+  }
+
+  @Test
+  void existingProfileAllowsWellFormedIgnoredAnimationFilename() throws Exception {
+    Result<CpmValidationReport> result =
+        validator.validate(existingArchive("ignored.json", "{}"), EXISTING_V1);
+
+    assertTrue(result.success(), () -> result.diagnostics().all().toString());
+  }
+
+  @Test
   void existingProfileAllowsLoopInterpolatorCombinationLoadedIndependentlyByCpm() throws Exception {
     Result<CpmValidationReport> result =
         validator.validate(existingArchive(animation(1000, false, "linear_loop")), EXISTING_V1);
@@ -150,9 +167,13 @@ class CpmProjectAnimationValidatorTest {
   }
 
   private static byte[] existingArchive(String animation) throws IOException {
+    return existingArchive("g_gesture.json", animation);
+  }
+
+  private static byte[] existingArchive(String fileName, String animation) throws IOException {
     LinkedHashMap<String, byte[]> entries = new LinkedHashMap<>();
     entries.put("config.json", existingConfig().getBytes(StandardCharsets.UTF_8));
-    entries.put("animations/g_gesture.json", animation.getBytes(StandardCharsets.UTF_8));
+    entries.put("animations/" + fileName, animation.getBytes(StandardCharsets.UTF_8));
     return zip(entries, false, false);
   }
 
