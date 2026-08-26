@@ -10,7 +10,6 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.Severity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
@@ -36,7 +35,9 @@ public final class CpmProjectValidator {
       String detail = exception.getMessage();
       return failure(
           DiagnosticCodes.CPM_ZIP_INVALID,
-          detail == null ? "artifact ZIP cannot be read" : "artifact ZIP cannot be read: " + detail);
+          detail == null
+              ? "artifact ZIP cannot be read"
+              : "artifact ZIP cannot be read: " + detail);
     }
 
     byte[] configBytes = entries.get("config.json");
