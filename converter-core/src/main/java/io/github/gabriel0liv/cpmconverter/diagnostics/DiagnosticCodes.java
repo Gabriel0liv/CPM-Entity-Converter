@@ -60,5 +60,7 @@ public final class DiagnosticCodes {
   public static final String IR_CUSTOM_PLAYBACK_ID = "IR_CUSTOM_PLAYBACK_ID";
   public static final String IR_INVALID_ID = "IR_INVALID_ID";
   public static final String IR_INVALID_VALUE = "IR_INVALID_VALUE";
+  public static final String CPM_PROJECTION_INVALID_SETTING = "CPM_PROJECTION_INVALID_SETTING";
+  public static final String CPM_PROJECTION_MODEL_SCALE = "CPM_PROJECTION_MODEL_SCALE";
   public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
 }
