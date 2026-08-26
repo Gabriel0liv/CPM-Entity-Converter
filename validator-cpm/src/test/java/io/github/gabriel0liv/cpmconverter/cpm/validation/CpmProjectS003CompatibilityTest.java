@@ -23,7 +23,8 @@ class CpmProjectS003CompatibilityTest {
             .resolve("artifacts")
             .resolve(caseName + ".cpmproject");
 
-    Result<CpmValidationReport> result = validator.validate(Files.readAllBytes(artifact), EXISTING_V1);
+    Result<CpmValidationReport> result =
+        validator.validate(Files.readAllBytes(artifact), EXISTING_V1);
 
     assertTrue(result.success(), () -> caseName + ": " + result.diagnostics().all());
   }
@@ -34,6 +35,7 @@ class CpmProjectS003CompatibilityTest {
       if (Files.isRegularFile(current.resolve("settings.gradle"))) return current;
       current = current.getParent();
     }
-    throw new IllegalStateException("cannot locate repository root from " + Path.of("").toAbsolutePath());
+    throw new IllegalStateException(
+        "cannot locate repository root from " + Path.of("").toAbsolutePath());
   }
 }
