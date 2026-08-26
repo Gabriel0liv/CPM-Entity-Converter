@@ -56,8 +56,7 @@ class GeckoTextureLoaderTest {
   void rejectsPngBeforeReadingBytesWhenCompressedFileExceedsLimit() throws Exception {
     Path png = Files.createTempFile("cpm-converter-texture-bytes-", ".png");
     Files.write(png, PNG_2X2);
-    var limits =
-        new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 16, 1_000_000);
+    var limits = new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 16, 1_000_000);
 
     var result = new GeckoTextureLoader(limits).load(png, 2, 2);
 
@@ -69,8 +68,7 @@ class GeckoTextureLoaderTest {
   void rejectsActualPngPixelCountBeforeFullDecode() throws Exception {
     Path png = Files.createTempFile("cpm-converter-texture-pixels-", ".png");
     Files.write(png, PNG_2X2);
-    var limits =
-        new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 1_000_000, 1);
+    var limits = new GeckoInputLimits(1_000_000, 64, 100, 100, 100, 60.0, 1_000_000, 1);
 
     var result = new GeckoTextureLoader(limits).load(png, 1, 1);
 

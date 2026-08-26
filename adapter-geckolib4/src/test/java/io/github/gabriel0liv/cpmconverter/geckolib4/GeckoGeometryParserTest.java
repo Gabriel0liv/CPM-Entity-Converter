@@ -224,9 +224,7 @@ class GeckoGeometryParserTest {
 
   private static Quatd quaternionFromDegrees(Vec3d degrees) {
     return Quatd.fromEulerZYX(
-        Math.toRadians(degrees.x()),
-        Math.toRadians(degrees.y()),
-        Math.toRadians(degrees.z()));
+        Math.toRadians(degrees.x()), Math.toRadians(degrees.y()), Math.toRadians(degrees.z()));
   }
 
   private static void assertRotation(Quatd expected, Quatd actual) {

@@ -122,7 +122,16 @@ class GeckoAnimationEasingAndMolangParserTest {
       assertTrue(result.success(), () -> easing[0] + ": " + result.diagnostics().all());
       assertEquals(
           easing[1],
-          result.value().get(0).tracks().get(0).rotation().keyframes().get(0).interpolationAfter().name(),
+          result
+              .value()
+              .get(0)
+              .tracks()
+              .get(0)
+              .rotation()
+              .keyframes()
+              .get(0)
+              .interpolationAfter()
+              .name(),
           easing[0]);
     }
   }

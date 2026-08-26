@@ -30,7 +30,7 @@ public final class Gecko449EasingEvaluator {
       case EASE_IN_QUART -> pow(4).applyAsDouble(time);
       case EASE_OUT_QUART -> easeOut(pow(4), time);
       case EASE_IN_OUT_QUART -> easeInOut(pow(4), time);
-      // GeckoLib 4.4.9 registers easeinquint with pow(4); this is intentional compatibility.
+        // GeckoLib 4.4.9 registers easeinquint with pow(4); this is intentional compatibility.
       case EASE_IN_QUINT -> pow(4).applyAsDouble(time);
       case EASE_OUT_QUINT -> easeOut(pow(5), time);
       case EASE_IN_OUT_QUINT -> easeInOut(pow(5), time);
@@ -93,25 +93,17 @@ public final class Gecko449EasingEvaluator {
 
   private static DoubleUnaryOperator elastic(Double n) {
     double value = n == null ? 1 : n;
-    return t ->
-        1
-            - Math.pow(Math.cos(t * Math.PI / 2f), 3)
-                * Math.cos(t * value * Math.PI);
+    return t -> 1 - Math.pow(Math.cos(t * Math.PI / 2f), 3) * Math.cos(t * value * Math.PI);
   }
 
   private static DoubleUnaryOperator bounce(Double n) {
     double value = n == null ? 0.5d : n;
     DoubleUnaryOperator one = x -> 121f / 16f * x * x;
-    DoubleUnaryOperator two =
-        x -> 121f / 4f * value * Math.pow(x - 6f / 11f, 2) + 1 - value;
+    DoubleUnaryOperator two = x -> 121f / 4f * value * Math.pow(x - 6f / 11f, 2) + 1 - value;
     DoubleUnaryOperator three =
-        x ->
-            121 * value * value * Math.pow(x - 9f / 11f, 2) + 1 - value * value;
+        x -> 121 * value * value * Math.pow(x - 9f / 11f, 2) + 1 - value * value;
     DoubleUnaryOperator four =
-        x ->
-            484 * value * value * value * Math.pow(x - 10.5f / 11f, 2)
-                + 1
-                - value * value * value;
+        x -> 484 * value * value * value * Math.pow(x - 10.5f / 11f, 2) + 1 - value * value * value;
     return t ->
         Math.min(
             Math.min(one.applyAsDouble(t), two.applyAsDouble(t)),

@@ -115,8 +115,7 @@ class GeckoAnimationParserTest {
     assertEquals(TransformSpace.LOCAL, track.scale().space());
     assertEquals(new Vec3d(2, 3, 4), track.scale().keyframes().get(0).incomingValue());
 
-    assertEquals(
-        new Vec3d(720, 0, 0), track.rotation().keyframes().get(0).incomingValue());
+    assertEquals(new Vec3d(720, 0, 0), track.rotation().keyframes().get(0).incomingValue());
   }
 
   @Test
@@ -232,12 +231,7 @@ class GeckoAnimationParserTest {
     assertTrue(geometry.success(), () -> geometry.diagnostics().all().toString());
 
     Path animation =
-        Path.of(
-                "..",
-                "spikes",
-                "geckolib-animation-semantics",
-                "fixtures",
-                "LERP-001.json")
+        Path.of("..", "spikes", "geckolib-animation-semantics", "fixtures", "LERP-001.json")
             .normalize();
     var result = new GeckoAnimationParser().parse(animation, geometry.value());
 

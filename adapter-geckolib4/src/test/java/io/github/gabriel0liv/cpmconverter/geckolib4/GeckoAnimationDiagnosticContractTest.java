@@ -50,8 +50,7 @@ class GeckoAnimationDiagnosticContractTest {
     var result = new GeckoAnimationParser().parse(animation, geometry);
 
     assertFalse(result.success());
-    assertEquals(
-        "ANIM_ZERO_DURATION_INVALID", result.diagnostics().errors().get(0).code().value());
+    assertEquals("ANIM_ZERO_DURATION_INVALID", result.diagnostics().errors().get(0).code().value());
   }
 
   @Test

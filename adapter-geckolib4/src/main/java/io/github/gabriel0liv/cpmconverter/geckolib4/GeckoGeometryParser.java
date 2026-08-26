@@ -57,8 +57,7 @@ public final class GeckoGeometryParser {
           "visible_bounds_offset",
           "visible_bounds_width");
   private static final List<String> BONE_METADATA_FIELDS =
-      List.of(
-          "bind_pose_rotation", "debug", "locators", "mirror", "render_group_id", "reset");
+      List.of("bind_pose_rotation", "debug", "locators", "mirror", "render_group_id", "reset");
 
   private final GeckoInputLimits limits;
   private final GeckoJsonReader json;
@@ -202,13 +201,16 @@ public final class GeckoGeometryParser {
           base.diagnostics()
               .add(
                   Diagnostic.of(
-                      Severity.ERROR, DiagnosticCodes.INPUT_LIMIT_EXCEEDED, exception.getMessage())));
+                      Severity.ERROR,
+                      DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
+                      exception.getMessage())));
     } catch (GeometryParseException exception) {
       return Result.failure(
           base.diagnostics()
               .add(Diagnostic.of(Severity.ERROR, exception.code(), exception.getMessage())));
     } catch (Exception exception) {
-      String message = exception.getMessage() == null ? "cannot read texture grid" : exception.getMessage();
+      String message =
+          exception.getMessage() == null ? "cannot read texture grid" : exception.getMessage();
       return Result.failure(
           base.diagnostics()
               .add(Diagnostic.of(Severity.ERROR, DiagnosticCodes.INPUT_PARSE_ERROR, message)));
@@ -270,7 +272,10 @@ public final class GeckoGeometryParser {
   }
 
   private int requiredPositiveInt(JsonNode node, String pointer) throws GeometryParseException {
-    if (node == null || !node.isIntegralNumber() || !node.canConvertToInt() || node.intValue() <= 0) {
+    if (node == null
+        || !node.isIntegralNumber()
+        || !node.canConvertToInt()
+        || node.intValue() <= 0) {
       throw error(DiagnosticCodes.GEO_INVALID_VALUE, "expected positive integer at " + pointer);
     }
     return node.intValue();
@@ -324,23 +329,18 @@ public final class GeckoGeometryParser {
               "geometry contains more than " + limits.maxCubes() + " cubes across all bones");
         }
       }
-      bones.add(
-          new RawBone(name, parent, pivot, rotation, inflate, neverRender, cubes, pointer));
+      bones.add(new RawBone(name, parent, pivot, rotation, inflate, neverRender, cubes, pointer));
     }
     return List.copyOf(bones);
   }
 
   private void collectBoneMetadata(
-      Path path,
-      JsonNode node,
-      String pointer,
-      List<FeatureOccurrence> sourceFeatures) {
+      Path path, JsonNode node, String pointer, List<FeatureOccurrence> sourceFeatures) {
     for (String field : BONE_METADATA_FIELDS) {
       JsonNode value = node.get(field);
       if (value != null && !value.isNull()) {
         sourceFeatures.add(
-            new FeatureOccurrence(
-                "gecko.bone." + field, provenance(path, pointer + "/" + field)));
+            new FeatureOccurrence("gecko.bone." + field, provenance(path, pointer + "/" + field)));
       }
     }
   }
@@ -349,8 +349,7 @@ public final class GeckoGeometryParser {
     Map<String, RawBone> indexed = new LinkedHashMap<>();
     for (RawBone bone : bones) {
       if (indexed.putIfAbsent(bone.name(), bone) != null) {
-        throw error(
-            DiagnosticCodes.GEO_DUPLICATE_BONE_NAME, "duplicate bone name: " + bone.name());
+        throw error(DiagnosticCodes.GEO_DUPLICATE_BONE_NAME, "duplicate bone name: " + bone.name());
       }
     }
     return indexed;
@@ -416,8 +415,7 @@ public final class GeckoGeometryParser {
               effectivePivot.x() - (origin.x() + size.x()),
               effectivePivot.y() - (origin.y() + size.y()),
               origin.z() - effectivePivot.z());
-      Vec3d rotationDegrees =
-          optionalVec3(cube.get("rotation"), Vec3d.ZERO, pointer + "/rotation");
+      Vec3d rotationDegrees = optionalVec3(cube.get("rotation"), Vec3d.ZERO, pointer + "/rotation");
       Double cubeInflate = optionalDouble(cube.get("inflate"), pointer + "/inflate");
       double inflate =
           cubeInflate != null ? cubeInflate : bone.inflate() == null ? 0 : bone.inflate();
@@ -488,12 +486,10 @@ public final class GeckoGeometryParser {
     return new PerFaceUvIR(faces);
   }
 
-  private double[] vec2(JsonNode node, String pointer, String label)
-      throws GeometryParseException {
+  private double[] vec2(JsonNode node, String pointer, String label) throws GeometryParseException {
     if (node == null || !node.isArray() || node.size() != 2) {
       throw error(
-          DiagnosticCodes.GEO_INVALID_VALUE,
-          label + " must contain two numbers at " + pointer);
+          DiagnosticCodes.GEO_INVALID_VALUE, label + " must contain two numbers at " + pointer);
     }
     double[] result = new double[2];
     for (int index = 0; index < 2; index++) {

@@ -178,7 +178,6 @@ class GeckoInputLimitsTest {
     assertFalse(result.success());
     assertEquals(1, result.diagnostics().errors().size(), result.diagnostics().all().toString());
     assertEquals(
-        DiagnosticCodes.INPUT_LIMIT_EXCEEDED,
-        result.diagnostics().errors().get(0).code().value());
+        DiagnosticCodes.INPUT_LIMIT_EXCEEDED, result.diagnostics().errors().get(0).code().value());
   }
 }

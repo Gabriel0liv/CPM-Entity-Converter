@@ -206,12 +206,7 @@ public final class GeckoAnimationParser {
 
         tracks.add(
             new BoneTrackIR(
-                boneId,
-                position,
-                rotation,
-                scale,
-                TransformMode.ADDITIVE,
-                TransformSpace.LOCAL));
+                boneId, position, rotation, scale, TransformMode.ADDITIVE, TransformSpace.LOCAL));
       }
     }
 
@@ -253,8 +248,7 @@ public final class GeckoAnimationParser {
       sourceFrames.sort(Comparator.comparingDouble(SourceVectorKeyframe::time));
     } else {
       throw error(
-          DiagnosticCodes.INPUT_PARSE_ERROR,
-          component + " channel must be numeric at " + pointer);
+          DiagnosticCodes.INPUT_PARSE_ERROR, component + " channel must be numeric at " + pointer);
     }
     if (sourceFrames.isEmpty()) {
       throw error(DiagnosticCodes.INPUT_PARSE_ERROR, component + " channel is empty");
@@ -292,8 +286,7 @@ public final class GeckoAnimationParser {
     if (node.isNumber() || node.isTextual() || node.isArray()) {
       Vec3d value = vector(node, Vec3d.ZERO, pointer);
       sourceFrames.add(
-          new SourceRotationFrame(
-              0, value, LINEAR_EASING, sourcePath(path) + "#" + pointer));
+          new SourceRotationFrame(0, value, LINEAR_EASING, sourcePath(path) + "#" + pointer));
     } else if (node.isObject()) {
       Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
       while (fields.hasNext()) {
@@ -458,8 +451,7 @@ public final class GeckoAnimationParser {
           "keyframe object has neither vector, pre nor post at " + pointer);
     }
 
-    Vec3d selected =
-        vector(hasPre ? pre : post, defaults, pointer + (hasPre ? "/pre" : "/post"));
+    Vec3d selected = vector(hasPre ? pre : post, defaults, pointer + (hasPre ? "/pre" : "/post"));
     if (hasPre && hasPost) {
       Vec3d postValue = vector(post, defaults, pointer + "/post");
       if (!selected.equals(postValue)) {

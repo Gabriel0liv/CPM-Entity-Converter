@@ -3,7 +3,9 @@ package io.github.gabriel0liv.cpmconverter.geckolib4;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/** Evaluates the deliberately small, provably constant Molang subset accepted by the offline MVP. */
+/**
+ * Evaluates the deliberately small, provably constant Molang subset accepted by the offline MVP.
+ */
 final class ConstantMolangEvaluator {
   private static final Pattern RUNTIME_REFERENCE =
       Pattern.compile("(?i)(?:^|[^a-z0-9_])(query|q|variable|v|temp|t|context)\\s*\\.");
@@ -28,7 +30,8 @@ final class ConstantMolangEvaluator {
     double value = parser.parseExpression();
     parser.skipWhitespace();
     if (!parser.atEnd()) {
-      throw new MolangEvaluationException(false, "Unsupported constant Molang syntax at index " + parser.index);
+      throw new MolangEvaluationException(
+          false, "Unsupported constant Molang syntax at index " + parser.index);
     }
     if (!Double.isFinite(value)) {
       throw new MolangEvaluationException(false, "Constant Molang result is not finite");

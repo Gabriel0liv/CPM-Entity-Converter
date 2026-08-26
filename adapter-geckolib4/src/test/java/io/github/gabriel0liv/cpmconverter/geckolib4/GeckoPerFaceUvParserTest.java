@@ -14,8 +14,7 @@ class GeckoPerFaceUvParserTest {
   @Test
   void parsesFixtureCPerFaceUvWithoutDroppingFaces() {
     Path geometry =
-        Path.of("..", "test-fixtures", "fixture-c-deep-hierarchy", "geometry.geo.json")
-            .normalize();
+        Path.of("..", "test-fixtures", "fixture-c-deep-hierarchy", "geometry.geo.json").normalize();
 
     var result = new GeckoGeometryParser().parse(geometry);
 

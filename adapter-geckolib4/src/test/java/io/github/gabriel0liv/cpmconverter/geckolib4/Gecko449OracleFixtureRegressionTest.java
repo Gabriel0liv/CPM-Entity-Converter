@@ -71,7 +71,8 @@ class Gecko449OracleFixtureRegressionTest {
   }
 
   private static ModelIR geometry() {
-    Path input = Path.of("..", "test-fixtures", "fixture-a-humanoid", "geometry.geo.json").normalize();
+    Path input =
+        Path.of("..", "test-fixtures", "fixture-a-humanoid", "geometry.geo.json").normalize();
     var result = new GeckoGeometryParser().parse(input);
     assertTrue(result.success(), () -> result.diagnostics().all().toString());
     return result.value();
