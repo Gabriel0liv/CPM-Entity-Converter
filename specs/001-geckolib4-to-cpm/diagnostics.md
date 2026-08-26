@@ -58,6 +58,8 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `MAP_BONE_NOT_FOUND` | ERROR | role/look bone ausente |
 | `MAP_CLIP_NOT_FOUND` | ERROR | clip mapping ausente |
 | `MAP_LOOK_OVERROTATION` | WARNING/ERROR | influences excedem política |
+| `CPM_PROJECTION_INVALID_SETTING` | ERROR | configuração de projeção não é finita/representável |
+| `CPM_PROJECTION_MODEL_SCALE` | ERROR | `modelScale` ficaria abaixo do piso exato do renderer CPM 0.6.27 |
 | `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
@@ -113,8 +115,16 @@ Boundary construction uses `IR_INVALID_ID` and `IR_INVALID_VALUE`.
 mas `cube.bone()` aponta para outro bone existente. Isso evita ownership contraditório
 e transform-space ambíguo durante reparenting/rebake.
 
+## Projeção CPM estática
+
+`CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`.
+
+`CPM_PROJECTION_INVALID_SETTING` rejeita configurações não finitas antes de construir o graph.
+`CPM_PROJECTION_MODEL_SCALE` rejeita `modelScale < 0.01`, pois o renderer CPM 0.6.27
+faz clamp para `0.01`; aceitar esses valores alteraria silenciosamente a escala solicitada.
+
 ## Spike e integração futura
 
-Os códigos de animação, CPM, IO e limitações permanecem definidos nas
+Os demais códigos de animação, CPM, IO e limitações permanecem definidos nas
 seções de suas respectivas fases e não são usados pelo core nesta rodada.
 `INTERNAL_ERROR` é reservado para falhas internas sem stack trace no domínio.
