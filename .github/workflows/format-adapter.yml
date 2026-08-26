@@ -24,7 +24,7 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
       - name: Apply adapter formatting
-        run: ./gradlew :adapter-geckolib4:spotlessApply
+        run: bash ./gradlew :adapter-geckolib4:spotlessApply
       - name: Commit formatted adapter
         shell: bash
         run: |
