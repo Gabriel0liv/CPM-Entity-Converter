@@ -10,7 +10,6 @@ import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,8 @@ class CpmProjectGraphValidatorTest {
 
   @Test
   void rejectsDuplicateStoreIds() throws Exception {
-    String config = project("body", child(1000, "0", "0", null) + "," + child(1000, "0", "0", null));
+    String config =
+        project("body", child(1000, "0", "0", null) + "," + child(1000, "0", "0", null));
 
     Result<CpmValidationReport> result = validate(config, EXISTING_V1);
 
@@ -49,11 +49,7 @@ class CpmProjectGraphValidatorTest {
   @Test
   void rejectsDuplicateUnduplicatedVanillaRoot() throws Exception {
     String config =
-        "{\"version\":1,\"elements\":["
-            + root("body", "")
-            + ","
-            + root("body", "")
-            + "]}";
+        "{\"version\":1,\"elements\":[" + root("body", "") + "," + root("body", "") + "]}";
 
     Result<CpmValidationReport> result = validate(config, EXISTING_V1);
 
@@ -85,7 +81,8 @@ class CpmProjectGraphValidatorTest {
 
   @Test
   void existingProfileAcceptsSafeUniqueNonSequentialStoreIds() throws Exception {
-    String config = project("body", child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
+    String config =
+        project("body", child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
 
     Result<CpmValidationReport> result = validate(config, EXISTING_V1);
 
@@ -94,7 +91,8 @@ class CpmProjectGraphValidatorTest {
 
   @Test
   void generatedProfileRejectsNonCanonicalPreorderStoreIds() throws Exception {
-    String config = project("body", child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
+    String config =
+        project("body", child(4000, "0", "0", null) + "," + child(1001, "0", "0", null));
 
     Result<CpmValidationReport> result = validate(config, GENERATED_V1);
 
