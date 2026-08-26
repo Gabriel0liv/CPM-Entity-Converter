@@ -60,7 +60,7 @@ assertHasCode(validator.validate(zipOf("config.json", "{\"version\":2,\"elements
 
 **Files:**
 - Modify: `CpmProjectValidator.java`
-- Modify: `CpmProjectValidatorTest.java`
+- Add/modify: `validator-cpm/src/test/java/io/github/gabriel0liv/cpmconverter/cpm/validation/*Graph*Test.java`
 - Modify: `DiagnosticCodes.java`
 - Modify: `diagnostics.md`
 
@@ -68,19 +68,19 @@ assertHasCode(validator.validate(zipOf("config.json", "{\"version\":2,\"elements
 - Consumes parsed `elements` tree.
 - Produces stable errors `CPM_DUPLICATE_STORE_ID`, `CPM_INVALID_ROOT`, `CPM_UV_INVALID`, `CPM_VALIDATION_FAILED`.
 
-- [ ] **Step 1: Add RED tests for duplicate/out-of-range IDs, unknown/duplicate roots, fractional CPM UV endpoints, missing texture for textured cubes, and generated preorder IDs.**
+- [ ] **Step 1: Add RED tests for duplicate/out-of-range IDs, unknown/duplicate vanilla roots, fractional box/per-face CPM UV, and generated preorder IDs. Do not require `skin.png` merely because `texture=true` in `EXISTING_V1`: the pinned ElementsLoaderV1 does not prove that requirement, so it would over-restrict FR-028.**
 
 ```java
 assertHasCode(validate(existingWithDuplicate1000()), CPM_DUPLICATE_STORE_ID);
 assertHasCode(validate(existingWithStoreId(9007199254740992L)), CPM_STORE_ID_RANGE);
-assertHasCode(validate(existingWithUnknownRoot("wing")), CPM_INVALID_ROOT);
+assertHasCode(validate(existingWithUnknownVanillaRoot("wing")), CPM_INVALID_ROOT);
 assertHasCode(validate(existingWithFractionalUv()), CPM_UV_INVALID);
 assertTrue(validate(existingWithNonSequentialIds(), EXISTING_V1).success());
 assertHasCode(validate(existingWithNonSequentialIds(), GENERATED_V1), CPM_VALIDATION_FAILED);
 ```
 
 - [ ] **Step 2: Verify RED.**
-- [ ] **Step 3: Implement recursive element walk, exact integer UV checks, known-root uniqueness, texture consistency, and generated preorder `1000..N` enforcement.**
+- [ ] **Step 3: Implement recursive element walk, exact integer UV checks, vanilla-root uniqueness for non-`customPart`/non-duplicate roots, positive/safe unique persisted IDs, and generated preorder `1000..N` enforcement. `customPart=true` remains outside the vanilla-root namespace; `dup=true` follows CPM duplicate-root semantics instead of being mistaken for a duplicate vanilla declaration.**
 - [ ] **Step 4: Verify GREEN.**
 
 ### Task 3: Animation/reference and deterministic-output layers
