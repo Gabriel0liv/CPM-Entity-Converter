@@ -22,7 +22,7 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | Código | Default | Quando |
 |---|---|---|
 | `INPUT_PARSE_ERROR` | ERROR | JSON/arquivo de geometry não pode ser lido ou decodificado |
-| `INPUT_UNSUPPORTED_VERSION` | ERROR | geometry/Gecko fora do baseline |
+| `INPUT_UNSUPPORTED_VERSION` | ERROR | geometry/Gecko/CPM fora do baseline |
 | `INPUT_LIMIT_EXCEEDED` | ERROR | tamanho/profundidade/contagem |
 | `GEO_MULTIPLE_MODELS` | ERROR | sem geometry_id inequívoco |
 | `GEO_MODEL_NOT_FOUND` | ERROR | geometry solicitado ausente ou arquivo sem geometry |
@@ -62,6 +62,8 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `CPM_PROJECTION_MODEL_SCALE` | ERROR | `modelScale` ficaria abaixo do piso exato do renderer CPM 0.6.27 |
 | `CPM_STORE_ID_RANGE` | ERROR | `storeID` gerado excederia `2^53-1`, limite inteiro exato exigido pelo contrato JSON/JS |
 | `CPM_UV_UNREPRESENTABLE` | ERROR | UV box/per-face não é inteiro exato ou extrapola `int`, portanto não cabe no schema CPM V1 sem perda |
+| `CPM_ZIP_INVALID` | ERROR | `.cpmproject` não é ZIP legível, tem entry duplicada ou path inseguro |
+| `CPM_CONFIG_INVALID` | ERROR | `config.json` ausente, JSON inválido ou estrutura V1 obrigatória ausente/malformada |
 | `CPM_DUPLICATE_STORE_ID` | ERROR | ID duplicado |
 | `CPM_DANGLING_ANIMATION_REF` | ERROR | ref sem elemento |
 | `CPM_INVALID_ROOT` | ERROR | root desconhecido/duplicado indevido |
@@ -117,10 +119,10 @@ Boundary construction uses `IR_INVALID_ID` and `IR_INVALID_VALUE`.
 mas `cube.bone()` aponta para outro bone existente. Isso evita ownership contraditório
 e transform-space ambíguo durante reparenting/rebake.
 
-## Projeção e writer CPM V1
+## Projeção, writer e validator CPM V1
 
 `CPM_PROJECTION_INVALID_SETTING`, `CPM_PROJECTION_MODEL_SCALE`, `CPM_STORE_ID_RANGE`,
-`CPM_UV_UNREPRESENTABLE`.
+`CPM_UV_UNREPRESENTABLE`, `CPM_ZIP_INVALID`, `CPM_CONFIG_INVALID`.
 
 `CPM_PROJECTION_INVALID_SETTING` rejeita configurações não finitas antes de construir o graph.
 `CPM_PROJECTION_MODEL_SCALE` rejeita `modelScale < 0.01`, pois o renderer CPM 0.6.27
@@ -131,6 +133,11 @@ mantém `0–6` reservados aos `PlayerModelParts` CPM.
 `CPM_UV_UNREPRESENTABLE` rejeita UV fracionário ou fora do intervalo `int` no boundary do
 writer. O CPM V1 representa box UV como `u/v` inteiros e per-face UV como
 `sx/sy/ex/ey` inteiros; truncar os `double` preservados no IR seria perda silenciosa.
+`CPM_ZIP_INVALID` cobre o container antes de qualquer parse semântico: assinatura ZIP,
+entries duplicadas e paths absolutos/`..` são recusados.
+`CPM_CONFIG_INVALID` cobre o contrato estrutural obrigatório observado no ProjectIO V1:
+`config.json` deve ser objeto JSON, conter `version` inteiro e `elements` como array.
+Versões CPM diferentes de 1 usam `INPUT_UNSUPPORTED_VERSION`.
 
 ## Spike e integração futura
 
