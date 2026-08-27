@@ -8,7 +8,6 @@ class ProjectIoReferenceBoundaryTest {
   @Test
   void pinsExactCpmVersionAndCommit() {
     assertEquals("0.6.27", ProjectIoReference.CPM_VERSION);
-    assertEquals(
-        "9272f4f9c36a2bbd6986e6da65bf7091369cb12b", ProjectIoReference.CPM_COMMIT);
+    assertEquals("9272f4f9c36a2bbd6986e6da65bf7091369cb12b", ProjectIoReference.CPM_COMMIT);
   }
 }
