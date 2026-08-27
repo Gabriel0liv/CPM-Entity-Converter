@@ -4,7 +4,7 @@ Status: **[~] AUTOMATED PASS — MANUAL VISUAL PENDING**
 
 CPM: `0.6.27`, commit `9272f4f9c36a2bbd6986e6da65bf7091369cb12b`
 
-CI run: `33061294958`
+CI run: `33080416007`
 
 ## Automated
 
@@ -20,15 +20,18 @@ CI run: `33061294958`
 - deterministic A/B/C/D SHA-256 identical on Ubuntu/Windows: **PASS**
 - normal repository gate on Ubuntu/Windows: **PASS**
 - T304 evidence bundles uploaded for Ubuntu/Windows: **PASS**
+- visual-diagnostic fixture contract: **PASS**
+
+The A–D fixtures were hardened after the first manual inspection so static errors are visually observable instead of collapsing into near-identical blue cubes. A/B/D now have readable silhouettes/proportions, and fixture C uses six distinct per-face UV rectangles backed by six visually distinct texture regions. This supersedes every earlier T304 visual artifact/hash.
 
 The automated gate is bound to the exact current-architecture artifact hashes below. Both Ubuntu and Windows regenerated the four artifacts and matched the same committed golden values.
 
 | Fixture | SHA-256 |
 | --- | --- |
-| `fixture-a-humanoid` | `6657fb5751841e84548a3646fea30b1d601feccbca9676099ee699c27466365a` |
-| `fixture-b-neck` | `3a2967955e00cc2a4a8c43cc48c0bf69829794e94d5566350ba9e3ea4ba87290` |
-| `fixture-c-deep-hierarchy` | `85e1eaa9f49d299a271d295e0c5200a1bf93e85e1128d156c1d23c3dad560dbe` |
-| `fixture-d-quadruped` | `badc7e44e6b81a1347c6a23af6d858a3129f23e1e35b30ce91e886db49a71625` |
+| `fixture-a-humanoid` | `cc43050bfd8a189e5bb5e2bf21202a6025f72933b90877df28e264e33985788b` |
+| `fixture-b-neck` | `b2a9b77d772ce44ffe712ba27b77bbf26d957042d7de6e35b39a5694a915b55a` |
+| `fixture-c-deep-hierarchy` | `bbbed5f0b287552cb52ce962b8bfc0b11b99bb2ebb3f7127bdb4556a289eb195` |
+| `fixture-d-quadruped` | `a9f52dca3b965efa64876080de5be906d5f8293c4ba4e841bbb0d31054279824` |
 
 The source of truth for these values is `verification-projectio/expected-artifact-hashes.properties`.
 
@@ -36,8 +39,10 @@ The source of truth for these values is `verification-projectio/expected-artifac
 
 Each `projectio-conformance` matrix job publishes `t304-evidence-<os>` containing the exact generated `.cpmproject` files, deterministic manifest/report, and a manual visual handoff bundle. The machine-generated manual fields intentionally remain `visualValidation: NOT RUN`; automation cannot promote them to PASS.
 
+The final redesigned-fixture evidence for run `33080416007` is byte-identical at the `.cpmproject` level between Ubuntu and Windows.
+
 ## Manual visual validation
 
-**NOT RUN.**
+**NOT RUN for the redesigned exact hashes above.**
 
-T304 remains `[~]` until the exact hashed artifacts above are opened in CPM Editor 0.6.27 and the checklist in `phase-3-t304-manual-checklist.md` is completed with screenshots, literal warnings/errors, and save/reopen observations.
+The screenshots/observations gathered against the superseded pre-hardening hashes are useful historical evidence but cannot close this gate. T304 remains `[~]` until the exact redesigned artifacts above are opened in CPM Editor 0.6.27 and the checklist in `phase-3-t304-manual-checklist.md` is completed with screenshots, literal warnings/errors, and save/reopen observations.
