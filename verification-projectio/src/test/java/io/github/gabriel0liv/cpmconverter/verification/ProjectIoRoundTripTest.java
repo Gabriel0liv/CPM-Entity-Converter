@@ -15,10 +15,9 @@ class ProjectIoRoundTripTest {
       ProjectIoRoundTripResult result = harness.roundTrip(artifact.bytes());
 
       assertEquals(
-          ProjectIoRoundTripResult.Status.PASS,
-          result.status(),
-          fixture + ": " + result.message());
-      assertEquals(result.before().generatedStoreIds(), result.after().generatedStoreIds(), fixture);
+          ProjectIoRoundTripResult.Status.PASS, result.status(), fixture + ": " + result.message());
+      assertEquals(
+          result.before().generatedStoreIds(), result.after().generatedStoreIds(), fixture);
       assertEquals(
           result.before().parentByGeneratedPath(), result.after().parentByGeneratedPath(), fixture);
       assertEquals(
