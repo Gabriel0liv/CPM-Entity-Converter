@@ -381,16 +381,6 @@ public final class CpmProjectValidator {
       CpmValidationProfile profile) {
     for (var entry : entries.entrySet()) {
       if (!isAnimationJsonEntry(entry.getKey())) continue;
-      if (!isRecognizedAnimationEntry(entry.getKey())) {
-        if (profile == CpmValidationProfile.GENERATED_V1) {
-          return error(
-              DiagnosticCodes.CPM_VALIDATION_FAILED,
-              "converter-generated animation filename is not recognized by CPM V1: "
-                  + entry.getKey());
-        }
-        continue;
-      }
-
       JsonNode animation;
       try {
         animation = JSON.readTree(entry.getValue());
@@ -403,6 +393,16 @@ public final class CpmProjectValidator {
         return error(
             DiagnosticCodes.CPM_FRAME_INVALID,
             "animation " + entry.getKey() + " must contain a JSON object");
+      }
+
+      if (!isRecognizedAnimationEntry(entry.getKey())) {
+        if (profile == CpmValidationProfile.GENERATED_V1) {
+          return error(
+              DiagnosticCodes.CPM_VALIDATION_FAILED,
+              "converter-generated animation filename is not recognized by CPM V1: "
+                  + entry.getKey());
+        }
+        continue;
       }
 
       Diagnostic headerDiagnostic = validateAnimationHeader(animation, profile, entry.getKey());
