@@ -74,11 +74,42 @@ public record ProjectIoSnapshot(
     LinkedHashMap<String, String> result = new LinkedHashMap<>();
     for (ProjectIoElementSnapshot element : elements) {
       if (element.storeId() < 1000) continue;
-      if (result.putIfAbsent(element.path(), element.parentPath()) != null) {
-        throw new IllegalStateException("duplicate loaded generated path " + element.path());
-      }
+      putUnique(result, element.path(), element.parentPath());
     }
     return Collections.unmodifiableMap(result);
+  }
+
+  public Map<String, UvOriginSnapshot> boxUvOriginsByGeneratedPath() {
+    LinkedHashMap<String, UvOriginSnapshot> result = new LinkedHashMap<>();
+    for (ProjectIoElementSnapshot element : elements) {
+      if (element.storeId() < 1000 || !element.texture() || element.hasFaceUv()) continue;
+      putUnique(result, element.path(), new UvOriginSnapshot(element.u(), element.v()));
+    }
+    return Collections.unmodifiableMap(result);
+  }
+
+  public Map<String, Boolean> perFaceUvPresenceByGeneratedPath() {
+    LinkedHashMap<String, Boolean> result = new LinkedHashMap<>();
+    for (ProjectIoElementSnapshot element : elements) {
+      if (element.storeId() < 1000) continue;
+      putUnique(result, element.path(), element.hasFaceUv());
+    }
+    return Collections.unmodifiableMap(result);
+  }
+
+  public Map<String, Map<String, FaceUvSnapshot>> perFaceUvByGeneratedPath() {
+    LinkedHashMap<String, Map<String, FaceUvSnapshot>> result = new LinkedHashMap<>();
+    for (ProjectIoElementSnapshot element : elements) {
+      if (element.storeId() < 1000 || !element.hasFaceUv()) continue;
+      putUnique(result, element.path(), element.faceUv());
+    }
+    return Collections.unmodifiableMap(result);
+  }
+
+  private static <K, V> void putUnique(Map<K, V> target, K key, V value) {
+    if (target.putIfAbsent(key, value) != null) {
+      throw new IllegalStateException("duplicate loaded generated path " + key);
+    }
   }
 
   private static String normalize(String message) {
