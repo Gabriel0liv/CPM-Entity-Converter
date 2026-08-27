@@ -20,3 +20,22 @@ jobs:
       - run: python test-fixtures/scripts/manifest.py --check
       - if: runner.os == 'Linux'
         run: python spikes/geckolib-animation-semantics/scripts/audit_fixtures.py
+
+  projectio-conformance:
+    strategy:
+      matrix: {os: [windows-latest, ubuntu-latest]}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4 # major tag policy: Dependabot-reviewed official action
+      - uses: actions/checkout@v4 # pinned CPM source checkout for verification-only compilation
+        with:
+          repository: tom5454/CustomPlayerModels
+          ref: 9272f4f9c36a2bbd6986e6da65bf7091369cb12b
+          path: cpm-reference
+      - uses: actions/setup-java@v4 # major tag policy: Dependabot-reviewed official action
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+      - if: runner.os == 'Linux'
+        run: bash ./gradlew :verification-projectio:spotlessCheck :verification-projectio:test -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
+      - if: runner.os == 'Windows'
+        run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
