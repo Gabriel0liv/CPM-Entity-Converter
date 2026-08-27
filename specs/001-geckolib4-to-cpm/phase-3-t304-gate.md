@@ -1,10 +1,12 @@
 # Gate T304
 
-Status: **[~] AUTOMATED PASS — MANUAL VISUAL PENDING**
+Status: **[x] PASS — AUTOMATED + MANUAL VISUAL**
 
 CPM: `0.6.27`, commit `9272f4f9c36a2bbd6986e6da65bf7091369cb12b`
 
-CI run: `33080416007`
+Automated technical CI run: `33080416007`
+
+Final documentation-only CI run before manual closure: `33080857318`
 
 ## Automated
 
@@ -22,9 +24,9 @@ CI run: `33080416007`
 - T304 evidence bundles uploaded for Ubuntu/Windows: **PASS**
 - visual-diagnostic fixture contract: **PASS**
 
-The A–D fixtures were hardened after the first manual inspection so static errors are visually observable instead of collapsing into near-identical blue cubes. A/B/D now have readable silhouettes/proportions, and fixture C uses six distinct per-face UV rectangles backed by six visually distinct texture regions. This supersedes every earlier T304 visual artifact/hash.
+The A–D fixtures were hardened after the first manual inspection so static errors are visually observable instead of collapsing into near-identical blue cubes. A/B/D have readable silhouettes/proportions, and fixture C uses six distinct per-face UV rectangles backed by visually distinct texture regions.
 
-The automated gate is bound to the exact current-architecture artifact hashes below. Both Ubuntu and Windows regenerated the four artifacts and matched the same committed golden values.
+The gate is bound to the exact current-architecture artifact hashes below. Both Ubuntu and Windows regenerated the four artifacts and matched the same committed golden values.
 
 | Fixture | SHA-256 |
 | --- | --- |
@@ -37,12 +39,14 @@ The source of truth for these values is `verification-projectio/expected-artifac
 
 ## Evidence bundle
 
-Each `projectio-conformance` matrix job publishes `t304-evidence-<os>` containing the exact generated `.cpmproject` files, deterministic manifest/report, and a manual visual handoff bundle. The machine-generated manual fields intentionally remain `visualValidation: NOT RUN`; automation cannot promote them to PASS.
-
-The final redesigned-fixture evidence for run `33080416007` is byte-identical at the `.cpmproject` level between Ubuntu and Windows.
+Each `projectio-conformance` matrix job publishes `t304-evidence-<os>` containing the exact generated `.cpmproject` files, deterministic manifest/report, and a manual visual handoff bundle. The redesigned-fixture artifacts from run `33080416007` are byte-identical at the `.cpmproject` level between Ubuntu and Windows.
 
 ## Manual visual validation
 
-**NOT RUN for the redesigned exact hashes above.**
+**PASS on 2026-08-27 for the exact redesigned hashes above.**
 
-The screenshots/observations gathered against the superseded pre-hardening hashes are useful historical evidence but cannot close this gate. T304 remains `[~]` until the exact redesigned artifacts above are opened in CPM Editor 0.6.27 and the checklist in `phase-3-t304-manual-checklist.md` is completed with screenshots, literal warnings/errors, and save/reopen observations.
+The tester opened all four projects in CPM Editor 0.6.27 and supplied screenshots of the resulting models/hierarchies. A presents a readable humanoid with separated limbs; B visibly preserves `body -> neck -> head -> horn`; C preserves its deep hierarchy and was additionally inspected with `accessory#cube-0` selected against the diagnostic UV texture; D presents a readable quadruped with body, four legs, head and tail. No obvious flattening, missing elements, detached descendants, exploded scale, or invalid static transform was observed.
+
+The tester also performed **Save As -> close -> reopen** on all four redesigned projects and confirmed that they remained visually unchanged. No CPM Editor warning/error was reported during this session.
+
+The detailed record is in `phase-3-t304-manual-checklist.md`. T304 is therefore closed for AC-001–005.
