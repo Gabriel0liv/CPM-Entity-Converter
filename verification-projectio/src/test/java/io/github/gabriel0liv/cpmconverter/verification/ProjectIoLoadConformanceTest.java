@@ -17,10 +17,6 @@ class ProjectIoLoadConformanceTest {
 
     for (String fixture : CurrentFixturePipeline.FIXTURES) {
       ProjectIoSnapshot snapshot = harness.load(pipeline.generate(fixture).bytes());
-      if (!snapshot.loaded()) {
-        System.err.println(
-            fixture + ": " + snapshot.failureType() + ": " + snapshot.failureMessage());
-      }
       assertTrue(snapshot.loaded(), fixture + ": " + snapshot.failureMessage());
       assertEquals(6, snapshot.rootCount(), fixture);
     }
