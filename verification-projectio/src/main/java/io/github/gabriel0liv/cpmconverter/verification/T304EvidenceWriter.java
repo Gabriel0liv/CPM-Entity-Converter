@@ -65,7 +65,8 @@ public final class T304EvidenceWriter {
       String fileName = fixture + ".cpmproject";
       Path artifactPath = artifacts.resolve(fileName);
       Files.write(artifactPath, first.bytes());
-      Files.copy(artifactPath, manualArtifacts.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(
+          artifactPath, manualArtifacts.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
 
       hashes.put(fixture, first.sha256());
       fixtureReports.add(fixtureReport(fixture, first, loaded, roundTrip));
@@ -79,9 +80,11 @@ public final class T304EvidenceWriter {
     Files.write(output.resolve("projectio-report.json"), report);
     Files.write(manual.resolve("projectio-report.json"), report);
 
-    Files.write(manual.resolve("manifest.json"), jsonBytes(manualManifest(converterCommit, hashes)));
+    Files.write(
+        manual.resolve("manifest.json"), jsonBytes(manualManifest(converterCommit, hashes)));
     Files.writeString(manual.resolve("README.md"), manualReadme(), StandardCharsets.UTF_8);
-    Files.writeString(manual.resolve("checklist.md"), manualChecklist(hashes), StandardCharsets.UTF_8);
+    Files.writeString(
+        manual.resolve("checklist.md"), manualChecklist(hashes), StandardCharsets.UTF_8);
   }
 
   private static Map<String, Object> artifactManifest(
@@ -151,8 +154,7 @@ public final class T304EvidenceWriter {
     return result;
   }
 
-  private static Map<String, Object> faceUvs(
-      Map<String, Map<String, FaceUvSnapshot>> values) {
+  private static Map<String, Object> faceUvs(Map<String, Map<String, FaceUvSnapshot>> values) {
     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
     values.forEach(
         (path, faces) -> {
@@ -175,7 +177,8 @@ public final class T304EvidenceWriter {
 
   private static void requireRoundTrip(String fixture, ProjectIoRoundTripResult result) {
     if (result.status() != ProjectIoRoundTripResult.Status.PASS) {
-      throw new IllegalStateException(fixture + " failed ProjectIO round trip: " + result.message());
+      throw new IllegalStateException(
+          fixture + " failed ProjectIO round trip: " + result.message());
     }
     if (!result.before().generatedStoreIds().equals(result.after().generatedStoreIds())) {
       throw new IllegalStateException(fixture + " changed generated store IDs after round trip");
@@ -229,7 +232,8 @@ public final class T304EvidenceWriter {
         new ProcessBuilder("git", "-C", repository.toString(), "rev-parse", "HEAD")
             .redirectErrorStream(true)
             .start();
-    String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+    String output =
+        new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
     if (process.waitFor() != 0 || output.isEmpty()) {
       throw new IllegalStateException("could not resolve converter commit: " + output);
     }
