@@ -26,8 +26,12 @@ class GeckoPerFaceUvParserTest {
             .orElseThrow();
     PerFaceUvIR uv = assertInstanceOf(PerFaceUvIR.class, accessory.cubes().get(0).uv());
     assertEquals(6, uv.faces().size());
-    assertEquals(new FaceUvIR(0, 0, 2, 2), uv.faces().get("north"));
-    assertEquals(new FaceUvIR(0, 0, 2, 2), uv.faces().get("down"));
+    assertEquals(new FaceUvIR(4, 0, 4, 4), uv.faces().get("down"));
+    assertEquals(new FaceUvIR(16, 0, 4, 4), uv.faces().get("east"));
+    assertEquals(new FaceUvIR(8, 0, 4, 4), uv.faces().get("north"));
+    assertEquals(new FaceUvIR(12, 0, 4, 4), uv.faces().get("south"));
+    assertEquals(new FaceUvIR(0, 0, 4, 4), uv.faces().get("up"));
+    assertEquals(new FaceUvIR(20, 0, 4, 4), uv.faces().get("west"));
   }
 
   @Test

@@ -9,9 +9,9 @@
       "expected/invariants.json": "b86b34f55bcf335d3c22c4dd7e0c792475f1869a303cc8bdb27962770059a329",
       "expected/inventory.json": "43e52a7fb4d539656efb70534436b1f12cbd5de270e96ffe7afacd4eb602bf8a",
       "expected/mapping-compiled.json": "fe8a35059dc57053d8d6bd6887e52f948f7ffc88b8caa82066b90038bea3363b",
-      "geometry.geo.json": "35f35819ca1cb27e2398a1d506136e3b894ebd10fd20de463e9f2c87213befbe",
+      "geometry.geo.json": "483f481706b665daeb53532a01745197086608c4af790139385bbfcb3cdb00dc",
       "mapping.yaml": "b7b25ce0fc0a363b30407103b9830a313bee688bd68ae3c29e0066414b457fb2",
-      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
+      "texture.png": "8a5f64eeccc8d781f2c828d4371080160cefc19369a73a4a8eb029fa83df437c"
     },
     "fixture-b-neck": {
       "PROVENANCE.md": "efb6fe99f78c590464b095e338bbac818684b183633b4182bb62c672e463b34b",
@@ -22,9 +22,9 @@
       "expected/invariants.json": "b86b34f55bcf335d3c22c4dd7e0c792475f1869a303cc8bdb27962770059a329",
       "expected/inventory.json": "0f823e7f1aa509c039ec3ec1c32fe838c781b0db2515856fd8d30905058e8279",
       "expected/mapping-compiled.json": "5568711b601b3aa306334b205130c69dbd5920631c8a51c38226440fa7b5e1e5",
-      "geometry.geo.json": "ee2ce81a5604e580e52b9f5c1f26187f9cdf11ac638f54ca596f29c9cf8f3181",
+      "geometry.geo.json": "1a5324aa4f9802062a9c629597d6bd04fd0597324ee35ac0894fb48d41814b01",
       "mapping.yaml": "eccf5371958481127757e00f8472141a1b7b884c79db0d64a23a9cb6496ed10e",
-      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
+      "texture.png": "8a5f64eeccc8d781f2c828d4371080160cefc19369a73a4a8eb029fa83df437c"
     },
     "fixture-c-deep-hierarchy": {
       "PROVENANCE.md": "b6a1beca07e948a432e2666bf988b33bb5e0e04d05ab2e73cf24b0d67a5c2a67",
@@ -35,9 +35,9 @@
       "expected/invariants.json": "b86b34f55bcf335d3c22c4dd7e0c792475f1869a303cc8bdb27962770059a329",
       "expected/inventory.json": "24985aaf9784f069416c79678c7328858a0ae06cad55005925d54a69117df28a",
       "expected/mapping-compiled.json": "c593f998ce5a359833ed0fa3fc8e9974312fbebc639996cab805c881dd22e101",
-      "geometry.geo.json": "18e6b57d2ce7e10857e4902324b28c86c64796c4f02e8e0737f36e5f2bfc1b4c",
+      "geometry.geo.json": "da27f6650db29e951e236fc43535dc648299a1d4e84cfe9eb864e9247c2ffbea",
       "mapping.yaml": "86df3356a7852bf4dee000ce4651052d145b9926fbdcf966493ecbd95de00f01",
-      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
+      "texture.png": "8a5f64eeccc8d781f2c828d4371080160cefc19369a73a4a8eb029fa83df437c"
     },
     "fixture-d-quadruped": {
       "PROVENANCE.md": "f00f6d052c60c0a241348bfe61632e86b39002d2ae1967693cc952184e7fb2ed",
@@ -48,9 +48,9 @@
       "expected/invariants.json": "cea61dd114982e29ad51b17730a0846b2d25fe0a96ac16b9347bca8c4b79169f",
       "expected/inventory.json": "86e1f019eca56c95283ca3bd0feaf810fe79b3c43a569a6f1d92170078c7689b",
       "expected/mapping-compiled.json": "f2fcd1b873a482e8e011fbf62e755e4e1b9b62a8d7657aa57699d46932ce2ad8",
-      "geometry.geo.json": "0ff2dd906d01cfddb98c39ca367070aa7498fb491895d817b8315074982a532a",
+      "geometry.geo.json": "1b7777c1a092c335c83e5a8bc3e97d58cf2e734f7e16676d0e7af74b66be6fe1",
       "mapping.yaml": "ca42929401c9538f784f4b69e0c4a21b8a0e4224617465d4e8560dfedece5097",
-      "texture.png": "a75447a6c1641d33c19aec1d9ba681da7e74053e756f0d17e01ab07cd14cd48e"
+      "texture.png": "8a5f64eeccc8d781f2c828d4371080160cefc19369a73a4a8eb029fa83df437c"
     }
   },
   "marker": "NON_PRODUCTION"

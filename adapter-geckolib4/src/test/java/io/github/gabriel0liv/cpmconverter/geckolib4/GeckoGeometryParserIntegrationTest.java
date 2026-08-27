@@ -29,8 +29,8 @@ class GeckoGeometryParserIntegrationTest {
         model.bones().stream().map(bone -> bone.name()).toList());
     assertEquals(
         java.util.List.of("body"), model.roots().stream().map(root -> root.value()).toList());
-    assertVec(new Vec3d(0, -8, 0), model.bones().get(1).bind().translation());
-    assertVec(new Vec3d(-3, -7, 0), model.bones().get(2).bind().translation());
+    assertVec(new Vec3d(0, 0, 0), model.bones().get(1).bind().translation());
+    assertVec(new Vec3d(-5, 2, 0), model.bones().get(2).bind().translation());
     assertEquals(1, model.bones().get(0).cubes().size());
   }
 

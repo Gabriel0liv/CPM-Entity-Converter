@@ -46,7 +46,10 @@ for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name.startswith('f
  if d.name.endswith('deep-hierarchy') and not isinstance(next(b for b in bones if b['name']=='accessory')['cubes'][0]['uv'],dict): raise SystemExit('fixture C requires per-face UV')
  if d.name.endswith('deep-hierarchy'):
   accessory=next(b for b in bones if b['name']=='accessory')['cubes'][0]
-  if accessory.get('pivot') != [1.5,2.5,0.5] or accessory.get('rotation') != [12,0,27]: raise SystemExit('fixture C requires non-trivial cube pivot/rotation')
+  if accessory.get('pivot') != [5,36,0] or accessory.get('rotation') != [12,0,27]: raise SystemExit('fixture C requires non-trivial cube pivot/rotation')
+  faces=accessory.get('uv',{})
+  regions={(tuple(face.get('uv',[])),tuple(face.get('uv_size',[]))) for face in faces.values() if isinstance(face,dict)}
+  if len(faces) != 6 or len(regions) != 6: raise SystemExit('fixture C requires six distinct per-face UV regions')
   by_name={bone['name']:bone for bone in bones}
   if by_name['jaw'].get('parent') != 'head' or by_name['accessory'].get('parent') != 'head': raise SystemExit('fixture C requires deep head descendants')
   look=compiled.get('look',{})

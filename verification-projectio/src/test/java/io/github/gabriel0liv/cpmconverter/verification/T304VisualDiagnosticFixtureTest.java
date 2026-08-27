@@ -23,24 +23,24 @@ class T304VisualDiagnosticFixtureTest {
   void fixtureAHasReadableHumanoidProportions() throws Exception {
     CurrentFixtureArtifact artifact = pipeline.generate("fixture-a-humanoid");
 
-    assertEquals(new Vec3d(0, -24, 0), element(artifact, "body").transform().translation());
-    assertEquals(new Vec3d(8, 12, 4), element(artifact, "body#cube-0").size());
-    assertEquals(new Vec3d(8, 8, 8), element(artifact, "head#cube-0").size());
-    assertEquals(new Vec3d(4, 12, 4), element(artifact, "left_arm#cube-0").size());
-    assertEquals(new Vec3d(4, 12, 4), element(artifact, "right_arm#cube-0").size());
-    assertEquals(new Vec3d(4, 12, 4), element(artifact, "left_leg#cube-0").size());
-    assertEquals(new Vec3d(4, 12, 4), element(artifact, "right_leg#cube-0").size());
+    assertVec(new Vec3d(0, -24, 0), element(artifact, "body").transform().translation());
+    assertVec(new Vec3d(8, 12, 4), element(artifact, "body#cube-0").size());
+    assertVec(new Vec3d(8, 8, 8), element(artifact, "head#cube-0").size());
+    assertVec(new Vec3d(4, 12, 4), element(artifact, "left_arm#cube-0").size());
+    assertVec(new Vec3d(4, 12, 4), element(artifact, "right_arm#cube-0").size());
+    assertVec(new Vec3d(4, 12, 4), element(artifact, "left_leg#cube-0").size());
+    assertVec(new Vec3d(4, 12, 4), element(artifact, "right_leg#cube-0").size());
   }
 
   @Test
   void fixtureBHasReadableNeckHeadHornChain() throws Exception {
     CurrentFixtureArtifact artifact = pipeline.generate("fixture-b-neck");
 
-    assertEquals(new Vec3d(0, -24, 0), element(artifact, "body").transform().translation());
-    assertEquals(new Vec3d(8, 12, 4), element(artifact, "body#cube-0").size());
-    assertEquals(new Vec3d(4, 4, 4), element(artifact, "neck#cube-0").size());
-    assertEquals(new Vec3d(8, 8, 8), element(artifact, "head#cube-0").size());
-    assertEquals(new Vec3d(2, 6, 2), element(artifact, "horn#cube-0").size());
+    assertVec(new Vec3d(0, -24, 0), element(artifact, "body").transform().translation());
+    assertVec(new Vec3d(8, 12, 4), element(artifact, "body#cube-0").size());
+    assertVec(new Vec3d(4, 4, 4), element(artifact, "neck#cube-0").size());
+    assertVec(new Vec3d(8, 8, 8), element(artifact, "head#cube-0").size());
+    assertVec(new Vec3d(2, 6, 2), element(artifact, "horn#cube-0").size());
   }
 
   @Test
@@ -73,14 +73,14 @@ class T304VisualDiagnosticFixtureTest {
   void fixtureDHasReadableQuadrupedProportions() throws Exception {
     CurrentFixtureArtifact artifact = pipeline.generate("fixture-d-quadruped");
 
-    assertEquals(new Vec3d(0, -16, 0), element(artifact, "body").transform().translation());
-    assertEquals(new Vec3d(10, 6, 16), element(artifact, "body#cube-0").size());
-    assertEquals(new Vec3d(6, 6, 6), element(artifact, "head#cube-0").size());
-    assertEquals(new Vec3d(2, 8, 2), element(artifact, "leg_fl#cube-0").size());
-    assertEquals(new Vec3d(2, 8, 2), element(artifact, "leg_fr#cube-0").size());
-    assertEquals(new Vec3d(2, 8, 2), element(artifact, "leg_bl#cube-0").size());
-    assertEquals(new Vec3d(2, 8, 2), element(artifact, "leg_br#cube-0").size());
-    assertEquals(new Vec3d(2, 2, 8), element(artifact, "tail#cube-0").size());
+    assertVec(new Vec3d(0, -16, 0), element(artifact, "body").transform().translation());
+    assertVec(new Vec3d(10, 6, 16), element(artifact, "body#cube-0").size());
+    assertVec(new Vec3d(6, 6, 6), element(artifact, "head#cube-0").size());
+    assertVec(new Vec3d(2, 8, 2), element(artifact, "leg_fl#cube-0").size());
+    assertVec(new Vec3d(2, 8, 2), element(artifact, "leg_fr#cube-0").size());
+    assertVec(new Vec3d(2, 8, 2), element(artifact, "leg_bl#cube-0").size());
+    assertVec(new Vec3d(2, 8, 2), element(artifact, "leg_br#cube-0").size());
+    assertVec(new Vec3d(2, 2, 8), element(artifact, "tail#cube-0").size());
   }
 
   private static CpmElementV1 element(CurrentFixtureArtifact artifact, String name) {
@@ -100,5 +100,11 @@ class T304VisualDiagnosticFixtureTest {
       if (match != null) return match;
     }
     return null;
+  }
+
+  private static void assertVec(Vec3d expected, Vec3d actual) {
+    assertEquals(expected.x(), actual.x(), 1e-9);
+    assertEquals(expected.y(), actual.y(), 1e-9);
+    assertEquals(expected.z(), actual.z(), 1e-9);
   }
 }
