@@ -59,18 +59,10 @@ public final class ExpectedStaticSnapshot {
       String rootPath = part.name().toLowerCase(Locale.ROOT);
       for (CpmElementV1 child : root.children()) {
         append(
-            child,
-            rootPath,
-            storeIds,
-            elements,
-            parents,
-            boxUvOrigins,
-            perFacePresence,
-            perFaceUv);
+            child, rootPath, storeIds, elements, parents, boxUvOrigins, perFacePresence, perFaceUv);
       }
     }
-    return new ExpectedStaticSnapshot(
-        elements, parents, boxUvOrigins, perFacePresence, perFaceUv);
+    return new ExpectedStaticSnapshot(elements, parents, boxUvOrigins, perFacePresence, perFaceUv);
   }
 
   public Map<String, Element> generatedElementsByPath() {
@@ -130,15 +122,7 @@ public final class ExpectedStaticSnapshot {
     }
 
     for (CpmElementV1 child : element.children()) {
-      append(
-          child,
-          path,
-          storeIds,
-          elements,
-          parents,
-          boxUvOrigins,
-          perFacePresence,
-          perFaceUv);
+      append(child, path, storeIds, elements, parents, boxUvOrigins, perFacePresence, perFaceUv);
     }
   }
 
@@ -176,8 +160,7 @@ public final class ExpectedStaticSnapshot {
     return Collections.unmodifiableMap(new LinkedHashMap<>(source));
   }
 
-  private static <K, K2, V> Map<K, Map<K2, V>> immutableNestedMap(
-      Map<K, Map<K2, V>> source) {
+  private static <K, K2, V> Map<K, Map<K2, V>> immutableNestedMap(Map<K, Map<K2, V>> source) {
     LinkedHashMap<K, Map<K2, V>> copy = new LinkedHashMap<>();
     source.forEach((key, value) -> copy.put(key, immutableMap(value)));
     return Collections.unmodifiableMap(copy);
