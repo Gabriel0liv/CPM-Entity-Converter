@@ -18,8 +18,7 @@ class ProjectIoUvTextureConformanceTest {
           ExpectedStaticSnapshot.from(artifact.project(), artifact.storeIds());
       ProjectIoSnapshot loaded = harness.load(artifact.bytes());
 
-      assertTrue(
-          loaded.elements().stream().anyMatch(ProjectIoElementSnapshot::texture), fixture);
+      assertTrue(loaded.elements().stream().anyMatch(ProjectIoElementSnapshot::texture), fixture);
       assertTrue(
           loaded.elements().stream()
               .filter(ProjectIoElementSnapshot::texture)
