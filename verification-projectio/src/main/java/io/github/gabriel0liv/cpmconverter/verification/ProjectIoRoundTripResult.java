@@ -12,8 +12,7 @@ public record ProjectIoRoundTripResult(
     message = message == null ? "" : message;
   }
 
-  public static ProjectIoRoundTripResult pass(
-      ProjectIoSnapshot before, ProjectIoSnapshot after) {
+  public static ProjectIoRoundTripResult pass(ProjectIoSnapshot before, ProjectIoSnapshot after) {
     return new ProjectIoRoundTripResult(Status.PASS, before, after, "");
   }
 
