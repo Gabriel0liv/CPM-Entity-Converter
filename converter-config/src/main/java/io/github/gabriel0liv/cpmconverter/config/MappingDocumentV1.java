@@ -2,8 +2,10 @@ package io.github.gabriel0liv.cpmconverter.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @JsonIgnoreProperties(ignoreUnknown = false)
 public record MappingDocumentV1(
@@ -60,6 +62,10 @@ public record MappingDocumentV1(
       Double headInfluence,
       Boolean allowOverrotation,
       Map<String, Double> limits) {
+    public Look {
+      limits = Collections.unmodifiableMap(new TreeMap<>(limits == null ? Map.of() : limits));
+    }
+
     public Look(
         String composition, Double neckInfluence, Double headInfluence, Boolean allowOverrotation) {
       this(null, null, composition, neckInfluence, headInfluence, allowOverrotation, Map.of());

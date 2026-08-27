@@ -3,12 +3,21 @@ package io.github.gabriel0liv.cpmconverter.config;
 import io.github.gabriel0liv.cpmconverter.diagnostics.*;
 import io.github.gabriel0liv.cpmconverter.ir.*;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /** Resolves every name-bearing mapping field to stable IR IDs. */
 public final class MappingCompiler {
   public Result<SemanticRigMap> compile(MappingDocumentV1 document, ModelIndex index) {
-    DiagnosticBag diagnostics = new DiagnosticBag();
+    DiagnosticBag diagnostics = new MappingValidator().validate(document);
+    if (diagnostics.hasErrors()) return Result.failure(diagnostics);
+    if (index == null) {
+      return Result.failure(
+          diagnostics.add(
+              Diagnostic.of(
+                  Severity.ERROR, DiagnosticCodes.INTERNAL_ERROR, "model index is null")));
+    }
+
     var bones = new LinkedHashMap<String, BoneId>();
     for (var entry : document.bones().entrySet()) {
       var result = index.bone(entry.getValue());
@@ -50,7 +59,8 @@ public final class MappingCompiler {
               source.composition(),
               source.neckInfluence() == null ? 0 : source.neckInfluence(),
               source.headInfluence() == null ? 1 : source.headInfluence(),
-              Boolean.TRUE.equals(source.allowOverrotation()));
+              Boolean.TRUE.equals(source.allowOverrotation()),
+              source.limits() == null ? Map.of() : source.limits());
     }
 
     var states = new LinkedHashMap<String, CompiledStateMapping>();

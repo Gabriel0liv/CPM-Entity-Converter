@@ -105,12 +105,12 @@ Exemplo estrutural:
 
 `duration` é inteiro em milissegundos. Frames são uniformemente espaçados; não há timestamp por frame. `InterpolatorType` é único por clip. O runtime reseta a pose antes de aplicar animações, ordena por prioridade crescente e aplica cada componente como absoluto ou aditivo.
 
-O campo `loop` e o interpolador devem ser coerentes:
+No output deste conversor, o campo `loop` e o interpolador devem ser coerentes:
 
 - `loop: true` → `linear_loop` (ou outro interpolador `_loop` aprovado);
 - `loop: false` → `linear_single` (ou outro interpolador `_single`).
 
-O loader aceita combinações estranhas, mas o converter/validator as rejeita.
+O `AnimationsLoaderV1` do CPM 0.6.27 lê `loop` e `interpolator` de forma independente. Por isso o perfil `EXISTING_V1` aceita combinações loader-compatible mesmo quando são estranhas; o perfil `GENERATED_V1` rejeita combinações incoerentes porque elas violam o contrato determinístico do conversor.
 
 ### Timeline CPM
 
@@ -154,6 +154,8 @@ Para `HEAD_ROTATION_YAW/PITCH`, `VanillaPose.getTime` produz um tempo dinâmico 
 4. **Semântica:** árvore acíclica, IDs/referências, duração/frames, UV, números finitos.
 5. **Conformidade:** carregar no harness `ProjectIO` oficial fixado pelo S003.
 6. **Aceite lógico:** descompactar, normalizar JSON/PNG e comparar hash lógico entre execuções.
+
+O validator separa dois contratos. `EXISTING_V1` verifica compatibilidade estrutural/semântica sem exigir convenções exclusivas do nosso writer. `GENERATED_V1` adiciona os seis roots vanilla na ordem canônica, `storeID` pre-order `1000..N`, entries lexicográficas `STORED`, timestamp ZIP fixo e JSON canônico byte-a-byte.
 
 ## Evidências
 

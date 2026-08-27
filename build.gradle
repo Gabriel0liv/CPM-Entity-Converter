@@ -18,7 +18,15 @@ subprojects {
     dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2' }
     dependencyLocking { lockAllConfigurations() }
 }
-configure([project(':converter-core'), project(':converter-config'), project(':test-fixtures')]) {
+configure([
+    project(':converter-core'),
+    project(':converter-config'),
+    project(':adapter-geckolib4'),
+    project(':writer-cpm'),
+    project(':validator-cpm'),
+    project(':test-fixtures'),
+    project(':verification-projectio')
+]) {
     apply plugin: 'com.diffplug.spotless'
     spotless {
         java {

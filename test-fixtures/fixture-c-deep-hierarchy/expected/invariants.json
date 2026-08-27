@@ -1,5 +1,8 @@
 {
   "acyclic": true,
+  "animationCorrectness": true,
+  "semanticCorrectness": true,
   "sourceOrderPreserved": true,
+  "structuralCorrectness": true,
   "thirdPartyAssets": false
 }

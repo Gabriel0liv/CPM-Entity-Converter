@@ -1,5 +1,15 @@
 # Requisitos
 
+## Definição normativa de conversão correta
+
+O MVP só pode declarar uma conversão "correta" quando cumprir simultaneamente:
+
+- **structural correctness**: hierarquia, pivôs, cubes, UV, textura e bind world-space equivalentes dentro da tolerância;
+- **animation correctness**: samples emitidos representam a pose Gecko dentro da tolerância; reamostragem é bounded-equivalent, não matematicamente lossless;
+- **semantic correctness**: estados e inputs do jogador, especialmente yaw/pitch, combinam com a animação convertida sem double transform, snapping, perda do movimento autoral ou deformação da hierarquia.
+
+Abrir no CPM sem erro não é suficiente para declarar sucesso.
+
 ## Funcionais
 
 - **FR-001** Ler e validar `.geo.json` GeckoLib 4.4.9/geometry 1.12.0.
@@ -12,15 +22,15 @@
 - **FR-008** Converter box UV e UV por face, preservando orientação e mirror.
 - **FR-009** Converter pivôs/bind local com mudança de base documentada.
 - **FR-010** Preservar pose neutra e transformações herdadas.
-- **FR-011** Criar roots/anchors CPM válidos conforme estratégia configurada.
-- **FR-012** Manter partes adicionais como descendentes, inclusive horn/jaw/accessory.
+- **FR-011** Criar roots/anchors CPM válidos conforme estratégia configurada; single-anchor usa `entity_root` sintético sem geometria para isolar transformação global CPM da hierarquia Gecko.
+- **FR-012** Manter partes adicionais como descendentes, inclusive horn/jaw/accessory, preservando a hierarquia Gecko sob `entity_root` salvo rebake explicitamente world-space preserving.
 - **FR-013** Mapear clips a `STANDING`, `WALKING`, `RUNNING`, `JUMPING`, `FALLING`, `HURT`, `DYING` e demais `VanillaPose` suportadas.
 - **FR-014** Converter keyframes de position, rotation e scale, inclusive timestamps distintos e canais ausentes.
 - **FR-015** Avaliar easing built-in e reamostrar no fps configurado.
 - **FR-016** Tratar loop, play-once e hold sem equivalência silenciosa.
 - **FR-017** Distinguir clip absoluto/aditivo e transform space no IR.
-- **FR-018** Gerar head yaw/pitch sem sobrescrever base clip nem aplicar dupla rotação.
-- **FR-019** Aplicar influence de neck/head conforme `composition`; neck ausente e não configurado é válido.
+- **FR-018** Gerar head yaw/pitch como camada semântica sobre a pose base já animada, no espaço correto da hierarquia, sem sobrescrever o canal autoral nem aplicar dupla rotação vanilla/explicita.
+- **FR-019** Aplicar influence e limits de neck/head conforme `composition`; `look.limits` deve sobreviver schema→DTO→compile e ser aplicado antes da distribuição; neck ausente e não configurado é válido.
 - **FR-020** Gerar ZIP `.cpmproject` V1, JSON/entries determinísticos.
 - **FR-021** Gerar `storeID` determinístico, único e seguro para JSON/JS; resolver todas as refs.
 - **FR-022** Validar output em container, schema, grafo, referências, UV, frames e determinismo lógico.
@@ -54,11 +64,13 @@
 - **NFR-018** Coleções observáveis usam ordem normativa explícita; nenhuma saída depende de `HashMap`.
 - **NFR-019** Report separa input content, logical model, artifact byte e report hashes; paths absolutos não afetam o modelo lógico.
 - **NFR-020** Temporários são removidos em sucesso e falha; output anterior nunca é corrompido.
+- **NFR-021** Qualquer matrix resultante de rebake/look que não seja representável como TRS CPM, incluindo shear, deve falhar com diagnostic ou usar estratégia explicitamente suportada; aproximação silenciosa é proibida.
+- **NFR-022** Conversão Euler deve manter continuidade de branch em crossings como `+179°→-179°` e preservar source-authored winding enquanto essa informação existir no IR.
 
 ## Restrições
 
 - **CON-001** Somente GeckoLib 4.4.9, Minecraft 1.20.1, Forge, geometry 1.12.0, `.geo.json`, `.animation.json`, PNG e mapping JSON/YAML no MVP.
-- **CON-002** `poly_mesh`, eventos/sons/partículas e Molang dinâmico não são convertidos.
-- **CON-003** Head retargeting de produção depende de HEAD-001 aprovado.
+- **CON-002** `poly_mesh`, eventos/sons/partículas, Molang dinâmico e lógica procedural Java/render-side não representada nos inputs suportados não são convertidos.
+- **CON-003** Head retargeting de produção depende de HEAD-001 aprovado; a arquitetura single-anchor pode ser implementada antes do gate, mas não declarada visualmente aceita.
 - **CON-004** Não copiar código CPM/Gecko sem revisão de licença/proveniência.
 - **CON-005** Fase 1 só inicia após T007, S003, S001/S002, S004 e ADRs essenciais aceitos na ordem normativa.

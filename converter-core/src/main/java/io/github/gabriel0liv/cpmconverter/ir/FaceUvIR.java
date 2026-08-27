@@ -1,7 +1,13 @@
 package io.github.gabriel0liv.cpmconverter.ir;
 
-public record FaceUvIR(int u, int v, int width, int height) {
+/** Gecko face UV rectangle. Signed extents are preserved because their sign encodes orientation. */
+public record FaceUvIR(double u, double v, double width, double height) {
   public FaceUvIR {
-    if (u < 0 || v < 0 || width < 0 || height < 0) throw new IllegalArgumentException("face UV");
+    if (!Double.isFinite(u)
+        || !Double.isFinite(v)
+        || !Double.isFinite(width)
+        || !Double.isFinite(height)) {
+      throw new IllegalArgumentException("UV values must be finite");
+    }
   }
 }

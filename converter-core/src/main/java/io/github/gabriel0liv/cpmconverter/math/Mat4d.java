@@ -106,6 +106,56 @@ public final class Mat4d {
     return new Mat4d(o);
   }
 
+  /**
+   * Decomposes an affine {@code T × R × S} matrix when it is exactly representable by CPM-style TRS
+   * within {@code tolerance}. Shear and singular scale are rejected rather than approximated.
+   */
+  public Transform decomposeTrs(double tolerance) {
+    if (!Double.isFinite(tolerance) || tolerance <= 0)
+      throw new IllegalArgumentException("tolerance must be finite and positive");
+    if (Math.abs(values[12]) > tolerance
+        || Math.abs(values[13]) > tolerance
+        || Math.abs(values[14]) > tolerance
+        || Math.abs(values[15] - 1) > tolerance)
+      throw new IllegalStateException("matrix is not affine");
+
+    Vec3d columnX = new Vec3d(values[0], values[4], values[8]);
+    Vec3d columnY = new Vec3d(values[1], values[5], values[9]);
+    Vec3d columnZ = new Vec3d(values[2], values[6], values[10]);
+    double scaleX = columnX.length();
+    double scaleY = columnY.length();
+    double scaleZ = columnZ.length();
+    if (scaleX <= tolerance || scaleY <= tolerance || scaleZ <= tolerance)
+      throw new IllegalStateException("singular TRS scale");
+
+    Vec3d axisX = columnX.multiply(1 / scaleX);
+    Vec3d axisY = columnY.multiply(1 / scaleY);
+    Vec3d axisZ = columnZ.multiply(1 / scaleZ);
+    if (Math.abs(axisX.dot(axisY)) > tolerance
+        || Math.abs(axisX.dot(axisZ)) > tolerance
+        || Math.abs(axisY.dot(axisZ)) > tolerance)
+      throw new IllegalStateException("matrix contains shear and is not representable as TRS");
+
+    double determinant = axisX.dot(axisY.cross(axisZ));
+    if (Math.abs(Math.abs(determinant) - 1) > tolerance * 10)
+      throw new IllegalStateException("rotation basis is not orthonormal");
+
+    if (determinant < 0) {
+      scaleX = -scaleX;
+      axisX = axisX.multiply(-1);
+    }
+
+    Mat4d rotationMatrix =
+        new Mat4d(
+            new double[] {
+              axisX.x(), axisY.x(), axisZ.x(), 0, axisX.y(), axisY.y(), axisZ.y(), 0, axisX.z(),
+              axisY.z(), axisZ.z(), 0, 0, 0, 0, 1
+            });
+    Quatd rotation = Quatd.fromRotationMatrix(rotationMatrix);
+    Vec3d translation = new Vec3d(values[3], values[7], values[11]);
+    return new Transform(translation, rotation, new Vec3d(scaleX, scaleY, scaleZ));
+  }
+
   public double[] valuesCopy() {
     return values.clone();
   }

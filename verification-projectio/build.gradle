@@ -1,0 +1,74 @@
+def referenceProperty = providers.gradleProperty('cpmReferenceDir')
+def referenceRoot = referenceProperty.map { file(it) }
+def cpmRoot = referenceRoot.map { candidate ->
+    def nested = file("${candidate}/CustomPlayerModels")
+    nested.isDirectory() ? nested : candidate
+}
+def cpmSource = cpmRoot.map { file("${it}/src/shared/java") }
+def cpmResources = cpmRoot.map { file("${it}/src/shared/resources") }
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            if (referenceProperty.present) srcDir cpmSource.get()
+        }
+        resources {
+            if (referenceProperty.present) srcDir cpmResources.get()
+        }
+    }
+}
+
+dependencies {
+    implementation project(':converter-core')
+    implementation project(':converter-config')
+    implementation project(':adapter-geckolib4')
+    implementation project(':writer-cpm')
+    implementation project(':validator-cpm')
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.guava:guava:21.0'
+    compileOnly 'com.mojang:brigadier:1.0.18'
+    compileOnly 'io.netty:netty-all:4.1.25.Final'
+}
+
+def verifyCpmReference = tasks.register('verifyCpmReference') {
+    onlyIf { referenceProperty.present }
+    doLast {
+        def checkout = cpmRoot.get()
+        def projectIo = file("${checkout}/src/shared/java/com/tom/cpm/shared/editor/project/ProjectIO.java")
+        if (!projectIo.isFile()) throw new GradleException("Invalid CPM checkout: ${checkout}")
+        def observed = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', '-C', checkout.absolutePath, 'rev-parse', 'HEAD'
+            standardOutput = observed
+        }
+        def expected = '9272f4f9c36a2bbd6986e6da65bf7091369cb12b'
+        if (observed.toString().trim() != expected) {
+            throw new GradleException("CPM commit mismatch: expected ${expected}, observed ${observed.toString().trim()}")
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn verifyCpmReference
+    onlyIf { referenceProperty.present }
+}
+tasks.named('compileTestJava') { onlyIf { referenceProperty.present } }
+tasks.named('test') { onlyIf { referenceProperty.present } }
+
+def t304EvidenceBundle = tasks.register('t304EvidenceBundle', JavaExec) {
+    group = 'verification'
+    description = 'Generate deterministic T304 ProjectIO and manual-handoff evidence.'
+    dependsOn tasks.named('classes')
+    onlyIf { referenceProperty.present }
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'io.github.gabriel0liv.cpmconverter.verification.T304EvidenceWriter'
+    workingDir rootProject.projectDir
+}
+
+tasks.register('t304ProjectIoConformance') {
+    group = 'verification'
+    description = 'Run the complete pinned ProjectIO static conformance gate.'
+    dependsOn tasks.named('spotlessCheck'), tasks.named('test'), t304EvidenceBundle
+    onlyIf { referenceProperty.present }
+}

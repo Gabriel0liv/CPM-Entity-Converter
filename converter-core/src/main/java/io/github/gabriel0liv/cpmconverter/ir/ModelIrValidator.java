@@ -69,6 +69,12 @@ public final class ModelIrValidator {
         if (!bones.containsKey(cube.bone())) {
           diagnostics =
               diagnostics.add(error(DiagnosticCodes.IR_CUBE_BONE_MISSING, "cube bone not found"));
+        } else if (!bone.id().equals(cube.bone())) {
+          diagnostics =
+              diagnostics.add(
+                  error(
+                      DiagnosticCodes.IR_CUBE_BONE_MISMATCH,
+                      "cube declared bone differs from containing bone"));
         }
       }
     }

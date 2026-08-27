@@ -9,6 +9,18 @@
     "warningsAsErrors": false
   },
   "ignoreRules": [],
+  "look": {
+    "allowOverrotation": false,
+    "composition": "inherited_split",
+    "headId": "fixture-b-neck:head",
+    "headInfluence": 0.65,
+    "limits": {
+      "pitch": 45.0,
+      "yaw": 70.0
+    },
+    "neckId": "fixture-b-neck:neck",
+    "neckInfluence": 0.35
+  },
   "mappingPath": "mapping.yaml",
   "rootRoles": {
     "body": "fixture-b-neck:body"
