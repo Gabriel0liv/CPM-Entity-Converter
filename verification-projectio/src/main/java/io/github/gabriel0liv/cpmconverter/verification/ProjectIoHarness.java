@@ -11,6 +11,7 @@ import com.tom.cpm.shared.editor.project.ProjectFile;
 import com.tom.cpm.shared.editor.project.ProjectIO;
 import com.tom.cpm.shared.model.render.PerFaceUV;
 import com.tom.cpm.shared.model.render.VanillaModelPart;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,14 +37,34 @@ public final class ProjectIoHarness {
 
   public ProjectIoSnapshot load(Path archive) {
     try {
-      CpmHeadlessEnvironment.initialize();
-      ProjectFile project = new ProjectFile();
-      project.load(archive.toFile()).join();
-      Editor editor = CpmHeadlessEnvironment.newEditor();
-      ProjectIO.loadProject(editor, project);
-      return snapshot(editor);
+      return snapshot(loadEditor(archive));
     } catch (Throwable error) {
       return ProjectIoSnapshot.failure(rootCause(error));
+    }
+  }
+
+  public ProjectIoRoundTripResult roundTrip(byte[] archive) {
+    Path source = null;
+    Path savedPath = null;
+    ProjectIoSnapshot before = null;
+    try {
+      source = Files.createTempFile("t304-projectio-source-", ".cpmproject");
+      Files.write(source, archive);
+      Editor editor = loadEditor(source);
+      before = snapshot(editor);
+
+      ProjectFile saved = new ProjectFile();
+      ProjectIO.saveProject(editor, saved);
+      savedPath = Files.createTempFile("t304-projectio-roundtrip-", ".cpmproject");
+      saved.save(savedPath.toFile()).join();
+
+      Editor reopened = loadEditor(savedPath);
+      return ProjectIoRoundTripResult.pass(before, snapshot(reopened));
+    } catch (Throwable error) {
+      return ProjectIoRoundTripResult.fail(before, rootCause(error));
+    } finally {
+      deleteTemporary(source);
+      deleteTemporary(savedPath);
     }
   }
 
@@ -55,6 +76,15 @@ public final class ProjectIoHarness {
         editor.animations.size(),
         animationReferenceCount(editor),
         elements);
+  }
+
+  private Editor loadEditor(Path archive) throws Exception {
+    CpmHeadlessEnvironment.initialize();
+    ProjectFile project = new ProjectFile();
+    project.load(archive.toFile()).join();
+    Editor editor = CpmHeadlessEnvironment.newEditor();
+    ProjectIO.loadProject(editor, project);
+    return editor;
   }
 
   private void append(
@@ -146,5 +176,14 @@ public final class ProjectIoHarness {
       current = current.getCause();
     }
     return current;
+  }
+
+  private void deleteTemporary(Path path) {
+    if (path == null) return;
+    try {
+      Files.deleteIfExists(path);
+    } catch (IOException ignored) {
+      // Verification result is based on ProjectIO semantics, not temporary-file cleanup.
+    }
   }
 }
