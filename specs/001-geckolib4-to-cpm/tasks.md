@@ -88,7 +88,7 @@ Gate normativo: T007 → S003 → S001/S002 → S004 → aceite dos ADRs essenci
 - [x] T301 IDs determinísticos (FR-021) — roots vanilla preservam IDs reservados; elementos recebem `storeID` sequencial a partir de 1000 em preorder canônico, independente da ordem de mapas auxiliares, com limite exato `2^53-1`; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32917979133.
 - [x] T302 writer ZIP/JSON/PNG determinístico (FR-020) — `config.json` canônico + newline LF, ZIP `STORED` com ordem/timestamp fixos, `skin.png` byte-identical, `storeID` T301 serializado sem renumeração, box/per-face UV inteiro exato e `CPM_UV_UNREPRESENTABLE` para quantização necessária; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 32931517560.
 - [x] T303 validator CPM em camadas (FR-022/028) — perfis `EXISTING_V1`/`GENERATED_V1`, validação container/schema/graph/UV/animações/referências/determinismo e regressão S003 M2–M5; gate Ubuntu/Windows + reprodutibilidade/fixtures/oracle verde no run 33025965041.
-- [~] T304 conformidade `ProjectIO` e visual estático (AC-001–005) — gate automatizado ProjectIO/round-trip/determinismo Ubuntu+Windows verde no run 33061294958; checklist visual CPM 0.6.27 pendente.
+- [x] T304 conformidade `ProjectIO` e visual estático (AC-001–005) — ProjectIO/round-trip/determinismo Ubuntu+Windows verde no run 33080416007; fixtures visuais diagnósticas; inspeção manual CPM 0.6.27 + Save As/reopen A–D aprovada em 2026-08-27.
 
 ## Fase 4
 
