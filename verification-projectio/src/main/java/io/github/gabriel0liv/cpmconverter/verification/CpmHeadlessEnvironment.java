@@ -27,8 +27,7 @@ final class CpmHeadlessEnvironment {
   static synchronized void initialize() {
     if (initialized) return;
 
-    File config =
-        new File(System.getProperty("java.io.tmpdir"), "cpm-t304-verification-only.json");
+    File config = new File(System.getProperty("java.io.tmpdir"), "cpm-t304-verification-only.json");
     com.tom.cpl.item.ItemStackHandler<Object> itemHandler =
         new com.tom.cpl.item.ItemStackHandler<>() {
           @Override
@@ -359,7 +358,8 @@ final class CpmHeadlessEnvironment {
                     if (method.getName().equals("getBuiltinTags")) return tags[0];
                     if (method.getName().equals("getBiomeHandler")) return biomeHandler;
                     if (method.getName().equals("getSkinType")) return SkinType.DEFAULT;
-                    if (method.getName().equals("getImageIO")) return new com.tom.cpl.util.AWTImageIO();
+                    if (method.getName().equals("getImageIO"))
+                      return new com.tom.cpl.util.AWTImageIO();
                     if (method.getName().equals("executeOnGameThread")) {
                       ((Runnable) args[0]).run();
                       return null;
@@ -374,7 +374,8 @@ final class CpmHeadlessEnvironment {
       field.set(null, client);
       tags[0] = new AllTagManagers();
     } catch (ReflectiveOperationException error) {
-      throw new IllegalStateException("Unable to initialize verification-only CPM client stub", error);
+      throw new IllegalStateException(
+          "Unable to initialize verification-only CPM client stub", error);
     }
     initialized = true;
   }
