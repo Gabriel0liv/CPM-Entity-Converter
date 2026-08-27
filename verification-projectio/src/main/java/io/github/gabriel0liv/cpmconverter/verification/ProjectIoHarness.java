@@ -2,6 +2,7 @@ package io.github.gabriel0liv.cpmconverter.verification;
 
 import com.tom.cpl.math.Vec3f;
 import com.tom.cpm.shared.editor.Editor;
+import com.tom.cpm.shared.editor.elements.ElementType;
 import com.tom.cpm.shared.editor.elements.ModelElement;
 import com.tom.cpm.shared.editor.project.ProjectFile;
 import com.tom.cpm.shared.editor.project.ProjectIO;
@@ -61,8 +62,8 @@ public final class ProjectIoHarness {
             element.v,
             vector(element.pos),
             vector(element.rotation),
-            vector(element.scale),
-            vector(element.meshScale),
+            scaleVector(element, element.scale),
+            scaleVector(element, element.meshScale),
             element.faceUV != null));
     for (ModelElement child : element.children) append(output, child, path);
   }
@@ -70,6 +71,13 @@ public final class ProjectIoHarness {
   private String stableName(ModelElement element) {
     if (element.typeData instanceof VanillaModelPart vanillaPart) return vanillaPart.getName();
     return element.name == null ? "" : element.name;
+  }
+
+  private Vec3Snapshot scaleVector(ModelElement element, Vec3f value) {
+    if (value == null && element.type == ElementType.ROOT_PART) {
+      return new Vec3Snapshot(1, 1, 1);
+    }
+    return vector(value);
   }
 
   private Vec3Snapshot vector(Vec3f value) {
