@@ -24,7 +24,8 @@ configure([
     project(':adapter-geckolib4'),
     project(':writer-cpm'),
     project(':validator-cpm'),
-    project(':test-fixtures')
+    project(':test-fixtures'),
+    project(':verification-projectio')
 ]) {
     apply plugin: 'com.diffplug.spotless'
     spotless {
