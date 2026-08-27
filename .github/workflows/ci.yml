@@ -22,8 +22,6 @@ jobs:
         run: python spikes/geckolib-animation-semantics/scripts/audit_fixtures.py
 
   projectio-conformance:
-    permissions:
-      contents: write
     strategy:
       fail-fast: false
       matrix: {os: [windows-latest, ubuntu-latest]}
@@ -39,18 +37,6 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - if: runner.os == 'Linux'
-        run: bash ./gradlew :verification-projectio:dependencies --write-locks --write-verification-metadata sha256 -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
-      - if: runner.os == 'Linux'
         run: bash ./gradlew :verification-projectio:spotlessCheck :verification-projectio:test -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
       - if: runner.os == 'Windows'
-        run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test --write-locks --write-verification-metadata sha256 "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
-      - if: always() && runner.os == 'Linux'
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add gradle/verification-metadata.xml verification-projectio/gradle.lockfile
-          if ! git diff --cached --quiet; then
-            git commit -m "build: lock T304 verification dependencies"
-            git push origin HEAD:agent/correct-look-retargeting-phase1
-          fi
+        run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
