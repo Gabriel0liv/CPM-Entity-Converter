@@ -36,6 +36,14 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - if: runner.os == 'Linux'
-        run: bash ./gradlew :verification-projectio:spotlessCheck :verification-projectio:test -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
+        run: bash ./gradlew :verification-projectio:spotlessCheck :verification-projectio:test --write-locks --write-verification-metadata sha256 -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
       - if: runner.os == 'Windows'
-        run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
+        run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test --write-locks --write-verification-metadata sha256 "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: t304-gradle-bootstrap-${{ matrix.os }}
+          if-no-files-found: warn
+          path: |
+            gradle/verification-metadata.xml
+            verification-projectio/gradle.lockfile
