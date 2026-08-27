@@ -1,6 +1,7 @@
 package io.github.gabriel0liv.cpmconverter.verification;
 
 import com.tom.cpl.math.Vec3f;
+import com.tom.cpl.util.Direction;
 import com.tom.cpm.shared.editor.Editor;
 import com.tom.cpm.shared.editor.anim.AnimFrame;
 import com.tom.cpm.shared.editor.anim.EditorAnim;
@@ -8,12 +9,15 @@ import com.tom.cpm.shared.editor.elements.ElementType;
 import com.tom.cpm.shared.editor.elements.ModelElement;
 import com.tom.cpm.shared.editor.project.ProjectFile;
 import com.tom.cpm.shared.editor.project.ProjectIO;
+import com.tom.cpm.shared.model.render.PerFaceUV;
 import com.tom.cpm.shared.model.render.VanillaModelPart;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -72,13 +76,32 @@ public final class ProjectIoHarness {
             vector(element.rotation),
             scaleVector(element, element.scale),
             scaleVector(element, element.meshScale),
-            element.faceUV != null));
+            element.faceUV != null,
+            faceUv(element)));
     for (ModelElement child : element.children) append(output, child, path);
   }
 
   private String stableName(ModelElement element) {
     if (element.typeData instanceof VanillaModelPart vanillaPart) return vanillaPart.getName();
     return element.name == null ? "" : element.name;
+  }
+
+  private Map<String, FaceUvSnapshot> faceUv(ModelElement element) {
+    if (element.faceUV == null) return Map.of();
+
+    LinkedHashMap<String, FaceUvSnapshot> result = new LinkedHashMap<>();
+    for (Direction direction : Direction.VALUES) {
+      PerFaceUV.Face face = element.faceUV.faces.get(direction);
+      if (face == null) continue;
+      if (face.rotation == null) {
+        throw new IllegalStateException("ProjectIO per-face UV rotation is null for " + direction);
+      }
+      String rotation = face.rotation.name().toLowerCase(Locale.ROOT).substring(4);
+      result.put(
+          direction.name().toLowerCase(Locale.ROOT),
+          new FaceUvSnapshot(face.sx, face.sy, face.ex, face.ey, rotation, face.autoUV));
+    }
+    return result;
   }
 
   private int animationReferenceCount(Editor editor) {
