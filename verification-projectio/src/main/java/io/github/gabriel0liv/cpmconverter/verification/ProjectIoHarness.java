@@ -2,15 +2,19 @@ package io.github.gabriel0liv.cpmconverter.verification;
 
 import com.tom.cpl.math.Vec3f;
 import com.tom.cpm.shared.editor.Editor;
+import com.tom.cpm.shared.editor.anim.AnimFrame;
+import com.tom.cpm.shared.editor.anim.EditorAnim;
 import com.tom.cpm.shared.editor.elements.ElementType;
 import com.tom.cpm.shared.editor.elements.ModelElement;
 import com.tom.cpm.shared.editor.project.ProjectFile;
 import com.tom.cpm.shared.editor.project.ProjectIO;
 import com.tom.cpm.shared.model.render.VanillaModelPart;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 
@@ -42,7 +46,11 @@ public final class ProjectIoHarness {
   ProjectIoSnapshot snapshot(Editor editor) {
     List<ProjectIoElementSnapshot> elements = new ArrayList<>();
     for (ModelElement element : editor.elements) append(elements, element, "");
-    return ProjectIoSnapshot.success(editor.elements.size(), editor.animations.size(), elements);
+    return ProjectIoSnapshot.success(
+        editor.elements.size(),
+        editor.animations.size(),
+        animationReferenceCount(editor),
+        elements);
   }
 
   private void append(
@@ -71,6 +79,29 @@ public final class ProjectIoHarness {
   private String stableName(ModelElement element) {
     if (element.typeData instanceof VanillaModelPart vanillaPart) return vanillaPart.getName();
     return element.name == null ? "" : element.name;
+  }
+
+  private int animationReferenceCount(Editor editor) {
+    try {
+      Field framesField = EditorAnim.class.getDeclaredField("frames");
+      Field componentsField = AnimFrame.class.getDeclaredField("components");
+      framesField.setAccessible(true);
+      componentsField.setAccessible(true);
+
+      int references = 0;
+      for (EditorAnim animation : editor.animations) {
+        Object rawFrames = framesField.get(animation);
+        if (!(rawFrames instanceof List<?> frames)) return -1;
+        for (Object frame : frames) {
+          Object rawComponents = componentsField.get(frame);
+          if (!(rawComponents instanceof Map<?, ?> components)) return -1;
+          references += components.size();
+        }
+      }
+      return references;
+    } catch (ReflectiveOperationException | RuntimeException error) {
+      return -1;
+    }
   }
 
   private Vec3Snapshot scaleVector(ModelElement element, Vec3f value) {
