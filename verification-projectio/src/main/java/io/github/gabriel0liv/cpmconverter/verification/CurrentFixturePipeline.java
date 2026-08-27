@@ -34,7 +34,8 @@ public final class CurrentFixturePipeline {
           "fixture-d-quadruped");
 
   public CurrentFixtureArtifact generate(String fixture) throws Exception {
-    if (!FIXTURES.contains(fixture)) throw new IllegalArgumentException("unknown fixture " + fixture);
+    if (!FIXTURES.contains(fixture))
+      throw new IllegalArgumentException("unknown fixture " + fixture);
 
     Path directory = repoRoot().resolve("test-fixtures").resolve(fixture);
     ModelIR geometry =
@@ -46,8 +47,7 @@ public final class CurrentFixturePipeline {
                 .parse(directory.resolve("animations.animation.json"), geometry),
             "animations");
     TextureIR texture =
-        require(
-            new GeckoTextureLoader().load(directory.resolve("texture.png"), 32, 32), "texture");
+        require(new GeckoTextureLoader().load(directory.resolve("texture.png"), 32, 32), "texture");
 
     ModelIR completeModel =
         new ModelIR(
@@ -72,8 +72,7 @@ public final class CurrentFixturePipeline {
 
     CpmStaticProjectV1 projected =
         require(new CpmStaticProjector().project(completeModel, settings), "projection");
-    CpmStoreIdPlan storeIds =
-        require(new CpmStoreIdAllocator().allocate(projected), "store ids");
+    CpmStoreIdPlan storeIds = require(new CpmStoreIdAllocator().allocate(projected), "store ids");
     byte[] bytes = require(new CpmProjectWriterV1().write(projected, storeIds), "writer");
 
     require(
