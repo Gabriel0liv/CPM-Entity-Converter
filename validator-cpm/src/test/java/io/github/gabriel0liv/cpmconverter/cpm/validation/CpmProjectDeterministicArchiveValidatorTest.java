@@ -18,8 +18,7 @@ import java.util.zip.ZipOutputStream;
 import org.junit.jupiter.api.Test;
 
 class CpmProjectDeterministicArchiveValidatorTest {
-  private static final LocalDateTime NONCANONICAL_ZIP_TIME =
-      LocalDateTime.of(1980, 1, 2, 0, 0);
+  private static final LocalDateTime NONCANONICAL_ZIP_TIME = LocalDateTime.of(1980, 1, 2, 0, 0);
   private final CpmProjectValidator validator = new CpmProjectValidator();
 
   @Test
@@ -46,8 +45,8 @@ class CpmProjectDeterministicArchiveValidatorTest {
         .getBytes(StandardCharsets.UTF_8);
   }
 
-  private static byte[] storedZip(
-      LinkedHashMap<String, byte[]> entries, LocalDateTime timestamp) throws IOException {
+  private static byte[] storedZip(LinkedHashMap<String, byte[]> entries, LocalDateTime timestamp)
+      throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     try (ZipOutputStream output = new ZipOutputStream(bytes)) {
       for (Map.Entry<String, byte[]> source : entries.entrySet()) {
