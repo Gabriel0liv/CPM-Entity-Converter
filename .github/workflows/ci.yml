@@ -37,6 +37,16 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - if: runner.os == 'Linux'
+        run: bash ./gradlew :verification-projectio:t304EvidenceBundle -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
+      - if: runner.os == 'Windows'
+        run: .\gradlew.bat :verification-projectio:t304EvidenceBundle "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
+      - if: runner.os == 'Linux'
         run: bash ./gradlew :verification-projectio:spotlessCheck :verification-projectio:test -PcpmReferenceDir="$GITHUB_WORKSPACE/cpm-reference"
       - if: runner.os == 'Windows'
         run: .\gradlew.bat :verification-projectio:spotlessCheck :verification-projectio:test "-PcpmReferenceDir=$env:GITHUB_WORKSPACE\cpm-reference"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: t304-evidence-${{ matrix.os }}
+          path: build/t304
+          if-no-files-found: warn
