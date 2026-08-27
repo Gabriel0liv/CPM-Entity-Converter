@@ -55,3 +55,20 @@ tasks.named('compileJava') {
 }
 tasks.named('compileTestJava') { onlyIf { referenceProperty.present } }
 tasks.named('test') { onlyIf { referenceProperty.present } }
+
+def t304EvidenceBundle = tasks.register('t304EvidenceBundle', JavaExec) {
+    group = 'verification'
+    description = 'Generate deterministic T304 ProjectIO and manual-handoff evidence.'
+    dependsOn tasks.named('classes')
+    onlyIf { referenceProperty.present }
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'io.github.gabriel0liv.cpmconverter.verification.T304EvidenceWriter'
+    workingDir rootProject.projectDir
+}
+
+tasks.register('t304ProjectIoConformance') {
+    group = 'verification'
+    description = 'Run the complete pinned ProjectIO static conformance gate.'
+    dependsOn tasks.named('spotlessCheck'), tasks.named('test'), t304EvidenceBundle
+    onlyIf { referenceProperty.present }
+}
