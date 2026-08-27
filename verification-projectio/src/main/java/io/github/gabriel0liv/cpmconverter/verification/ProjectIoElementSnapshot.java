@@ -22,7 +22,6 @@ public record ProjectIoElementSnapshot(
     boolean hasFaceUv,
     Map<String, FaceUvSnapshot> faceUv) {
   public ProjectIoElementSnapshot {
-    faceUv =
-        Collections.unmodifiableMap(new LinkedHashMap<>(faceUv == null ? Map.of() : faceUv));
+    faceUv = Collections.unmodifiableMap(new LinkedHashMap<>(faceUv == null ? Map.of() : faceUv));
   }
 }
