@@ -77,6 +77,16 @@ Incluir testes de timeline CPM: duração×FPS inteira/não inteira; loop/single
 
 Os testes de sampling devem verificar explicitamente `requestedFps`, `frameCount`, `frameDensity`, `effectiveIntervalRate`, `frameInterval` e `maxTemporalGridError`: produtos `D×requestedFps` inteiro e não inteiro; loop com 1, 2 e 3 frames; single com 1, 2 e 3 frames; e que densidade (`N/D`) difere da taxa de intervalos single (`(N-1)/D`). O antigo termo `effectiveFps` não é aceito no relatório normativo.
 
+## T304 — ProjectIO static conformance gate
+
+O gate automatizado T304 usa CPM Editor/ProjectIO `0.6.27` no commit fixado `9272f4f9c36a2bbd6986e6da65bf7091369cb12b`. O run `33061294958` ficou verde em `check` e `projectio-conformance` para Ubuntu e Windows.
+
+Para fixtures A–D o teste automatizado exige: geração pela pipeline de produção, validação `GENERATED_V1`, load pelo `ProjectIO` oficial, IDs/referências persistidos, parentage e bind transforms, textura/box UV/per-face UV, save/reopen semântico e SHA-256 congelado idêntico entre sistemas. O evidence writer também gera cada fixture duas vezes e falha se os bytes divergirem.
+
+Os quatro hashes normativos desta arquitetura ficam em `verification-projectio/expected-artifact-hashes.properties`; o registro de gate está em `phase-3-t304-gate.md`. Os jobs publicam `t304-evidence-ubuntu-latest` e `t304-evidence-windows-latest` com os artefatos exatos e o handoff manual.
+
+A parte visual permanece **NOT RUN** e não pode ser promovida por automação. T304 continua `[~]` até `phase-3-t304-manual-checklist.md` ser executado no CPM Editor 0.6.27 sobre os artefatos de hash exato.
+
 ## Visual checklist
 
 Registrar versão CPM, sistema, fixture, hash output e pass/fail por AC-020–029. Capturar front/side neutral, extremos yaw/pitch, crossing esquerda↔direita, walk/run/jump/attack combinados com look e pós-100 loops.
