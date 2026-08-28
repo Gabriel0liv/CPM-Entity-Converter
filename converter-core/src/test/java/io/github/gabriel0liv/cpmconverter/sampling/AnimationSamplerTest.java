@@ -3,6 +3,7 @@ package io.github.gabriel0liv.cpmconverter.sampling;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.gabriel0liv.cpmconverter.diagnostics.DiagnosticCodes;
+import io.github.gabriel0liv.cpmconverter.diagnostics.Result;
 import io.github.gabriel0liv.cpmconverter.ir.AnimationClipIR;
 import io.github.gabriel0liv.cpmconverter.ir.BoneId;
 import io.github.gabriel0liv.cpmconverter.ir.BoneTrackIR;
@@ -34,7 +35,7 @@ class AnimationSamplerTest {
     var order = List.of(BODY, HEAD, HORN);
     var clip = clip(PlaybackMode.LOOP, List.of(positionTrack(HEAD, 0, 10)));
 
-    var result = sampler.sample(clip, order, request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var result = sample(clip, order, 20, TimelineKind.LOOP);
 
     assertTrue(result.success());
     for (var frame : result.value().frames()) {
@@ -46,9 +47,7 @@ class AnimationSamplerTest {
   void boneWithoutTrackHasIdentityAndNoInventedTrackSemantics() {
     var clip = clip(PlaybackMode.LOOP, List.of(positionTrack(HEAD, 0, 10)));
 
-    var result =
-        sampler.sample(
-            clip, List.of(BODY, HEAD), request(2, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var result = sample(clip, List.of(BODY, HEAD), 2, TimelineKind.LOOP);
 
     var body = sampledBone(result.value(), 0, BODY);
     assertEquals(Vec3d.ZERO, body.transform().translation());
@@ -61,8 +60,7 @@ class AnimationSamplerTest {
   void animatedBoneWithMissingChannelsFillsOnlyThoseChannelsWithIdentity() {
     var clip = clip(PlaybackMode.LOOP, List.of(positionTrack(HEAD, 0, 10)));
 
-    var result =
-        sampler.sample(clip, List.of(HEAD), request(2, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var result = sample(clip, List.of(HEAD), 2, TimelineKind.LOOP);
 
     var head = sampledBone(result.value(), 1, HEAD);
     assertEquals(new Vec3d(5, 0, 0), head.transform().translation());
@@ -81,8 +79,8 @@ class AnimationSamplerTest {
     var first = clip(PlaybackMode.LOOP, List.of(head, horn));
     var second = clip(PlaybackMode.LOOP, List.of(horn, head));
 
-    var a = sampler.sample(first, order, request(4, TimelineKind.LOOP), LINEAR_EVALUATOR);
-    var b = sampler.sample(second, order, request(4, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var a = sample(first, order, 4, TimelineKind.LOOP);
+    var b = sample(second, order, 4, TimelineKind.LOOP);
 
     assertTrue(a.success());
     assertTrue(b.success());
@@ -93,12 +91,8 @@ class AnimationSamplerTest {
   void sameClipAt20And40FpsProducesDistinctKeysAndFrameCounts() {
     var clip = clip(PlaybackMode.LOOP, List.of(positionTrack(HEAD, 0, 10)));
 
-    var a =
-        sampler.sample(
-            clip, List.of(HEAD), request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
-    var b =
-        sampler.sample(
-            clip, List.of(HEAD), request(40, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var a = sample(clip, List.of(HEAD), 20, TimelineKind.LOOP);
+    var b = sample(clip, List.of(HEAD), 40, TimelineKind.LOOP);
 
     assertTrue(a.success());
     assertTrue(b.success());
@@ -112,12 +106,8 @@ class AnimationSamplerTest {
     var loop = clip(PlaybackMode.LOOP, List.of(positionTrack(HEAD, 0, 10)));
     var single = clip(PlaybackMode.PLAY_ONCE, List.of(positionTrack(HEAD, 0, 10)));
 
-    var a =
-        sampler.sample(
-            loop, List.of(HEAD), request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
-    var b =
-        sampler.sample(
-            single, List.of(HEAD), request(20, TimelineKind.SINGLE), LINEAR_EVALUATOR);
+    var a = sample(loop, List.of(HEAD), 20, TimelineKind.LOOP);
+    var b = sample(single, List.of(HEAD), 20, TimelineKind.SINGLE);
 
     assertTrue(a.success());
     assertTrue(b.success());
@@ -128,9 +118,7 @@ class AnimationSamplerTest {
   void holdPlaybackUsesSingleTimelineClassification() {
     var hold = clip(PlaybackMode.HOLD, List.of(positionTrack(HEAD, 0, 10)));
 
-    var result =
-        sampler.sample(
-            hold, List.of(HEAD), request(2, TimelineKind.SINGLE), LINEAR_EVALUATOR);
+    var result = sample(hold, List.of(HEAD), 2, TimelineKind.SINGLE);
 
     assertTrue(result.success());
     assertEquals(0.0, result.value().frames().get(0).timeSeconds(), 0.0);
@@ -150,15 +138,10 @@ class AnimationSamplerTest {
   @Test
   void incompatibleOrCustomPlaybackReturnsStablePlaybackDiagnostic() {
     var loop = clip(PlaybackMode.LOOP, List.of());
-    var custom =
-        new AnimationClipIR(CLIP, 1.0, PlaybackMode.CUSTOM, "custom_loop", List.of());
+    var custom = new AnimationClipIR(CLIP, 1.0, PlaybackMode.CUSTOM, "custom_loop", List.of());
 
-    var incompatible =
-        sampler.sample(
-            loop, List.of(BODY), request(20, TimelineKind.SINGLE), LINEAR_EVALUATOR);
-    var unsupported =
-        sampler.sample(
-            custom, List.of(BODY), request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var incompatible = sample(loop, List.of(BODY), 20, TimelineKind.SINGLE);
+    var unsupported = sample(custom, List.of(BODY), 20, TimelineKind.LOOP);
 
     assertDiagnostic(incompatible, DiagnosticCodes.ANIM_SAMPLING_PLAYBACK_UNSUPPORTED);
     assertDiagnostic(unsupported, DiagnosticCodes.ANIM_SAMPLING_PLAYBACK_UNSUPPORTED);
@@ -170,8 +153,7 @@ class AnimationSamplerTest {
     var second = positionTrack(HEAD, 10, 20);
     var clip = clip(PlaybackMode.LOOP, List.of(first, second));
 
-    var result =
-        sampler.sample(clip, List.of(HEAD), request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var result = sample(clip, List.of(HEAD), 20, TimelineKind.LOOP);
 
     assertDiagnostic(result, DiagnosticCodes.ANIM_SAMPLING_REQUEST_INVALID);
   }
@@ -180,9 +162,7 @@ class AnimationSamplerTest {
   void trackOutsideCanonicalBoneOrderReturnsStableRequestDiagnostic() {
     var clip = clip(PlaybackMode.LOOP, List.of(positionTrack(HORN, 0, 10)));
 
-    var result =
-        sampler.sample(
-            clip, List.of(BODY, HEAD), request(20, TimelineKind.LOOP), LINEAR_EVALUATOR);
+    var result = sample(clip, List.of(BODY, HEAD), 20, TimelineKind.LOOP);
 
     assertDiagnostic(result, DiagnosticCodes.ANIM_SAMPLING_REQUEST_INVALID);
   }
@@ -204,6 +184,11 @@ class AnimationSamplerTest {
     var result = sampler.sample(clip, List.of(HEAD), request(2, TimelineKind.LOOP), invalid);
 
     assertDiagnostic(result, DiagnosticCodes.ANIM_SAMPLING_NON_FINITE);
+  }
+
+  private Result<SampledClipIR> sample(
+      AnimationClipIR clip, List<BoneId> order, int fps, TimelineKind kind) {
+    return sampler.sample(clip, order, request(fps, kind), LINEAR_EVALUATOR);
   }
 
   private static AnimationClipIR clip(PlaybackMode playback, List<BoneTrackIR> tracks) {
@@ -243,8 +228,7 @@ class AnimationSamplerTest {
         .orElseThrow();
   }
 
-  private static void assertDiagnostic(
-      io.github.gabriel0liv.cpmconverter.diagnostics.Result<?> result, String code) {
+  private static void assertDiagnostic(Result<?> result, String code) {
     assertFalse(result.success());
     assertEquals(code, result.diagnostics().errors().get(0).code().value());
   }
