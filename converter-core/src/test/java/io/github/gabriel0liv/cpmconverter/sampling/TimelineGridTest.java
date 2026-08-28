@@ -66,10 +66,15 @@ class TimelineGridTest {
   void requestAndKeyRejectFpsOutsideOneToTwoForty() {
     var clip = new ClipId("walk");
 
-    assertThrows(IllegalArgumentException.class, () -> new SamplingRequest(clip, 0, TimelineKind.LOOP));
-    assertThrows(IllegalArgumentException.class, () -> new SamplingRequest(clip, 241, TimelineKind.LOOP));
-    assertThrows(IllegalArgumentException.class, () -> new SampledClipKey(clip, 0, TimelineKind.SINGLE));
-    assertThrows(IllegalArgumentException.class, () -> new SampledClipKey(clip, 241, TimelineKind.SINGLE));
+    assertThrows(
+        IllegalArgumentException.class, () -> new SamplingRequest(clip, 0, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class, () -> new SamplingRequest(clip, 241, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class, () -> new SampledClipKey(clip, 0, TimelineKind.SINGLE));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new SampledClipKey(clip, 241, TimelineKind.SINGLE));
   }
 
   @Test
@@ -86,10 +91,15 @@ class TimelineGridTest {
 
   @Test
   void timelineGridRejectsInvalidDurationAndFps() {
-    assertThrows(IllegalArgumentException.class, () -> TimelineGrid.build(0.0, 20, TimelineKind.LOOP));
-    assertThrows(IllegalArgumentException.class, () -> TimelineGrid.build(Double.NaN, 20, TimelineKind.LOOP));
-    assertThrows(IllegalArgumentException.class, () -> TimelineGrid.build(1.0, 0, TimelineKind.LOOP));
-    assertThrows(IllegalArgumentException.class, () -> TimelineGrid.build(1.0, 241, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class, () -> TimelineGrid.build(0.0, 20, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> TimelineGrid.build(Double.NaN, 20, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class, () -> TimelineGrid.build(1.0, 0, TimelineKind.LOOP));
+    assertThrows(
+        IllegalArgumentException.class, () -> TimelineGrid.build(1.0, 241, TimelineKind.LOOP));
     assertThrows(IllegalArgumentException.class, () -> TimelineGrid.build(1.0, 20, null));
   }
 }
