@@ -29,11 +29,11 @@ public final class AnimationSampler {
       List<BoneId> canonicalBoneOrder,
       SamplingRequest request,
       InterpolationEvaluator evaluator) {
-    Result<Void> requestValidation =
+    Result<Boolean> requestValidation =
         validateRequest(clip, canonicalBoneOrder, request, evaluator);
     if (!requestValidation.success()) return Result.failure(requestValidation.diagnostics());
 
-    Result<Void> playbackValidation = validatePlayback(clip.playback(), request.timelineKind());
+    Result<Boolean> playbackValidation = validatePlayback(clip.playback(), request.timelineKind());
     if (!playbackValidation.success()) return Result.failure(playbackValidation.diagnostics());
 
     Result<Map<BoneId, BoneTrackIR>> indexedTracks =
@@ -91,7 +91,7 @@ public final class AnimationSampler {
         new SampledClipIR(key, clip.duration(), clip.playback(), grid.metadata(), frames));
   }
 
-  private static Result<Void> validateRequest(
+  private static Result<Boolean> validateRequest(
       AnimationClipIR clip,
       List<BoneId> canonicalBoneOrder,
       SamplingRequest request,
@@ -115,10 +115,10 @@ public final class AnimationSampler {
             "canonical bone order contains null or duplicate bones");
       }
     }
-    return successVoid();
+    return Result.success(Boolean.TRUE);
   }
 
-  private static Result<Void> validatePlayback(PlaybackMode playback, TimelineKind kind) {
+  private static Result<Boolean> validatePlayback(PlaybackMode playback, TimelineKind kind) {
     TimelineKind required =
         switch (playback) {
           case LOOP -> TimelineKind.LOOP;
@@ -130,7 +130,7 @@ public final class AnimationSampler {
           DiagnosticCodes.ANIM_SAMPLING_PLAYBACK_UNSUPPORTED,
           "source playback is incompatible with the requested timeline kind");
     }
-    return successVoid();
+    return Result.success(Boolean.TRUE);
   }
 
   private static Result<Map<BoneId, BoneTrackIR>> indexTracks(
@@ -160,13 +160,5 @@ public final class AnimationSampler {
 
   private static <T> Result<T> failure(String code, String message) {
     return Result.failure(Diagnostic.of(Severity.ERROR, code, message));
-  }
-
-  private static Result<Void> successVoid() {
-    return Result.success(VoidValue.INSTANCE).map(ignored -> null);
-  }
-
-  private enum VoidValue {
-    INSTANCE
   }
 }
