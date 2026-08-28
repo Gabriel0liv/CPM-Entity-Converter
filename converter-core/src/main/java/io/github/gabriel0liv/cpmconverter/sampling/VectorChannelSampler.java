@@ -18,7 +18,8 @@ public final class VectorChannelSampler {
       Vec3d identity,
       InterpolationEvaluator evaluator) {
     if (!Double.isFinite(timeSeconds) || timeSeconds < 0 || identity == null || evaluator == null) {
-      return failure(DiagnosticCodes.ANIM_SAMPLING_REQUEST_INVALID, "invalid vector sampling request");
+      return failure(
+          DiagnosticCodes.ANIM_SAMPLING_REQUEST_INVALID, "invalid vector sampling request");
     }
     if (channel == null) return Result.success(identity);
 
