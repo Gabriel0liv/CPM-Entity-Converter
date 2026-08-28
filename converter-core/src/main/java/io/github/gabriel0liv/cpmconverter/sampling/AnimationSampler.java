@@ -36,8 +36,7 @@ public final class AnimationSampler {
     Result<Boolean> playbackValidation = validatePlayback(clip.playback(), request.timelineKind());
     if (!playbackValidation.success()) return Result.failure(playbackValidation.diagnostics());
 
-    Result<Map<BoneId, BoneTrackIR>> indexedTracks =
-        indexTracks(clip.tracks(), canonicalBoneOrder);
+    Result<Map<BoneId, BoneTrackIR>> indexedTracks = indexTracks(clip.tracks(), canonicalBoneOrder);
     if (!indexedTracks.success()) return Result.failure(indexedTracks.diagnostics());
 
     TimelineGrid.Result grid =
@@ -63,10 +62,7 @@ public final class AnimationSampler {
             VectorChannelSampler.sample(track.scale(), timeSeconds, ONE, evaluator);
 
         DiagnosticBag diagnostics =
-            position
-                .diagnostics()
-                .addAll(rotation.diagnostics())
-                .addAll(scale.diagnostics());
+            position.diagnostics().addAll(rotation.diagnostics()).addAll(scale.diagnostics());
         if (diagnostics.hasErrors()) return Result.failure(diagnostics);
 
         SampledTransformIR transform =
@@ -77,9 +73,7 @@ public final class AnimationSampler {
                 rotation.value().continuity());
         bones.add(
             new SampledBoneTransformIR(
-                boneId,
-                transform,
-                Optional.of(new TrackSemanticsIR(track.mode(), track.space()))));
+                boneId, transform, Optional.of(new TrackSemanticsIR(track.mode(), track.space()))));
       }
 
       frames.add(new SampledFrameIR(frameIndex, timeSeconds, bones));
