@@ -46,7 +46,7 @@ SampledClipIR
   ├─ SampledClipKey
   ├─ SamplingMetadataIR
   └─ SampledFrameIR[]
-       └─ BoneId → SampledBoneTransformIR
+       └─ SampledBoneTransformIR[]
 ```
 
 No Minecraft, Forge, GeckoLib, CPM, or Blockbench runtime dependency is introduced into `converter-core`.
@@ -89,7 +89,7 @@ PlaybackMode.PLAY_ONCE → TimelineKind.SINGLE
 PlaybackMode.HOLD      → TimelineKind.SINGLE
 ```
 
-`PlaybackMode.CUSTOM` is not silently coerced. If a supported custom mode cannot be classified by an explicit upstream rule, T400 returns an actionable diagnostic/error rather than guessing.
+`PlaybackMode.CUSTOM` is not silently coerced. T400 rejects it with a stable `ANIM_*` diagnostic unless a future explicit compatibility rule first maps that custom mode to a supported timeline kind.
 
 T400 does not implement terminal `PLAY_ONCE` vs `HOLD` behavior. That difference belongs to T401.
 
@@ -101,7 +101,7 @@ For duration `D > 0` and requested rate `F`:
 N = max(1, round(D × F))
 ```
 
-Java rounding semantics must be made explicit in implementation tests so cross-platform behavior is not inferred from locale or formatting.
+Implementation uses Java `Math.round(double)` semantics. Tests pin half-rounding cases explicitly so cross-platform behavior is not inferred from locale or formatting.
 
 ### LOOP
 
@@ -178,11 +178,14 @@ SampledClipIR
 SampledFrameIR
   index: int
   timeSeconds: double
-  bones: ordered collection of SampledBoneTransformIR
+  bones: List<SampledBoneTransformIR>
 
 SampledBoneTransformIR
   bone: BoneId
   transform: SampledTransformIR
+  trackSemantics: Optional<SampledTrackSemanticsIR>
+
+SampledTrackSemanticsIR
   mode: TransformMode
   space: TransformSpace
 
@@ -193,11 +196,15 @@ SampledTransformIR
   rotationContinuity: RotationContinuityIR
 ```
 
-Names may be adjusted during the implementation plan to match existing repository naming conventions, but the semantics above are normative.
+The implementation plan may adapt class names to existing repository naming conventions, but these fields and semantics are normative.
+
+`trackSemantics` is present only when the source clip has a `BoneTrackIR` for that bone. It is absent for a completely unanimated bone. This avoids inventing `ABSOLUTE/ADDITIVE` or `LOCAL/MODEL` semantics for bones that had no source track.
 
 ## All bones are present in every frame
 
-Every `SampledFrameIR` contains **all model bones in canonical order**, not only animated bones.
+Every `SampledFrameIR` contains **all model bones in canonical pre-order**, not only animated bones.
+
+The sampler receives an explicit canonical bone-order list derived from the validated model. It validates that the list contains every model bone exactly once; duplicate, missing, or unknown IDs are an error rather than an ordering fallback.
 
 For a bone without a track:
 
@@ -205,17 +212,29 @@ For a bone without a track:
 translation = (0, 0, 0)
 rotation = identity quaternion
 scale = (1, 1, 1)
+rotationContinuity = neutral
+trackSemantics = empty
+```
+
+Neutral rotation continuity means:
+
+```text
+sourceEulerHint = (0, 0, 0)
+winding = (0, 0, 0)
+previousOutputEuler = empty
 ```
 
 For an animated bone with a missing channel, only that channel receives identity:
 
 - missing position → `(0, 0, 0)`;
-- missing rotation → identity quaternion with neutral continuity state;
+- missing rotation → identity quaternion + neutral rotation continuity;
 - missing scale → `(1, 1, 1)`.
+
+The source track's `TransformMode` and `TransformSpace` remain present even if only one of its channels exists.
 
 This keeps downstream T401/T402 deterministic and prevents absence from carrying two meanings (`not animated` vs `forgotten`).
 
-The sampler does not search bones by source name. It consumes resolved `BoneId` values and a canonical bone-order input.
+The sampler does not search bones by source name. It consumes resolved `BoneId` values.
 
 ## What a sampled transform means
 
@@ -232,7 +251,7 @@ It is deliberately not a final pose and does not include:
 - retargeting;
 - CPM serialization conventions.
 
-`TransformMode` (`ABSOLUTE` / `ADDITIVE`) and `TransformSpace` (`LOCAL` / `MODEL`) remain explicit metadata so the later composition phase can interpret the sampled values correctly.
+`TransformMode` (`ABSOLUTE` / `ADDITIVE`) and `TransformSpace` (`LOCAL` / `MODEL`) remain explicit source-track metadata so the later composition phase can interpret the sampled values correctly.
 
 This boundary prevents temporal evaluation from becoming entangled with hierarchy/retarget math.
 
@@ -250,26 +269,27 @@ Keyframe-boundary behavior must be pinned by tests against the existing parser/o
 
 Before the first keyframe and after the last keyframe, behavior must match the pinned GeckoLib 4.4.9 evaluation semantics demonstrated by repository oracle fixtures. T400 must not invent generic animation-library behavior when Gecko evidence differs.
 
+A channel with zero keyframes is treated as absent/identity only if validated IR construction permits that state; otherwise the validator/sampler rejects the malformed channel explicitly. A channel with one keyframe follows pinned GeckoLib single-keyframe behavior, covered by a dedicated test rather than an inferred generic rule.
+
 ## Interpolation evaluator port
 
-`converter-core` owns the sampling algorithm but does not own GeckoLib easing formulas.
+`converter-core` owns segment selection, timestamp math, endpoint selection, and vector interpolation. It does not own GeckoLib easing formulas.
 
-Introduce a narrow core-facing port conceptually equivalent to:
+The core-facing port is semantically:
 
 ```text
-InterpolationEvaluator.evaluate(
-    interpolation,
-    easingArgs,
-    normalizedProgress,
-    segmentContext
-) -> evaluated progress/value support
+double apply(
+    InterpolationIR interpolation,
+    List<Double> easingArgs,
+    double normalizedProgress
+)
 ```
 
-The exact method shape is chosen during the implementation plan so CATMULLROM can receive whatever neighbor context is actually required without leaking GeckoLib classes into the core.
+`normalizedProgress` supplied by the core is finite and within `[0,1]` for a selected segment. The adapter may return values outside `[0,1]` for overshooting/quirky Gecko easings such as back, elastic, bounce, or the pinned CATMULLROM registration behavior. T400 must **not clamp the evaluated easing result**.
 
-`adapter-geckolib4` supplies the GeckoLib 4.4.9 implementation using the already pinned numeric semantics.
+`adapter-geckolib4` implements this port by delegating to the already tested GeckoLib 4.4.9 numeric evaluator. The core then applies the returned scalar factor component-wise between the effective segment endpoints.
 
-Built-ins supported by the existing adapter remain supported. `CUSTOM` remains unsupported offline and must fail explicitly rather than degrade to linear.
+Built-ins supported by the existing adapter remain supported. `CUSTOM` remains unsupported offline and fails explicitly rather than degrading to linear.
 
 ## Position and scale
 
@@ -277,8 +297,8 @@ For ordinary vector channels:
 
 1. select the effective source segment at sample time;
 2. compute normalized temporal progress without quantizing the sample time;
-3. evaluate the segment interpolation/easing according to the pinned adapter;
-4. interpolate `incomingValue` / `outgoingValue` in `double` precision;
+3. evaluate the segment interpolation/easing through the adapter port;
+4. interpolate `incomingValue` / `outgoingValue` component-wise in `double` precision using the returned factor;
 5. return the sampled `Vec3d`.
 
 Scale remains animation-channel scale/delta according to track metadata. T400 does not combine it with bind scale.
@@ -293,16 +313,18 @@ The normative path is:
 SourceRotationChannelIR
   → select exact temporal segment
   → use effective incoming/outgoing Euler values
-  → evaluate interpolation/easing in continuous scalar Euler space
+  → evaluate interpolation/easing in continuous Euler component space
   → produce sampled source Euler without normalization
-  → preserve source Euler hint/winding
+  → derive source Euler hint/winding from that sampled Euler
   → convert that instantaneous orientation to ZYX quaternion
   → emit SampledTransformIR + RotationContinuityIR
 ```
 
+For each axis, winding is the integer multiple-of-360 branch carried by the sampled source Euler relative to its principal equivalent. The implementation must use the same deterministic branch convention across platforms and test it explicitly at exact multiples and negative rotations.
+
 T400 must **not**:
 
-- normalize authored values into `[-180°, 180°]`;
+- normalize authored values into `[-180°, 180°]` before recording continuity;
 - replace `360°`, `720°`, etc. with equivalent zero-angle orientations before recording continuity;
 - use SLERP between source keyframes;
 - independently choose shortest quaternion paths per frame.
@@ -315,7 +337,9 @@ Explicit authored winding such as:
 
 must survive sampling as continuity information even though the instantaneous quaternions at multiples of 360° are orientation-equivalent.
 
-Crossings such as `+179° → -179°` retain the source-authored hint at this stage. Final CPM Euler branch selection remains a later boundary operation.
+Crossings such as `+179° → -179°` retain the sampled source Euler as the authorial hint at this stage. T400 does not rewrite that authored path into a quaternion-shortest path. Final CPM Euler branch selection remains a later boundary operation.
+
+`previousOutputEuler` remains empty in T400 because no CPM Euler output branch has been selected yet. Later phases may populate it when crossing the CPM representation boundary.
 
 ## `pre` / `post` compatibility
 
@@ -338,7 +362,7 @@ Required rules:
 - all math uses `double`;
 - frame times are derived from `D`, `N`, and frame index, not accumulated by repeated `time += interval`;
 - frame order is ascending index;
-- bone order is the canonical model bone order supplied to the sampler;
+- bone order is the validated canonical model pre-order supplied to the sampler;
 - no observable `HashMap` iteration order;
 - no locale-sensitive parsing/formatting in logical results;
 - no absolute paths or timestamps in sampled logical data;
@@ -348,17 +372,18 @@ Ubuntu and Windows tests must produce logically identical sampled results and st
 
 ## Validation and diagnostics
 
-T400 assumes parser/IR validation has already established basic validity, but must reject impossible sampling requests defensively.
+T400 assumes parser/IR validation has already established basic validity, but rejects impossible sampling requests defensively.
 
 At minimum, errors include:
 
-- missing/null clip or bone-order input;
+- missing/null clip or model/bone-order input;
+- canonical order with duplicate, missing, or unknown `BoneId` values;
 - requested FPS outside `1..240` if an invalid request bypasses config validation;
 - non-finite/invalid duration reaching the sampler;
 - `CUSTOM` interpolation/easing that has no offline evaluator;
 - playback that cannot be mapped to a supported timeline kind;
 - malformed channel state that makes segment evaluation undefined;
-- non-finite sampled output from interpolation/easing.
+- non-finite normalized progress, easing result, or sampled transform component.
 
 Diagnostics must use stable repository diagnostic codes. If no suitable code exists, T400 adds narrowly scoped `ANIM_*` codes rather than throwing user-facing generic exceptions.
 
@@ -376,7 +401,7 @@ T401 owns playback continuity semantics:
 - terminal `HOLD` behavior;
 - any explicit wrap/terminal frame transformation needed for CPM projection.
 
-T400 may expose source playback and timeline metadata needed by T401 but must not implement these policies itself.
+T400 exposes source playback and timeline metadata needed by T401 but does not implement these policies itself.
 
 ## Scope split with T402
 
@@ -412,8 +437,9 @@ Cover at least:
 
 Cover:
 
-- all bones emitted in canonical order;
-- completely unanimated bone → identity transform;
+- all bones emitted in canonical pre-order;
+- canonical order must cover every model bone exactly once;
+- completely unanimated bone → identity transform + empty track semantics;
 - missing position only;
 - missing rotation only;
 - missing scale only;
@@ -427,9 +453,12 @@ Cover:
 - linear;
 - step;
 - at least one non-linear easing required by AC-011;
+- overshooting easing result is not clamped;
 - easing arguments;
+- pinned CATMULLROM evaluator behavior;
 - keyframe boundary times;
 - independent timestamps across position/rotation/scale;
+- zero/single-keyframe behavior according to validated Gecko semantics;
 - first/last segment behavior;
 - explicit rejection of unsupported custom interpolation.
 
@@ -440,8 +469,10 @@ Cover:
 - ordinary Euler interpolation;
 - non-commuting multi-axis sample converted ZYX;
 - `0° → 360° → 720°` preservation of source continuity/winding;
-- `+179° → -179°` preservation of source hint without normalization;
-- missing rotation identity;
+- negative and exact-multiple winding branch convention;
+- `+179° → -179°` preservation of source hint without pre-sampling normalization;
+- `previousOutputEuler` empty in T400;
+- missing rotation identity + neutral continuity;
 - no mutation of source rotation keyframes.
 
 ### Configuration/key tests
@@ -483,7 +514,7 @@ T400 can move to `[x]` when all of the following are true:
 1. the sampled IR and sampler are implemented in production code with no forbidden external runtime dependency in `converter-core`;
 2. FPS resolution and multi-rate sampling follow the approved precedence/key rules;
 3. loop/single temporal grids and metadata exactly follow ADR-004;
-4. every frame contains every model bone in canonical order with identity completion;
+4. every frame contains every model bone in canonical pre-order with identity completion and unambiguous optional track semantics;
 5. position/rotation/scale channels sample independently and correctly;
 6. supported GeckoLib 4.4.9 interpolation/easing matches the pinned oracle within tolerance;
 7. rotation continuity/winding tests pass without pre-sampling normalization or SLERP;
