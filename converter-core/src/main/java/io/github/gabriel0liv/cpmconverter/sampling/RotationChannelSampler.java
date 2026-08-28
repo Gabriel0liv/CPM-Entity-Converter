@@ -18,14 +18,13 @@ public final class RotationChannelSampler {
 
   public record RotationSample(Quatd rotation, RotationContinuityIR continuity) {
     public RotationSample {
-      if (rotation == null || continuity == null) throw new IllegalArgumentException("rotation sample");
+      if (rotation == null || continuity == null)
+        throw new IllegalArgumentException("rotation sample");
     }
   }
 
   public static Result<RotationSample> sample(
-      SourceRotationChannelIR channel,
-      double timeSeconds,
-      InterpolationEvaluator evaluator) {
+      SourceRotationChannelIR channel, double timeSeconds, InterpolationEvaluator evaluator) {
     if (!Double.isFinite(timeSeconds) || timeSeconds < 0 || evaluator == null) {
       return failure(
           DiagnosticCodes.ANIM_SAMPLING_REQUEST_INVALID, "invalid rotation sampling request");
@@ -34,7 +33,8 @@ public final class RotationChannelSampler {
 
     List<SourceRotationKeyframeIR> keyframes = channel.keyframes();
     if (keyframes.isEmpty()) {
-      return failure(DiagnosticCodes.ANIM_SAMPLING_CHANNEL_INVALID, "rotation channel has no keyframes");
+      return failure(
+          DiagnosticCodes.ANIM_SAMPLING_CHANNEL_INVALID, "rotation channel has no keyframes");
     }
 
     for (SourceRotationKeyframeIR keyframe : keyframes) {
@@ -94,8 +94,7 @@ public final class RotationChannelSampler {
 
   private static RotationSample sampled(Vec3d sampledEuler) {
     Vec3i winding =
-        new Vec3i(
-            winding(sampledEuler.x()), winding(sampledEuler.y()), winding(sampledEuler.z()));
+        new Vec3i(winding(sampledEuler.x()), winding(sampledEuler.y()), winding(sampledEuler.z()));
     RotationContinuityIR continuity =
         new RotationContinuityIR(sampledEuler, winding, Optional.empty());
     Quatd rotation =
