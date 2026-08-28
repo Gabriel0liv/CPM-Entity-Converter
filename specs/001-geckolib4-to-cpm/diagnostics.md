@@ -54,6 +54,10 @@ Severidades: `INFO`, `WARNING`, `ERROR`. Code é estável; mensagem pode evoluir
 | `ANIM_FRAME_GRID_DENSITY_DIFFERENCE` | INFO | densidade de frames difere da taxa efetiva de intervalos |
 | `ANIM_APPROXIMATION` | WARNING | perda mensurável |
 | `ANIM_ZERO_SCALE_UNREPRESENTABLE` | ERROR | CPM trata scale 0 como “não alterar” |
+| `ANIM_SAMPLING_REQUEST_INVALID` | ERROR | pedido direto de sampling possui tempo/FPS/argumento estrutural inválido |
+| `ANIM_SAMPLING_PLAYBACK_UNSUPPORTED` | ERROR | playback do clip não pode ser classificado como LOOP ou SINGLE em T400 |
+| `ANIM_SAMPLING_CHANNEL_INVALID` | ERROR | canal não possui keyframes/segmentos/valores utilizáveis pelo sampler |
+| `ANIM_SAMPLING_NON_FINITE` | ERROR | easing ou resultado intermediário do sampling produziu valor não finito |
 | `MAP_SCHEMA_INVALID` | ERROR | mapping inválido/unknown property |
 | `MAP_BONE_NOT_FOUND` | ERROR | role/look bone ausente |
 | `MAP_CLIP_NOT_FOUND` | ERROR | clip mapping ausente |
@@ -120,6 +124,17 @@ Boundary construction uses `IR_INVALID_ID` and `IR_INVALID_VALUE`.
 `IR_CUBE_BONE_MISMATCH` é ERROR quando um cube aparece na coleção de um bone,
 mas `cube.bone()` aponta para outro bone existente. Isso evita ownership contraditório
 e transform-space ambíguo durante reparenting/rebake.
+
+## Sampling T400
+
+`ANIM_SAMPLING_REQUEST_INVALID`, `ANIM_SAMPLING_PLAYBACK_UNSUPPORTED`,
+`ANIM_SAMPLING_CHANNEL_INVALID`, `ANIM_SAMPLING_NON_FINITE`.
+
+`ANIM_SAMPLING_REQUEST_INVALID` cobre pedidos diretos que não podem entrar no sampler
+sem violar o contrato temporal/estrutural. `ANIM_SAMPLING_PLAYBACK_UNSUPPORTED` rejeita
+playback sem classificação determinística em `TimelineKind`. `ANIM_SAMPLING_CHANNEL_INVALID`
+cobre canal vazio, segmento temporal inválido ou valor ausente. `ANIM_SAMPLING_NON_FINITE`
+impede que easing ou resultados numéricos não finitos atravessem a fronteira do sampler.
 
 ## Projeção, writer e validator CPM V1
 
