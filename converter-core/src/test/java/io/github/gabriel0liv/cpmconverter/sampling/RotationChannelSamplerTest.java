@@ -31,12 +31,7 @@ class RotationChannelSamplerTest {
 
   @Test
   void preservesAuthoredTwoTurnWinding() {
-    var channel =
-        rotations(
-            List.of(
-                key(0.0, 0, 0, 0),
-                key(1.0, 360, 0, 0),
-                key(2.0, 720, 0, 0)));
+    var channel = rotations(List.of(key(0.0, 0, 0, 0), key(1.0, 360, 0, 0), key(2.0, 720, 0, 0)));
 
     var result = RotationChannelSampler.sample(channel, 1.5, LINEAR_EVALUATOR);
 
@@ -70,32 +65,21 @@ class RotationChannelSamplerTest {
 
   @Test
   void convertsInstantaneousEulerUsingZyxQuaternion() {
-    var channel =
-        rotations(
-            List.of(
-                key(0.0, 10, 20, 30),
-                key(1.0, 50, 60, 70)));
+    var channel = rotations(List.of(key(0.0, 10, 20, 30), key(1.0, 50, 60, 70)));
 
     var result = RotationChannelSampler.sample(channel, 0.5, LINEAR_EVALUATOR);
-    var expected =
-        Quatd.fromEulerZYX(Math.toRadians(30), Math.toRadians(40), Math.toRadians(50));
+    var expected = Quatd.fromEulerZYX(Math.toRadians(30), Math.toRadians(40), Math.toRadians(50));
 
     assertTrue(result.success());
     assertQuatEquivalent(expected, result.value().rotation());
-    assertEquals(
-        new Vec3d(30, 40, 50), result.value().continuity().sourceEulerHint());
+    assertEquals(new Vec3d(30, 40, 50), result.value().continuity().sourceEulerHint());
   }
 
   @Test
   void usesOutgoingLeftAndIncomingRightValuesForSegment() {
     var left =
         new SourceRotationKeyframeIR(
-            0.0,
-            Vec3d.ZERO,
-            new Vec3d(20, 40, 60),
-            InterpolationIR.LINEAR,
-            List.of(),
-            "left");
+            0.0, Vec3d.ZERO, new Vec3d(20, 40, 60), InterpolationIR.LINEAR, List.of(), "left");
     var right =
         new SourceRotationKeyframeIR(
             1.0,
@@ -109,8 +93,7 @@ class RotationChannelSamplerTest {
     var result = RotationChannelSampler.sample(channel, 0.5, LINEAR_EVALUATOR);
 
     assertTrue(result.success());
-    assertEquals(
-        new Vec3d(30, 60, 90), result.value().continuity().sourceEulerHint());
+    assertEquals(new Vec3d(30, 60, 90), result.value().continuity().sourceEulerHint());
   }
 
   @Test
@@ -121,8 +104,7 @@ class RotationChannelSamplerTest {
     var result = RotationChannelSampler.sample(channel, 0.5, overshoot);
 
     assertTrue(result.success());
-    assertEquals(
-        new Vec3d(120, 240, 360), result.value().continuity().sourceEulerHint());
+    assertEquals(new Vec3d(120, 240, 360), result.value().continuity().sourceEulerHint());
   }
 
   @Test
@@ -193,8 +175,7 @@ class RotationChannelSamplerTest {
     return new SourceRotationChannelIR(keyframes, RotationOrder.ZYX);
   }
 
-  private static SourceRotationKeyframeIR key(
-      double time, double x, double y, double z) {
+  private static SourceRotationKeyframeIR key(double time, double x, double y, double z) {
     Vec3d value = new Vec3d(x, y, z);
     return new SourceRotationKeyframeIR(
         time, value, value, InterpolationIR.LINEAR, List.of(), "test");
