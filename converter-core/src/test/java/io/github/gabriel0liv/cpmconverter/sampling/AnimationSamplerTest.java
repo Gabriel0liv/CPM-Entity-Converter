@@ -207,15 +207,9 @@ class AnimationSamplerTest {
             TransformSpace.LOCAL,
             List.of(
                 new KeyframeIR<>(
-                    0.0,
-                    new Vec3d(from, 0, 0),
-                    new Vec3d(from, 0, 0),
-                    InterpolationIR.LINEAR),
+                    0.0, new Vec3d(from, 0, 0), new Vec3d(from, 0, 0), InterpolationIR.LINEAR),
                 new KeyframeIR<>(
-                    1.0,
-                    new Vec3d(to, 0, 0),
-                    new Vec3d(to, 0, 0),
-                    InterpolationIR.LINEAR)));
+                    1.0, new Vec3d(to, 0, 0), new Vec3d(to, 0, 0), InterpolationIR.LINEAR)));
     return new BoneTrackIR(
         bone, position, null, null, TransformMode.ADDITIVE, TransformSpace.LOCAL);
   }
