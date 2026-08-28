@@ -73,8 +73,7 @@ class TimelineGridTest {
     assertThrows(
         IllegalArgumentException.class, () -> new SampledClipKey(clip, 0, TimelineKind.SINGLE));
     assertThrows(
-        IllegalArgumentException.class,
-        () -> new SampledClipKey(clip, 241, TimelineKind.SINGLE));
+        IllegalArgumentException.class, () -> new SampledClipKey(clip, 241, TimelineKind.SINGLE));
   }
 
   @Test
