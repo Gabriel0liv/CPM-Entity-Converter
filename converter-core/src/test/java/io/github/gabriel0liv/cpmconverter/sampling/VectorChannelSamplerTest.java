@@ -102,16 +102,12 @@ class VectorChannelSamplerTest {
             TransformMode.ADDITIVE,
             TransformSpace.LOCAL,
             List.of(
-                new KeyframeIR<>(
-                    0.0,
-                    Vec3d.ZERO,
-                    Vec3d.ZERO,
-                    InterpolationIR.EASE_IN_BACK,
-                    args),
+                new KeyframeIR<>(0.0, Vec3d.ZERO, Vec3d.ZERO, InterpolationIR.EASE_IN_BACK, args),
                 key(1.0, new Vec3d(4, 4, 4), InterpolationIR.LINEAR)));
-    var seen = new Object() {
-      List<Double> value;
-    };
+    var seen =
+        new Object() {
+          List<Double> value;
+        };
     InterpolationEvaluator evaluator =
         (kind, actualArgs, t) -> {
           seen.value = actualArgs;
@@ -158,8 +154,7 @@ class VectorChannelSamplerTest {
   @Test
   void emptyChannelReturnsStableDiagnostic() {
     var channel =
-        new ChannelIR<Vec3d>(
-            "position", TransformMode.ADDITIVE, TransformSpace.LOCAL, List.of());
+        new ChannelIR<Vec3d>("position", TransformMode.ADDITIVE, TransformSpace.LOCAL, List.of());
 
     var result = VectorChannelSampler.sample(channel, 0.5, Vec3d.ZERO, TEST_EVALUATOR);
 
